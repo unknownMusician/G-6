@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementScript : MonoBehaviour
 {
+    public RoomSpawner rSp;
     public Rigidbody2D rb;
     public Gun gun;
     public float speed;
@@ -11,6 +13,10 @@ public class PlayerMovementScript : MonoBehaviour
 
     private float HorizMove;
     private bool isJump;
+
+    private void Start() {
+        this.transform.position = rSp.getCurrentLocationAll();
+    }
 
     void Update()
     {
@@ -20,9 +26,14 @@ public class PlayerMovementScript : MonoBehaviour
             isJump = true;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            gun.Shoot();
+            gun.Attack();
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            gun.ChangeState();
         }
     }
 
