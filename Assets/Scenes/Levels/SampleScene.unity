@@ -333,11 +333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d64fee10a9421db48b50b05be4aa5d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Gun: {fileID: 2023636406}
   rSp: {fileID: 1142997208}
-  rb: {fileID: 29168914}
-  gun: {fileID: 2023636406}
-  speed: 10
-  jump: 20
+  HorizontalSpeed: 10
+  VerticalImpulce: 25
 --- !u!70 &29168913
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
