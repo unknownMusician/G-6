@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7440309013352402495}
   - component: {fileID: 2085181756462975332}
   m_Layer: 11
-  m_Name: Weapon
+  m_Name: Rifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902850384399324635}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.613, y: -0.038, z: 0}
+  m_LocalPosition: {x: 0.65, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8902850384169897841}
@@ -104,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2b1a0650852d472408bcab5ea66fc596, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 52879c68cc2d7934c9310c94e7074aec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -127,17 +127,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad482d6982086a42aa3bcdf8a0294ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitStrenght: 20
+  animator: {fileID: 7440309013352402495}
   bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
+  firePoint: {fileID: 8902850384169897841}
+  hitTrigger: {fileID: 2085181756462975332}
   modules:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  firePoint: {fileID: 8902850384169897841}
-  animator: {fileID: 7440309013352402495}
-  hitTrigger: {fileID: 2085181756462975332}
+  hitStrenght: 20
   bulletSpeed: 20
   spread: 5
 --- !u!95 &7440309013352402495
