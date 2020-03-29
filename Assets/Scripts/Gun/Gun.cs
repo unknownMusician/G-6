@@ -91,7 +91,7 @@ public class Gun : Weapon {
         this.bulletProps.Magnetting = newProps.Magnetting;
     }
 
-    public void Attack() {
+    public override void Attack() {
         if (secondState) {
             Hit();
         } else {
@@ -99,7 +99,7 @@ public class Gun : Weapon {
         }
     }
 
-    public void ChangeState() {
+    public override void ChangeState() {
         if (secondState) {
             secondState = false;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);

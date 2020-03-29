@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField]
-    private Gun Gun;
+    private Inventory inv;
     [SerializeField]
     private RoomSpawner rSp;
     private Rigidbody2D rb;
@@ -28,6 +28,28 @@ public class PlayerMovementScript : MonoBehaviour
         SpeedX = Input.GetAxis("Horizontal") * HorizontalSpeed;
         tryJump = Input.GetButton("Jump");
 
+        { // start
+            if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+                inv.ChooseNext();
+            } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+                inv.ChoosePrev();
+            }
+            if (Input.GetButtonDown("WeaponSlot1")) {
+                inv.Choose(0);
+            } else if (Input.GetButtonDown("WeaponSlot2")) {
+                inv.Choose(1);
+            } else if (Input.GetButtonDown("WeaponSlot3")) {
+                inv.Choose(2);
+            } else if (Input.GetButtonDown("WeaponSlot4")) {
+                inv.Choose(3);
+            }
+            // end
+        } // changing weapon
+        {
+            if (Input.GetButtonDown("Fire2")) {
+                inv.ChangeState();
+            }
+        } // changing weapon state
     }
 
     void FixedUpdate()
@@ -42,7 +64,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         if (Input.GetButton("Fire1"))
-            Gun.Shoot();
+            inv.Attack();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
