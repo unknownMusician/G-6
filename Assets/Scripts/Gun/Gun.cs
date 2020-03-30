@@ -7,20 +7,20 @@ public class Gun : Weapon {
     [SerializeField]
     private Animator animator;
     [SerializeField]
-    private GameObject bullet;
-    [SerializeField]
-    private Transform firePoint;
-    [SerializeField]
-    private Collider2D hitTrigger;
+    private Collider2D weaponCollider;
     [SerializeField]
     private List<GunModule> modules;
+    [SerializeField]
+    private GameObject bullet = null;
+    [SerializeField]
+    private Transform firePoint = null;
 
     [SerializeField]
     private float hitStrenght = 10;
     [SerializeField]
-    private float bulletSpeed;
+    private float bulletSpeed = 20;
     [SerializeField]
-    private float spread;
+    private float spread = 5;
 
     private GunProps gunProps;
     private BulletProps bulletProps;
@@ -29,19 +29,6 @@ public class Gun : Weapon {
 
     private bool canShoot = true;
     private bool secondState = false;
-
-    private void SetTimer(float time) {
-        // Create a timer with a two second interval.
-        timer = new System.Timers.Timer(time * 1000);
-        // Hook up the Elapsed event for the timer. 
-        timer.Elapsed += SetCanShoot;
-        timer.AutoReset = false;
-        timer.Enabled = true;
-    }
-
-    private void SetCanShoot(object sender, ElapsedEventArgs e) {
-        canShoot = true;
-    }
 
     private void Start() {
         this.gunProps = new GunProps();
@@ -72,14 +59,47 @@ public class Gun : Weapon {
             }
         }
     }
+    public override void Attack() {
+        if (secondState) {
+            Hit();
+        } else {
+            Shoot();
+        }
+    }
+    public override void ChangeState() {
+        if (secondState) {
+            secondState = false;
+            this.transform.rotation = Quaternion.Euler(0, 0, 0);
+            animator.SetBool("secondState", false);
+            weaponCollider.enabled = false;
 
+        } else {
+            secondState = true;
+            this.transform.rotation = Quaternion.Euler(0, 0, -90);
+            animator.SetBool("secondState", true);
+            weaponCollider.enabled = true;
+        }
+    }
+    public override Collider2D GetWeaponCollider() {
+        return weaponCollider;
+    }
+    private void SetTimer(float time) {
+        // Create a timer with a two second interval.
+        timer = new System.Timers.Timer(time * 1000);
+        // Hook up the Elapsed event for the timer. 
+        timer.Elapsed += SetCanShoot;
+        timer.AutoReset = false;
+        timer.Enabled = true;
+    }
+    private void SetCanShoot(object sender, ElapsedEventArgs e) {
+        canShoot = true;
+    }
     private void InstallMod(GunModuleGen modGen) {
         GunProps newProps = modGen.GetProps();
         this.gunProps.FireRate *= newProps.FireRate;
         this.gunProps.ShotBltAmt += newProps.ShotBltAmt;
         this.gunProps.AtkArea *= newProps.AtkArea;
     }
-
     private void InstallMod(GunModuleFly modFly) {
         BulletProps newProps = modFly.GetProps();
         this.bulletProps.Homing = this.bulletProps.Homing || newProps.Homing;
@@ -90,34 +110,9 @@ public class Gun : Weapon {
         this.bulletProps.Enemy = newProps.Enemy;
         this.bulletProps.Magnetting = newProps.Magnetting;
     }
-
-    public override void Attack() {
-        if (secondState) {
-            Hit();
-        } else {
-            Shoot();
-        }
-    }
-
-    public override void ChangeState() {
-        if (secondState) {
-            secondState = false;
-            this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            animator.SetBool("secondState", false);
-            hitTrigger.enabled = false;
-
-        } else {
-            secondState = true;
-            this.transform.rotation = Quaternion.Euler(0, 0, -90);
-            animator.SetBool("secondState", true);
-            hitTrigger.enabled = true;
-        }
-    }
-
     public void Hit() {
         animator.SetTrigger("hit");
     }
-
     public void Shoot() {
 
         if (canShoot) {
@@ -134,7 +129,6 @@ public class Gun : Weapon {
             SetTimer(1 / gunProps.FireRate);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D collision) {
         Rigidbody2D crb = collision.gameObject.GetComponent<Rigidbody2D>();
         if (crb != null) {
