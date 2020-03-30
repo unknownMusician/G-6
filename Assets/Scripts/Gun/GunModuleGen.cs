@@ -6,11 +6,11 @@ public class GunModuleGen : GunModule {
     private GunProps props;
 
     [SerializeField]
-    private float fireRateMult;
+    private float fireRateMult = 1;
     [SerializeField]
-    private int shotBltAmtAdd;
+    private int shotBltAmtAdd = 0;
     [SerializeField]
-    private float atkAreaMult;
+    private float atkAreaMult = 1;
 
     private void Start() {
         props = new GunProps(fireRateMult, shotBltAmtAdd, atkAreaMult);

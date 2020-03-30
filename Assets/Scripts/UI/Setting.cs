@@ -17,7 +17,7 @@ public class Setting : MonoBehaviour
     }
     public void Exit()
     {
-        SceneManager.UnloadScene("Setting");
+        SceneManager.UnloadSceneAsync("Setting");
     }
     public void Awake()
     {

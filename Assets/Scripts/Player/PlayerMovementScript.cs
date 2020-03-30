@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField]
-    private Inventory inv;
+    private Inventory inv = null;
     [SerializeField]
-    private RoomSpawner rSp;
+    private RoomSpawner rSp = null;
     private Rigidbody2D rb;
     private float SpeedX;
     private bool isGrounded = false;
@@ -65,6 +65,8 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (Input.GetButton("Fire1"))
             inv.Attack();
+        if (Input.GetButton("Throw"))
+            inv.Throw();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

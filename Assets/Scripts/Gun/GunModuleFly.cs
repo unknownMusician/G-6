@@ -6,19 +6,19 @@ public class GunModuleFly : GunModule {
     private BulletProps props;
 
     [SerializeField]
-    private bool ricochet;
+    private bool ricochet = false;
     [SerializeField]
-    private bool piercing;
+    private bool piercing = false;
     [SerializeField]
-    private bool homing;
+    private bool homing = false;
     [SerializeField]
-    private bool teleporting;
+    private bool teleporting = false;
     [SerializeField]
-    private bool magnet;
+    private bool magnet = false;
     [SerializeField]
-    private LayerMask enemy;
+    private LayerMask enemy = 0;
     [SerializeField]
-    private LayerMask magnetting;
+    private LayerMask magnetting = 0;
 
     public void Start() {
         props = new BulletProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
