@@ -55,4 +55,21 @@ public class PlaceForRoom {
         return doors;
     
     }
+
+    public bool anyEqualToOne () {
+
+        short[] doors = new short[4];
+        doors[0] = topDoor;
+        doors[1] = rightDoor;
+        doors[2] = bottomDoor;
+        doors[3] = leftDoor;
+
+        foreach (short door in doors) {
+            if (door == 1) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 }
