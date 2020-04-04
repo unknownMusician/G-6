@@ -7,7 +7,6 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField]
     private Inventory inv = null;
     [SerializeField]
-    private RoomSpawner rSp = null;
     private Rigidbody2D rb;
     private float SpeedX;
     private bool isGrounded = false;
@@ -17,10 +16,9 @@ public class PlayerMovementScript : MonoBehaviour
     public float HorizontalSpeed;
     public float VerticalImpulce;
 
-    void Start()
+    void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
-        if(rSp != null) this.transform.position = rSp.getCurrentLocationAll();
     }
 
     void Update()
