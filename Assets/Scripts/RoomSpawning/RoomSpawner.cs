@@ -89,6 +89,8 @@ public class RoomSpawner : MonoBehaviour {
 
         GenerateDungeon();
 
+        FixDungeon();
+
         SpawnDungeonMap();
 
         SpawnDungeon();
@@ -165,7 +167,7 @@ public class RoomSpawner : MonoBehaviour {
 
                 // Filling
                 {
-                    if (point != null) {
+                    if ((point != null) && (point.anyEqualToOne() == true)) {
                         short[] doors = point.getDoorParams();
                         if (doors[0] == 0) {
                             float rd = Random.value;
@@ -197,6 +199,63 @@ public class RoomSpawner : MonoBehaviour {
                                 point.setLeft(-1);
                             } else if (rd > 0.5f) {
                                 point.setLeft(1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void FixDungeon() {
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+                PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+
+                if ((point.anyEqualToOne() == false)) {
+
+                    if (i - 1 >= 0) {
+                        if (roomDirectionsDataMatrix[i - 1, j] != null) {
+                            if (roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2] == 1) {
+                                point.setTop(1);
+                                point.setRight(-1);
+                                point.setBottom(-1);
+                                point.setLeft(-1);
+                            }
+                        }
+                    }
+
+                    if (j - 1 >= 0) {
+                        if (roomDirectionsDataMatrix[i, j - 1] != null) {
+                            if (roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1] == 1) {
+                                point.setLeft(1);
+                                point.setTop(-1);
+                                point.setRight(-1);
+                                point.setBottom(-1);
+                            }
+                        }
+                    }
+
+                    if (i + 1 < rows) {
+                        if (roomDirectionsDataMatrix[i + 1, j] != null) {
+                            if (roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0] == 1) {
+                                point.setBottom(1);
+                                point.setLeft(-1);
+                                point.setTop(-1);
+                                point.setRight(-1);
+                            }
+                        }
+                    }
+
+                    if (j + 1 < columns) {
+                        if (roomDirectionsDataMatrix[i, j + 1] != null) {
+                            if (roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3] == 1) {
+                                point.setRight(1);
+                                point.setBottom(-1);
+                                point.setLeft(-1);
+                                point.setTop(-1);
                             }
                         }
                     }
