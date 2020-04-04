@@ -16,6 +16,11 @@ public class PlayerMovementScript : MonoBehaviour
     public float HorizontalSpeed;
     public float VerticalImpulce;
 
+    void Start() 
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     void Update()
     {
         SpeedX = Input.GetAxis("Horizontal") * HorizontalSpeed;
