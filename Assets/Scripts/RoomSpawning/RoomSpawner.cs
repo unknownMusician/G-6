@@ -11,6 +11,7 @@ public class RoomSpawner : MonoBehaviour {
     public int columns;
     public int currentRow;
     public int currentColumn;
+    public PlayerMovementScript player;
 
     public List<GameObject> mapElementsPrefabs;
     private Dictionary<string, GameObject> mapElementsPrefabsDictionary;
@@ -38,6 +39,9 @@ public class RoomSpawner : MonoBehaviour {
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
+
+        Transform playerTransform = player.transform;
+        playerTransform.position = getCurrentLocationAll();
 
         currentColumn = columns / 2;
         currentRow = rows / 2;
