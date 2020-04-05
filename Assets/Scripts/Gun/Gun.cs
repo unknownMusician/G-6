@@ -5,6 +5,8 @@ using System.Timers;
 
 public class Gun : Weapon {
     [SerializeField]
+    private SpriteRenderer spriteRenderer;
+    [SerializeField]
     private Animator animator;
     [SerializeField]
     private Collider2D weaponCollider;
@@ -22,6 +24,10 @@ public class Gun : Weapon {
     [SerializeField]
     private float spread = 5;
 
+    [SerializeField]
+    private List<Sprite> spriteArray;
+    private Dictionary<int, Sprite> sprites;
+
     private GunProps gunProps;
     private BulletProps bulletProps;
 
@@ -31,6 +37,73 @@ public class Gun : Weapon {
     private bool secondState = false;
 
     private void Start() {
+        sprites = new Dictionary<int, Sprite>();
+        GetModulesInChildren();
+        InstallMods();
+        FillDictionary();
+        SetSprite();
+    }
+    private void SetSprite() {
+        int finNum = 0;
+        foreach (GunModule mod in modules) {
+            if (mod is GunModuleGenMain) {
+                finNum += ((GunModuleGenMain)mod).id;
+            }
+        }
+        string key = finNum.ToString();
+        for(int i = 0; i < 4; i++) {
+            if (key[i] == 3) {
+                key = key.Substring(0, i) + "2" + key.Substring(i + 1);
+            }
+        }
+        this.spriteRenderer.sprite = sprites[int.Parse(key)];
+    }
+    private void InstallMods() {
+        foreach (GunModule mod in modules) {
+            if (mod != null) {
+                if (mod is GunModuleGen) {
+                    GunModuleGen modGen = (GunModuleGen)mod;
+                    InstallMod(modGen);
+                } else if (mod is GunModuleFly) {
+                    GunModuleFly modFly = (GunModuleFly)mod;
+                    InstallMod(modFly);
+                }
+            }
+        }
+    }
+    private void FillDictionary() {
+        sprites.Add(1111, spriteArray[0]);
+        sprites.Add(0, spriteArray[1]);
+        sprites.Add(1000, spriteArray[2]);
+        sprites.Add(100, spriteArray[3]);
+        sprites.Add(10, spriteArray[4]);
+        sprites.Add(1, spriteArray[5]);
+        sprites.Add(1110, spriteArray[6]);
+        sprites.Add(2000, spriteArray[7]);
+        sprites.Add(1100, spriteArray[8]);
+        sprites.Add(1010, spriteArray[9]);
+        sprites.Add(1001, spriteArray[10]);
+        sprites.Add(4000, spriteArray[11]);
+        sprites.Add(1101, spriteArray[12]);
+        sprites.Add(2200, spriteArray[13]);
+        sprites.Add(200, spriteArray[14]);
+        sprites.Add(0110, spriteArray[15]);
+        sprites.Add(0101, spriteArray[16]);
+        sprites.Add(400, spriteArray[17]);
+        sprites.Add(1011, spriteArray[18]);
+        sprites.Add(2020, spriteArray[19]);
+        sprites.Add(220, spriteArray[20]);
+        sprites.Add(20, spriteArray[21]);
+        sprites.Add(11, spriteArray[22]);
+        sprites.Add(40, spriteArray[23]);
+        sprites.Add(111, spriteArray[24]);
+        sprites.Add(2002, spriteArray[25]);
+        sprites.Add(202, spriteArray[26]);
+        sprites.Add(22, spriteArray[27]);
+        sprites.Add(2, spriteArray[28]);
+        sprites.Add(4, spriteArray[29]);
+    }
+    private void GetModulesInChildren() {
         this.gunProps = new GunProps();
         this.bulletProps = new BulletProps();
 
@@ -43,18 +116,6 @@ public class Gun : Weapon {
                         modules[j] = mod;
                         break;
                     }
-                }
-            }
-        }
-
-        foreach (GunModule mod in modules) {
-            if (mod != null) {
-                if (mod is GunModuleGen) {
-                    GunModuleGen modGen = (GunModuleGen)mod;
-                    InstallMod(modGen);
-                } else if (mod is GunModuleFly) {
-                    GunModuleFly modFly = (GunModuleFly)mod;
-                    InstallMod(modFly);
                 }
             }
         }
