@@ -40,12 +40,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8902850384399324636}
   - component: {fileID: 8902850384399324637}
-  - component: {fileID: 1699405586130577470}
+  - component: {fileID: 6413423544453468081}
   - component: {fileID: 2085181756462975332}
-  - component: {fileID: 8902850384399324638}
+  - component: {fileID: 583393509581014047}
   - component: {fileID: 7440309013352402495}
   m_Layer: 11
-  m_Name: Rifle
+  m_Name: Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902850384399324635}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0, z: 0}
+  m_LocalPosition: {x: 0.2, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8902850384169897841}
@@ -105,7 +105,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 52879c68cc2d7934c9310c94e7074aec, type: 3}
+  m_Sprite: {fileID: 877203826973121648, guid: 188c8e9d33bb963408e606580e563db2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +116,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1699405586130577470
+--- !u!50 &6413423544453468081
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.2, y: 3.2}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -163,7 +163,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4, y: 0.1}
   m_EdgeRadius: 0
---- !u!114 &8902850384399324638
+--- !u!114 &583393509581014047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,22 +172,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8902850384399324635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bad482d6982086a42aa3bcdf8a0294ea, type: 3}
+  m_Script: {fileID: 11500000, guid: a37e753db7a2bfc4eb6f685744a5d8fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 7440309013352402495}
   weaponCollider: {fileID: 2085181756462975332}
-  modules:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
-  firePoint: {fileID: 8902850384169897841}
-  hitStrenght: 20
-  bulletSpeed: 20
-  spread: 5
+  modules: []
 --- !u!95 &7440309013352402495
 Animator:
   serializedVersion: 3
@@ -196,7 +186,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902850384399324635}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 003eaa58276c57841b2349cdf48cf0d3, type: 2}
   m_CullingMode: 0

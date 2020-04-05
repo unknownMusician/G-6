@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4333165458613876737}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.1, y: -0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4333165457964277922}
@@ -140,7 +140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4333165458918672411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.25, y: 6.76, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4333165458613876750}
@@ -231,8 +231,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: 0, y: -0.3}
+  m_Size: {x: 1, y: 1.8}
   m_Direction: 0
 --- !u!114 &4333165458918672390
 MonoBehaviour:
@@ -250,45 +250,6 @@ MonoBehaviour:
   rSp: {fileID: 0}
   HorizontalSpeed: 10
   VerticalImpulce: 25
---- !u!1001 &1641245717921364264
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 4333165457964277922}
-    m_Modifications:
-    - target: {fileID: 3790771777802938353, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_Name
-      value: GunModuleFly
-      objectReference: {fileID: 0}
-    - target: {fileID: 3790771777802938353, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8609072780082926338, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8609072780082926338, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8609072780082926338, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8609072780082926338, guid: 051d0866ce640114b8e2cb2176a6e5e9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 051d0866ce640114b8e2cb2176a6e5e9, type: 3}
 --- !u!1001 &4523294008543891877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -328,40 +289,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
---- !u!1001 &4699680487940298542
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 4333165457964277922}
-    m_Modifications:
-    - target: {fileID: 1270157396700736813, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270157396700736813, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270157396700736813, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270157396700736813, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6242605618657418628, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
-        type: 3}
-      propertyPath: m_Name
-      value: GunModuleEffect
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 876810dcae288bd41bf9b0ad3c48c4d9, type: 3}
 --- !u!1001 &5165409179378546046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372,7 +299,7 @@ PrefabInstance:
     - target: {fileID: 8902850384399324635, guid: 4bbf9b36254acb84eab72333fa27ef42,
         type: 3}
       propertyPath: m_Name
-      value: Weapon
+      value: Pistol
       objectReference: {fileID: 0}
     - target: {fileID: 8902850384399324636, guid: 4bbf9b36254acb84eab72333fa27ef42,
         type: 3}
@@ -412,7 +339,7 @@ PrefabInstance:
     - target: {fileID: 8902850384399324635, guid: 8010f87871741d14c8c10208f6070470,
         type: 3}
       propertyPath: m_Name
-      value: Sword
+      value: Knife
       objectReference: {fileID: 0}
     - target: {fileID: 8902850384399324636, guid: 8010f87871741d14c8c10208f6070470,
         type: 3}

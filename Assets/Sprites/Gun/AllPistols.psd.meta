@@ -1,7 +1,367 @@
 fileFormatVersion: 2
 guid: 477075e3f149aa6479b9a08bff14ecf1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3855408293937268237
+    second: AllPistols_0
+  - first:
+      213: -6499825744227488493
+    second: AllPistols_1
+  - first:
+      213: 6742151447185963850
+    second: AllPistols_2
+  - first:
+      213: 8777350558569662691
+    second: AllPistols_3
+  - first:
+      213: 4359585351434064125
+    second: AllPistols_4
+  - first:
+      213: -4458403291104814803
+    second: AllPistols_5
+  - first:
+      213: -6894558781093783191
+    second: AllPistols_6
+  - first:
+      213: -3956978945675557862
+    second: AllPistols_7
+  - first:
+      213: -2067915134871124750
+    second: AllPistols_8
+  - first:
+      213: -8502934901175747755
+    second: AllPistols_9
+  - first:
+      213: 4390473123523231630
+    second: AllPistols_10
+  - first:
+      213: -6321991886935868749
+    second: AllPistols_11
+  - first:
+      213: -7660814588872311468
+    second: AllPistols_12
+  - first:
+      213: 768074395011589118
+    second: AllPistols_13
+  - first:
+      213: 6141114217040231267
+    second: AllPistols_14
+  - first:
+      213: -2839019426663398257
+    second: AllPistols_15
+  - first:
+      213: 1295713661667716550
+    second: AllPistols_16
+  - first:
+      213: -4012586835707377279
+    second: AllPistols_17
+  - first:
+      213: 8630760427371839061
+    second: AllPistols_18
+  - first:
+      213: -4704650818263103118
+    second: AllPistols_19
+  - first:
+      213: -6063246947493407352
+    second: AllPistols_20
+  - first:
+      213: -2597486793622236449
+    second: AllPistols_21
+  - first:
+      213: 216492086641030513
+    second: AllPistols_22
+  - first:
+      213: 8453875372690291023
+    second: AllPistols_23
+  - first:
+      213: 5757468471989044705
+    second: AllPistols_24
+  - first:
+      213: 3446111581762456653
+    second: AllPistols_25
+  - first:
+      213: -5513841225310771744
+    second: AllPistols_26
+  - first:
+      213: -6463245804611135255
+    second: AllPistols_27
+  - first:
+      213: 1727297847131502816
+    second: AllPistols_28
+  - first:
+      213: -435988265280305459
+    second: AllPistols_29
+  - first:
+      213: 7628253882923372552
+    second: AllPistols_30
+  - first:
+      213: 465424912503058741
+    second: AllPistols_31
+  - first:
+      213: -7659192144156530089
+    second: AllPistols_32
+  - first:
+      213: -4099409850925313932
+    second: AllPistols_33
+  - first:
+      213: -9131002445885205441
+    second: AllPistols_34
+  - first:
+      213: -2293128630288374971
+    second: AllPistols_35
+  - first:
+      213: -2576012003390314167
+    second: AllPistols_36
+  - first:
+      213: 438265591163070514
+    second: AllPistols_37
+  - first:
+      213: -7445825173182418220
+    second: AllPistols_38
+  - first:
+      213: -1186550598709184300
+    second: AllPistols_39
+  - first:
+      213: -3567445179888584868
+    second: AllPistols_40
+  - first:
+      213: -617632952814715404
+    second: AllPistols_41
+  - first:
+      213: -5136629556456893797
+    second: AllPistols_42
+  - first:
+      213: 3242094382857582626
+    second: AllPistols_43
+  - first:
+      213: -4979068365649986005
+    second: AllPistols_44
+  - first:
+      213: 4650630925713027975
+    second: AllPistols_45
+  - first:
+      213: 6033116328636457665
+    second: AllPistols_46
+  - first:
+      213: -970566646391922888
+    second: AllPistols_47
+  - first:
+      213: 5341689660422447119
+    second: AllPistols_48
+  - first:
+      213: -2425976653606231864
+    second: AllPistols_49
+  - first:
+      213: -1223160834614009379
+    second: AllPistols_50
+  - first:
+      213: -7978952648000501514
+    second: AllPistols_51
+  - first:
+      213: 6674178724103869630
+    second: AllPistols_52
+  - first:
+      213: -1731939903386284694
+    second: AllPistols_53
+  - first:
+      213: -3851941891169698792
+    second: AllPistols_54
+  - first:
+      213: -2995594497217478948
+    second: AllPistols_55
+  - first:
+      213: 4767919396454675718
+    second: AllPistols_56
+  - first:
+      213: 5573070291995429337
+    second: AllPistols_57
+  - first:
+      213: -4016788351948411408
+    second: AllPistols_58
+  - first:
+      213: -4841183937064166017
+    second: AllPistols_59
+  - first:
+      213: 5271952342026247540
+    second: AllPistols_60
+  - first:
+      213: -6702442168640931845
+    second: AllPistols_61
+  - first:
+      213: 5734355590524058822
+    second: AllPistols_62
+  - first:
+      213: -5871633000909199940
+    second: AllPistols_63
+  - first:
+      213: 7194400712848466559
+    second: AllPistols_64
+  - first:
+      213: 2470480656590748198
+    second: AllPistols_65
+  - first:
+      213: -5101619973386350277
+    second: AllPistols_66
+  - first:
+      213: -1720139154020429414
+    second: AllPistols_67
+  - first:
+      213: 2780542300621810683
+    second: AllPistols_68
+  - first:
+      213: -1347588044172817717
+    second: AllPistols_69
+  - first:
+      213: -6781383731469898012
+    second: AllPistols_70
+  - first:
+      213: 6992593258117421584
+    second: AllPistols_71
+  - first:
+      213: 2642667903433645497
+    second: AllPistols_72
+  - first:
+      213: 9058532304250546871
+    second: AllPistols_73
+  - first:
+      213: -8499675617105274173
+    second: AllPistols_74
+  - first:
+      213: -7374508915978761632
+    second: AllPistols_75
+  - first:
+      213: 5937750259011817290
+    second: AllPistols_76
+  - first:
+      213: 9063449106037807043
+    second: AllPistols_77
+  - first:
+      213: -3532938262697569453
+    second: AllPistols_78
+  - first:
+      213: 1530238293750236853
+    second: AllPistols_79
+  - first:
+      213: -2346351592361139264
+    second: AllPistols_80
+  - first:
+      213: 2624656210664224702
+    second: AllPistols_81
+  - first:
+      213: 836735600991728772
+    second: AllPistols_82
+  - first:
+      213: 6695711679193534176
+    second: AllPistols_83
+  - first:
+      213: -3898503941496158088
+    second: AllPistols_84
+  - first:
+      213: -7424539615780190563
+    second: AllPistols_85
+  - first:
+      213: 4042462000646432072
+    second: AllPistols_86
+  - first:
+      213: -4947100338069708453
+    second: AllPistols_87
+  - first:
+      213: 4364649085404000829
+    second: AllPistols_88
+  - first:
+      213: 3403994380662201252
+    second: AllPistols_89
+  - first:
+      213: -6815107575110433420
+    second: AllPistols_90
+  - first:
+      213: 6685687462951755498
+    second: AllPistols_91
+  - first:
+      213: -7444498546611930945
+    second: AllPistols_92
+  - first:
+      213: -6477346700477631167
+    second: AllPistols_93
+  - first:
+      213: -3843616390220525784
+    second: AllPistols_94
+  - first:
+      213: 3000763775216887535
+    second: AllPistols_95
+  - first:
+      213: 669930713013942051
+    second: AllPistols_96
+  - first:
+      213: -7299666443695598602
+    second: AllPistols_97
+  - first:
+      213: -5679058505186124095
+    second: AllPistols_98
+  - first:
+      213: 2069939227625303816
+    second: AllPistols_99
+  - first:
+      213: -1818276330521649896
+    second: AllPistols_100
+  - first:
+      213: -8538420400289475665
+    second: AllPistols_101
+  - first:
+      213: 9057537438489167662
+    second: AllPistols_102
+  - first:
+      213: 7552048186501986375
+    second: AllPistols_103
+  - first:
+      213: -227913748454785407
+    second: AllPistols_104
+  - first:
+      213: -6959502991235050207
+    second: AllPistols_105
+  - first:
+      213: 7164650858118448450
+    second: AllPistols_106
+  - first:
+      213: 6281876739192944240
+    second: AllPistols_107
+  - first:
+      213: 7664943138145635473
+    second: AllPistols_108
+  - first:
+      213: 4256325241730520658
+    second: AllPistols_109
+  - first:
+      213: 5269881971111252794
+    second: AllPistols_110
+  - first:
+      213: 4207810617658767404
+    second: AllPistols_111
+  - first:
+      213: 3892582080280109768
+    second: AllPistols_112
+  - first:
+      213: 1491262256712898753
+    second: AllPistols_113
+  - first:
+      213: 3037327682955237541
+    second: AllPistols_114
+  - first:
+      213: 7053023780588374042
+    second: AllPistols_115
+  - first:
+      213: 640291812385292686
+    second: AllPistols_116
+  - first:
+      213: -5404274074074091866
+    second: AllPistols_117
+  - first:
+      213: 6382236408474142546
+    second: AllPistols_118
+  - first:
+      213: 1229484751368193855
+    second: AllPistols_119
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -31,7 +391,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -40,12 +400,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 10
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -63,7 +423,19 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -72,7 +444,637 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: AllPistols_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d06c930aa69218530800000000000000
+      internalID: 3855408293937268237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_1
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31da1655ceafbc5a0800000000000000
+      internalID: -6499825744227488493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4bb76f050fe09d50800000000000000
+      internalID: 6742151447185963850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_3
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e80f9024d96fc970800000000000000
+      internalID: 8777350558569662691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_4
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df0593077cb508c30800000000000000
+      internalID: 4359585351434064125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_5
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d29d34014d19022c0800000000000000
+      internalID: -4458403291104814803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 969dad9415b9150a0800000000000000
+      internalID: -6894558781093783191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a140f472d9cf519c0800000000000000
+      internalID: -3956978945675557862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_8
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f44a50242a4d43e0800000000000000
+      internalID: -2067915134871124750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_9
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55bf52302c18ff980800000000000000
+      internalID: -8502934901175747755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_10
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8f708b4b081eec30800000000000000
+      internalID: 4390473123523231630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_11
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ba394acfd5c348a0800000000000000
+      internalID: -6321991886935868749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45db22c58b15fa590800000000000000
+      internalID: -7660814588872311468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_13
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef32db3c79fb8aa00800000000000000
+      internalID: 768074395011589118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_14
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36bb8c7e7de993550800000000000000
+      internalID: 6141114217040231267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_15
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f848b4b8fd6c998d0800000000000000
+      internalID: -2839019426663398257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_16
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cd2356d5bc4bf110800000000000000
+      internalID: 1295713661667716550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_17
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 40
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 189c043588d6058c0800000000000000
+      internalID: -4012586835707377279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55e3ff681ee96c770800000000000000
+      internalID: 8630760427371839061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_19
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2794d21d109b5beb0800000000000000
+      internalID: -4704650818263103118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_20
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8851f2596050bdba0800000000000000
+      internalID: -6063246947493407352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_21
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd2d065f58fd3fbd0800000000000000
+      internalID: -2597486793622236449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_22
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 175fbe0e762210300800000000000000
+      internalID: 216492086641030513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_23
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 20
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f49b0a46cd2325570800000000000000
+      internalID: 8453875372690291023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e50b662213a6ef40800000000000000
+      internalID: 5757468471989044705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_25
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c8f4fa93c03df20800000000000000
+      internalID: 3446111581762456653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_26
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e562718e96ea73b0800000000000000
+      internalID: -5513841225310771744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_27
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e89e183f20fd46a0800000000000000
+      internalID: -6463245804611135255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_28
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e8f1978d3898f710800000000000000
+      internalID: 1727297847131502816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AllPistols_29
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc68ab19bfe03f9f0800000000000000
+      internalID: -435988265280305459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -85,7 +1087,7 @@ TextureImporter:
     secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
+  pSDShowRemoveMatteOption: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
