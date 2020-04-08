@@ -2,8 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CharacterBase : MonoBehaviour
+public abstract class CharacterBase : MonoBehaviour, ICharacterBehaviour
 {
+    #region Fields
+    /// <summary>
+    /// Detects if character can fly
+    /// </summary>
+    [SerializeField]
+    protected bool canFly;
+    /// <summary>
+    /// Multiplier for Jump Impulce Vector
+    /// </summary>
+    [SerializeField]
+    protected float JumpForce;
+    /// <summary>
+    /// Multiplier for SpeedX Impulce Vector
+    /// </summary>
+    [SerializeField]
+    protected float HorizontalSpeed;
+    protected Rigidbody2D rb;
+    #endregion
+
+    #region Properties
     #region MaxValues
     /// <summary>
     /// Max Value of Hit Points
@@ -37,28 +57,23 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Other Public Props
+    /// <summary>
+    /// Shows current level of character
+    /// </summary>
     public short Level { get; protected set; }
+    /// <summary>
+    /// Shows current fraction of character
+    /// </summary>
     public Fractions Fraction { get; protected set; }
+    /// <summary>
+    /// Shows Bounuses, which has a character
+    /// </summary>
     public Bonuses Bonuses { get; protected set; }
     #endregion
-
-    #region Protected Props
-    /// <summary>
-    /// Detects if character can fly
-    /// </summary>
-    [SerializeField]
-    protected bool canFly;
-    /// <summary>
-    /// Multiplier for Jump Impulce Vector
-    /// </summary>
-    [SerializeField]
-    protected float JumpForce;
-    /// <summary>
-    /// Multiplier for SpeedX Impulce Vector
-    /// </summary>
-    [SerializeField]
-    protected float HorizontalSpeed;
     #endregion
 
-    protected Rigidbody2D rb;
+    #region Methods
+    // TODO
+    #endregion
+
 }
