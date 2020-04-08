@@ -43,10 +43,19 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Protected Props
+    /// <summary>
+    /// Detects if character can fly
+    /// </summary>
     [SerializeField]
     protected bool canFly;
+    /// <summary>
+    /// Multiplier for Jump Impulce Vector
+    /// </summary>
     [SerializeField]
     protected float JumpForce;
+    /// <summary>
+    /// Multiplier for SpeedX Impulce Vector
+    /// </summary>
     [SerializeField]
     protected float HorizontalSpeed;
     #endregion
