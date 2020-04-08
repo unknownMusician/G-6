@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    
+    public float
 }
