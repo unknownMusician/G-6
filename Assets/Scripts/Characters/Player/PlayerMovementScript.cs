@@ -25,7 +25,6 @@ public class PlayerMovementScript : MonoBehaviour
     {
         SpeedX = Input.GetAxis("Horizontal") * HorizontalSpeed;
         tryJump = Input.GetButton("Jump");
-
         { // start
             if (Input.GetAxis("Mouse ScrollWheel") > 0) {
                 inv.ChooseNext();
