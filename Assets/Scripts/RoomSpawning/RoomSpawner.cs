@@ -95,8 +95,6 @@ public class RoomSpawner : MonoBehaviour {
 
         GenerateDungeon();
 
-        FixDungeon();
-
         SpawnDungeonMap();
 
         SpawnDungeon();
@@ -213,56 +211,164 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
-    }
 
-    private void FixDungeon() {
+        for (int iterations = 0; iterations < 10; iterations++) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+
+                    if (amountOfRooms >= 0) {
+                        PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+
+                        if (point != null) {
+
+                            if ((point.anyEqualToOne() == true)) {
+
+                                if (i - 1 >= 0) {
+                                    if (roomDirectionsDataMatrix[i - 1, j] != null) {
+                                        if (roomDirectionsDataMatrix[i - 1, j].anyEqualToOne() == false) {
+                                            point.setTop(1);
+                                            roomDirectionsDataMatrix[i - 1, j].setTop(-1);
+                                            roomDirectionsDataMatrix[i - 1, j].setRight(-1);
+                                            roomDirectionsDataMatrix[i - 1, j].setBottom(1);
+                                            roomDirectionsDataMatrix[i - 1, j].setLeft(-1);
+                                            amountOfRooms -= 1;
+                                        }
+                                    } else {
+                                        point.setTop(1);
+                                        roomDirectionsDataMatrix[i - 1, j].setTop(-1);
+                                        roomDirectionsDataMatrix[i - 1, j].setRight(-1);
+                                        roomDirectionsDataMatrix[i - 1, j].setBottom(1);
+                                        roomDirectionsDataMatrix[i - 1, j].setLeft(-1);
+                                        amountOfRooms -= 1;
+                                    }
+                                }
+
+                                if (j + 1 < columns) {
+                                    if (roomDirectionsDataMatrix[i, j + 1] != null) {
+                                        if (roomDirectionsDataMatrix[i, j + 1].anyEqualToOne() == false) {
+                                            point.setRight(1);
+                                            roomDirectionsDataMatrix[i, j + 1].setTop(-1);
+                                            roomDirectionsDataMatrix[i, j + 1].setRight(-1);
+                                            roomDirectionsDataMatrix[i, j + 1].setBottom(-1);
+                                            roomDirectionsDataMatrix[i, j + 1].setLeft(1);
+                                            amountOfRooms -= 1;
+                                        }
+                                    } else {
+                                        point.setRight(1);
+                                        roomDirectionsDataMatrix[i, j + 1].setTop(-1);
+                                        roomDirectionsDataMatrix[i, j + 1].setRight(-1);
+                                        roomDirectionsDataMatrix[i, j + 1].setBottom(-1);
+                                        roomDirectionsDataMatrix[i, j + 1].setLeft(1);
+                                        amountOfRooms -= 1;
+                                    }
+                                }
+
+                                if (i + 1 < rows) {
+                                    if (roomDirectionsDataMatrix[i + 1, j] != null) {
+                                        if (roomDirectionsDataMatrix[i + 1, j].anyEqualToOne() == false) {
+                                            point.setBottom(1);
+                                            roomDirectionsDataMatrix[i + 1, j].setTop(1);
+                                            roomDirectionsDataMatrix[i + 1, j].setRight(-1);
+                                            roomDirectionsDataMatrix[i + 1, j].setBottom(-1);
+                                            roomDirectionsDataMatrix[i + 1, j].setLeft(-1);
+                                            amountOfRooms -= 1;
+
+                                        }
+                                    } else {
+                                        point.setBottom(1);
+                                        roomDirectionsDataMatrix[i + 1, j].setTop(1);
+                                        roomDirectionsDataMatrix[i + 1, j].setRight(-1);
+                                        roomDirectionsDataMatrix[i + 1, j].setBottom(-1);
+                                        roomDirectionsDataMatrix[i + 1, j].setLeft(-1);
+                                        amountOfRooms -= 1;
+
+                                    }
+                                }
+
+                                if (j - 1 >= 0) {
+                                    if (roomDirectionsDataMatrix[i, j - 1] != null) {
+                                        if (roomDirectionsDataMatrix[i, j - 1].anyEqualToOne() == false) {
+                                            point.setLeft(1);
+                                            roomDirectionsDataMatrix[i, j - 1].setTop(-1);
+                                            roomDirectionsDataMatrix[i, j - 1].setRight(1);
+                                            roomDirectionsDataMatrix[i, j - 1].setBottom(-1);
+                                            roomDirectionsDataMatrix[i, j - 1].setLeft(-1);
+                                            amountOfRooms -= 1;
+
+                                        }
+                                    } else {
+                                        point.setLeft(1);
+                                        roomDirectionsDataMatrix[i, j - 1].setTop(-1);
+                                        roomDirectionsDataMatrix[i, j - 1].setRight(1);
+                                        roomDirectionsDataMatrix[i, j - 1].setBottom(-1);
+                                        roomDirectionsDataMatrix[i, j - 1].setLeft(-1);
+                                        amountOfRooms -= 1;
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
-                PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+                if (amountOfRooms < 0) {
+                    PlaceForRoom point = roomDirectionsDataMatrix[i, j];
 
-                if (point != null) {
+                    if (point != null) {
 
-                    if ((point.anyEqualToOne() == true)) {
+                        if ((point.anyEqualToOne() == true)) {
 
-                        if (i - 1 >= 0) {
-                            if (roomDirectionsDataMatrix[i - 1, j] != null) {
-                                if (roomDirectionsDataMatrix[i - 1, j].anyEqualToOne() == false) {
+                            if (i - 1 >= 0) {
+                                if (roomDirectionsDataMatrix[i - 1, j] != null) {
+                                    if (roomDirectionsDataMatrix[i - 1, j].anyEqualToOne() == false) {
+                                        point.setTop(-1);
+                                    } else if (roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2] == -1) {
+                                        point.setTop(-1);
+                                    }
+                                } else {
                                     point.setTop(-1);
                                 }
-                            } else {
-                                point.setTop(-1);
                             }
-                        }
 
-                        if (j + 1 < columns) {
-                            if (roomDirectionsDataMatrix[i, j + 1] != null) {
-                                if (roomDirectionsDataMatrix[i, j + 1].anyEqualToOne() == false) {
+                            if (j + 1 < columns) {
+                                if (roomDirectionsDataMatrix[i, j + 1] != null) {
+                                    if (roomDirectionsDataMatrix[i, j + 1].anyEqualToOne() == false) {
+                                        point.setRight(-1);
+                                    } else if (roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3] == -1) {
+                                        point.setRight(-1);
+                                    }
+                                } else {
                                     point.setRight(-1);
                                 }
-                            } else {
-                                point.setRight(-1);
                             }
-                        }
 
-                        if (i + 1 < rows) {
-                            if (roomDirectionsDataMatrix[i + 1, j] != null) {
-                                if (roomDirectionsDataMatrix[i + 1, j].anyEqualToOne() == false) {
+                            if (i + 1 < rows) {
+                                if (roomDirectionsDataMatrix[i + 1, j] != null) {
+                                    if (roomDirectionsDataMatrix[i + 1, j].anyEqualToOne() == false) {
+                                        point.setBottom(-1);
+                                    } else if (roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0] == -1) {
+                                        point.setBottom(-1);
+                                    }
+                                } else {
                                     point.setBottom(-1);
                                 }
-                            } else {
-                                point.setBottom(-1);
                             }
-                        }
 
-                        if (j - 1 >= 0) {
-                            if (roomDirectionsDataMatrix[i, j - 1] != null) {
-                                if (roomDirectionsDataMatrix[i, j - 1].anyEqualToOne() == false) {
+                            if (j - 1 >= 0) {
+                                if (roomDirectionsDataMatrix[i, j - 1] != null) {
+                                    if (roomDirectionsDataMatrix[i, j - 1].anyEqualToOne() == false) {
+                                        point.setLeft(-1);
+                                    } else if (roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1] == -1) {
+                                        point.setLeft(-1);
+                                    }
+                                } else {
                                     point.setLeft(-1);
                                 }
-                            } else {
-                                point.setLeft(-1);
                             }
                         }
                     }
