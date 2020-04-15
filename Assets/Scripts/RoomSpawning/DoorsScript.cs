@@ -22,10 +22,10 @@ public class DoorsScript : MonoBehaviour {
 
             if (direction == 1) {
 
-                tempMatrix[roomSpawner.currentRow - 1, roomSpawner.currentColumn].SetActive(true);
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn].SetActive(false);
+                tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn].SetActive(true);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform nextRoomIerarchy = tempMatrix[roomSpawner.currentRow - 1, roomSpawner.currentColumn].transform;
+                Transform nextRoomIerarchy = tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn].transform;
                 int amountOfChilds = nextRoomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -35,7 +35,7 @@ public class DoorsScript : MonoBehaviour {
 
                         Transform spawnPoint = tempChild;
                         playerTransform.position = spawnPoint.position;
-                        roomSpawner.currentRow -= 1;
+                        roomSpawner.CurrentRow -= 1;
 
                     }
                 }
@@ -43,10 +43,10 @@ public class DoorsScript : MonoBehaviour {
 
             } else if (direction == 2) {
 
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn + 1].SetActive(true);
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn].SetActive(false);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1].SetActive(true);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn + 1].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1].transform;
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -56,7 +56,7 @@ public class DoorsScript : MonoBehaviour {
 
                         Transform spawnPoint = tempChild;
                         playerTransform.position = spawnPoint.position;
-                        roomSpawner.currentColumn += 1;
+                        roomSpawner.CurrentColumn += 1;
 
                     }
                 }
@@ -64,11 +64,11 @@ public class DoorsScript : MonoBehaviour {
 
             } else if (direction == 3) {
 
-                tempMatrix[roomSpawner.currentRow + 1, roomSpawner.currentColumn].SetActive(true);
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn].SetActive(false);
+                tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].SetActive(true);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.currentRow + 1, roomSpawner.currentColumn].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].transform;
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -78,7 +78,7 @@ public class DoorsScript : MonoBehaviour {
 
                         Transform spawnPoint = tempChild;
                         playerTransform.position = spawnPoint.position;
-                        roomSpawner.currentRow += 1;
+                        roomSpawner.CurrentRow += 1;
 
                     }
                 }
@@ -86,10 +86,10 @@ public class DoorsScript : MonoBehaviour {
 
             } else if (direction == 4) {
 
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn - 1].SetActive(true);
-                tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn].SetActive(false);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1].SetActive(true);
+                tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.currentRow, roomSpawner.currentColumn - 1].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1].transform;
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -99,7 +99,7 @@ public class DoorsScript : MonoBehaviour {
 
                         Transform spawnPoint = tempChild;
                         playerTransform.position = spawnPoint.position;
-                        roomSpawner.currentColumn -= 1;
+                        roomSpawner.CurrentColumn -= 1;
 
                     }
                 }
