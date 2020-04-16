@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunProps {
-    public float FireRate { get; set; }
-    public int ShotBltAmt { get; set; }
-    public float AtkArea { get; set; }
+    public float FireRateMultiplier { get; set; }
+    public int BulletsPerShotAdder { get; set; }
+    public float BulletMassMultiplier { get; set; }
+    public float ShotRangeMultiplier { get; set; }
 
     public GunProps(
-        float fireRate = 1,
-        int shotBltAmt = 1, 
-        float atkArea = 1) {
+        float fireRateMultiplier = 1,
+        int bulletsPerShotAdder = 0, 
+        float bulletMassMultiplier = 1,
+        float shotRangeMultiplier = 1) {
 
-        this.FireRate = fireRate;
-        this.ShotBltAmt = shotBltAmt;
-        this.AtkArea = atkArea;
+        this.FireRateMultiplier = fireRateMultiplier;
+        this.BulletsPerShotAdder = bulletsPerShotAdder;
+        this.BulletMassMultiplier = bulletMassMultiplier;
+        this.ShotRangeMultiplier = shotRangeMultiplier;
     }
 }

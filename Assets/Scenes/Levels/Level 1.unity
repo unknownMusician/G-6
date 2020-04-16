@@ -145,81 +145,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6dc6938cd794547a235561ef3238fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRateMult: 1
-  shotBltAmtAdd: 0
-  atkAreaMult: 1
-  id: 1000
---- !u!1001 &433521114
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1336216074}
-    m_Modifications:
-    - target: {fileID: 2810880178507504479, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_Name
-      value: GunModuleGenAlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 2810880178507504479, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
---- !u!1 &938509365 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2810880178507504479, guid: 5f07736839f308c4fab5c530840c7875,
-    type: 3}
-  m_PrefabInstance: {fileID: 433521114}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &938509367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938509365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e6dc6938cd794547a235561ef3238fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRateMult: 1
-  shotBltAmtAdd: 0
-  atkAreaMult: 1
+  fireRateMultiplier: 1
+  bulletsPerShotAdder: 0
+  bulletMassMultiplier: 1
+  shotRangeMultiplier: 1
   id: 1000
 --- !u!114 &1142997208 stripped
 MonoBehaviour:
@@ -246,6 +175,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1336216074}
     m_Modifications:
+    - target: {fileID: 847786896230299956, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2810880178507504479, guid: 5f07736839f308c4fab5c530840c7875,
         type: 3}
       propertyPath: m_Name
@@ -512,6 +446,16 @@ PrefabInstance:
     - target: {fileID: 2153196863753218393, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2847807284984056052, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: throwStrenght
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2847807284984056052, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: secondsToMaxThrow
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4333165457964277925, guid: 94bd35e81c096a744a6cbb3bfba5695b,

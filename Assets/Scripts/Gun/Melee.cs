@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Melee : Weapon
 {
-    [SerializeField]
-    private Animator animator;
-    [SerializeField]
-    private Collider2D weaponCollider;
-    [SerializeField]
-    private List<GunModule> modules;
 
     public override void Attack() {
-        
-    }
-    public override void ChangeState() {
 
     }
-    public override Collider2D GetWeaponCollider() {
-        return weaponCollider;
+    protected override void SetSprite() {
+
+    }
+    protected override void InstallMods() {
+
+    }
+    protected override void GetModulesFromChildren() {
+
+    }
+    public override void Reload() {
+
     }
 }
