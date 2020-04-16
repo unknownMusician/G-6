@@ -104,6 +104,8 @@ public abstract class Weapon : MonoBehaviour {
     public void DisablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Kinematic; // "disabled" Rigidbody2D
         rigidBody.velocity = Vector2.zero;
+        rigidBody.angularVelocity = 0;
+        this.transform.rotation = Quaternion.identity;
         weaponCollider.enabled = false; // disabled Collider2D
     }
     private void Drop() {
@@ -120,7 +122,7 @@ public abstract class Weapon : MonoBehaviour {
         rigidBody.velocity += direction; // "throwed" the weapon
         rigidBody.angularVelocity = -direction.magnitude * 30;
     }
-    protected void OnTriggerEnter2D(Collider2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         Rigidbody2D crb = collision.gameObject.GetComponent<Rigidbody2D>();
         if (crb != null) {
             Vector2 dist = collision.transform.position - this.transform.position;

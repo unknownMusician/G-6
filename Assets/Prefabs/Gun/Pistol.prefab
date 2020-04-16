@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8902850384169897841}
   m_Layer: 0
-  m_Name: FirePoint
+  m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.05, y: -0.05}
@@ -187,13 +187,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
-  firePoint: {fileID: 8902850384169897841}
-  hitStrenght: 20
-  bulletSpeed: 20
-  spread: 5
-  clipSize: 9
-  actualStock: 30
   spriteArray:
   - {fileID: 3855408293937268237, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
   - {fileID: -6499825744227488493, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
@@ -225,6 +218,14 @@ MonoBehaviour:
   - {fileID: -6463245804611135255, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
   - {fileID: 1727297847131502816, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
   - {fileID: -435988265280305459, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
+  hitStrenght: 20
+  bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
+  firePoint: {fileID: 8902850384169897841}
+  bulletSpeed: 20
+  spread: 5
+  clipSize: 9
+  actualStock: 30
+  actualBullets: 5
 --- !u!95 &7440309013352402495
 Animator:
   serializedVersion: 3

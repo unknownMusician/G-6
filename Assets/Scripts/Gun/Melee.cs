@@ -20,4 +20,7 @@ public class Melee : Weapon
     public override void Reload() {
 
     }
+    private void OnTriggerEnter2D(Collider2D collision) {
+        // collision.gameObject.GetComponent<Player>().DMG();
+    }
 }
