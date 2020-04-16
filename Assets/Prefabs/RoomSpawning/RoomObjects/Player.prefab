@@ -140,10 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2702678474409590912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5504d31e9c4bfb7468d21f9ee761f23e, type: 3}
+  m_Script: {fileID: 11500000, guid: d64fee10a9421db48b50b05be4aa5d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 2702678474409590914}
-  playerTransform: {fileID: 2702678474409590925}
-  roomSpawner: {fileID: 5158607535275016207, guid: dfeaa1371b61c4849a4d5d5c7c162348,
-    type: 3}
+  inv: {fileID: 0}
+  rb: {fileID: 0}
+  HorizontalSpeed: 0
+  VerticalImpulce: 0

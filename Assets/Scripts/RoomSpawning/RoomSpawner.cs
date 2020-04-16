@@ -7,11 +7,16 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[,] roomsMatrix;
     public GameObject[,] miniMapMatrix;
 
+    [Range(0, 100)]
+    public int amountOfRooms;
     public int rows;
     public int columns;
-    public int currentRow;
-    public int currentColumn;
+    private int currentRow;
+    private int currentColumn;
     public PlayerMovementScript player;
+
+    public int CurrentColumn {get; set;}
+    public int CurrentRow { get; set; }
 
     public List<GameObject> mapElementsPrefabs;
     private Dictionary<string, GameObject> mapElementsPrefabsDictionary;
@@ -48,6 +53,7 @@ public class RoomSpawner : MonoBehaviour {
 
         PlaceForRoom baseRoom = new PlaceForRoom(1, 1, 1, 1);
         roomDirectionsDataMatrix[rows / 2, columns / 2] = baseRoom;
+        amountOfRooms -= 1;
 
         mapElementsPrefabsDictionary = new Dictionary<string, GameObject>();
         // Dictionary things
@@ -93,8 +99,6 @@ public class RoomSpawner : MonoBehaviour {
 
         GenerateDungeon();
 
-        FixDungeon();
-
         SpawnDungeonMap();
 
         SpawnDungeon();
@@ -110,156 +114,238 @@ public class RoomSpawner : MonoBehaviour {
 
                 PlaceForRoom point = roomDirectionsDataMatrix[i, j];
 
-                // Mapping
-                {
+                if (amountOfRooms > 0) {
+                    // Mapping
+                    {
+                        if ((i - 1 >= 0) && (roomDirectionsDataMatrix[i - 1, j] != null)) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setTop(roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2]);
+                        } else if (i - 1 < 0) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setTop(-1);
+                        }
+                        if ((j + 1 < columns) && (roomDirectionsDataMatrix[i, j + 1] != null)) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setRight(roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3]);
+                        } else if (j + 1 >= columns) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setRight(-1);
+                        }
+                        if ((i + 1 < rows) && (roomDirectionsDataMatrix[i + 1, j] != null)) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setBottom(roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0]);
+                        } else if (i + 1 >= rows) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setBottom(-1);
+                        }
+                        if ((j - 1 >= 0) && (roomDirectionsDataMatrix[i, j - 1] != null)) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setLeft(roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1]);
+                        } else if (j - 1 < 0) {
+                            if (point == null) {
+                                roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
+                                point = roomDirectionsDataMatrix[i, j];
+                            }
+                            point.setLeft(-1);
+                        }
+                    }
 
-                    //
-
-                    if ((i - 1 >= 0) && (roomDirectionsDataMatrix[i - 1, j] != null)) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
+                    // Filling
+                    {
+                        if ((point != null) && (point.anyEqualToOne() == true)) {
+                            short[] doors = point.getDoorParams();
+                            if (doors[0] == 0) {
+                                float rd = Random.value;
+                                if (rd <= 0.5f) {
+                                    point.setTop(-1);
+                                } else if (rd > 0.5f) {
+                                    point.setTop(1);
+                                }
+                            }
+                            if (doors[1] == 0) {
+                                float rd = Random.value;
+                                if (rd <= 0.5f) {
+                                    point.setRight(-1);
+                                } else if (rd > 0.5f) {
+                                    point.setRight(1);
+                                }
+                            }
+                            if (doors[2] == 0) {
+                                float rd = Random.value;
+                                if (rd <= 0.5f) {
+                                    point.setBottom(-1);
+                                } else if (rd > 0.5f) {
+                                    point.setBottom(1);
+                                }
+                            }
+                            if (doors[3] == 0) {
+                                float rd = Random.value;
+                                if (rd <= 0.5f) {
+                                    point.setLeft(-1);
+                                } else if (rd > 0.5f) {
+                                    point.setLeft(1);
+                                }
+                            }
+                        amountOfRooms -= 1;
                         }
-                        point.setTop(roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2]);
-                    } else if (i - 1 < 0) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setTop(-1);
                     }
-                    if ((j + 1 < columns) && (roomDirectionsDataMatrix[i, j + 1] != null)) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setRight(roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3]);
-                    } else if (j + 1 >= columns) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setRight(-1);
-                    }
-                    if ((i + 1 < rows) && (roomDirectionsDataMatrix[i + 1, j] != null)) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setBottom(roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0]);
-                    } else if (i + 1 >= rows) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setBottom(-1);
-                    }
-                    if ((j - 1 >= 0) && (roomDirectionsDataMatrix[i, j - 1] != null)) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setLeft(roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1]);
-                    } else if (j - 1 < 0) {
-                        if (point == null) {
-                            roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
-                            point = roomDirectionsDataMatrix[i, j];
-                        }
-                        point.setLeft(-1);
-                    }
+                } else {
+                    break;
                 }
+            }
+        }
 
-                // Filling
-                {
-                    if ((point != null) && (point.anyEqualToOne() == true)) {
-                        short[] doors = point.getDoorParams();
-                        if (doors[0] == 0) {
-                            float rd = Random.value;
-                            if (rd <= 0.5f) {
-                                point.setTop(-1);
-                            } else if (rd > 0.5f) {
-                                point.setTop(1);
-                            }
-                        }
-                        if (doors[1] == 0) {
-                            float rd = Random.value;
-                            if (rd <= 0.5f) {
-                                point.setRight(-1);
-                            } else if (rd > 0.5f) {
-                                point.setRight(1);
-                            }
-                        }
-                        if (doors[2] == 0) {
-                            float rd = Random.value;
-                            if (rd <= 0.5f) {
-                                point.setBottom(-1);
-                            } else if (rd > 0.5f) {
-                                point.setBottom(1);
-                            }
-                        }
-                        if (doors[3] == 0) {
-                            float rd = Random.value;
-                            if (rd <= 0.5f) {
-                                point.setLeft(-1);
-                            } else if (rd > 0.5f) {
-                                point.setLeft(1);
+        for (int iterations = 0; iterations < 12; iterations++) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+
+                    if (amountOfRooms >= 0) {
+                        float rd = Random.value;
+                        if (rd >= 0.5) {
+                            PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+
+                            if (point != null) {
+
+                                if ((point.anyEqualToOne() == true)) {
+
+                                    if ((i - 1 >= 0) && (amountOfRooms >= 0)) {
+                                        if (roomDirectionsDataMatrix[i - 1, j] != null) {
+                                            if (roomDirectionsDataMatrix[i - 1, j].anyEqualToOne() == false) {
+                                                point.setTop(1);
+                                                roomDirectionsDataMatrix[i - 1, j].setTop(-1);
+                                                roomDirectionsDataMatrix[i - 1, j].setRight(-1);
+                                                roomDirectionsDataMatrix[i - 1, j].setBottom(1);
+                                                roomDirectionsDataMatrix[i - 1, j].setLeft(-1);
+                                                amountOfRooms -= 1;
+                                            }
+                                        }
+                                    }
+
+                                    if ((j + 1 < columns) && (amountOfRooms >= 0)) {
+                                        if (roomDirectionsDataMatrix[i, j + 1] != null) {
+                                            if (roomDirectionsDataMatrix[i, j + 1].anyEqualToOne() == false) {
+                                                point.setRight(1);
+                                                roomDirectionsDataMatrix[i, j + 1].setTop(-1);
+                                                roomDirectionsDataMatrix[i, j + 1].setRight(-1);
+                                                roomDirectionsDataMatrix[i, j + 1].setBottom(-1);
+                                                roomDirectionsDataMatrix[i, j + 1].setLeft(1);
+                                                amountOfRooms -= 1;
+                                            }
+                                        }
+                                    }
+
+                                    if ((i + 1 < rows) && (amountOfRooms >= 0)) {
+                                        if (roomDirectionsDataMatrix[i + 1, j] != null) {
+                                            if (roomDirectionsDataMatrix[i + 1, j].anyEqualToOne() == false) {
+                                                point.setBottom(1);
+                                                roomDirectionsDataMatrix[i + 1, j].setTop(1);
+                                                roomDirectionsDataMatrix[i + 1, j].setRight(-1);
+                                                roomDirectionsDataMatrix[i + 1, j].setBottom(-1);
+                                                roomDirectionsDataMatrix[i + 1, j].setLeft(-1);
+                                                amountOfRooms -= 1;
+
+                                            }
+                                        }
+                                    }
+
+                                    if ((j - 1 >= 0) && (amountOfRooms >= 0)) {
+                                        if (roomDirectionsDataMatrix[i, j - 1] != null) {
+                                            if (roomDirectionsDataMatrix[i, j - 1].anyEqualToOne() == false) {
+                                                point.setLeft(1);
+                                                roomDirectionsDataMatrix[i, j - 1].setTop(-1);
+                                                roomDirectionsDataMatrix[i, j - 1].setRight(1);
+                                                roomDirectionsDataMatrix[i, j - 1].setBottom(-1);
+                                                roomDirectionsDataMatrix[i, j - 1].setLeft(-1);
+                                                amountOfRooms -= 1;
+
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
-
-    private void FixDungeon() {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
-                PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+                if (amountOfRooms < 0) {
+                    PlaceForRoom point = roomDirectionsDataMatrix[i, j];
 
-                if ((point.anyEqualToOne() == false)) {
+                    if (point != null) {
 
-                    if (i - 1 >= 0) {
-                        if (roomDirectionsDataMatrix[i - 1, j] != null) {
-                            if (roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2] == 1) {
-                                point.setTop(1);
-                                point.setRight(-1);
-                                point.setBottom(-1);
-                                point.setLeft(-1);
+                        if ((point.anyEqualToOne() == true)) {
+
+                            if (i - 1 >= 0) {
+                                if (roomDirectionsDataMatrix[i - 1, j] != null) {
+                                    if (roomDirectionsDataMatrix[i - 1, j].anyEqualToOne() == false) {
+                                        point.setTop(-1);
+                                    } else if (roomDirectionsDataMatrix[i - 1, j].getDoorParams()[2] == -1) {
+                                        point.setTop(-1);
+                                    }
+                                } else {
+                                    point.setTop(-1);
+                                }
                             }
-                        }
-                    }
 
-                    if (j - 1 >= 0) {
-                        if (roomDirectionsDataMatrix[i, j - 1] != null) {
-                            if (roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1] == 1) {
-                                point.setLeft(1);
-                                point.setTop(-1);
-                                point.setRight(-1);
-                                point.setBottom(-1);
+                            if (j + 1 < columns) {
+                                if (roomDirectionsDataMatrix[i, j + 1] != null) {
+                                    if (roomDirectionsDataMatrix[i, j + 1].anyEqualToOne() == false) {
+                                        point.setRight(-1);
+                                    } else if (roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3] == -1) {
+                                        point.setRight(-1);
+                                    }
+                                } else {
+                                    point.setRight(-1);
+                                }
                             }
-                        }
-                    }
 
-                    if (i + 1 < rows) {
-                        if (roomDirectionsDataMatrix[i + 1, j] != null) {
-                            if (roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0] == 1) {
-                                point.setBottom(1);
-                                point.setLeft(-1);
-                                point.setTop(-1);
-                                point.setRight(-1);
+                            if (i + 1 < rows) {
+                                if (roomDirectionsDataMatrix[i + 1, j] != null) {
+                                    if (roomDirectionsDataMatrix[i + 1, j].anyEqualToOne() == false) {
+                                        point.setBottom(-1);
+                                    } else if (roomDirectionsDataMatrix[i + 1, j].getDoorParams()[0] == -1) {
+                                        point.setBottom(-1);
+                                    }
+                                } else {
+                                    point.setBottom(-1);
+                                }
                             }
-                        }
-                    }
 
-                    if (j + 1 < columns) {
-                        if (roomDirectionsDataMatrix[i, j + 1] != null) {
-                            if (roomDirectionsDataMatrix[i, j + 1].getDoorParams()[3] == 1) {
-                                point.setRight(1);
-                                point.setBottom(-1);
-                                point.setLeft(-1);
-                                point.setTop(-1);
+                            if (j - 1 >= 0) {
+                                if (roomDirectionsDataMatrix[i, j - 1] != null) {
+                                    if (roomDirectionsDataMatrix[i, j - 1].anyEqualToOne() == false) {
+                                        point.setLeft(-1);
+                                    } else if (roomDirectionsDataMatrix[i, j - 1].getDoorParams()[1] == -1) {
+                                        point.setLeft(-1);
+                                    }
+                                } else {
+                                    point.setLeft(-1);
+                                }
                             }
                         }
                     }
@@ -344,9 +430,9 @@ public class RoomSpawner : MonoBehaviour {
 
     public Vector2 getCurrentLocationAll() {
 
-        currentRow = rows / 2;
-        currentColumn = columns / 2;
-        Vector2 result = new Vector2(currentColumn * 250, -currentRow * 200);
+        CurrentRow = rows / 2;
+        CurrentColumn = columns / 2;
+        Vector2 result = new Vector2(CurrentColumn * 250, -CurrentRow * 200);
         return result;
     }
 }

@@ -64,8 +64,8 @@ public class PlaceForRoom {
         doors[2] = bottomDoor;
         doors[3] = leftDoor;
 
-        foreach (short door in doors) {
-            if (door == 1) {
+        for (int i = 0; i < 4; i++) {
+            if (doors[i] == 1) {
                 return true;
             }
         }

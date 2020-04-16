@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inv: {fileID: 2847807284984056052}
-  rSp: {fileID: 0}
+  rb: {fileID: 4333165458918672388}
   HorizontalSpeed: 10
   VerticalImpulce: 25
 --- !u!1001 &5165409179378546046
