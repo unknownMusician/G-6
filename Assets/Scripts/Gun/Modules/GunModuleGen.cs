@@ -6,17 +6,22 @@ public class GunModuleGen : GunModule {
     protected GunProps props;
 
     [SerializeField]
-    protected float fireRateMult = 1;
+    protected float fireRateMultiplier = 1;
     [SerializeField]
-    protected int shotBltAmtAdd = 0;
+    protected int bulletsPerShotAdder = 0;
     [SerializeField]
-    protected float atkAreaMult = 1;
+    protected float bulletMassMultiplier = 1;
+    [SerializeField]
+    protected float shotRangeMultiplier = 1;
 
     protected void Start() {
-        props = new GunProps(fireRateMult, shotBltAmtAdd, atkAreaMult);
+        props = new GunProps(fireRateMultiplier, bulletsPerShotAdder, bulletMassMultiplier, shotRangeMultiplier);
     }
 
     public GunProps GetProps() {
+        if(props == null) {
+            props = new GunProps(fireRateMultiplier, bulletsPerShotAdder, bulletMassMultiplier, shotRangeMultiplier);
+        }
         return props;
     }
 }

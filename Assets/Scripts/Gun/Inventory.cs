@@ -7,11 +7,17 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private List<Weapon> weapons = null;
     private int activeWeapon; // index
+    public Weapon Weapon { get { return weapons[activeWeapon]; } }
+
+    protected float tmpWhenThrowButtonPressed;
+    [SerializeField]
+    protected float throwStrenght;
+    [SerializeField]
+    protected float secondsToMaxThrow;
 
     private void Start() {
         Prepare();
     }
-
     private void Prepare() {
         for (int i = 0; i < this.transform.childCount; i++) {
             GameObject child = this.transform.GetChild(i).gameObject;
@@ -40,21 +46,24 @@ public class Inventory : MonoBehaviour
             weapons[activeWeapon].Attack();
         }
     }
-    public void Throw() {
+    public void ThrowPress() {
+        tmpWhenThrowButtonPressed = Time.time;
+    }
+    public void ThrowRelease() {
+        float strenght = throwStrenght;
+        float actTime = Time.time;
+        if(actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) {
+            strenght *= ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow);
+        }
+        Debug.Log(strenght);
         if(weapons[activeWeapon] != null) {
-            Weapon wp = weapons[activeWeapon];
-            Rigidbody2D wpRb = wp.gameObject.GetComponent<Rigidbody2D>();
-
-            wpRb.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
-
-            wp.GetWeaponCollider().enabled = true; // enabled Collider2D
-
-            Vector2 force = this.gameObject.transform.rotation * Vector2.right;
-            wpRb.velocity += force; // "throwed" the weapon
-
-            wp.gameObject.transform.parent = null; // unparented weapon
-
+            weapons[activeWeapon].Throw(this.gameObject.transform.rotation * Vector2.right * strenght);
             weapons[activeWeapon] = null;
+        }
+    }
+    public void Reload() {
+        if (weapons[activeWeapon] != null && weapons[activeWeapon] is Gun) {
+            ((Gun)weapons[activeWeapon]).Reload();
         }
     }
     public void ChangeState() {

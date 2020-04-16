@@ -176,6 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad482d6982086a42aa3bcdf8a0294ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponHolder: {fileID: 891501071084823941, guid: 3582863f289dbf844a13b5765ac5cd91,
+    type: 3}
+  rigidBody: {fileID: 1699405586130577470}
   spriteRenderer: {fileID: 8902850384399324637}
   animator: {fileID: 7440309013352402495}
   weaponCollider: {fileID: 2085181756462975332}
@@ -189,6 +192,8 @@ MonoBehaviour:
   hitStrenght: 20
   bulletSpeed: 20
   spread: 5
+  clipSize: 9
+  actualStock: 30
   spriteArray:
   - {fileID: 3855408293937268237, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}
   - {fileID: -6499825744227488493, guid: 477075e3f149aa6479b9a08bff14ecf1, type: 3}

@@ -21,33 +21,40 @@ public class PlayerMovementScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
-    {
+    void Update() {
         SpeedX = Input.GetAxis("Horizontal") * HorizontalSpeed;
         tryJump = Input.GetButton("Jump");
 
-        { // start
-            if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-                inv.ChooseNext();
-            } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-                inv.ChoosePrev();
-            }
-            if (Input.GetButtonDown("WeaponSlot1")) {
-                inv.Choose(0);
-            } else if (Input.GetButtonDown("WeaponSlot2")) {
-                inv.Choose(1);
-            } else if (Input.GetButtonDown("WeaponSlot3")) {
-                inv.Choose(2);
-            } else if (Input.GetButtonDown("WeaponSlot4")) {
-                inv.Choose(3);
-            }
-            // end
-        } // changing weapon
-        {
+        #region Guns
+        #region Changing weapon
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+            inv.ChooseNext();
+        } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+            inv.ChoosePrev();
+        }
+        if (Input.GetButtonDown("WeaponSlot1")) {
+            inv.Choose(0);
+        } else if (Input.GetButtonDown("WeaponSlot2")) {
+            inv.Choose(1);
+        } else if (Input.GetButtonDown("WeaponSlot3")) {
+            inv.Choose(2);
+        } else if (Input.GetButtonDown("WeaponSlot4")) {
+            inv.Choose(3);
+        }
+        #endregion
+        if (inv.Weapon != null) {
+            #region Changing weapon state
             if (Input.GetButtonDown("Fire2")) {
-                inv.ChangeState();
+                inv.Weapon.ChangeState();
             }
-        } // changing weapon state
+            #endregion
+            #region Reloading
+            if (Input.GetButtonDown("Reload")) {
+                inv.Weapon.Reload();
+            }
+            #endregion
+        }
+        #endregion
     }
 
     void FixedUpdate()
@@ -61,10 +68,20 @@ public class PlayerMovementScript : MonoBehaviour
             rb.velocity = new Vector2(SpeedX, tryJump && isGrounded ? VerticalImpulce : rb.velocity.y);
         }
 
-        if (Input.GetButton("Fire1"))
-            inv.Attack();
-        if (Input.GetButton("Throw"))
-            inv.Throw();
+        #region Guns
+        if (inv.Weapon != null) {
+            #region Shoot
+            if (Input.GetButton("Fire1"))
+                inv.Weapon.Attack();
+            #endregion
+        }
+        #region Throw
+        if (Input.GetButtonDown("Throw"))
+            inv.ThrowPress();
+        if (Input.GetButtonUp("Throw"))
+            inv.ThrowRelease();
+        #endregion
+        #endregion
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

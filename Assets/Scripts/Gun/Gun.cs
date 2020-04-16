@@ -4,46 +4,39 @@ using UnityEngine;
 using System.Timers;
 
 public class Gun : Weapon {
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private Animator animator;
-    [SerializeField]
-    private Collider2D weaponCollider;
-    [SerializeField]
-    private List<GunModule> modules;
+
+    [Space]
+    [Space]
+
     [SerializeField]
     private GameObject bullet = null;
     [SerializeField]
     private Transform firePoint = null;
 
     [SerializeField]
-    private float hitStrenght = 10;
-    [SerializeField]
     private float bulletSpeed = 20;
     [SerializeField]
     private float spread = 5;
-
     [SerializeField]
-    private List<Sprite> spriteArray;
-    private Dictionary<int, Sprite> sprites;
+    private int clipSize = 9;
+    [SerializeField]
+    private int actualStock = 30;
+    [SerializeField]
+    private int actualBullets = 5;
 
     private GunProps gunProps;
     private BulletProps bulletProps;
 
-    private Timer timer;
-
-    private bool canShoot = true;
-    private bool secondState = false;
+    private bool isLoaded = true;
 
     private void Start() {
         sprites = new Dictionary<int, Sprite>();
-        GetModulesInChildren();
+        GetModulesFromChildren();
         InstallMods();
         FillDictionary();
         SetSprite();
     }
-    private void SetSprite() {
+    protected override void SetSprite() {
         int finNum = 0;
         foreach (GunModule mod in modules) {
             if (mod is GunModuleGenMain) {
@@ -58,7 +51,14 @@ public class Gun : Weapon {
         }
         this.spriteRenderer.sprite = sprites[int.Parse(key)];
     }
-    private void InstallMods() {
+    public override void Attack() {
+        if (secondState) {
+            Hit();
+        } else {
+            Shoot();
+        }
+    }
+    protected override void InstallMods() {
         foreach (GunModule mod in modules) {
             if (mod != null) {
                 if (mod is GunModuleGen) {
@@ -71,40 +71,8 @@ public class Gun : Weapon {
             }
         }
     }
-    private void FillDictionary() {
-        sprites.Add(1111, spriteArray[0]);
-        sprites.Add(0, spriteArray[1]);
-        sprites.Add(1000, spriteArray[2]);
-        sprites.Add(100, spriteArray[3]);
-        sprites.Add(10, spriteArray[4]);
-        sprites.Add(1, spriteArray[5]);
-        sprites.Add(1110, spriteArray[6]);
-        sprites.Add(2000, spriteArray[7]);
-        sprites.Add(1100, spriteArray[8]);
-        sprites.Add(1010, spriteArray[9]);
-        sprites.Add(1001, spriteArray[10]);
-        sprites.Add(4000, spriteArray[11]);
-        sprites.Add(1101, spriteArray[12]);
-        sprites.Add(2200, spriteArray[13]);
-        sprites.Add(200, spriteArray[14]);
-        sprites.Add(0110, spriteArray[15]);
-        sprites.Add(0101, spriteArray[16]);
-        sprites.Add(400, spriteArray[17]);
-        sprites.Add(1011, spriteArray[18]);
-        sprites.Add(2020, spriteArray[19]);
-        sprites.Add(220, spriteArray[20]);
-        sprites.Add(20, spriteArray[21]);
-        sprites.Add(11, spriteArray[22]);
-        sprites.Add(40, spriteArray[23]);
-        sprites.Add(111, spriteArray[24]);
-        sprites.Add(2002, spriteArray[25]);
-        sprites.Add(202, spriteArray[26]);
-        sprites.Add(22, spriteArray[27]);
-        sprites.Add(2, spriteArray[28]);
-        sprites.Add(4, spriteArray[29]);
-    }
-    private void GetModulesInChildren() {
-        this.gunProps = new GunProps();
+    protected override void GetModulesFromChildren() {
+        this.gunProps = new GunProps(1,1,1,1);
         this.bulletProps = new BulletProps();
 
         for (int i = 0; i < this.transform.childCount; i++) {
@@ -120,46 +88,12 @@ public class Gun : Weapon {
             }
         }
     }
-    public override void Attack() {
-        if (secondState) {
-            Hit();
-        } else {
-            Shoot();
-        }
-    }
-    public override void ChangeState() {
-        if (secondState) {
-            secondState = false;
-            this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            animator.SetBool("secondState", false);
-            weaponCollider.enabled = false;
-
-        } else {
-            secondState = true;
-            this.transform.rotation = Quaternion.Euler(0, 0, -90);
-            animator.SetBool("secondState", true);
-            weaponCollider.enabled = true;
-        }
-    }
-    public override Collider2D GetWeaponCollider() {
-        return weaponCollider;
-    }
-    private void SetTimer(float time) {
-        // Create a timer with a two second interval.
-        timer = new System.Timers.Timer(time * 1000);
-        // Hook up the Elapsed event for the timer. 
-        timer.Elapsed += SetCanShoot;
-        timer.AutoReset = false;
-        timer.Enabled = true;
-    }
-    private void SetCanShoot(object sender, ElapsedEventArgs e) {
-        canShoot = true;
-    }
     private void InstallMod(GunModuleGen modGen) {
         GunProps newProps = modGen.GetProps();
-        this.gunProps.FireRate *= newProps.FireRate;
-        this.gunProps.ShotBltAmt += newProps.ShotBltAmt;
-        this.gunProps.AtkArea *= newProps.AtkArea;
+        this.gunProps.FireRateMultiplier *= newProps.FireRateMultiplier;
+        this.gunProps.BulletsPerShotAdder += newProps.BulletsPerShotAdder;
+        this.gunProps.BulletMassMultiplier *= newProps.BulletMassMultiplier;
+        this.gunProps.ShotRangeMultiplier *= newProps.ShotRangeMultiplier;
     }
     private void InstallMod(GunModuleFly modFly) {
         BulletProps newProps = modFly.GetProps();
@@ -171,13 +105,12 @@ public class Gun : Weapon {
         this.bulletProps.Enemy = newProps.Enemy;
         this.bulletProps.Magnetting = newProps.Magnetting;
     }
-    public void Hit() {
+    private void Hit() {
         animator.SetTrigger("hit");
     }
-    public void Shoot() {
-
-        if (canShoot) {
-            for (int i = 0; i < gunProps.ShotBltAmt; i++) {
+    private void Shoot() {
+        if (canAttack && isLoaded) {
+            for (int i = 0; i < gunProps.BulletsPerShotAdder; i++) {
                 GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 blt.GetComponent<Rigidbody2D>().velocity = Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
@@ -186,15 +119,28 @@ public class Gun : Weapon {
                     * Vector2.right * bulletSpeed;
                 blt.GetComponent<Bullet>().SetParams(bulletProps);
             }
-            canShoot = false;
-            SetTimer(1 / gunProps.FireRate);
+            actualBullets -= gunProps.BulletsPerShotAdder;
+            CheckBullets();
+            canAttack = false;
+            SetReliefTimer(1 / gunProps.FireRateMultiplier);
+            Debug.Log(actualBullets + "/" + actualStock);
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision) {
-        Rigidbody2D crb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (crb != null) {
-            Vector2 dist = collision.transform.position - this.transform.position;
-            crb.velocity += dist.normalized * hitStrenght;
+    private void CheckBullets() {
+        if(actualBullets > 0) {
+            isLoaded = true;
+        } else {
+            isLoaded = false;
         }
+    }
+    public override void Reload() {
+        if(actualStock >= clipSize) {
+            actualBullets = clipSize;
+            actualStock -= clipSize;
+        } else {
+            actualBullets = actualStock;
+            actualStock = 0;
+        }
+        CheckBullets();
     }
 }
