@@ -12,11 +12,9 @@ public class Menu : MonoBehaviour
     }
     public void Continue()
     {
-
-        //SceneManager.LoadScene("SampleScene");
+        this.gameObject.active = false;
     }
     public void LoadSetting()
     {
-        SceneManager.LoadScene("Setting");
     }
 }

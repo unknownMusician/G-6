@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainData
+public static class MainData
 {
     public static float currHP { get; set; }
     public static float MaxHP { get; set; }
