@@ -112,6 +112,8 @@ MonoBehaviour:
   weapons:
   - {fileID: 0}
   - {fileID: 0}
+  throwStrenght: 0
+  secondsToMaxThrow: 0
 --- !u!1 &4333165458918672411
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +126,7 @@ GameObject:
   - component: {fileID: 4333165458918672409}
   - component: {fileID: 4333165458918672388}
   - component: {fileID: 4333165458918672391}
-  - component: {fileID: 4333165458918672390}
+  - component: {fileID: 8847458840471684323}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -186,15 +188,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cd28d15a0115fe34dbe72e4e267d12b0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c8b9aeb35b132c44aeda5f07cc0f0bd, type: 3}
   m_Color: {r: 0.4431373, g: 0.4431373, b: 0.4431373, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 2.4, y: 2.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &4333165458918672388
@@ -234,7 +236,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.3}
   m_Size: {x: 1, y: 1.8}
   m_Direction: 0
---- !u!114 &4333165458918672390
+--- !u!114 &8847458840471684323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,13 +245,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4333165458918672411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d64fee10a9421db48b50b05be4aa5d7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 68f0510916d4e7b49a3774e6812fdc16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inv: {fileID: 2847807284984056052}
-  rb: {fileID: 4333165458918672388}
-  HorizontalSpeed: 10
-  VerticalImpulce: 25
+  canFly: 0
+  JumpForce: 10
+  HorizontalSpeed: 20
 --- !u!1001 &5165409179378546046
 PrefabInstance:
   m_ObjectHideFlags: 0

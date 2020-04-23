@@ -1,9 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour, ICharacterBehaviour
 {
+
+
     #region Fields
     [SerializeField]
     protected bool canFly;
@@ -31,13 +32,32 @@ public abstract class CharacterBase : MonoBehaviour, ICharacterBehaviour
 
     #region Other Public Props
     public short Level { get; protected set; }
-    public Fractions Fraction { get; protected set; }
+    public States State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
+    public Fractions Fraction { get; protected set; }
     #endregion
     #endregion
 
     #region Methods
-    // TODO
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="direction">Этот показатель отвечает за направление движения персонажа. d > 0 - Идти вправо, d < 0 - Идти влево</param>
+    public void Go(float direction)
+    {
+        rb.AddForce(new Vector2(HorizontalSpeed * direction, 0), ForceMode2D.Impulse);
+    }
+    public void Jump()
+    {
+        if(State != States.OnAir)
+            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+    }
     #endregion
 
+    #region MonoBehafiour Overrides
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+    #endregion
 }

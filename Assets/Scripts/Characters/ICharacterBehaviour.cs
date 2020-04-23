@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public interface ICharacterBehaviour
 {
-    
+    void Go(float direction);
+    void Jump();
 }

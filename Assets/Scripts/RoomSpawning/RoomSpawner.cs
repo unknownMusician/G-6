@@ -13,7 +13,7 @@ public class RoomSpawner : MonoBehaviour {
     public int columns;
     private int currentRow;
     private int currentColumn;
-    public PlayerMovementScript player;
+    public PlayerBehaviour player;
 
     public int CurrentColumn { get; set; }
     public int CurrentRow { get; set; }
