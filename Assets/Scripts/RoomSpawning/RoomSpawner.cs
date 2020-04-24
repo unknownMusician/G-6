@@ -424,7 +424,7 @@ public class RoomSpawner : MonoBehaviour {
         return roomsMatrix;
     }
 
-    public GameObject[,] getMiniMapMatrix() {
+    public GameObject[,] GetMiniMapMatrix() {
         return miniMapMatrix;
     }
 
