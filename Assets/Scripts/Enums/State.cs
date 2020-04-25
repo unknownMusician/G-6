@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICharacterBehaviour
+public enum State
 {
-    
+    OnGround,
+    Climb,
+    Swim,
+    OnAir
 }

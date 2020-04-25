@@ -728,11 +728,11 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 2053123993}
+      objectReference: {fileID: 2133281140}
     - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
         type: 3}
       propertyPath: amountOfRooms
-      value: 26
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 2170964901922904332, guid: 8e8848c39e1340f4696ca4831dd40959,
         type: 3}
