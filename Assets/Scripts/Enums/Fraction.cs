@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum States
+public enum Fraction
 {
-    OnGround,
-    Climb,
-    Swim,
-    OnAir
+    None,
+    Black,
+    Red,
+    Blue
 }

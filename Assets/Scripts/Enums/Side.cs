@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Fractions
+public enum Side
 {
-    None,
-    Black,
-    Red,
-    Blue
+    Up,
+    Down,
+    Left,
+    Right
 }
