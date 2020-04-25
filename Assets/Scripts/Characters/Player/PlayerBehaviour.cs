@@ -4,14 +4,51 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase
 {
-    private void FixedUpdate()
+    new private void Start()
     {
-        if (Input.GetButtonDown("Horizontal"))
-            Go(Input.GetAxis("Horizontal"));
-
-        if (Input.GetButtonDown("Jump")) 
-            Jump();
-
-        rb.AddForce(new Vector2(HorizontalSpeed * 2f, 0), ForceMode2D.Impulse);
+        base.Start();
     }
+
+    new protected void Update()
+    {
+        base.Update();
+
+        Side = CheckSideLR(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+        Debug.Log(State.ToString());
+
+        Control();
+
+    }
+
+    protected void Control()
+    {
+        if (State == State.OnAir)
+        {
+            if (State != State.Climb)
+            {
+                if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
+                    MoveX(Input.GetAxis("Horizontal"), Input.GetButtonDown("Jump"));
+            }
+            else
+            {
+                if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
+                    MoveY(Input.GetAxis("Vertical"), Input.GetButtonDown("Jump"));
+            }
+        }
+        else
+        {
+            if (State != State.Climb)
+            {
+                //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
+                    MoveX(Input.GetAxis("Horizontal"), Input.GetButtonDown("Jump"));
+            }
+            else
+            {
+                //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
+                    MoveY(Input.GetAxis("Vertical"), Input.GetButtonDown("Jump"));
+            }
+        }
+    }
+
 }

@@ -37,19 +37,19 @@ public class Gun : Weapon {
         SetSprite();
     }
     protected override void SetSprite() {
-        int finNum = 0;
-        foreach (GunModule mod in modules) {
-            if (mod is GunModuleGenMain) {
-                finNum += ((GunModuleGenMain)mod).id;
-            }
-        }
-        string key = finNum.ToString();
-        for(int i = 0; i < 4; i++) {
-            if (key[i] == 3) {
-                key = key.Substring(0, i) + "2" + key.Substring(i + 1);
-            }
-        }
-        this.spriteRenderer.sprite = sprites[int.Parse(key)];
+        //int finNum = 0;
+        //foreach (GunModule mod in modules) {
+        //    if (mod is GunModuleGenMain) {
+        //        finNum += ((GunModuleGenMain)mod).id;
+        //    }
+        //}
+        //string key = finNum.ToString();
+        //for(int i = 0; i < 4; i++) {
+        //    if (key[i] == 3) {
+        //        key = key.Substring(0, i) + "2" + key.Substring(i + 1);
+        //    }
+        //}
+        //this.spriteRenderer.sprite = sprites[int.Parse(key)];
     }
     public override void Attack() {
         if (secondState) {

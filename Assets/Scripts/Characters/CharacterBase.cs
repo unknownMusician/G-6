@@ -1,21 +1,37 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
-public abstract class CharacterBase : MonoBehaviour, ICharacterBehaviour
+public abstract class CharacterBase : MonoBehaviour
 {
-
+    [SerializeField]
+    protected List<Transform> GroundCheckers;
+    [SerializeField]
+    protected List<Transform> LeftSideCheckers;
+    [SerializeField]
+    protected List<Transform> RightSideCheckers;
 
     #region Fields
     [SerializeField]
-    protected bool canFly;
+    protected bool CanFly;
+
     [SerializeField]
     protected float JumpForce;
+
     [SerializeField]
     protected float HorizontalSpeed;
-    protected Rigidbody2D rb;
+
+    [SerializeField]
+    protected float ClimbingSpeed;
+
+    [SerializeField]
+    protected Dictionary<Side, List<Transform>> Checkers;
+
     #endregion
 
     #region Properties
+
     #region MaxValues
     public float MaxHP { get; protected set; }
     public float MaxSP { get; protected set; }
@@ -31,33 +47,170 @@ public abstract class CharacterBase : MonoBehaviour, ICharacterBehaviour
     #endregion
 
     #region Other Public Props
+    public Side Side { get; protected set; }
     public short Level { get; protected set; }
-    public States State { get; protected set; }
+    public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
-    public Fractions Fraction { get; protected set; }
+    public Fraction Fraction { get; protected set; }
     #endregion
+
+    #endregion
+
+
+    #region Components
+
+    protected Rigidbody2D rb;
+
+    protected SpriteRenderer sr;
+
+    #endregion  
+
+
+    #region Guns&Inventory
+
+    #region Fields
+    //[SerializeField]
+    //protected Inventory Inventory { get; set; }
     #endregion
 
     #region Methods
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="direction">Этот показатель отвечает за направление движения персонажа. d > 0 - Идти вправо, d < 0 - Идти влево</param>
-    public void Go(float direction)
+    //TODO
+    #endregion
+
+    #endregion
+
+
+    #region Common Methods
+    protected void TurnToRightSide(bool inverse = false)
     {
-        rb.AddForce(new Vector2(HorizontalSpeed * direction, 0), ForceMode2D.Impulse);
+        if (Side == Side.Left)
+            sr.flipX = !inverse;
+        else
+            sr.flipX = inverse;
+
+        //if (Side == Side.Left)
+        //    transform.rotation = new Quaternion(transform.rotation.x, Mathf.PI, transform.rotation.y, transform.rotation.w);
+        //else
+        //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
     }
-    public void Jump()
+    protected void MoveX(float dir, bool jump)
     {
-        if(State != States.OnAir)
-            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+        switch (State)
+        {
+            case State.OnGround:
+                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
+                break;
+            case State.Climb:
+                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+                break;
+            case State.Swim:
+                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+                break;
+            case State.OnAir:
+                rb.velocity = new Vector2(dir * HorizontalSpeed, rb.velocity.y);
+                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+                break;
+            default:
+                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+                break;
+        }
+    }
+    protected void MoveY(float dir, bool jump)
+    {
+        if (jump)
+        {
+            if (ClimbingBySide() == Side.Left)
+                rb.AddForce(new Vector2(JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+            else
+                rb.AddForce(new Vector2(-JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+            State = State.OnAir;
+            return;
+        }
+        rb.velocity = new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed);
+        //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+    }
+
+    protected bool isOnLayer(string layer, Side side)
+    {
+        foreach (var checker in Checkers[side])
+            if (Physics2D.Linecast(transform.position, checker.position, 1 << LayerMask.NameToLayer(layer)))
+                return true;
+        return false;
+    }
+    protected State CheckState()
+    {
+        if (isOnLayer("Ground", Side.Down))
+            return State.OnGround;
+
+        if (isOnLayer("Water", Side.Down))
+            return State.Swim;
+
+        if (isOnLayer("Ground", Side.Right) || isOnLayer("Ground", Side.Left))
+            return State.Climb;
+
+        return State.OnAir;
+    }
+    protected Side CheckSideLR(Vector3 triger)
+    {
+        if (triger.x > transform.position.x)
+            return Side.Right;
+        return Side.Left;
+    }
+    protected float CheckGravityBeState()
+    {
+        switch (State)
+        {
+            case State.OnGround:
+                rb.gravityScale = 9.8f;
+                break;
+            case State.Climb:
+                rb.gravityScale = 0f;
+                break;
+            case State.Swim:
+                rb.gravityScale = 4.9f;
+                break;
+            case State.OnAir:
+                rb.gravityScale = 9.8f;
+                break;
+            default:
+                rb.gravityScale = 9.8f;
+                break;
+        }
+        return rb.gravityScale;
+    }
+    protected Side ClimbingBySide()
+    {
+        if (isOnLayer("Ground", Side.Left))
+            return Side.Left;
+        if (isOnLayer("Ground", Side.Right))
+            return Side.Right;
+        return Side.Up;
     }
     #endregion
 
-    #region MonoBehafiour Overrides
-    private void Start()
+    #region MonoBehaviour Implemented
+
+    protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+
+        Checkers = new Dictionary<Side, List<Transform>>();
+        Checkers.Add(Side.Down, GroundCheckers);
+        Checkers.Add(Side.Left, LeftSideCheckers);
+        Checkers.Add(Side.Right, RightSideCheckers);
     }
+    protected void Update()
+    {
+        State = CheckState();
+        TurnToRightSide();
+        CheckGravityBeState();
+    }
+
     #endregion
+
 }
