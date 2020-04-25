@@ -33,7 +33,7 @@ public abstract class Weapon : MonoBehaviour {
     protected bool canAttack = true;
 
     public abstract void Attack();
-    protected abstract void SetSprite();
+    //protected abstract void SetSprite();
     protected abstract void InstallMods();
     protected abstract void GetModulesFromChildren();
     public abstract void Reload();
