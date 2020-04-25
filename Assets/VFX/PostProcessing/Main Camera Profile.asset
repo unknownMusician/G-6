@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: PostProcessing Profile
+  m_Name: Main Camera Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 650650991059146675}
---- !u!114 &650650991059146675
+  - {fileID: 2703956623722921734}
+--- !u!114 &2703956623722921734
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23,31 +23,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
-  m_Name: LensDistortion
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
   m_EditorClassIdentifier: 
   active: 1
   m_AdvancedMode: 0
-  intensity:
-    m_OverrideState: 1
-    m_Value: -0.29
-    min: -1
-    max: 1
-  xMultiplier:
+  color:
     m_OverrideState: 0
-    m_Value: 1
-    min: 0
-    max: 1
-  yMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-    max: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
   center:
     m_OverrideState: 0
-    m_Value: {x: 0.31, y: 0.56}
-  scale:
-    m_OverrideState: 0
-    m_Value: 0.92
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.26
+    min: 0
+    max: 1
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.52
     min: 0.01
-    max: 5
+    max: 1
+  rounded:
+    m_OverrideState: 1
+    m_Value: 0

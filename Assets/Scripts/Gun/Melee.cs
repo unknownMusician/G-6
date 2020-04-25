@@ -8,9 +8,9 @@ public class Melee : Weapon
     public override void Attack() {
 
     }
-    protected override void SetSprite() {
+    //protected override void SetSprite() {
 
-    }
+    //}
     protected override void InstallMods() {
 
     }
