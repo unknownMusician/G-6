@@ -7,5 +7,6 @@ public enum State
     OnGround,
     Climb,
     Swim,
-    OnAir
+    OnAir,
+    Dead
 }
