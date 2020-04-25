@@ -25,63 +25,12 @@ public class PlayerMovementScript : MonoBehaviour
         SpeedX = Input.GetAxis("Horizontal") * HorizontalSpeed;
         tryJump = Input.GetButton("Jump");
 
-        #region Guns
-        #region Changing weapon
-        if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-            inv.ChooseNext();
-        } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-            inv.ChoosePrev();
-        }
-        if (Input.GetButtonDown("WeaponSlot1")) {
-            inv.Choose(0);
-        } else if (Input.GetButtonDown("WeaponSlot2")) {
-            inv.Choose(1);
-        } else if (Input.GetButtonDown("WeaponSlot3")) {
-            inv.Choose(2);
-        } else if (Input.GetButtonDown("WeaponSlot4")) {
-            inv.Choose(3);
-        }
-        #endregion
-        if (inv.Weapon != null) {
-            #region Changing weapon state
-            if (Input.GetButtonDown("Fire2")) {
-                inv.Weapon.ChangeState();
-            }
-            #endregion
-            #region Reloading
-            if (Input.GetButtonDown("Reload")) {
-                inv.Weapon.Reload();
-            }
-            #endregion
-        }
-        #endregion
+        
     }
 
     void FixedUpdate()
     {
-        if (isOnWall)
-        {
-            rb.velocity = new Vector2(SpeedX, tryJump ? VerticalImpulce / 4 : 0);
-        }
-        else
-        {
-            rb.velocity = new Vector2(SpeedX, tryJump && isGrounded ? VerticalImpulce : rb.velocity.y);
-        }
-
-        #region Guns
-        if (inv.Weapon != null) {
-            #region Shoot
-            if (Input.GetButton("Fire1"))
-                inv.Weapon.Attack();
-            #endregion
-        }
-        #region Throw
-        if (Input.GetButtonDown("Throw"))
-            inv.ThrowPress();
-        if (Input.GetButtonUp("Throw"))
-            inv.ThrowRelease();
-        #endregion
-        #endregion
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
