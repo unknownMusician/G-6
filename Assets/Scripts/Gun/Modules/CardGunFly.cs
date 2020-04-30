@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunModuleFly : GunModule {
+public class CardGunFly : CardGun {
     private BulletProps props;
+    public BulletProps Props { get; }
 
     [SerializeField]
     private bool ricochet = false;
@@ -22,9 +23,5 @@ public class GunModuleFly : GunModule {
 
     public void Start() {
         props = new BulletProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
-    }
-
-    public BulletProps GetProps() {
-        return props;
     }
 }

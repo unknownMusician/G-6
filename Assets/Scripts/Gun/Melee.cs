@@ -11,7 +11,7 @@ public class Melee : Weapon
     //protected override void SetSprite() {
 
     //}
-    protected override void InstallMods() {
+    protected override void InstallModCards() {
 
     }
     protected override void GetModulesFromChildren() {

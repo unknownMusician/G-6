@@ -24,33 +24,22 @@ public class Gun : Weapon {
     [SerializeField]
     private int actualBullets = 5;
 
-    private GunProps gunProps;
-    private BulletProps bulletProps;
+    [Space]
+    [SerializeField]
+    protected CardGunGen cardGen;
+    [Space]
+    [SerializeField]
+    protected CardGunFly cardFly;
+    [Space]
+    [SerializeField]
+    protected CardGunEffect cardEff;
 
     private bool isLoaded = true;
 
     private void Start() {
-        sprites = new Dictionary<int, Sprite>();
         GetModulesFromChildren();
-        InstallMods();
-        FillDictionary();
-        //SetSprite();
+        InstallModCards();
     }
-    //protected override void SetSprite() {
-    //    int finNum = 0;
-    //    foreach (GunModule mod in modules) {
-    //        if (mod is GunModuleGenMain) {
-    //            finNum += ((GunModuleGenMain)mod).id;
-    //        }
-    //    }
-    //    string key = finNum.ToString();
-    //    for(int i = 0; i < 4; i++) {
-    //        if (key[i] == 3) {
-    //            key = key.Substring(0, i) + "2" + key.Substring(i + 1);
-    //        }
-    //    }
-    //    this.spriteRenderer.sprite = sprites[int.Parse(key)];
-    //}
     public override void Attack() {
         if (secondState) {
             Hit();
@@ -58,83 +47,99 @@ public class Gun : Weapon {
             Shoot();
         }
     }
-    protected override void InstallMods() {
-        foreach (GunModule mod in modules) {
-            if (mod != null) {
-                if (mod is GunModuleGen) {
-                    GunModuleGen modGen = (GunModuleGen)mod;
-                    InstallMod(modGen);
-                } else if (mod is GunModuleFly) {
-                    GunModuleFly modFly = (GunModuleFly)mod;
-                    InstallMod(modFly);
-                }
-            }
-        }
+    protected override void InstallModCards() {
+        if (cardGen != null)
+            InstallCard(cardGen);
+        if (cardFly != null)
+            InstallCard(cardFly);
+        if (cardEff != null)
+            InstallCard(cardEff);
     }
     protected override void GetModulesFromChildren() {
-        this.gunProps = new GunProps(1,1,1,1);
-        this.bulletProps = new BulletProps();
-
         for (int i = 0; i < this.transform.childCount; i++) {
             GameObject child = this.transform.GetChild(i).gameObject;
-            GunModule mod = child.GetComponent<GunModule>();
-            if (mod != null) {
-                for (int j = 0; j < modules.Count; j++) {
-                    if (modules[j] == null) {
-                        modules[j] = mod;
-                        break;
-                    }
-                }
+            CardGun card = child.GetComponent<CardGun>();
+            if (card != null) {
+                InstallUnknownCard(card);
             }
         }
     }
-    private void InstallMod(GunModuleGen modGen) {
-        GunProps newProps = modGen.GetProps();
-        this.gunProps.FireRateMultiplier *= newProps.FireRateMultiplier;
-        this.gunProps.BulletsPerShotAdder += newProps.BulletsPerShotAdder;
-        this.gunProps.BulletMassMultiplier *= newProps.BulletMassMultiplier;
-        this.gunProps.ShotRangeMultiplier *= newProps.ShotRangeMultiplier;
+    public bool InstallUnknownCard(CardGun card) {
+        if (card != null) {
+            if (card is CardGunGen) {
+                InstallCard((CardGunGen)card);
+            } else if (card is CardGunFly) {
+                InstallCard((CardGunFly)card);
+            } else if (card is CardGunEffect) {
+                InstallCard((CardGunEffect)card);
+            }
+            return true;
+        }
+        return false;
     }
-    private void InstallMod(GunModuleFly modFly) {
-        BulletProps newProps = modFly.GetProps();
-        this.bulletProps.Homing = this.bulletProps.Homing || newProps.Homing;
-        this.bulletProps.Magnet = this.bulletProps.Magnet || newProps.Magnet;
-        this.bulletProps.Piercing = this.bulletProps.Piercing || newProps.Piercing;
-        this.bulletProps.Ricochet = this.bulletProps.Ricochet || newProps.Ricochet;
-        this.bulletProps.Teleporting = this.bulletProps.Teleporting || newProps.Teleporting;
-        this.bulletProps.Enemy = newProps.Enemy;
-        this.bulletProps.Magnetting = newProps.Magnetting;
+    public bool InstallCard(CardGunGen cardGen) {
+        if (cardGen != null) {
+            RemoveCard(this.cardGen);
+            PrepareCardforInstall(cardGen);
+            this.cardGen = cardGen;
+            return true;
+        }
+        return false;
     }
+    public bool InstallCard(CardGunFly cardFly) {
+        if (cardFly != null) {
+            RemoveCard(this.cardFly);
+            PrepareCardforInstall(cardFly);
+            this.cardFly = cardFly;
+            return true;
+        }
+        return false;
+    }
+    public bool InstallCard(CardGunEffect cardEff) {
+        if(cardEff != null) {
+            ////////////////
+            return true;
+        }
+        return false;
+    }
+    private void PrepareCardforInstall(CardGun cardGen) {
+        ////////////////
+    }
+    private bool RemoveCard(CardGun card) {
+        ///////////////
+        return true;
+    }
+    
     private void Hit() {
         animator.SetTrigger("hit");
     }
     private void Shoot() {
         if (canAttack && isLoaded) {
-            for (int i = 0; i < gunProps.BulletsPerShotAdder; i++) {
+            for (int i = 0; i < cardGen.Props.BulletsPerShotAdder; i++) {
                 GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 blt.GetComponent<Rigidbody2D>().velocity = Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
                         transform.rotation.eulerAngles.y,
                         transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
                     * Vector2.right * bulletSpeed;
-                blt.GetComponent<Bullet>().SetParams(bulletProps);
+                blt.GetComponent<Bullet>().SetParams(cardFly.Props);
             }
-            actualBullets -= gunProps.BulletsPerShotAdder;
+            actualBullets -= cardGen.Props.BulletsPerShotAdder;
             CheckBullets();
             canAttack = false;
-            SetReliefTimer(1 / gunProps.FireRateMultiplier);
+            SetReliefTimer(1 / cardGen.Props.FireRateMultiplier);
             Debug.Log(actualBullets + "/" + actualStock);
         }
     }
     private void CheckBullets() {
-        if(actualBullets > 0) {
+        if (actualBullets > 0) {
             isLoaded = true;
         } else {
             isLoaded = false;
         }
     }
     public override void Reload() {
-        if(actualStock >= clipSize) {
+        if (actualStock >= clipSize) {
             actualBullets = clipSize;
             actualStock -= clipSize;
         } else {

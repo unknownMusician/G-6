@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunModuleEffect : GunModule {
+public class CardGunEffect : CardGun {
 
 }

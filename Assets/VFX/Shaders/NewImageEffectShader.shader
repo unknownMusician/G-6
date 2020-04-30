@@ -3,6 +3,7 @@
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
+		_PxIntensity("PxIntensity", Int) = 1.0
 	}
 		SubShader
 	{
@@ -40,15 +41,16 @@
 			uniform float2 resolution = float2(1920, 1080);
 			uniform float2 px = float2(1 / 1920, 1 / 1080);
 			sampler2D _MainTex;
+			int _PxIntensity;
 
-			float4 blur(sampler2D tex, float2 uv, float intensivity) {
+			float4 blur(sampler2D tex, float2 uv, int intensity) {
 				float4 col = float4(0, 0, 0, 0);
-				for (int i = -intensivity; i <= intensivity; i++) {
-					for (int j = -intensivity; j <= intensivity; j++) {
-						col += tex2D(_MainTex, uv + float2(px.x * i, px.y * j));
+				for (int i = -intensity; i <= intensity; i++) {
+					for (int j = -intensity; j <= intensity; j++) {
+						col += tex2D(_MainTex, uv + float2(i/1920.0, j/ 1080.0));
 					}
 				}
-				col /= (intensivity * 2 + 1) * (intensivity * 2 + 1);
+				col /= (intensity * 2 + 1) * (intensity * 2 + 1);
 				return col;
 			}
 
@@ -62,13 +64,14 @@
 
 				if (distance(i.uv.xy, float2(0.5, 0.4)) > 0.2) {
 					//col = pixelate(_MainTex, i.uv, 1/distance(i.uv.xy, float2(0.5, 0.4)) * 20.);
-					col = blur(_MainTex, i.uv, 10.);
+					//col = blur(_MainTex, i.uv, 1.);
 				}
-				//col = blur(_MainTex, i.uv, 3);
+				//col = pixelate(_MainTex, i.uv, _PxIntensity);
+				col = blur(_MainTex, i.uv, _PxIntensity);
 
 				return col;
 			}
 			ENDCG
 		}
-				}
+	}
 }
