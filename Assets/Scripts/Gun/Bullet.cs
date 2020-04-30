@@ -98,8 +98,11 @@ public class Bullet : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        CharacterBase character = collision.gameObject.GetComponent<CharacterBase>();
-        //character.
+
+        var cb = collision.gameObject.GetComponent<CharacterBase>();
+        if (cb != null)
+            cb.TakeDamage(rb.velocity.normalized * 5f);
+
         if (ricochet) {
 
         } else {

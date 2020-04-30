@@ -26,8 +26,10 @@ public abstract class CharacterBase : MonoBehaviour
     protected float ClimbingSpeed;
 
     [SerializeField]
-    protected Dictionary<Side, List<Transform>> Checkers;
+    protected LayerMask ContactLayer;
 
+    [SerializeField]
+    protected Dictionary<Side, List<Transform>> Checkers;
     #endregion
 
     #region Properties
@@ -69,12 +71,15 @@ public abstract class CharacterBase : MonoBehaviour
     #region Guns&Inventory
 
     #region Fields
-    //[SerializeField]
-    //protected Inventory Inventory { get; set; }
+    [SerializeField]
+    protected Inventory Inventory;
     #endregion
 
     #region Methods
-    //TODO
+
+    protected abstract void WeaponControl();
+    protected abstract void WeaponFixedControl();
+
     #endregion
 
     #endregion
@@ -143,6 +148,9 @@ public abstract class CharacterBase : MonoBehaviour
     }
     protected State CheckState()
     {
+        if (HP <= 0f)
+            return State.Dead;
+
         if (isOnLayer("Ground", Side.Down))
             return State.OnGround;
 
@@ -190,10 +198,15 @@ public abstract class CharacterBase : MonoBehaviour
             return Side.Right;
         return Side.Up;
     }
+
+    protected void Die()
+    {
+        State = State.Dead;
+    }
     #endregion
 
+    
     #region MonoBehaviour Implemented
-
     protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -203,12 +216,34 @@ public abstract class CharacterBase : MonoBehaviour
         Checkers.Add(Side.Down, GroundCheckers);
         Checkers.Add(Side.Left, LeftSideCheckers);
         Checkers.Add(Side.Right, RightSideCheckers);
+
+        State = CheckState();
     }
     protected void Update()
     {
         State = CheckState();
         TurnToRightSide();
         CheckGravityBeState();
+        WeaponControl();
+    }
+    protected void FixedUpdate()
+    {
+        WeaponFixedControl();
+    }
+    #endregion
+
+
+    #region Public Methods
+
+    public void TakeDamage(float damage)
+    {
+        HP -= damage;
+        Die();
+    }
+    public void TakeDamage(Vector2 damageVector)
+    {
+        rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
+        TakeDamage(damageVector.magnitude);
     }
 
     #endregion
