@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pixelate Material
-  m_Shader: {fileID: 4800000, guid: 5b3eb7657c31b344ba32f1bd21d5f0d5, type: 3}
+  m_Name: Custom_GaussianBlurVert
+  m_Shader: {fileID: 4800000, guid: 8cd42fc21a6753545ab097c41cc44ac5, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -23,5 +23,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _PxIntensity: 50
+    m_Colors:
+    - _LookPos: {r: 0.41466576, g: 1.6220735, b: 0, a: 0}
+    - _PlayerPos: {r: 0.5, g: 0.39203262, b: 0, a: 0}

@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     public Rigidbody2D rb;
-    public bool ricochet;
-    public bool piercing;
-    public bool homing;
-    public bool teleporting;
-    public bool magnet;
-    public LayerMask whatIsAlive;
-    public LayerMask enemy;
-    public LayerMask magnetting;
+
+    private bool ricochet;
+    private bool piercing;
+    private bool homing;
+    private bool teleporting;
+    private bool magnet;
+    private LayerMask whatIsAlive;
+    private LayerMask enemy;
+    private LayerMask magnetting;
 
     private GameObject aim;
     private int piercingCount;
@@ -35,8 +36,7 @@ public class Bullet : MonoBehaviour {
         Prepare();
     }
 
-    public void SetParams(
-        BulletProps bulletProps) {
+    public void SetParams(BulletProps bulletProps) {
 
         this.ricochet = bulletProps.Ricochet;
         this.piercing = bulletProps.Piercing;
@@ -98,6 +98,7 @@ public class Bullet : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+
         var cb = collision.gameObject.GetComponent<CharacterBase>();
         if (cb != null)
             cb.TakeDamage(rb.velocity.normalized * 5f);

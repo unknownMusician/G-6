@@ -3,33 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
 public class ShaderAfterShader : MonoBehaviour
 {
+    [SerializeField]
+    private Transform player;
     [SerializeField]
     private RenderTexture rt;
     [SerializeField]
     private List<Material> materials;
-
+    [SerializeField]
     private RenderTexture finalRt;
+    [SerializeField]
+    private RenderTexture bufferRt;
+    [SerializeField]
+    private Vector2 offset;
 
-    private void Start() {
-        finalRt = new RenderTexture(rt);
-        gameObject.GetComponent<RawImage>().texture = finalRt;
-    }
-
-    private void OnRenderImage(RenderTexture src, RenderTexture dst) {
-        RenderTexture rt1 = RenderTexture.GetTemporary(1920, 1080);
-        RenderTexture rt2;
-        Graphics.Blit(rt, rt1);
-        int count = materials.Count;
-        for(int i = 0; i < count; i++) {
-            rt2 = RenderTexture.GetTemporary(1920, 1080);
-            Graphics.Blit(rt1, rt2, materials[i]);
-            RenderTexture.ReleaseTemporary(rt1);
-            rt1 = rt2;
-        }
-        Graphics.Blit(rt1, finalRt);
-        RenderTexture.ReleaseTemporary(rt1);
+    private void Update() {
+        Vector3 playerPos = Camera.main.WorldToScreenPoint(player.position);
+        Vector3 mousePos = Input.mousePosition;
+        materials[0].SetVector("_PlayerPos", new Vector4(playerPos.x / Camera.main.pixelWidth, playerPos.y / Camera.main.pixelHeight, 0, 0));
+        materials[0].SetVector("_LookPos", new Vector4(mousePos.x / Camera.main.pixelWidth, mousePos.y / Camera.main.pixelHeight, 0, 0));
+        materials[1].SetVector("_PlayerPos", new Vector4(playerPos.x / Camera.main.pixelWidth, playerPos.y / Camera.main.pixelHeight, 0, 0));
+        materials[1].SetVector("_LookPos", new Vector4(mousePos.x / Camera.main.pixelWidth, mousePos.y / Camera.main.pixelHeight, 0, 0));
+        Graphics.Blit(rt, bufferRt, materials[0]);
+        Graphics.Blit(bufferRt, finalRt, materials[1]);
     }
 }
