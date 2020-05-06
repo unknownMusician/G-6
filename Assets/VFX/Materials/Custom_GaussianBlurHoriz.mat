@@ -26,5 +26,5 @@ Material:
     m_Floats:
     - _PxIntensity: 50
     m_Colors:
-    - _LookPos: {r: -0.7464838, g: 1.05, b: 0, a: 0}
-    - _PlayerPos: {r: 0.5, g: 0.3974495, b: 0, a: 0}
+    - _LookPos: {r: 0.34774563, g: 1.2954545, b: 0, a: 0}
+    - _PlayerPos: {r: 0.49854663, g: 0.3974228, b: 0, a: 0}
