@@ -435,4 +435,8 @@ public class RoomSpawner : MonoBehaviour {
         Vector2 result = new Vector2(CurrentColumn * 250, -CurrentRow * 200);
         return result;
     }
+
+    public GameObject getActiveRoom() {
+        return roomsMatrix[CurrentRow, CurrentColumn];
+    }
 }
