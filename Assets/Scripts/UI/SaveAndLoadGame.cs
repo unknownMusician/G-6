@@ -21,14 +21,11 @@ public class SaveAndLoadGame : MonoBehaviour
 public class SaveData
 {
     //Создание полей с игровыми параметрами
-    public float currHP;
-    public float HP;
+    public int currHP;
+    public int HP;
 
-    public float currMP;
-    public float MP;
-
-    public float currXP;
-    public float XP;
+    public int currXP;
+    public int XP;
 
     public int level;
 
@@ -37,22 +34,19 @@ public class SaveData
     public SaveData() //Конструктор класса
     {
         //Получение данных, которые нужно сохранить
-        HP = MainData.MaxHP;
-        currHP = MainData.currHP;
+        HP = MainData.OverallHP;
+        currHP = MainData.CurrentHP;
+        
+        XP = MainData.OverallXP;
+        currXP = MainData.CurrentXP;
 
-        MP = MainData.MaxMP;
-        currMP = MainData.currMP;
-
-        XP = MainData.MaxXP;
-        currXP = MainData.currXP;
-
-        level = MainData.level;
+        level = MainData.CurrentLevel;
 
         position = new float[3] //Получение позиции
 		{
-            MainData.position[0],
-            MainData.position[1],
-            MainData.position[2]
+            MainData.CurrentPosition.x,
+            MainData.CurrentPosition.y,
+            MainData.CurrentPosition.z,
         };
     }
 
