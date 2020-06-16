@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainData
 {
     #region Patrons
-    public static Action PatronsAction;
-    private static int overallPatrons;
-    private static int clipPatrons;
+    public static Action ActionPatrons;
+    private static int overallPatrons = 0;
+    private static int clipPatrons = 0;
 
     public static int OverallPatrons
     {
@@ -19,7 +20,7 @@ public class MainData
         set
         {
             overallPatrons = value;
-            PatronsAction();
+            ActionPatrons();
         }
     }
     public static int ClipPatrons
@@ -31,15 +32,15 @@ public class MainData
         set
         {
             clipPatrons = value;
-            PatronsAction();
+            ActionPatrons();
         }
     }
     #endregion
 
     #region HP
     public static Action ActionHP;
-    private static int overallHP;
-    private static int currentHP;
+    private static int overallHP = 100;
+    private static int currentHP = 100;
 
     public static int OverallHP
     {
@@ -67,10 +68,41 @@ public class MainData
     }
     #endregion
 
+    #region Endurance
+    public static Action ActionEndurance;
+    private static int overallEndurance = 100;
+    private static int currentEndurance = 100;
+
+    public static int OverallEndurance
+    {
+        get
+        {
+            return overallEndurance;
+        }
+        set
+        {
+            overallEndurance = value;
+            ActionEndurance();
+        }
+    }
+    public static int CurrentEndurance
+    {
+        get
+        {
+            return currentEndurance;
+        }
+        set
+        {
+            currentEndurance = value;
+            ActionEndurance();
+        }
+    }
+    #endregion
+
     #region XP
     public static Action ActionXP;
-    private static int overallXP;
-    private static int currentXP;
+    private static int overallXP = 100;
+    private static int currentXP = 0;
 
     public static int OverallXP
     {
@@ -100,7 +132,7 @@ public class MainData
 
     #region Level
     public static Action ActionLevel;
-    private static int currentLevel;
+    private static int currentLevel = 0;
 
     public static int CurrentLevel
     {
@@ -117,6 +149,44 @@ public class MainData
 
     #endregion
 
+    #region Money
+    public static Action ActionMoney;
+    private static int currentMoney = 0;
+
+    public static int CurrentMoney
+    {
+        get
+        {
+            return currentMoney;
+        }
+        set
+        {
+            currentMoney = value;
+            ActionMoney();
+        }
+    }
+
+    #endregion
+
+    #region WeaponImage
+    public static Action ActionWeaponImage;
+    private static Sprite currentWeaponImage = null;
+
+    public static Sprite CurrentWeaponImage
+    {
+        get
+        {
+            return currentWeaponImage;
+        }
+        set
+        {
+            currentWeaponImage = value;
+            ActionWeaponImage();
+        }
+    }
+
+    #endregion
+    //TODO start data
     #region Position
     public static Action ActionPosition;
     private static Vector3 currentPosition;

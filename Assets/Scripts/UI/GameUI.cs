@@ -12,20 +12,9 @@ public class GameUI : MonoBehaviour
     public Text patrons;
     public Slider health;
     public Slider endurance;
-    public Image weapons;
-    public Image mapimg;
-    public GameObject mapGameObject;
+    public Image weapon;
     public GameObject menu;
 
-    private static int healthcurrent = 100;
-    private static int healtmax = 100;
-    private static int endurancecurrent = 100;
-    private static int endurancemax = 100;
-    private static int patronscurrent = 0;
-    private static int patronsmax = 100;
-    private static int currentmoney = 0;
-    private static Image weaponsimage = null;
-    private static Image mapimage;
 
     private static Action UpdatInformation;
 
@@ -33,78 +22,56 @@ public class GameUI : MonoBehaviour
     {
         if (Event.current.Equals(Event.KeyboardEvent(KeyCode.Escape.ToString())))
             menu.active = !menu.active;
-        if (Event.current.Equals(Event.KeyboardEvent(KeyCode.M.ToString())))
-            mapGameObject.active = !mapGameObject.active;
     }
 
 
     public void Start()
     {
-        UpdatInformation += UpdateAll;
-        UpdatInformation();
-    }
-
-    private void UpdateAll()
-    {
         //health
+        MainData.ActionHP += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
-        health.maxValue = healtmax;
-        health.value = healthcurrent;
+        SetHelth();
         //endurance
+        MainData.ActionHP += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
-        endurance.maxValue = endurancemax;
-        endurance.value = endurancecurrent;
+        SetEndurance();
         //money
-        money.text = "Money:" + currentmoney.ToString();
+        MainData.ActionMoney += SetMoney;
+        SetMoney();
         //Patrons
-        patrons.text = patronscurrent.ToString() + "/" + patronsmax.ToString();
-        //Imageweapons
-        weapons = weaponsimage;
-        //Map
-        mapimg = mapimage;
+        MainData.ActionPatrons += SetPatrons;
+        SetPatrons();
+        //Imageweapon
+        MainData.ActionWeaponImage += SetImageWeapon;
+        SetImageWeapon();
+    }
+
+    public void SetHelth()
+    {
+        health.maxValue = MainData.OverallHP;
+        health.value = MainData.CurrentHP;
+    }
+    public void SetEndurance()
+    {
+        endurance.maxValue = MainData.OverallHP;
+        endurance.value = MainData.CurrentHP;
+    }
+    public void SetMoney()
+    {
+        money.text = "Money:" + MainData.CurrentMoney.ToString();
 
     }
 
-    public void OpenCloseMap()
+    public void SetPatrons()
     {
-        mapGameObject.active = !mapGameObject.active;
+        patrons.text = MainData.ClipPatrons.ToString() + "/" + MainData.OverallPatrons.ToString();
+
     }
 
-
-    public static void SetHelth(int current, int max)
+    public void SetImageWeapon()
     {
-        healthcurrent = current;
-        healtmax = max;
-        UpdatInformation();
-    }
-    public static void SetEndurance(int current, int max)
-    {
-        endurancecurrent = current;
-        endurancemax = max;
-        UpdatInformation();
-    }
-    public static void SetMoney(int kmoney)
-    {
-        currentmoney = kmoney;
-        UpdatInformation();
+        if (MainData.CurrentWeaponImage != null)
+            weapon.sprite = MainData.CurrentWeaponImage;
     }
 
-    public static void SetPatrons(int current, int max)
-    {
-        patronscurrent = current;
-        patronsmax = max;
-        UpdatInformation();
-    }
-
-    public static void SetImageWeapons(Image image)
-    {
-        weaponsimage = image;
-        UpdatInformation();
-    }
-
-    public static void SetMap(Image image)
-    {
-        mapimage = image;
-        UpdatInformation();
-    }
 }

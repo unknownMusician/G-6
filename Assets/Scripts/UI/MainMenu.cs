@@ -1,23 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject settingGameObject;
-    public GameObject audioGameObject;
+    public AudioMixer audioGameObject;
     public GameObject gameUIGameObject;
-    public GameObject weaponUIGameObject;
     public void PlayPressed()
     {
         DontDestroyOnLoad(settingGameObject);
         DontDestroyOnLoad(audioGameObject);
         DontDestroyOnLoad(gameUIGameObject);
-        DontDestroyOnLoad(weaponUIGameObject);
+
         gameUIGameObject.active = true;
 
         SceneManager.LoadScene("Level 1");
+    }
+
+    void Start()
+    {
+        audioGameObject.SetFloat("masterVolume", -60);
     }
     public void ExitPressed()
     {
