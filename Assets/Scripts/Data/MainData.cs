@@ -168,20 +168,20 @@ public class MainData
 
     #endregion
 
-    #region WeaponImage
-    public static Action ActionWeaponImage;
-    private static Sprite currentWeaponImage = null;
+    #region WeaponSprite
+    public static Action ActionWeaponSprite;
+    private static Sprite currentWeaponSprite = null;
 
-    public static Sprite CurrentWeaponImage
+    public static Sprite CurrentWeaponSprite
     {
         get
         {
-            return currentWeaponImage;
+            return currentWeaponSprite;
         }
         set
         {
-            currentWeaponImage = value;
-            ActionWeaponImage();
+            currentWeaponSprite = value;
+            ActionWeaponSprite();
         }
     }
 
