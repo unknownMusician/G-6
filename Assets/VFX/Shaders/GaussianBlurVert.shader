@@ -273,7 +273,7 @@
 					//col = blur(_MainTex, i.uv, 1.);
 				}
 				//col = pixelate(_MainTex, i.uv, _PxIntensity);
-				col = vertBlur(_MainTex, i.uv, -2. + clamp(_PxIntensity * min(abs(distance(i.uv, _PlayerPos)), abs(distance(i.uv, _LookPos))), 2., 10.));
+				col = vertBlur(_MainTex, i.uv, -3. + clamp(_PxIntensity * min(abs(distance(i.uv, _PlayerPos)), abs(distance(i.uv, _LookPos))), 3., 10.));
 
 				return col;
 			}
