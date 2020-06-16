@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_MinValue: -80
   m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -50.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3994,7 +3994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingGameObject: {fileID: 798545853}
-  audioGameObject: {fileID: 39850355}
+  audioGameObject: {fileID: 24100000, guid: 0c7acfcfee603084a94026cd7d411633, type: 2}
   gameUIGameObject: {fileID: 978065323}
 --- !u!1 &1287451184
 GameObject:
