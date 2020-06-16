@@ -8,11 +8,13 @@ public class MainMenu : MonoBehaviour
     public GameObject settingGameObject;
     public GameObject audioGameObject;
     public GameObject gameUIGameObject;
+    public GameObject weaponUIGameObject;
     public void PlayPressed()
     {
         DontDestroyOnLoad(settingGameObject);
         DontDestroyOnLoad(audioGameObject);
         DontDestroyOnLoad(gameUIGameObject);
+        DontDestroyOnLoad(weaponUIGameObject);
         gameUIGameObject.active = true;
 
         SceneManager.LoadScene("Level 1");
