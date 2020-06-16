@@ -439,4 +439,22 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject getActiveRoom() {
         return roomsMatrix[CurrentRow, CurrentColumn];
     }
+
+    public bool isThereAnyEnemy(int row, int column) {
+        for (int i = 0; i < roomsMatrix[row, column].transform.childCount; i++) {
+            if (roomsMatrix[row,column].transform.GetChild(i).tag == "Enemy") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool isThereAnyEnemy(GameObject room) {
+        for (int i = 0; i < room.transform.childCount; i++) {
+            if (room.transform.GetChild(i).tag == "Enemy") {
+                return true;
+            }
+        }
+        return false;
+    }
 }
