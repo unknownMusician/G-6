@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Timers;
+using System;
 
 public class Gun : Weapon {
 
     [Space]
+    #region Actions
+    public Action OnAttackAction;
+    public Action OnInstallCardAction;
+    #endregion
     [Space]
 
     [SerializeField]
@@ -17,6 +22,9 @@ public class Gun : Weapon {
     private float bulletSpeed = 20;
     [SerializeField]
     private float spread = 5;
+    [SerializeField]
+    private float bulletLifeTime = 1;
+    [Space]
     [SerializeField]
     private int clipSize = 9;
     [SerializeField]
@@ -46,6 +54,7 @@ public class Gun : Weapon {
         } else {
             Shoot();
         }
+        OnAttackAction();
     }
     protected override void InstallModCards() {
         if (cardGen != null)
@@ -82,6 +91,7 @@ public class Gun : Weapon {
             RemoveCard(this.cardGen);
             PrepareCardforInstall(cardGen);
             this.cardGen = cardGen;
+            OnInstallCardAction();
             return true;
         }
         return false;
@@ -91,6 +101,7 @@ public class Gun : Weapon {
             RemoveCard(this.cardFly);
             PrepareCardforInstall(cardFly);
             this.cardFly = cardFly;
+            OnInstallCardAction();
             return true;
         }
         return false;
@@ -98,6 +109,7 @@ public class Gun : Weapon {
     public bool InstallCard(CardGunEffect cardEff) {
         if(cardEff != null) {
             ////////////////
+            OnInstallCardAction();
             return true;
         }
         return false;
@@ -117,6 +129,7 @@ public class Gun : Weapon {
         if (canAttack && isLoaded) {
             for (int i = 0; i < cardGen.Props.BulletsPerShotAdder; i++) {
                 GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                Destroy(blt, bulletLifeTime * cardGen.Props.ShotRangeMultiplier);
                 blt.GetComponent<Rigidbody2D>().velocity = Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
                         transform.rotation.eulerAngles.y,

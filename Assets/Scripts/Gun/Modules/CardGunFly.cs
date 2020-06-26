@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class CardGunFly : CardGun {
     private BulletProps props;
-    public BulletProps Props { get; }
+    public BulletProps Props {
+        get {
+            if (props == null) {
+                props = new BulletProps(ricochet, piercing, homing, teleporting, magnet, enemy, magnetting);
+            }
+            return props;
+        }
+    }
 
     [SerializeField]
     private bool ricochet = false;
