@@ -6,6 +6,7 @@ using System;
 
 public abstract class Weapon : MonoBehaviour {
 
+    readonly string TAG = "Weapon: ";
     [SerializeField]
     protected GameObject weaponHolder = null;
     [SerializeField]
@@ -48,6 +49,7 @@ public abstract class Weapon : MonoBehaviour {
             animator.SetBool("secondState", true);
             weaponCollider.enabled = true;
         }
+        Debug.Log(TAG + "Changed state");
     }
     protected void SetReliefTimer(float time) {
         // Create a timer with a two second interval.
@@ -76,6 +78,7 @@ public abstract class Weapon : MonoBehaviour {
 
         this.gameObject.transform.parent = null; // unparented weapon
         EnablePhysics();
+        Debug.Log(TAG + "Dropped weapon");
     }
     public void Throw(Vector2 direction) {
         isThrowed = true;

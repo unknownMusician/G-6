@@ -165,23 +165,26 @@
 				float intensity;
 
 				float2 uv = i.uv; 
-				uv -= _PlayerPos;
+				float2 uvr = i.uv * _Resolution;
+				uvr -= _PlayerPos * _Resolution;
 				uv -= _Offset;
-				uv = float2(
-					uv.x * sin(_LookAngle) + uv.y * -cos(_LookAngle),
-					uv.x * cos(_LookAngle) + uv.y * sin(_LookAngle)
-				);
+				uvr = float2(
+					uvr.x * sin(_LookAngle) + uvr.y * -cos(_LookAngle),
+					uvr.x * cos(_LookAngle) + uvr.y * sin(_LookAngle)
+					);
 				//uv += _PlayerPos;
 				uv -= _OffsetRot;
 
-				if (uv.y > (uv.x) / _ViewWidth * (uv.x) / _ViewWidth) { 
+				if (uvr.y > (uvr.x) / _ViewWidth * (uvr.x) / _ViewWidth) {
 					intensity = 1.;
 				}
-				intensity = smoothstep((uv.x) / _ViewWidth * (uv.x) / _ViewWidth, 0., uv.y);
-				//float intensity = -3. + clamp(_PxIntensity * min(abs(distance(i.uv, _PlayerPos)), abs(distance(i.uv, _LookPos))), 3., 10.);
-				//
+				float hyperbola = smoothstep((uvr.x) / _ViewWidth * (uvr.x) / _ViewWidth, -100., uvr.y);
+				float dist = distance(float2(0., 0.), uvr.xy);
+				float sphere = smoothstep(10. * _ViewWidth, 50. * _ViewWidth, dist);
+				intensity = hyperbola * sphere;
+
 				col = vertBlur(_MainTex, i.uv, 10. * intensity);
-				col += float4(intensity * 0.05 * _ShowInColor, 0., 0., 1.0);
+				col += float4(intensity * 0.5 * _ShowInColor, 0., 0., 1.0);
 				return col;
 			}
 			ENDCG

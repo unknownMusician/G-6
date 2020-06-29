@@ -288,8 +288,8 @@ MonoBehaviour:
   bufferRt: {fileID: 8400000, guid: ac6f70af40d506246908d346f4546cf4, type: 2}
   centerOffset: {x: 0, y: -0.01}
   centerOffsetWichRotates: {x: 0, y: -0.05}
-  viewWidth: 0.3
-  showInColor: 0
+  viewWidth: 6
+  showInColor: 1
 --- !u!4 &394658558 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4333165457964277922, guid: 94bd35e81c096a744a6cbb3bfba5695b,
