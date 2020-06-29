@@ -92,7 +92,7 @@ public class PlayerBehaviour : CharacterBase
         }
         if (Inventory.Weapon != null)
         {
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("ChangeWeaponState"))
             {
                 Inventory.Weapon.ChangeState();
             }

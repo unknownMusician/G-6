@@ -6,6 +6,7 @@ using System;
 
 public class Gun : Weapon {
 
+    readonly string TAG = "Gun: ";
     [Space]
     #region Actions
     public Action OnAttackAction;
@@ -34,17 +35,22 @@ public class Gun : Weapon {
 
     [Space]
     [SerializeField]
-    protected CardGunGen cardGen;
+    protected CardGunGen CardGen;
     [Space]
     [SerializeField]
-    protected CardGunFly cardFly;
+    protected CardGunFly CardFly;
     [Space]
     [SerializeField]
-    protected CardGunEffect cardEff;
+    protected CardGunEffect CardEff;
+
+    protected CardGunGen.CardGunGenProps StandardCardGenProps;
+    protected CardGunFly.CardGunFlyProps StandardCardFlyProps;
+    protected CardGunEffect.CardGunEffectProps StandardCardEffProps;
 
     private bool isLoaded = true;
 
     private void Start() {
+        InitializeStandardGunCardProps();
         GetModulesFromChildren();
         InstallModCards();
     }
@@ -54,15 +60,20 @@ public class Gun : Weapon {
         } else {
             Shoot();
         }
-        OnAttackAction();
+        OnAttackAction?.Invoke();
+    }
+    protected void InitializeStandardGunCardProps() {
+        StandardCardGenProps = new CardGunGen.CardGunGenProps();
+        StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
+        StandardCardEffProps = new CardGunEffect.CardGunEffectProps();
     }
     protected override void InstallModCards() {
-        if (cardGen != null)
-            InstallCard(cardGen);
-        if (cardFly != null)
-            InstallCard(cardFly);
-        if (cardEff != null)
-            InstallCard(cardEff);
+        if (CardGen != null)
+            InstallCard(CardGen);
+        if (CardFly != null)
+            InstallCard(CardFly);
+        if (CardEff != null)
+            InstallCard(CardEff);
     }
     protected override void GetModulesFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
@@ -88,28 +99,30 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
-            RemoveCard(this.cardGen);
+            RemoveCard(this.CardGen);
             PrepareCardforInstall(cardGen);
-            this.cardGen = cardGen;
-            OnInstallCardAction();
+            this.CardGen = cardGen;
+            OnInstallCardAction?.Invoke();
             return true;
         }
         return false;
     }
     public bool InstallCard(CardGunFly cardFly) {
         if (cardFly != null) {
-            RemoveCard(this.cardFly);
+            RemoveCard(this.CardFly);
             PrepareCardforInstall(cardFly);
-            this.cardFly = cardFly;
-            OnInstallCardAction();
+            this.CardFly = cardFly;
+            OnInstallCardAction?.Invoke();
             return true;
         }
         return false;
     }
     public bool InstallCard(CardGunEffect cardEff) {
-        if(cardEff != null) {
-            ////////////////
-            OnInstallCardAction();
+        if (cardEff != null) {
+            RemoveCard(this.CardEff);
+            PrepareCardforInstall(cardEff);
+            this.CardEff = cardEff;
+            OnInstallCardAction?.Invoke();
             return true;
         }
         return false;
@@ -121,27 +134,39 @@ public class Gun : Weapon {
         ///////////////
         return true;
     }
-    
+
     private void Hit() {
         animator.SetTrigger("hit");
     }
     private void Shoot() {
         if (canAttack && isLoaded) {
-            for (int i = 0; i < cardGen.Props.BulletsPerShotAdder; i++) {
+            CardGunGen.CardGunGenProps CardGenProps;
+            if (CardGen == null) {
+                CardGenProps = StandardCardGenProps;
+            } else {
+                CardGenProps = CardGen.Props;
+            }
+            CardGunFly.CardGunFlyProps CardFlyProps;
+            if (CardFly == null) {
+                CardFlyProps = StandardCardFlyProps;
+            } else {
+                CardFlyProps = CardFly.Props;
+            }
+            for (int i = 0; i <= CardGenProps.BulletsPerShotAdder; i++) {
                 GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
-                Destroy(blt, bulletLifeTime * cardGen.Props.ShotRangeMultiplier);
+                Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
                 blt.GetComponent<Rigidbody2D>().velocity = Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
                         transform.rotation.eulerAngles.y,
                         transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
                     * Vector2.right * bulletSpeed;
-                blt.GetComponent<Bullet>().SetParams(cardFly.Props);
+                blt.GetComponent<Bullet>().SetParams(CardFlyProps);
             }
-            actualBullets -= cardGen.Props.BulletsPerShotAdder;
+            actualBullets -= CardGenProps.BulletsPerShotAdder + 1;
             CheckBullets();
             canAttack = false;
-            SetReliefTimer(1 / cardGen.Props.FireRateMultiplier);
-            Debug.Log(actualBullets + "/" + actualStock);
+            SetReliefTimer(1 / CardGenProps.FireRateMultiplier);
+            Debug.Log(TAG + "Bullets: " + actualBullets + "/" + actualStock);
         }
     }
     private void CheckBullets() {

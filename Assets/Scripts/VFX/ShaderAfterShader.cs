@@ -7,19 +7,19 @@ using UnityEngine.UI;
 public class ShaderAfterShader : MonoBehaviour
 {
     [SerializeField]
-    private Transform player;
+    private Transform player = null;
     [SerializeField]
-    private RenderTexture rt;
+    private RenderTexture rt = null;
     [SerializeField]
-    private List<Material> materials;
+    private List<Material> materials = null;
     [SerializeField]
-    private RenderTexture finalRt;
+    private RenderTexture finalRt = null;
     [SerializeField]
-    private RenderTexture bufferRt;
+    private RenderTexture bufferRt = null;
     [SerializeField]
-    private Vector2 centerOffset;
+    private Vector2 centerOffset = Vector2.zero;
     [SerializeField]
-    private Vector2 centerOffsetWichRotates;
+    private Vector2 centerOffsetWichRotates = Vector2.zero;
     [SerializeField]
     private float viewWidth = 1.0f;
     [SerializeField]
