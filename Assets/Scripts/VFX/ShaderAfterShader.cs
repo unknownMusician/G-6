@@ -24,6 +24,9 @@ public class ShaderAfterShader : MonoBehaviour
     private float viewWidth = 1.0f;
     [SerializeField]
     private bool showInColor = false;
+    [Range(0.0f, 1.0f)]
+    [SerializeField]
+    private float intensity = 0;
 
     private void Update() {
         Vector3 playerPos = Camera.main.WorldToScreenPoint(player.position);
@@ -55,6 +58,7 @@ public class ShaderAfterShader : MonoBehaviour
         materials[0].SetVector("_Offset", centerOffset4);
         materials[0].SetVector("_OffsetRot", centerOffsetWichRotates4);
         materials[0].SetFloat("_ShowInColor", showInColor ? 1.0f : 0.0f);
+        materials[0].SetFloat("_Intensity", intensity);
 
         materials[1].SetVector("_PlayerPos", plPos);
         materials[1].SetVector("_LookPos", lkPos);
@@ -63,7 +67,8 @@ public class ShaderAfterShader : MonoBehaviour
         materials[1].SetFloat("_ViewWidth", viewWidth);
         materials[1].SetVector("_Offset", centerOffset4);
         materials[1].SetVector("_OffsetRot", centerOffsetWichRotates4);
-        materials[0].SetFloat("_ShowInColor", showInColor ? 1.0f : 0.0f);
+        materials[1].SetFloat("_ShowInColor", showInColor ? 1.0f : 0.0f);
+        materials[1].SetFloat("_Intensity", intensity);
 
         Graphics.Blit(rt, bufferRt, materials[0]);
         Graphics.Blit(bufferRt, finalRt, materials[1]);

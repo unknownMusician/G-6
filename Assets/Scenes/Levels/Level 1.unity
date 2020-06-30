@@ -290,6 +290,7 @@ MonoBehaviour:
   centerOffsetWichRotates: {x: 0, y: -0.05}
   viewWidth: 6
   showInColor: 1
+  intensity: 1
 --- !u!4 &394658558 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4333165457964277922, guid: 94bd35e81c096a744a6cbb3bfba5695b,
@@ -985,6 +986,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   Inventory: {fileID: 0}
+  Hand: {fileID: 0}
   player: {fileID: 29168910}
 --- !u!1001 &2170964901280059883
 PrefabInstance:

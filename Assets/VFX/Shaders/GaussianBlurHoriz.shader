@@ -3,7 +3,7 @@
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
-		_PxIntensity("PxIntensity", Int) = 1.0
+		_Intensity("Intensity", Float) = 1.0
 		_PlayerPos("PlayerPos", Vector) = (0.5, 0.5, 0.5, 0.5)
 		_LookPos("LookPos", Vector) = (0.5, 0.5, 0.5, 0.5)
 		_LookAngle("LookAngle", Float) = 0.0
@@ -47,7 +47,7 @@
 			}
 
 			sampler2D _MainTex;
-			int _PxIntensity;
+			float _Intensity;
 			float4 _PlayerPos;
 			float4 _LookPos;
 			float _LookAngle;
@@ -172,7 +172,6 @@
 					uvr.x * sin(_LookAngle) + uvr.y * -cos(_LookAngle),
 					uvr.x * cos(_LookAngle) + uvr.y * sin(_LookAngle)
 				);
-				//uv += _PlayerPos;
 				uv -= _OffsetRot;
 
 				if (uvr.y > (uvr.x) / _ViewWidth * (uvr.x) / _ViewWidth) {
@@ -182,6 +181,7 @@
 				float dist = distance(float2(0., 0.), uvr.xy);
 				float sphere = smoothstep(10. * _ViewWidth, 50. * _ViewWidth, dist);
 				intensity = hyperbola * sphere;
+				intensity *= _Intensity;
 
 				col = horizBlur(_MainTex, i.uv, 10. * intensity);
 				col += float4(0., 0., intensity * 0.5 * _ShowInColor, 1.0);
