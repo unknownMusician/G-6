@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 847786896230299956}
   - component: {fileID: 5930130232060295257}
   m_Layer: 0
-  m_Name: GunModuleGen
+  m_Name: CardGunGen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,6 +95,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRateMultiplier: 1
-  bulletsPerShotAdder: 0
-  bulletMassMultiplier: 1
+  bulletsPerShotAdder: 1
   shotRangeMultiplier: 1

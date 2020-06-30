@@ -66,6 +66,8 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
+        Hand.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             Inventory.ChooseNext();
@@ -92,7 +94,7 @@ public class PlayerBehaviour : CharacterBase
         }
         if (Inventory.Weapon != null)
         {
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("ChangeWeaponState"))
             {
                 Inventory.Weapon.ChangeState();
             }
