@@ -66,6 +66,8 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
+        Hand.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             Inventory.ChooseNext();
