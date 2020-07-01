@@ -14,6 +14,7 @@ public class GameUI : MonoBehaviour
     public Slider endurance;
     public Image weapon;
     public GameObject menu;
+    public GameObject setting;
 
 
     private static Action UpdatInformation;
@@ -24,6 +25,12 @@ public class GameUI : MonoBehaviour
             menu.active = !menu.active;
     }
 
+    public void LoadSetting()
+    {
+
+        setting.SetActive(true);
+        menu.SetActive(false);
+    }
 
     public void Start()
     {

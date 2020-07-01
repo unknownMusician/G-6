@@ -1564,7 +1564,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 727794372}
   m_FillRect: {fileID: 164405097}
   m_HandleRect: {fileID: 727794371}
@@ -2396,7 +2396,7 @@ GameObject:
   - component: {fileID: 798545856}
   - component: {fileID: 798545855}
   - component: {fileID: 798545854}
-  m_Layer: 5
+  m_Layer: 19
   m_Name: CanvasSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2565,9 +2565,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 798545853}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1317727769}
+        m_MethodName: Exit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3156,6 +3156,7 @@ MonoBehaviour:
   endurance: {fileID: 544206779}
   weapon: {fileID: 829126449}
   menu: {fileID: 1778434303}
+  setting: {fileID: 798545853}
 --- !u!1 &980947035
 GameObject:
   m_ObjectHideFlags: 0
@@ -3994,8 +3995,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingGameObject: {fileID: 798545853}
+  thisGameObject: {fileID: 1268720947}
   audioGameObject: {fileID: 24100000, guid: 0c7acfcfee603084a94026cd7d411633, type: 2}
   gameUIGameObject: {fileID: 978065323}
+  clear: {fileID: 0}
 --- !u!1 &1287451184
 GameObject:
   m_ObjectHideFlags: 0
@@ -4307,6 +4310,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audiomixer: {fileID: 24100000, guid: 0c7acfcfee603084a94026cd7d411633, type: 2}
   resolutiondropdown: {fileID: 1912179412}
+  mainMenu: {fileID: 1268720947}
+  setting: {fileID: 798545853}
+  clear: {fileID: 0}
 --- !u!1 &1347351211
 GameObject:
   m_ObjectHideFlags: 0
@@ -4389,16 +4395,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 798545853}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1268720952}
+        m_MethodName: LoadSetting
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1347351214
 MonoBehaviour:
@@ -5269,7 +5275,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMax: {x: 0.295, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5458,7 +5464,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1561001241}
   m_FillRect: {fileID: 409828908}
   m_HandleRect: {fileID: 1561001240}
@@ -7083,16 +7089,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 798545853}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 978065328}
+        m_MethodName: LoadSetting
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1970552023
 MonoBehaviour:
@@ -7162,8 +7168,8 @@ RectTransform:
   m_Father: {fileID: 1902413314}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.8, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMin: {x: 0.295, y: 0}
+  m_AnchorMax: {x: 0.295, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
