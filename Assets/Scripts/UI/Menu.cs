@@ -19,6 +19,9 @@ public class Menu : MonoBehaviour
     public void Continue()
     {
         this.gameObject.active = false;
+        Time.timeScale = 1f;
+        PauseMenu.GameIsPaused = false;
+
     }
     public void LoadSetting()
     {

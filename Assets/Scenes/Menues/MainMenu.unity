@@ -3050,6 +3050,7 @@ GameObject:
   - component: {fileID: 978065325}
   - component: {fileID: 978065324}
   - component: {fileID: 978065328}
+  - component: {fileID: 978065329}
   m_Layer: 19
   m_Name: CanvasGame
   m_TagString: Untagged
@@ -3157,6 +3158,18 @@ MonoBehaviour:
   weapon: {fileID: 829126449}
   menu: {fileID: 1778434303}
   setting: {fileID: 798545853}
+--- !u!114 &978065329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978065323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc99568ef324d044b6e75601e30a5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &980947035
 GameObject:
   m_ObjectHideFlags: 0
@@ -3998,7 +4011,6 @@ MonoBehaviour:
   thisGameObject: {fileID: 1268720947}
   audioGameObject: {fileID: 24100000, guid: 0c7acfcfee603084a94026cd7d411633, type: 2}
   gameUIGameObject: {fileID: 978065323}
-  clear: {fileID: 0}
 --- !u!1 &1287451184
 GameObject:
   m_ObjectHideFlags: 0
@@ -4312,7 +4324,6 @@ MonoBehaviour:
   resolutiondropdown: {fileID: 1912179412}
   mainMenu: {fileID: 1268720947}
   setting: {fileID: 798545853}
-  clear: {fileID: 0}
 --- !u!1 &1347351211
 GameObject:
   m_ObjectHideFlags: 0

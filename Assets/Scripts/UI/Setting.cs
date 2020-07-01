@@ -44,6 +44,8 @@ public class Setting : MonoBehaviour
             mainMenu.active = true;
             prap = false;
         }
+        Time.timeScale = 1f;
+        PauseMenu.GameIsPaused = false;
     }
 
     public void Resolution(int r)
