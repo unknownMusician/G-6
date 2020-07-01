@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
+
 public class MainMenu : MonoBehaviour
 {
     public GameObject settingGameObject;
+    public GameObject thisGameObject;
     public AudioMixer audioGameObject;
     public GameObject gameUIGameObject;
     public void PlayPressed()
@@ -20,9 +23,17 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Level 1");
     }
 
+    public void LoadSetting()
+    {
+        thisGameObject.active = false;
+        settingGameObject.active = true;
+        Setting.prap = true;
+    }
+
+
     void Start()
     {
-        audioGameObject.SetFloat("masterVolume", -60);
+        audioGameObject.SetFloat("masterVolume", -25);
     }
     public void ExitPressed()
     {
