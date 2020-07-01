@@ -16,7 +16,6 @@ public class Setting : MonoBehaviour
     public static bool prap = false;
     public GameObject mainMenu;
     public GameObject setting;
-    public GameObject clear;
 
     public void FullScreenToggle()
     {
@@ -45,7 +44,6 @@ public class Setting : MonoBehaviour
             mainMenu.active = true;
             prap = false;
         }
-        clear.SetActive(false);
     }
 
     public void Resolution(int r)

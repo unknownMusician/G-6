@@ -12,13 +12,11 @@ public class MainMenu : MonoBehaviour
     public GameObject thisGameObject;
     public AudioMixer audioGameObject;
     public GameObject gameUIGameObject;
-    public GameObject clear;
     public void PlayPressed()
     {
         DontDestroyOnLoad(settingGameObject);
         DontDestroyOnLoad(audioGameObject);
         DontDestroyOnLoad(gameUIGameObject);
-        DontDestroyOnLoad(clear);
 
         gameUIGameObject.active = true;
 
