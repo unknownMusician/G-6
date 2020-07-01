@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        audioGameObject.SetFloat("masterVolume", -60);
+        audioGameObject.SetFloat("masterVolume", -25);
     }
     public void ExitPressed()
     {
