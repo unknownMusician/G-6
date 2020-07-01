@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    readonly string TAG = "Inventory: ";
     [SerializeField]
     private List<Weapon> weapons = null;
     private int activeWeapon; // index
@@ -55,7 +56,7 @@ public class Inventory : MonoBehaviour
         if(actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) {
             strenght *= ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow);
         }
-        Debug.Log(strenght);
+        Debug.Log(TAG + "Throwed with the stenght :" + strenght);
         if(weapons[activeWeapon] != null) {
             weapons[activeWeapon].Throw(this.gameObject.transform.rotation * Vector2.right * strenght);
             weapons[activeWeapon] = null;
@@ -73,7 +74,7 @@ public class Inventory : MonoBehaviour
     }
     public void Choose(int index) {
         if(index < 0 || index >= this.transform.childCount) {
-            Debug.Log("This is an IndexOutOfBoundsExeption in Inventory");
+            Debug.Log(TAG + "This is an IndexOutOfBoundsExeption in Inventory");
             return;
         }
         if(index == activeWeapon) {

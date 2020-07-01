@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
+
+    readonly string TAG = "Bullet: ";
     public Rigidbody2D rb;
 
     private bool ricochet;
@@ -36,7 +38,7 @@ public class Bullet : MonoBehaviour {
         Prepare();
     }
 
-    public void SetParams(BulletProps bulletProps) {
+    public void SetParams(CardGunFly.CardGunFlyProps bulletProps) {
 
         this.ricochet = bulletProps.Ricochet;
         this.piercing = bulletProps.Piercing;
@@ -77,7 +79,7 @@ public class Bullet : MonoBehaviour {
 
             Vector2 dist = aim.transform.position - this.transform.position;
             Vector2 neededSpeed = dist.normalized * 30;
-            Debug.Log(dist);
+            Debug.Log(TAG + dist);
             Vector2 force = (neededSpeed - rb.velocity) * 2;
             rb.AddForce(force);
         }
