@@ -360,6 +360,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   Inventory: {fileID: 2847807284984056052}
+  Hand: {fileID: 4333165458613876751}
 --- !u!1 &5375603967128161197
 GameObject:
   m_ObjectHideFlags: 0
