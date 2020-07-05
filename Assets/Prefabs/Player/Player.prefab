@@ -151,8 +151,8 @@ MonoBehaviour:
   weapons:
   - {fileID: 0}
   - {fileID: 0}
-  throwStrenght: 0
-  secondsToMaxThrow: 0
+  throwStrenght: 10
+  secondsToMaxThrow: 1
 --- !u!1 &4333165458918672411
 GameObject:
   m_ObjectHideFlags: 0

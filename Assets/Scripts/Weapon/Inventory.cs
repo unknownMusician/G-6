@@ -49,6 +49,8 @@ public class Inventory : MonoBehaviour
     }
     public void ThrowPress() {
         tmpWhenThrowButtonPressed = Time.time;
+
+        Debug.Log(TAG + "Started Timer to Throw");
     }
     public void ThrowRelease() {
         float strenght = throwStrenght;

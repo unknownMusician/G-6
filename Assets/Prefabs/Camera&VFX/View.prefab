@@ -93,8 +93,8 @@ MonoBehaviour:
   centerOffset: {x: 0, y: -0.01}
   centerOffsetWichRotates: {x: 0, y: -0.05}
   viewWidth: 6
-  showInColor: 1
-  intensity: 1
+  showInColor: 0
+  intensity: 0
 --- !u!1 &418263513678517896
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 418263513956802264}
   m_Layer: 0
-  m_Name: View 1
+  m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
