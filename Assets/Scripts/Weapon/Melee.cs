@@ -14,7 +14,7 @@ public class Melee : Weapon
     protected override void InstallModCards() {
 
     }
-    protected override void GetModulesFromChildren() {
+    protected override void GetCardsFromChildren() {
 
     }
     public override void Reload() {

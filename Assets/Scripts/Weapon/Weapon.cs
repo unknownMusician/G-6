@@ -31,7 +31,7 @@ public abstract class Weapon : MonoBehaviour {
 
     public abstract void Attack();
     protected abstract void InstallModCards();
-    protected abstract void GetModulesFromChildren();
+    protected abstract void GetCardsFromChildren();
     public abstract void Reload();
     public Collider2D GetWeaponCollider() {
         return weaponCollider;
@@ -41,13 +41,13 @@ public abstract class Weapon : MonoBehaviour {
             secondState = false;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
             animator.SetBool("secondState", false);
-            weaponCollider.enabled = false;
+            //weaponCollider.enabled = false;
 
         } else {
             secondState = true;
             this.transform.rotation = Quaternion.Euler(0, 0, -90);
             animator.SetBool("secondState", true);
-            weaponCollider.enabled = true;
+            //weaponCollider.enabled = true;
         }
         Debug.Log(TAG + "Changed state");
     }
