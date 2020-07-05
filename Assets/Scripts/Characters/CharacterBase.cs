@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -58,6 +60,22 @@ public abstract class CharacterBase : MonoBehaviour
 
     #endregion
 
+    #region Environment
+
+    protected BaseEnvironment InteractableObject;
+
+    protected float DistanceToInteractableObject
+    {
+        get
+        {
+            if (InteractableObject != null)
+                return (InteractableObject.transform.position - this.transform.position).magnitude;
+            else
+                return float.MaxValue;
+        }
+    }
+
+    #endregion
 
     #region Components
 
@@ -201,13 +219,37 @@ public abstract class CharacterBase : MonoBehaviour
         return Side.Up;
     }
 
+    protected bool TryInteract()
+    {
+        try
+        {
+            if (InteractableObject == null)
+                return false;
+            InteractableObject.Interact();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogW(ex, "Problems with interraction in CharacterBase script");
+        }
+        return false;
+    }
+
     protected void Die()
     {
         State = State.Dead;
     }
     #endregion
 
-    
+    #region _
+
+    protected void Say(string message)
+    {
+        Debug.Log($"Hero sad: \"{message}\" ");
+    }
+
+    #endregion
+
     #region MonoBehaviour Implemented
     protected void Start()
     {
@@ -232,6 +274,19 @@ public abstract class CharacterBase : MonoBehaviour
     {
         WeaponFixedControl();
     }
+    protected void OnCollisionEnter2D(Collision2D collision)
+    {
+         GameObject collisionObject = collision.gameObject;
+        if (collisionObject.GetComponent<BaseEnvironment>() != null)
+            if (collisionObject.gameObject.transform.position.magnitude < DistanceToInteractableObject)
+                InteractableObject = collisionObject.GetComponent<BaseEnvironment>();
+    }
+    protected void OnCollisionExit2D(Collision2D collision)
+    {
+        GameObject collisionObject = collision.gameObject;
+        if (collisionObject.GetComponent<BaseEnvironment>() == InteractableObject)
+            InteractableObject = null;
+    }
     #endregion
 
 
@@ -240,7 +295,8 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Die();
+        if (HP <= 0)
+            Die();
     }
     public void TakeDamage(Vector2 damageVector)
     {

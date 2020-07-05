@@ -33,5 +33,5 @@ Material:
     - _LookPos: {r: 0.3220742, g: 1.6937394, b: 0, a: 0}
     - _Offset: {r: 0, g: -0.01, b: 0, a: 0}
     - _OffsetRot: {r: 0, g: -0.05, b: 0, a: 0}
-    - _PlayerPos: {r: 0.5, g: 0.39999998, b: 0, a: 0}
-    - _Resolution: {r: 1051, g: 591, b: 0, a: 0}
+    - _PlayerPos: {r: 0.5, g: 0.39999995, b: 0, a: 0}
+    - _Resolution: {r: 1280, g: 720, b: 0, a: 0}
