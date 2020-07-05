@@ -26,7 +26,17 @@ public class PlayerBehaviour : CharacterBase
 
             Side = CheckSideLR(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-            //Debug.Log(State.ToString());
+            if (Input.GetButtonDown("Interact"))
+            {
+                if (TryInteract())
+                {
+                    Say("Ok, I've interacted with something. What's next?");
+                }
+                else
+                {
+                    Say("Hey, there is nothing to interact with!");
+                }
+            }
 
             Control();
         }
