@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardGunEffect : CardGun {
 
-    public CardGunEffectProps Props { get; }
+    public CardGunEffectProps Props { get { return new CardGunEffectProps(frost, fire, poison, stunn, vampire); } }
 
     [SerializeField]
     private bool frost = false;
@@ -16,14 +16,6 @@ public class CardGunEffect : CardGun {
     private bool stunn = false;
     [SerializeField]
     private bool vampire = false;
-
-    public CardGunEffect() {
-        Props = new CardGunEffectProps(frost, fire, poison, stunn, vampire);
-    }
-
-    public CardGunEffect(CardGunEffectProps props) {
-        this.Props = props;
-    }
 
     public override string ToString() {
         return "CardGunFly (" + frost + "; " + fire + "; " + poison + "; " + stunn + "; " + vampire + ")";

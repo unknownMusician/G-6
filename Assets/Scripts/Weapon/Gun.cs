@@ -62,7 +62,7 @@ public class Gun : Weapon {
 
     private void Start() {
         InitializeStandardGunCardProps();
-        GetModulesFromChildren();
+        GetCardsFromChildren();
         InstallModCards();
     }
     public override void Attack() {
@@ -81,7 +81,7 @@ public class Gun : Weapon {
         if (CardEff != null)
             InstallCard(CardEff);
     }
-    protected override void GetModulesFromChildren() {
+    protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
             GameObject child = this.transform.GetChild(i).gameObject;
             CardGun card = child.GetComponent<CardGun>();
@@ -174,12 +174,13 @@ public class Gun : Weapon {
             for (int i = 0; i <= CardGenProps.BulletsPerShotAdder; i++) {
                 GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
-                blt.GetComponent<Rigidbody2D>().velocity = Quaternion.Euler(
+                blt.GetComponent<Bullet>().SetParams(CardFlyProps);
+                Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
+                blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
                         transform.rotation.eulerAngles.y,
                         transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
                     * Vector2.right * bulletSpeed;
-                blt.GetComponent<Bullet>().SetParams(CardFlyProps);
             }
             clipActualBullets -= CardGenProps.BulletsPerShotAdder + 1;
             CheckBullets();

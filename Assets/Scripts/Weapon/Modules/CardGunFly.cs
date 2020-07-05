@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardGunFly : CardGun {
     
-    public CardGunFlyProps Props { get; }
+    public CardGunFlyProps Props { get { return new CardGunFlyProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
 
     [SerializeField]
     private bool ricochet = false;
@@ -20,14 +20,6 @@ public class CardGunFly : CardGun {
     private LayerMask enemy = 0;
     [SerializeField]
     private LayerMask magnetting = 0;
-
-    public CardGunFly() {
-        Props = new CardGunFlyProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
-    }
-
-    public CardGunFly(CardGunFlyProps props) {
-        this.Props = props;
-    }
 
     public override string ToString() {
         return "CardGunFly (" + ricochet + "; " + piercing + "; " + homing + "; " + teleporting + "; " + magnet + "; " + enemy + "; " + magnetting + ")";

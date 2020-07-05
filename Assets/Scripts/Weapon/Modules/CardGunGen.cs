@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardGunGen : CardGun {
 
-    public CardGunGenProps Props { get; }
+    public CardGunGenProps Props { get { return new CardGunGenProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
 
     [SerializeField]
     protected float fireRateMultiplier = 1;
@@ -12,14 +12,6 @@ public class CardGunGen : CardGun {
     protected int bulletsPerShotAdder = 0;
     [SerializeField]
     protected float shotRangeMultiplier = 1;
-
-    public CardGunGen() {
-        Props = new CardGunGenProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier);
-    }
-
-    public CardGunGen(CardGunGenProps props) {
-        this.Props = props;
-    }
 
     public override string ToString() {
         return "CardGunGen (" + fireRateMultiplier + "; " + bulletsPerShotAdder + "; " + shotRangeMultiplier + ")";

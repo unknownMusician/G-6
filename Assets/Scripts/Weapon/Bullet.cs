@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     readonly string TAG = "Bullet: ";
+
     public Rigidbody2D rb;
 
     private bool ricochet;
@@ -100,11 +101,13 @@ public class Bullet : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-
-        var cb = collision.gameObject.GetComponent<CharacterBase>();
-        if (cb != null)
+        GameObject collidedObject = collision.gameObject;
+        var cb = collidedObject.GetComponent<CharacterBase>();
+        if (cb != null) {
             cb.TakeDamage(rb.velocity.normalized * 5f);
-
+            Destroy(this.gameObject);
+            return;
+        }
         if (ricochet) {
 
         } else {
@@ -112,10 +115,10 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void OnTriggerEnter2D(Collider2D collider) {
         piercingCount--;
     }
-    private void OnTriggerExit2D(Collider2D collision) {
+    private void OnTriggerExit2D(Collider2D collider) {
         if (piercingCount <= 0) {
             this.gameObject.GetComponent<CircleCollider2D>().isTrigger = false;
         }
