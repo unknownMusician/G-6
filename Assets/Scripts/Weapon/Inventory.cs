@@ -6,6 +6,12 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
+    #region Actions
+
+    // 
+
+    #endregion
+
     #region Constants
 
     public static class Slots {
@@ -17,9 +23,13 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region Public Variables
+    #region Parameters
 
     public Weapon Weapon { get { return weapons[activeWeapon]; } }
+
+    #endregion
+
+    #region Public Variables
 
     [SerializeField]
     private List<Weapon> weapons = null;
@@ -41,6 +51,20 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         Prepare();
+    }
+
+    #endregion
+
+    #region Service Methods
+
+    private void SendToMainData() {
+        MainData.ActiveWeapon = Weapon.WeaponType;
+
+        List<Weapon.Type> finWeapons = new List<Weapon.Type>();
+        for( int i = 0; i < weapons.Count; i++) {
+            finWeapons[i] = weapons[i].WeaponType;
+        }
+        MainData.InventoryWeapons = finWeapons;
     }
 
     #endregion
@@ -85,6 +109,7 @@ public class Inventory : MonoBehaviour {
             weapons[index].gameObject.SetActive(true);
         }
         activeWeapon = index;
+        SendToMainData();
     }
     public void ChooseNext() {
         if (activeWeapon == weapons.Count - 1) {
@@ -104,6 +129,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon + 1].gameObject.SetActive(true);
         }
         activeWeapon++;
+        SendToMainData();
     }
     public void ChoosePrev() {
         if (activeWeapon == 0) {
@@ -123,6 +149,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon - 1].gameObject.SetActive(true);
         }
         activeWeapon--;
+        SendToMainData();
     }
     public int GetCount() {
         return weapons.Count;
