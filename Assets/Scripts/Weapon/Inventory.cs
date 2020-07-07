@@ -80,6 +80,7 @@ public class Inventory : MonoBehaviour {
             }
         }
         MainData.InventoryWeapons = allWeapons;
+        Debug.Log(TAG + "SendToMainData()");
     }
 
     #endregion
@@ -135,6 +136,7 @@ public class Inventory : MonoBehaviour {
                 weapons[0].gameObject.SetActive(true);
             }
             activeWeapon = 0;
+            SendToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
@@ -155,6 +157,7 @@ public class Inventory : MonoBehaviour {
                 weapons[weapons.Count - 1].gameObject.SetActive(true);
             }
             activeWeapon = weapons.Count - 1;
+            SendToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
