@@ -182,7 +182,7 @@ public class Gun : Weapon {
             }
             int bulletsPerShot = Mathf.Min(CardGenProps.BulletsPerShotAdder + 1, clipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
-                GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                GameObject blt = Instantiate(bullet, firePoint, transform.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
                 blt.GetComponent<Bullet>().SetParams(CardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
