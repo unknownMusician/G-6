@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - dontdestroy
   layers:
   - Default
   - TransparentFX
@@ -17,14 +19,14 @@ TagManager:
   - Player
   - NPC
   - Weapon
+  - BackGround
+  - PostProcessing
+  - 
+  - Ground
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UI
   - 
   - 
   - 
