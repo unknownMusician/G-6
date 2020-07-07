@@ -45,7 +45,6 @@ public class RoomSpawner : MonoBehaviour {
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsMatrix = new Room[rows, columns]; 
         roomsGameObjectMatrix = new GameObject[rows, columns];
-        roomsMatrix = new Room[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
         Transform playerTransform = player.transform;
