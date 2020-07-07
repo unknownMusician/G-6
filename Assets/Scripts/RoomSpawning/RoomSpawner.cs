@@ -443,16 +443,10 @@ public class RoomSpawner : MonoBehaviour {
     }
 
     public bool IsThereAnyEnemy(int row, int column) {
-        if (roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0) {
-            return true;
-        }
-        return false;
+        return roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0;
     }
 
     public bool IsThereAnyEnemy(GameObject room) {
-        if (room.transform.GetChild(0).transform.childCount != 0) {
-            return true;
-        }
-        return false;
+        return room.transform.GetChild(0).transform.childCount != 0;
     }
 }
