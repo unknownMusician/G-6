@@ -36,6 +36,12 @@ public class Room : MonoBehaviour
     ////////////////////////////////////////////////////////////
 
     public bool IsThereAnyEnemy(GameObject room) {
-        return room.transform.GetChild(0).transform.childCount != 0;
+        return room.transform.GetChild(0).childCount != 0;
+    }
+
+    public static class RoomType {
+        readonly public static byte start = 0;
+        readonly public static byte regular = 1;
+        readonly public static byte finish = 2;
     }
 }
