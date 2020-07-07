@@ -14,11 +14,26 @@ public class Room : MonoBehaviour
     // GameObject, which contains content of the whole room
     public GameObject room;
 
-    public Room(GameObject roomGameObject) {
-        room = roomGameObject;
-        enemies = roomGameObject.transform.GetChild(0).gameObject;
+    ////////////////////////////////////////////////////////////
+    // fixed by unknownMusician
+    // check if it's correct & delete these comments
+
+    public Room() {
         roomType = 1;
-    } 
+    }
+
+    private void Start() {
+        room = this.gameObject;
+        enemies = room.transform.GetChild(0).gameObject;
+    }
+
+    //public Room(GameObject roomGameObject) {
+    //    room = roomGameObject;
+    //    enemies = roomGameObject.transform.GetChild(0).gameObject;
+    //    roomType = 1;
+    //}
+
+    ////////////////////////////////////////////////////////////
 
     public bool IsThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;

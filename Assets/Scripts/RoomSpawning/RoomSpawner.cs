@@ -44,6 +44,7 @@ public class RoomSpawner : MonoBehaviour {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsGameObjectMatrix = new GameObject[rows, columns];
+        roomsMatrix = new Room[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
         Transform playerTransform = player.transform;
@@ -409,7 +410,17 @@ public class RoomSpawner : MonoBehaviour {
                             Quaternion.identity,
                             this.gameObject.transform.GetChild(0)
                             );
-                        roomsMatrix[i, j] = new Room(roomsGameObjectMatrix[i, j]);
+
+                        ////////////////////////////////////////////////////////////
+                        // fixed by unknownMusician
+                        // check if it's correct & delete these comments
+
+                        roomsMatrix[i, j] = roomsGameObjectMatrix[i, j].AddComponent<Room>();
+
+                        // roomsMatrix[i, j] = new Room(roomsGameObjectMatrix[i, j]);
+
+                        ////////////////////////////////////////////////////////////
+
                         roomsGameObjectMatrix[i, j].SetActive(false);
 
                         if ((i == rows / 2) && (j == columns / 2)) {

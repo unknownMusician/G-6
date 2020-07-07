@@ -20,7 +20,7 @@ public class Gun : Weapon {
     [SerializeField]
     private GameObject bullet = null;
     [SerializeField]
-    private Vector3 firePoint = Vector3.right;
+    private Vector3 localFirePoint = Vector3.right;
 
     [SerializeField]
     private float bulletSpeed = 20;
@@ -62,7 +62,7 @@ public class Gun : Weapon {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawIcon(firePoint, "firePoint");
+        Gizmos.DrawSphere(transform.position + localFirePoint, 0.2f);
     }
 
     #endregion
@@ -182,7 +182,7 @@ public class Gun : Weapon {
             }
             int bulletsPerShot = Mathf.Min(CardGenProps.BulletsPerShotAdder + 1, clipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
-                GameObject blt = Instantiate(bullet, firePoint, transform.rotation);
+                GameObject blt = Instantiate(bullet, transform.position + transform.rotation * localFirePoint, transform.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
                 blt.GetComponent<Bullet>().SetParams(CardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
