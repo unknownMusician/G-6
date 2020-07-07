@@ -70,17 +70,18 @@ public class Inventory : MonoBehaviour {
 
     #region Service Methods
 
-    private void SendToMainData() {
+    private void SendActiveWeaponToMainData() {
         MainData.ActiveWeapon = Weapon.WeaponPrefab;
+    }
 
+    private void SendInventoryWeaponsToMainData() {
         Dictionary<GameObject, List<Card>> allWeapons = new Dictionary<GameObject, List<Card>>();
-        for(int i = 0; i < weapons.Count; i++) {
+        for (int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
                 allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
             }
         }
         MainData.InventoryWeapons = allWeapons;
-        Debug.Log(TAG + "SendToMainData()");
     }
 
     #endregion
@@ -125,7 +126,7 @@ public class Inventory : MonoBehaviour {
             weapons[index].gameObject.SetActive(true);
         }
         activeWeapon = index;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public void ChooseNext() {
         if (activeWeapon == weapons.Count - 1) {
@@ -136,7 +137,7 @@ public class Inventory : MonoBehaviour {
                 weapons[0].gameObject.SetActive(true);
             }
             activeWeapon = 0;
-            SendToMainData();
+            SendActiveWeaponToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
@@ -146,7 +147,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon + 1].gameObject.SetActive(true);
         }
         activeWeapon++;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public void ChoosePrev() {
         if (activeWeapon == 0) {
@@ -157,7 +158,7 @@ public class Inventory : MonoBehaviour {
                 weapons[weapons.Count - 1].gameObject.SetActive(true);
             }
             activeWeapon = weapons.Count - 1;
-            SendToMainData();
+            SendActiveWeaponToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
@@ -167,7 +168,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon - 1].gameObject.SetActive(true);
         }
         activeWeapon--;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public int GetCount() {
         return weapons.Count;
