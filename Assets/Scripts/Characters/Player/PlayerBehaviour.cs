@@ -88,19 +88,19 @@ public class PlayerBehaviour : CharacterBase
         }
         if (Input.GetButtonDown("WeaponSlot1"))
         {
-            Inventory.Choose(0);
+            Inventory.Choose(Inventory.Slots.first);
         }
         else if (Input.GetButtonDown("WeaponSlot2"))
         {
-            Inventory.Choose(1);
+            Inventory.Choose(Inventory.Slots.second);
         }
         else if (Input.GetButtonDown("WeaponSlot3"))
         {
-            Inventory.Choose(2);
+            Inventory.Choose(Inventory.Slots.third);
         }
         else if (Input.GetButtonDown("WeaponSlot4"))
         {
-            Inventory.Choose(3);
+            Inventory.Choose(Inventory.Slots.fourth);
         }
         if (Inventory.Weapon != null)
         {
