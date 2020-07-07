@@ -14,7 +14,7 @@ public class RoomSpawner : MonoBehaviour {
     public int columns;
     private int currentRow;
     private int currentColumn;
-    public PlayerMovementScript player;
+    public CharacterBase player;
 
     public int CurrentColumn { get; set; }
     public int CurrentRow { get; set; }
@@ -410,7 +410,17 @@ public class RoomSpawner : MonoBehaviour {
                             Quaternion.identity,
                             this.gameObject.transform.GetChild(0)
                             );
-                        roomsMatrix[i, j] = new Room(roomsGameObjectMatrix[i, j]);
+
+                        ////////////////////////////////////////////////////////////
+                        // fixed by unknownMusician
+                        // check if it's correct & delete these comments
+
+                        roomsMatrix[i, j] = roomsGameObjectMatrix[i, j].AddComponent<Room>();
+
+                        // roomsMatrix[i, j] = new Room(roomsGameObjectMatrix[i, j]);
+
+                        ////////////////////////////////////////////////////////////
+
                         roomsGameObjectMatrix[i, j].SetActive(false);
 
                         if ((i == rows / 2) && (j == columns / 2)) {
