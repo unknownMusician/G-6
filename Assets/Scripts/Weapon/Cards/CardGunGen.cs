@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardGunGen : CardGun {
+public class CardGunGen : MonoBehaviour, CardGun {
 
-    readonly string TAG = "CardGunGen: ";
+    const string TAG = "CardGunGen: ";
 
     #region Parameters
 

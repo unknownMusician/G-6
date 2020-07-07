@@ -6,12 +6,7 @@ using System;
 
 public class Gun : Weapon {
 
-    readonly string TAG = "Gun: ";
-
-    #region Actions
-    public Action OnAttackAction;
-    public Action OnInstallCardAction;
-    #endregion
+    const string TAG = "Gun: ";
 
     #region Public Variables
 
@@ -23,11 +18,14 @@ public class Gun : Weapon {
     private Vector3 localFirePoint = Vector3.right;
 
     [SerializeField]
+    private float standardDamage;
+    [SerializeField]
     private float bulletSpeed = 20;
     [SerializeField]
     private float spread = 5;
     [SerializeField]
     private float bulletLifeTime = 1;
+
     [Space]
     [SerializeField]
     private int clipMaxBullets = 9;
@@ -44,7 +42,7 @@ public class Gun : Weapon {
     protected CardGunFly CardFly;
     [Space]
     [SerializeField]
-    protected CardGunEffect CardEff;
+    protected CardEffect CardEff;
 
     #endregion
 
@@ -52,7 +50,7 @@ public class Gun : Weapon {
 
     protected CardGunGen.CardGunGenProps StandardCardGenProps;
     protected CardGunFly.CardGunFlyProps StandardCardFlyProps;
-    protected CardGunEffect.CardGunEffectProps StandardCardEffProps;
+    protected CardEffect.CardGunEffectProps StandardCardEffProps;
 
     private bool isLoaded = true;
 
@@ -75,7 +73,7 @@ public class Gun : Weapon {
         InstallModCards();
     }
     public override void Attack() {
-        if (secondState) {
+        if (state == State.Alt) {
             Hit();
         } else {
             Shoot();
@@ -106,7 +104,7 @@ public class Gun : Weapon {
     protected void InitializeStandardGunCardProps() {
         StandardCardGenProps = new CardGunGen.CardGunGenProps();
         StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
-        StandardCardEffProps = new CardGunEffect.CardGunEffectProps();
+        StandardCardEffProps = new CardEffect.CardGunEffectProps();
     }
     public bool InstallUnknownCard(CardGun card) {
         if (card != null) {
@@ -114,8 +112,8 @@ public class Gun : Weapon {
                 InstallCard((CardGunGen)card);
             } else if (card is CardGunFly) {
                 InstallCard((CardGunFly)card);
-            } else if (card is CardGunEffect) {
-                InstallCard((CardGunEffect)card);
+            } else if (card is CardEffect) {
+                InstallCard((CardEffect)card);
             }
             return true;
         }
@@ -141,7 +139,7 @@ public class Gun : Weapon {
         }
         return false;
     }
-    public bool InstallCard(CardGunEffect cardEff) {
+    public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
             RemoveCard(this.CardEff);
             PrepareCardforInstall(cardEff);
@@ -184,7 +182,7 @@ public class Gun : Weapon {
             for (int i = 0; i < bulletsPerShot; i++) {
                 GameObject blt = Instantiate(bullet, transform.position + transform.rotation * localFirePoint, transform.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
-                blt.GetComponent<Bullet>().SetParams(CardFlyProps);
+                blt.GetComponent<Bullet>().SetParams(standardDamage, CardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
                 blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
@@ -211,7 +209,7 @@ public class Gun : Weapon {
             isLoaded = false;
         }
     }
-    public override void Reload() {
+    public void Reload() {
         int bulletsNeeded = clipMaxBullets - clipActualBullets;
         if (bulletsNeeded <= pocketActualBullets) {
             clipActualBullets += bulletsNeeded;

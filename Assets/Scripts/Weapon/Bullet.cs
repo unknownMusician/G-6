@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    readonly string TAG = "Bullet: ";
+    const string TAG = "Bullet: ";
 
     #region Public Variables
 
@@ -14,6 +14,8 @@ public class Bullet : MonoBehaviour {
     #endregion
 
     #region Private Variables
+
+    private float damage;
 
     private bool ricochet;
     private bool piercing;
@@ -32,6 +34,7 @@ public class Bullet : MonoBehaviour {
     #region Setters
 
     public void SetParams(
+        float dmg,
         bool ricochet = false,
         bool piercing = false,
         bool homing = false,
@@ -40,6 +43,7 @@ public class Bullet : MonoBehaviour {
         int enemyLayerMask = 0,
         int magnettingLayerMask = 0) {
 
+        this.damage = dmg;
         this.ricochet = ricochet;
         this.piercing = piercing;
         this.homing = homing;
@@ -50,8 +54,9 @@ public class Bullet : MonoBehaviour {
         Prepare();
     }
 
-    public void SetParams(CardGunFly.CardGunFlyProps bulletProps) {
+    public void SetParams(float dmg, CardGunFly.CardGunFlyProps bulletProps) {
 
+        this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
         this.piercing = bulletProps.Piercing;
         this.homing = bulletProps.Homing;
@@ -102,13 +107,11 @@ public class Bullet : MonoBehaviour {
         GameObject collidedObject = collision.gameObject;
         var cb = collidedObject.GetComponent<CharacterBase>();
         if (cb != null) {
-            cb.TakeDamage(rb.velocity.normalized * 5f);
+            cb.TakeDamage(rb.velocity.normalized * damage);
             Destroy(this.gameObject);
             return;
         }
-        if (ricochet) {
-
-        } else {
+        if (!ricochet) {
             Destroy(this.gameObject);
         }
     }

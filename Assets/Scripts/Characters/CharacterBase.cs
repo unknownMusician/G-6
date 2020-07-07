@@ -91,8 +91,6 @@ public abstract class CharacterBase : MonoBehaviour
     #region Fields
     [SerializeField]
     protected Inventory Inventory;
-    [SerializeField]
-    protected Hand Hand;
     #endregion
 
     #region Methods
