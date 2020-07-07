@@ -8,10 +8,18 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static Dictionary<Weapon,List<Card>> inventoryWeapons;
-    private static Weapon activeWeapon;
+    private static Dictionary<GameObject,List<Card>> inventoryWeapons;
+    private static GameObject activeWeapon;
 
-    public static Dictionary<Weapon, List<Card>> InventoryWeapons {
+    public static List<Card> ActiveCards
+    {
+        get
+        {
+            return inventoryWeapons[activeWeapon];
+        }
+    }
+
+    public static Dictionary<GameObject, List<Card>> InventoryWeapons {
         get {
             return inventoryWeapons;
         }
@@ -21,7 +29,7 @@ public class MainData
         }
     }
 
-    public static Weapon ActiveWeapon {
+    public static GameObject ActiveWeapon {
         get {
             return activeWeapon;
         }
@@ -30,8 +38,8 @@ public class MainData
             ActionWeapons();
         }
     }
-    #endregion
 
+    #endregion
 
     #region Patrons
     public static Action ActionPatrons;
