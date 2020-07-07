@@ -6,7 +6,12 @@ using System;
 
 public abstract class Weapon : MonoBehaviour {
 
-    readonly string TAG = "Weapon: ";
+    const string TAG = "Weapon: ";
+
+    #region Actions
+    public Action OnAttackAction;
+    public Action OnInstallCardAction;
+    #endregion
 
     #region Public Variables
 
@@ -32,9 +37,18 @@ public abstract class Weapon : MonoBehaviour {
 
     protected Timer timer;
 
-    protected bool isThrowed = false;
-    protected bool secondState = false;
+    protected Weapon.State state;
     protected bool canAttack = true;
+
+    #endregion
+
+    #region Constants
+
+    public enum State {
+        Main = 0,
+        Alt = 1,
+        Throwed = 2
+    }
 
     #endregion
 
@@ -43,7 +57,6 @@ public abstract class Weapon : MonoBehaviour {
     public abstract void Attack();
     protected abstract void InstallModCards();
     protected abstract void GetCardsFromChildren();
-    public abstract void Reload();
 
     #endregion
 
@@ -99,14 +112,14 @@ public abstract class Weapon : MonoBehaviour {
     #region Main Methods
 
     public void ChangeState() {
-        if (secondState) {
-            secondState = false;
+        if (state == State.Alt) {
+            state = State.Main;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
             animator.SetBool("secondState", false);
             //weaponCollider.enabled = false;
 
         } else {
-            secondState = true;
+            state = State.Alt;
             this.transform.rotation = Quaternion.Euler(0, 0, -90);
             animator.SetBool("secondState", true);
             //weaponCollider.enabled = true;
@@ -114,14 +127,14 @@ public abstract class Weapon : MonoBehaviour {
         Debug.Log(TAG + "Changed state");
     }
     private void Drop() {
-        isThrowed = true;
+        state = State.Throwed;
 
         this.gameObject.transform.parent = null; // unparented weapon
         EnablePhysics();
         Debug.Log(TAG + "Dropped weapon");
     }
     public void Throw(Vector2 direction) {
-        isThrowed = true;
+        state = State.Throwed;
 
         this.gameObject.transform.parent = null; // unparented weapon
         EnablePhysics();

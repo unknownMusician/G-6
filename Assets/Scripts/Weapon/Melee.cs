@@ -12,7 +12,6 @@ public class Melee : Weapon {
     [Space]
     [SerializeField]
     private float standardDamage;
-    [SerializeField]
 
     #endregion
 
