@@ -43,7 +43,7 @@ public class RoomSpawner : MonoBehaviour {
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
-        roomsMatrix = new Room[rows, columns];
+        roomsMatrix = new Room[rows, columns]; 
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 

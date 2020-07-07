@@ -17,7 +17,7 @@ public class Room : MonoBehaviour
     }
 
     public bool IsThereAnyEnemy(GameObject room) {
-        return room.transform.GetChild(0).transform.childCount != 0;
+        return room.transform.GetChild(0).childCount != 0;
     }
 
     public static class RoomType {
