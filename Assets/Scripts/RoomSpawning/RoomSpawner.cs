@@ -4,7 +4,8 @@ using UnityEngine;
 public class RoomSpawner : MonoBehaviour {
 
     public PlaceForRoom[,] roomDirectionsDataMatrix;
-    public GameObject[,] roomsMatrix;
+    public Room[,] roomsMatrix;
+    public GameObject[,] roomsGameObjectMatrix;
     public GameObject[,] miniMapMatrix;
 
     [Range(0, 100)]
@@ -42,11 +43,11 @@ public class RoomSpawner : MonoBehaviour {
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
-        roomsMatrix = new GameObject[rows, columns];
+        roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
         Transform playerTransform = player.transform;
-        playerTransform.position = getCurrentLocationAll();
+        playerTransform.position = GetCurrentLocationAll();
 
         currentColumn = columns / 2;
         currentRow = rows / 2;
@@ -402,17 +403,18 @@ public class RoomSpawner : MonoBehaviour {
                         continue;
                     } else {
 
-                        roomsMatrix[i, j] = Instantiate(
+                        roomsGameObjectMatrix[i, j] = Instantiate(
                             roomsPrefabsDictionary[key][Random.Range(0, roomsPrefabsDictionary[key].Length)],
                             new Vector2(j * 250, -i * 200),
                             Quaternion.identity,
                             this.gameObject.transform.GetChild(0)
                             );
-                        roomsMatrix[i, j].SetActive(false);
+                        roomsMatrix[i, j] = new Room(roomsGameObjectMatrix[i, j]);
+                        roomsGameObjectMatrix[i, j].SetActive(false);
 
                         if ((i == rows / 2) && (j == columns / 2)) {
-                            roomsMatrix[i, j].SetActive(true);
-
+                            roomsGameObjectMatrix[i, j].SetActive(true);
+                            roomsMatrix[i, j].roomType = 0;
                         }
                     }
                 }
@@ -421,14 +423,14 @@ public class RoomSpawner : MonoBehaviour {
     }
 
     public GameObject[,] GetRoomsMatrix() {
-        return roomsMatrix;
+        return roomsGameObjectMatrix;
     }
 
     public GameObject[,] GetMiniMapMatrix() {
         return miniMapMatrix;
     }
 
-    public Vector2 getCurrentLocationAll() {
+    public Vector2 GetCurrentLocationAll() {
 
         CurrentRow = rows / 2;
         CurrentColumn = columns / 2;
@@ -436,18 +438,18 @@ public class RoomSpawner : MonoBehaviour {
         return result;
     }
 
-    public GameObject getActiveRoom() {
-        return roomsMatrix[CurrentRow, CurrentColumn];
+    public GameObject GetActiveRoom() {
+        return roomsGameObjectMatrix[CurrentRow, CurrentColumn];
     }
 
-    public bool isThereAnyEnemy(int row, int column) {
-        if (roomsMatrix[row, column].transform.GetChild(0).transform.childCount != 0) {
+    public bool IsThereAnyEnemy(int row, int column) {
+        if (roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0) {
             return true;
         }
         return false;
     }
 
-    public bool isThereAnyEnemy(GameObject room) {
+    public bool IsThereAnyEnemy(GameObject room) {
         if (room.transform.GetChild(0).transform.childCount != 0) {
             return true;
         }
