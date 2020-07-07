@@ -71,9 +71,9 @@ public class Inventory : MonoBehaviour {
     #region Service Methods
 
     private void SendToMainData() {
-        MainData.ActiveWeapon = Weapon;
+        MainData.ActiveWeapon = Weapon.WeaponPrefab;
 
-        Dictionary<Weapon, List<Card>> allWeapons = new Dictionary<Weapon, List<Card>>();
+        Dictionary<GameObject, List<Card>> allWeapons = new Dictionary<GameObject, List<Card>>();
         for(int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
                 allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
