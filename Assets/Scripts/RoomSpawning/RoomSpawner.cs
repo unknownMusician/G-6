@@ -43,7 +43,6 @@ public class RoomSpawner : MonoBehaviour {
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
-        roomsMatrix = new Room[rows, columns];
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
@@ -415,7 +414,7 @@ public class RoomSpawner : MonoBehaviour {
 
                         if ((i == rows / 2) && (j == columns / 2)) {
                             roomsGameObjectMatrix[i, j].SetActive(true);
-                            roomsMatrix[i, j].roomType = Room.RoomType.start;
+                            roomsMatrix[i, j].roomType = 0;
                         }
                     }
                 }

@@ -11,18 +11,16 @@ public class Room : MonoBehaviour
     // GameObject, which contains enemies in the room
     public GameObject enemies;
 
+    // GameObject, which contains content of the whole room
+    public GameObject room;
+
     public Room(GameObject roomGameObject) {
+        room = roomGameObject;
         enemies = roomGameObject.transform.GetChild(0).gameObject;
-        roomType = RoomType.regular;
-    }
+        roomType = 1;
+    } 
 
     public bool IsThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;
-    }
-
-    public static class RoomType {
-        readonly public static byte start = 0;
-        readonly public static byte regular = 1;
-        readonly public static byte finish = 2;
     }
 }
