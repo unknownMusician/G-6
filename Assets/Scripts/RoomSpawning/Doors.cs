@@ -6,7 +6,7 @@ public class DoorsScript : MonoBehaviour {
     public byte direction;
     private GameObject[,] tempMatrix;
 
-    // directions - отвечает за направление в которое смотрит дверь
+    // direction - отвечает за направление в которое смотрит дверь
     // 1 - вверх
     // 2 - вправо
     // 3 - вниз
