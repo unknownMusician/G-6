@@ -195,24 +195,6 @@ public class MainData
 
     #endregion
 
-    #region WeaponSprite
-    public static Action ActionWeaponSprite;
-    private static Sprite currentWeaponSprite = null;
-
-    public static Sprite CurrentWeaponSprite
-    {
-        get
-        {
-            return currentWeaponSprite;
-        }
-        set
-        {
-            currentWeaponSprite = value;
-            ActionWeaponSprite();
-        }
-    }
-
-    #endregion
     //TODO start data
     #region Position
     public static Action ActionPosition;
