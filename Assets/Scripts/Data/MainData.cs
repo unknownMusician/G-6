@@ -8,10 +8,10 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.Type> inventoryWeapons;
-    private static Weapon.Type activeWeapon;
+    private static Dictionary<Weapon,List<Card>> inventoryWeapons;
+    private static Weapon activeWeapon;
 
-    public static List<Weapon.Type> InventoryWeapons {
+    public static Dictionary<Weapon, List<Card>> InventoryWeapons {
         get {
             return inventoryWeapons;
         }
@@ -21,7 +21,7 @@ public class MainData
         }
     }
 
-    public static Weapon.Type ActiveWeapon {
+    public static Weapon ActiveWeapon {
         get {
             return activeWeapon;
         }
@@ -31,6 +31,7 @@ public class MainData
         }
     }
     #endregion
+
 
     #region Patrons
     public static Action ActionPatrons;
