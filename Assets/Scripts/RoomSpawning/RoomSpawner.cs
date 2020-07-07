@@ -43,8 +43,8 @@ public class RoomSpawner : MonoBehaviour {
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
+        roomsMatrix = new Room[rows, columns]; 
         roomsGameObjectMatrix = new GameObject[rows, columns];
-        roomsMatrix = new Room[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
         Transform playerTransform = player.transform;
@@ -425,7 +425,7 @@ public class RoomSpawner : MonoBehaviour {
 
                         if ((i == rows / 2) && (j == columns / 2)) {
                             roomsGameObjectMatrix[i, j].SetActive(true);
-                            roomsMatrix[i, j].roomType = 0;
+                            roomsMatrix[i, j].roomType = Room.RoomType.start;
                         }
                     }
                 }
@@ -454,16 +454,10 @@ public class RoomSpawner : MonoBehaviour {
     }
 
     public bool IsThereAnyEnemy(int row, int column) {
-        if (roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0) {
-            return true;
-        }
-        return false;
+        return roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0;
     }
 
     public bool IsThereAnyEnemy(GameObject room) {
-        if (room.transform.GetChild(0).transform.childCount != 0) {
-            return true;
-        }
-        return false;
+        return room.transform.GetChild(0).transform.childCount != 0;
     }
 }
