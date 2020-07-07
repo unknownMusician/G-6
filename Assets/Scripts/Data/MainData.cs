@@ -6,6 +6,32 @@ using UnityEngine.UI;
 
 public class MainData
 {
+    #region Weapons
+    public static Action ActionWeapons;
+    private static List<Weapon.Type> inventoryWeapons;
+    private static Weapon.Type activeWeapon;
+
+    public static List<Weapon.Type> InventoryWeapons {
+        get {
+            return inventoryWeapons;
+        }
+        set {
+            inventoryWeapons = value;
+            ActionWeapons();
+        }
+    }
+
+    public static Weapon.Type ActiveWeapon {
+        get {
+            return activeWeapon;
+        }
+        set {
+            activeWeapon = value;
+            ActionWeapons();
+        }
+    }
+    #endregion
+
     #region Patrons
     public static Action ActionPatrons;
     private static int overallPatrons = 0;

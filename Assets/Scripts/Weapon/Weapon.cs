@@ -8,12 +8,21 @@ public abstract class Weapon : MonoBehaviour {
 
     const string TAG = "Weapon: ";
 
+    public enum Type {
+        Pistol,
+        Knife
+    }
+
     #region Actions
     public Action OnAttackAction;
     public Action OnInstallCardAction;
     #endregion
 
     #region Public Variables
+    [SerializeField]
+    private Type weaponType;
+
+    public Type WeaponType { get { return weaponType; } }
 
     [SerializeField]
     protected GameObject weaponHolder = null;
