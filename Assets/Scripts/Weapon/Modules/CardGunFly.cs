@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CardGunFly : CardGun {
-    
+
+    readonly string TAG = "CardGunFly: ";
+
+    #region Parameters
+
     public CardGunFlyProps Props { get { return new CardGunFlyProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
+
+    #endregion
+
+    #region Public Variables
 
     [SerializeField]
     private bool ricochet = false;
@@ -21,11 +29,20 @@ public class CardGunFly : CardGun {
     [SerializeField]
     private LayerMask magnetting = 0;
 
+    #endregion
+
+    #region Service Methods
+
     public override string ToString() {
         return "CardGunFly (" + ricochet + "; " + piercing + "; " + homing + "; " + teleporting + "; " + magnet + "; " + enemy + "; " + magnetting + ")";
     }
 
+    #endregion
+
     public class CardGunFlyProps {
+
+        #region Parameters
+
         public int Enemy { get; }
         public int Magnetting { get; }
         public bool Ricochet { get; }
@@ -33,6 +50,10 @@ public class CardGunFly : CardGun {
         public bool Homing { get; }
         public bool Teleporting { get; }
         public bool Magnet { get; }
+
+        #endregion
+
+        #region Constructors
 
         public CardGunFlyProps(
             bool ricochet = false,
@@ -52,8 +73,14 @@ public class CardGunFly : CardGun {
             this.Magnetting = magnetting;
         }
 
+        #endregion
+
+        #region Service Methods
+
         public override string ToString() {
             return "CardGunFly (" + Ricochet + "; " + Piercing + "; " + Homing + "; " + Teleporting + "; " + Magnet + "; " + Enemy + "; " + Magnetting + ")";
         }
+
+        #endregion
     }
 }

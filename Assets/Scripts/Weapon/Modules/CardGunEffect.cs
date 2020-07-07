@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class CardGunEffect : CardGun {
 
+    readonly string TAG = "CardGunEffect: ";
+
+    #region Parameters
+
     public CardGunEffectProps Props { get { return new CardGunEffectProps(frost, fire, poison, stunn, vampire); } }
+
+    #endregion
+
+    #region Public Variables
 
     [SerializeField]
     private bool frost = false;
@@ -17,16 +25,29 @@ public class CardGunEffect : CardGun {
     [SerializeField]
     private bool vampire = false;
 
+    #endregion
+
+    #region Service Methods
+
     public override string ToString() {
         return "CardGunFly (" + frost + "; " + fire + "; " + poison + "; " + stunn + "; " + vampire + ")";
     }
 
+    #endregion
+
     public class CardGunEffectProps {
+
+        #region Parameters
+
         public bool Frost { get; }
         public bool Fire { get; }
         public bool Poison { get; }
         public bool Stunn { get; }
         public bool Vampire { get; }
+
+        #endregion
+
+        #region Constructors
 
         public CardGunEffectProps(
             bool frost = false,
@@ -42,8 +63,14 @@ public class CardGunEffect : CardGun {
             Vampire = vampire;
         }
 
+        #endregion
+
+        #region Service Methods
+
         public override string ToString() {
             return "CardGunFly (" + Frost + "; " + Fire + "; " + Poison + "; " + Stunn + "; " + Vampire + ")";
         }
+
+        #endregion
     }
 }
