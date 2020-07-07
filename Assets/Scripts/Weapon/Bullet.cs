@@ -6,7 +6,14 @@ public class Bullet : MonoBehaviour {
 
     readonly string TAG = "Bullet: ";
 
-    public Rigidbody2D rb;
+    #region Public Variables
+
+    [SerializeField]
+    private Rigidbody2D rb;
+
+    #endregion
+
+    #region Private Variables
 
     private bool ricochet;
     private bool piercing;
@@ -19,6 +26,10 @@ public class Bullet : MonoBehaviour {
 
     private GameObject aim;
     private int piercingCount;
+
+    #endregion
+
+    #region Setters
 
     public void SetParams(
         bool ricochet = false,
@@ -51,25 +62,12 @@ public class Bullet : MonoBehaviour {
         Prepare();
     }
 
+    #endregion
+
+    #region Overrided Methods
+
     private void Start() {
         Prepare();
-    }
-
-    private void Prepare() {
-        if (ricochet) {
-            PhysicsMaterial2D bulletPhMat = new PhysicsMaterial2D();
-            bulletPhMat.bounciness = 1;
-            this.GetComponent<CircleCollider2D>().sharedMaterial = bulletPhMat;
-        }
-
-        if (homing) {
-            if (Physics2D.OverlapCircle(transform.position, 20, enemy) != null)
-                aim = Physics2D.OverlapCircle(transform.position, 20, enemy).gameObject;
-        }
-
-        if (piercing) {
-            this.gameObject.GetComponent<CircleCollider2D>().isTrigger = true;
-        }
     }
 
     private void Update() {
@@ -118,9 +116,33 @@ public class Bullet : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collider) {
         piercingCount--;
     }
+
     private void OnTriggerExit2D(Collider2D collider) {
         if (piercingCount <= 0) {
             this.gameObject.GetComponent<CircleCollider2D>().isTrigger = false;
         }
     }
+
+    #endregion
+
+    #region Service Methods
+
+    private void Prepare() {
+        if (ricochet) {
+            PhysicsMaterial2D bulletPhMat = new PhysicsMaterial2D();
+            bulletPhMat.bounciness = 1;
+            this.GetComponent<CircleCollider2D>().sharedMaterial = bulletPhMat;
+        }
+
+        if (homing) {
+            if (Physics2D.OverlapCircle(transform.position, 20, enemy) != null)
+                aim = Physics2D.OverlapCircle(transform.position, 20, enemy).gameObject;
+        }
+
+        if (piercing) {
+            this.gameObject.GetComponent<CircleCollider2D>().isTrigger = true;
+        }
+    }
+
+    #endregion
 }

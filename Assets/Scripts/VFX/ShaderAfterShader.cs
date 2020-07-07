@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class ShaderAfterShader : MonoBehaviour
-{
+public class ShaderAfterShader : MonoBehaviour {
+
+    readonly string TAG = "ShaderAfterShader: ";
+
+    #region Public Variables
+
     [SerializeField]
     private Transform player = null;
     [SerializeField]
@@ -27,6 +31,10 @@ public class ShaderAfterShader : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField]
     private float intensity = 0;
+
+    #endregion
+
+    #region Overrided Methods
 
     private void Update() {
         Vector3 playerPos = Camera.main.WorldToScreenPoint(player.position);
@@ -73,4 +81,6 @@ public class ShaderAfterShader : MonoBehaviour
         Graphics.Blit(rt, bufferRt, materials[0]);
         Graphics.Blit(bufferRt, finalRt, materials[1]);
     }
+
+    #endregion
 }
