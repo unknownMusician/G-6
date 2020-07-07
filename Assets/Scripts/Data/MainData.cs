@@ -8,10 +8,18 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.Type> inventoryWeapons;
-    private static Weapon.Type activeWeapon;
+    private static Dictionary<GameObject,List<Card>> inventoryWeapons;
+    private static GameObject activeWeapon;
 
-    public static List<Weapon.Type> InventoryWeapons {
+    public static List<Card> ActiveCards
+    {
+        get
+        {
+            return inventoryWeapons[activeWeapon];
+        }
+    }
+
+    public static Dictionary<GameObject, List<Card>> InventoryWeapons {
         get {
             return inventoryWeapons;
         }
@@ -21,7 +29,7 @@ public class MainData
         }
     }
 
-    public static Weapon.Type ActiveWeapon {
+    public static GameObject ActiveWeapon {
         get {
             return activeWeapon;
         }
@@ -30,6 +38,7 @@ public class MainData
             ActionWeapons();
         }
     }
+
     #endregion
 
     #region Patrons
@@ -194,24 +203,6 @@ public class MainData
 
     #endregion
 
-    #region WeaponSprite
-    public static Action ActionWeaponSprite;
-    private static Sprite currentWeaponSprite = null;
-
-    public static Sprite CurrentWeaponSprite
-    {
-        get
-        {
-            return currentWeaponSprite;
-        }
-        set
-        {
-            currentWeaponSprite = value;
-            ActionWeaponSprite();
-        }
-    }
-
-    #endregion
     //TODO start data
     #region Position
     public static Action ActionPosition;

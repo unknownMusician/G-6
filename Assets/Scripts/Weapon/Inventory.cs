@@ -6,6 +6,19 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
+    private static List<Card> cards = new List<Card>();
+    public static List<Card> Cards { get; }
+    public static bool AddCard(Card card) {
+        if (cards.Count >= 10)
+            return false;
+        cards.Add(card);
+        return true;
+    }
+
+    public static bool RemoveCard(Card card) {
+        return cards.Remove(card);
+    }
+
     #region Actions
 
     // 
@@ -57,14 +70,18 @@ public class Inventory : MonoBehaviour {
 
     #region Service Methods
 
-    private void SendToMainData() {
-        MainData.ActiveWeapon = Weapon.WeaponType;
+    private void SendActiveWeaponToMainData() {
+        MainData.ActiveWeapon = Weapon.WeaponPrefab;
+    }
 
-        List<Weapon.Type> finWeapons = new List<Weapon.Type>();
-        for( int i = 0; i < weapons.Count; i++) {
-            finWeapons[i] = weapons[i].WeaponType;
+    private void SendInventoryWeaponsToMainData() {
+        Dictionary<GameObject, List<Card>> allWeapons = new Dictionary<GameObject, List<Card>>();
+        for (int i = 0; i < weapons.Count; i++) {
+            if (weapons[i] != null) {
+                allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
+            }
         }
-        MainData.InventoryWeapons = finWeapons;
+        MainData.InventoryWeapons = allWeapons;
     }
 
     #endregion
@@ -109,7 +126,7 @@ public class Inventory : MonoBehaviour {
             weapons[index].gameObject.SetActive(true);
         }
         activeWeapon = index;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public void ChooseNext() {
         if (activeWeapon == weapons.Count - 1) {
@@ -120,6 +137,7 @@ public class Inventory : MonoBehaviour {
                 weapons[0].gameObject.SetActive(true);
             }
             activeWeapon = 0;
+            SendActiveWeaponToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
@@ -129,7 +147,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon + 1].gameObject.SetActive(true);
         }
         activeWeapon++;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public void ChoosePrev() {
         if (activeWeapon == 0) {
@@ -140,6 +158,7 @@ public class Inventory : MonoBehaviour {
                 weapons[weapons.Count - 1].gameObject.SetActive(true);
             }
             activeWeapon = weapons.Count - 1;
+            SendActiveWeaponToMainData();
             return;
         }
         if (weapons[activeWeapon] != null) {
@@ -149,7 +168,7 @@ public class Inventory : MonoBehaviour {
             weapons[activeWeapon - 1].gameObject.SetActive(true);
         }
         activeWeapon--;
-        SendToMainData();
+        SendActiveWeaponToMainData();
     }
     public int GetCount() {
         return weapons.Count;

@@ -8,11 +8,6 @@ public abstract class Weapon : MonoBehaviour {
 
     const string TAG = "Weapon: ";
 
-    public enum Type {
-        Pistol,
-        Knife
-    }
-
     #region Actions
     public Action OnAttackAction;
     public Action OnInstallCardAction;
@@ -20,9 +15,9 @@ public abstract class Weapon : MonoBehaviour {
 
     #region Public Variables
     [SerializeField]
-    private Type weaponType;
+    private GameObject weaponPrefab;
 
-    public Type WeaponType { get { return weaponType; } }
+    public GameObject WeaponPrefab { get { return weaponPrefab; } }
 
     [SerializeField]
     protected GameObject weaponHolder = null;
@@ -66,6 +61,7 @@ public abstract class Weapon : MonoBehaviour {
     public abstract void Attack();
     protected abstract void InstallModCards();
     protected abstract void GetCardsFromChildren();
+    public abstract List<Card> GetAllCardsList();
 
     #endregion
 
