@@ -6,6 +6,17 @@ public class Inventory : MonoBehaviour {
 
     readonly string TAG = "Inventory: ";
 
+    #region Constants
+
+    public static class Slots {
+        readonly public static int first = 0;
+        readonly public static int second = 1;
+        readonly public static int third = 2;
+        readonly public static int fourth = 3;
+    }
+
+    #endregion
+
     #region Public Variables
 
     public Weapon Weapon { get { return weapons[activeWeapon]; } }
