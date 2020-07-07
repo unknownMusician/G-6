@@ -180,8 +180,9 @@ public class Gun : Weapon {
             } else {
                 CardFlyProps = CardFly.Props;
             }
-            for (int i = 0; i <= CardGenProps.BulletsPerShotAdder; i++) {
-                GameObject blt = Instantiate(bullet, firePoint, transform.rotation);
+            int bulletsPerShot = Mathf.Min(CardGenProps.BulletsPerShotAdder + 1, clipActualBullets);
+            for (int i = 0; i < bulletsPerShot; i++) {
+                GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
                 blt.GetComponent<Bullet>().SetParams(CardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
@@ -190,8 +191,8 @@ public class Gun : Weapon {
                         transform.rotation.eulerAngles.y,
                         transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
                     * Vector2.right * bulletSpeed;
+                clipActualBullets--;
             }
-            clipActualBullets -= CardGenProps.BulletsPerShotAdder + 1;
             CheckBullets();
             canAttack = false;
             SetReliefTimer(1 / CardGenProps.FireRateMultiplier);
