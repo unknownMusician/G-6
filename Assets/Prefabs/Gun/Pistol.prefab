@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad482d6982086a42aa3bcdf8a0294ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 8902850384399324635}
   weaponHolder: {fileID: 891501071084823941, guid: 3582863f289dbf844a13b5765ac5cd91,
     type: 3}
   rigidBody: {fileID: 1699405586130577470}
@@ -154,6 +155,7 @@ MonoBehaviour:
   hitStrenght: 20
   bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
   localFirePoint: {x: 2, y: 0, z: 0}
+  standardDamage: 0
   bulletSpeed: 20
   spread: 5
   bulletLifeTime: 1
