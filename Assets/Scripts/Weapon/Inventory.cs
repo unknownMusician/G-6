@@ -6,6 +6,19 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
+    private static List<Card> cards = new List<Card>();
+    public static List<Card> Cards { get; }
+    public static bool AddCard(Card card) {
+        if (cards.Count >= 10)
+            return false;
+        cards.Add(card);
+        return true;
+    }
+
+    public static bool RemoveCard(Card card) {
+        return cards.Remove(card);
+    }
+
     #region Actions
 
     // 
@@ -61,7 +74,7 @@ public class Inventory : MonoBehaviour {
         MainData.ActiveWeapon = Weapon.WeaponType;
 
         List<Weapon.Type> finWeapons = new List<Weapon.Type>();
-        for( int i = 0; i < weapons.Count; i++) {
+        for (int i = 0; i < weapons.Count; i++) {
             finWeapons[i] = weapons[i].WeaponType;
         }
         MainData.InventoryWeapons = finWeapons;
