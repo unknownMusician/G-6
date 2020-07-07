@@ -20,7 +20,7 @@ public class Gun : Weapon {
     [SerializeField]
     private GameObject bullet = null;
     [SerializeField]
-    private Transform firePoint = null;
+    private Vector3 firePoint = Vector3.right;
 
     [SerializeField]
     private float bulletSpeed = 20;
@@ -55,6 +55,15 @@ public class Gun : Weapon {
     protected CardGunEffect.CardGunEffectProps StandardCardEffProps;
 
     private bool isLoaded = true;
+
+    #endregion
+
+    #region Gizmos
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawIcon(firePoint, "firePoint");
+    }
 
     #endregion
 
@@ -172,7 +181,7 @@ public class Gun : Weapon {
                 CardFlyProps = CardFly.Props;
             }
             for (int i = 0; i <= CardGenProps.BulletsPerShotAdder; i++) {
-                GameObject blt = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                GameObject blt = Instantiate(bullet, firePoint, transform.rotation);
                 Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
                 blt.GetComponent<Bullet>().SetParams(CardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
