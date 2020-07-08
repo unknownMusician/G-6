@@ -6,17 +6,34 @@ public class Room : MonoBehaviour
     // 0 - start room
     // 1 - regular room
     // 2 - finish room
-    private byte roomType;
+    public byte roomType;
+    
+    // GameObject, which contains enemies in the room
+    public GameObject enemies;
 
-    public static class RoomType {
-        public readonly static byte start = 0;
-        public readonly static byte regular = 1;
-        public readonly static byte finish = 2;
+    // GameObject, which contains content of the whole room
+    public GameObject room;
+
+    ////////////////////////////////////////////////////////////
+    // fixed by unknownMusician
+    // check if it's correct & delete these comments
+
+    public Room() {
+        roomType = 1;
     }
 
     private void Start() {
-        roomType = RoomType.regular;
+        room = this.gameObject;
+        enemies = room.transform.GetChild(0).gameObject;
     }
+
+    //public Room(GameObject roomGameObject) {
+    //    room = roomGameObject;
+    //    enemies = roomGameObject.transform.GetChild(0).gameObject;
+    //    roomType = 1;
+    //}
+
+    ////////////////////////////////////////////////////////////
 
     public bool IsThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;

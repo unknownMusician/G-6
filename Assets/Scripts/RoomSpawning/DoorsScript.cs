@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class Doors: MonoBehaviour {
+public class DoorsScript : MonoBehaviour {
 
     private RoomSpawner roomSpawner;
     public byte direction;
     private GameObject[,] tempMatrix;
 
-    // direction - отвечает за направление в которое смотрит дверь
+    // directions - отвечает за направление в которое смотрит дверь
     // 1 - вверх
     // 2 - вправо
     // 3 - вниз
