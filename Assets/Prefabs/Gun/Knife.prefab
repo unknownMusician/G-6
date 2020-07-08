@@ -145,15 +145,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37e753db7a2bfc4eb6f685744a5d8fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 8902850384399324635}
   weaponHolder: {fileID: 891501071084823941, guid: 3582863f289dbf844a13b5765ac5cd91,
     type: 3}
   rigidBody: {fileID: 6413423544453468081}
   spriteRenderer: {fileID: 8902850384399324637}
   animator: {fileID: 7440309013352402495}
   weaponCollider: {fileID: 2085181756462975332}
-  modules: []
-  spriteArray: []
   hitStrenght: 10
+  standardDamage: 0
 --- !u!95 &7440309013352402495
 Animator:
   serializedVersion: 3

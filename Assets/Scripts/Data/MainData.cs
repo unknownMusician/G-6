@@ -6,6 +6,41 @@ using UnityEngine.UI;
 
 public class MainData
 {
+    #region Weapons
+    public static Action ActionWeapons;
+    private static Dictionary<GameObject,List<Card>> inventoryWeapons;
+    private static GameObject activeWeapon;
+
+    public static List<Card> ActiveCards
+    {
+        get
+        {
+            return inventoryWeapons[activeWeapon];
+        }
+    }
+
+    public static Dictionary<GameObject, List<Card>> InventoryWeapons {
+        get {
+            return inventoryWeapons;
+        }
+        set {
+            inventoryWeapons = value;
+            ActionWeapons();
+        }
+    }
+
+    public static GameObject ActiveWeapon {
+        get {
+            return activeWeapon;
+        }
+        set {
+            activeWeapon = value;
+            ActionWeapons();
+        }
+    }
+
+    #endregion
+
     #region Patrons
     public static Action ActionPatrons;
     private static int overallPatrons = 0;
@@ -168,24 +203,6 @@ public class MainData
 
     #endregion
 
-    #region WeaponSprite
-    public static Action ActionWeaponSprite;
-    private static Sprite currentWeaponSprite = null;
-
-    public static Sprite CurrentWeaponSprite
-    {
-        get
-        {
-            return currentWeaponSprite;
-        }
-        set
-        {
-            currentWeaponSprite = value;
-            ActionWeaponSprite();
-        }
-    }
-
-    #endregion
     //TODO start data
     #region Position
     public static Action ActionPosition;

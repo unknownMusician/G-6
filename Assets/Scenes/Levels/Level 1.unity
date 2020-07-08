@@ -471,7 +471,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   Inventory: {fileID: 0}
-  Hand: {fileID: 0}
   player: {fileID: 29168910}
 --- !u!1001 &418263513303175274
 PrefabInstance:
@@ -643,6 +642,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1838037349011848203, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_RootOrder
@@ -667,6 +670,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Icon
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4333165458613876737, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: m_Name
+      value: Inventory
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
@@ -737,10 +745,6 @@ PrefabInstance:
         type: 3}
       propertyPath: ricochet
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7715449821927201659, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}

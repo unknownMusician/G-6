@@ -76,7 +76,7 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        Hand.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
@@ -88,19 +88,19 @@ public class PlayerBehaviour : CharacterBase
         }
         if (Input.GetButtonDown("WeaponSlot1"))
         {
-            Inventory.Choose(Inventory.Slots.first);
+            Inventory.Choose(Inventory.Slots.FIRST);
         }
         else if (Input.GetButtonDown("WeaponSlot2"))
         {
-            Inventory.Choose(Inventory.Slots.second);
+            Inventory.Choose(Inventory.Slots.SECOND);
         }
         else if (Input.GetButtonDown("WeaponSlot3"))
         {
-            Inventory.Choose(Inventory.Slots.third);
+            Inventory.Choose(Inventory.Slots.THIRD);
         }
         else if (Input.GetButtonDown("WeaponSlot4"))
         {
-            Inventory.Choose(Inventory.Slots.fourth);
+            Inventory.Choose(Inventory.Slots.FOURTH);
         }
         if (Inventory.Weapon != null)
         {
@@ -110,7 +110,7 @@ public class PlayerBehaviour : CharacterBase
             }
             if (Input.GetButtonDown("Reload"))
             {
-                Inventory.Weapon.Reload();
+                Inventory.Reload();
             }
         }
     }

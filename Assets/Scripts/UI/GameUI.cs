@@ -49,7 +49,7 @@ public class GameUI : MonoBehaviour
         MainData.ActionPatrons += SetPatrons;
         SetPatrons();
         //Imageweapon
-        MainData.ActionWeaponSprite += SetImageWeapon;
+        MainData.ActionWeapons += SetImageWeapon;
         SetImageWeapon();
     }
 
@@ -77,8 +77,8 @@ public class GameUI : MonoBehaviour
 
     public void SetImageWeapon()
     {
-        if (MainData.CurrentWeaponSprite != null)
-            weapon.sprite = MainData.CurrentWeaponSprite;
+        if (MainData.ActiveWeapon != null)
+            weapon.sprite = MainData.ActiveWeapon.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 
 }

@@ -2,8 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Melee : Weapon
-{
+public class Melee : Weapon {
+
+    const string TAG = "Melee: ";
+
+    #region Public Variables
+
+    [Space]
+    [Space]
+    [SerializeField]
+    private float standardDamage;
+
+    #endregion
 
     public override void Attack() {
 
@@ -17,10 +27,16 @@ public class Melee : Weapon
     protected override void GetCardsFromChildren() {
 
     }
-    public override void Reload() {
-
-    }
     private void OnTriggerEnter2D(Collider2D collision) {
         // collision.gameObject.GetComponent<Player>().DMG();
     }
+
+    #region Service Methods
+
+    public override List<Card> GetAllCardsList() {
+        List<Card> cards = new List<Card>();
+        return cards;
+    }
+
+    #endregion
 }
