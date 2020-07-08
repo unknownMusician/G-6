@@ -6,7 +6,7 @@ public class Room : MonoBehaviour {
     // 0 - start room
     // 1 - regular room
     // 2 - finish room
-    public byte roomType;
+    private byte roomType;
 
     public static class RoomType {
         readonly public static byte start = 0;
