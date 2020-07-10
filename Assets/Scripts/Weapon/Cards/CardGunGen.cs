@@ -8,11 +8,16 @@ public class CardGunGen : MonoBehaviour, CardGun {
 
     #region Parameters
 
+    public GameObject Prefab { get; }
+
     public CardGunGenProps Props { get { return new CardGunGenProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
 
     #endregion
 
     #region Public Variables
+    [SerializeField]
+    protected GameObject prefab;
+
 
     [SerializeField]
     protected float fireRateMultiplier = 1;
@@ -24,7 +29,7 @@ public class CardGunGen : MonoBehaviour, CardGun {
     #endregion
 
     #region Service Methods
-
+ 
     public override string ToString() {
         return "CardGunGen (" + fireRateMultiplier + "; " + bulletsPerShotAdder + "; " + shotRangeMultiplier + ")";
     }

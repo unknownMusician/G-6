@@ -61,7 +61,7 @@ public abstract class Weapon : MonoBehaviour {
     public abstract void Attack();
     protected abstract void InstallModCards();
     protected abstract void GetCardsFromChildren();
-    public abstract List<Card> GetAllCardsList();
+    public abstract List<GameObject> GetAllCardsList();
 
     #endregion
 

@@ -67,15 +67,20 @@ public class Gun : Weapon {
 
     #region Service Methods
 
-    public override List<Card> GetAllCardsList() {
-        List<Card> cards = new List<Card>();
+    public override List<GameObject> GetAllCardsList() {
+        List<GameObject> cards = new List<GameObject>();
         if (CardGen)
-            cards.Add(CardGen);
+            cards.Add(CardGen.Prefab);
         if (CardFly)
-            cards.Add(CardFly);
+            cards.Add(CardFly.Prefab);
         if (CardEff)
-            cards.Add(CardEff);
+            cards.Add(CardEff.Prefab);
         return cards;
+    }
+
+    private void SendBulletsToMainData() {
+        MainData.ClipBullets = clipActualBullets;
+        MainData.PocketBullets = pocketActualBullets;
     }
 
     #endregion

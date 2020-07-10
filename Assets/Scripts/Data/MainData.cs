@@ -8,10 +8,10 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static Dictionary<GameObject,List<Card>> inventoryWeapons;
+    private static Dictionary<GameObject,List<GameObject>> inventoryWeapons;
     private static GameObject activeWeapon;
 
-    public static List<Card> ActiveCards
+    public static List<GameObject> ActiveCards
     {
         get
         {
@@ -19,7 +19,7 @@ public class MainData
         }
     }
 
-    public static Dictionary<GameObject, List<Card>> InventoryWeapons {
+    public static Dictionary<GameObject, List<GameObject>> InventoryWeapons {
         get {
             return inventoryWeapons;
         }
@@ -43,30 +43,30 @@ public class MainData
 
     #region Patrons
     public static Action ActionPatrons;
-    private static int overallPatrons = 0;
-    private static int clipPatrons = 0;
+    private static int pocketBullets = 0;
+    private static int clipBullets = 0;
 
-    public static int OverallPatrons
+    public static int PocketBullets
     {
         get
         {
-            return overallPatrons;
+            return pocketBullets;
         }
         set
         {
-            overallPatrons = value;
+            pocketBullets = value;
             ActionPatrons();
         }
     }
-    public static int ClipPatrons
+    public static int ClipBullets
     {
         get
         {
-            return clipPatrons;
+            return clipBullets;
         }
         set
         {
-            clipPatrons = value;
+            clipBullets = value;
             ActionPatrons();
         }
     }

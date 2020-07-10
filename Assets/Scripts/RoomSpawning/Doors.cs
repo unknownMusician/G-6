@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DoorsScript : MonoBehaviour {
+public class Doors : MonoBehaviour {
 
     private RoomSpawner roomSpawner;
     public byte direction;

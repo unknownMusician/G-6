@@ -68,14 +68,14 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region Service Methods
+    #region MainData Methods
 
     private void SendActiveWeaponToMainData() {
         MainData.ActiveWeapon = Weapon.WeaponPrefab;
     }
 
     private void SendInventoryWeaponsToMainData() {
-        Dictionary<GameObject, List<Card>> allWeapons = new Dictionary<GameObject, List<Card>>();
+        Dictionary<GameObject, List<GameObject>> allWeapons = new Dictionary<GameObject, List<GameObject>>();
         for (int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
                 allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
@@ -213,7 +213,7 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region Hand
+    #region Aim
 
     public void Aim(Vector3 worldPoint) {
         Vector2 distance = worldPoint - this.transform.position;

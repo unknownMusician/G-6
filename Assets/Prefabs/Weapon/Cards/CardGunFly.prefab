@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2810880178507504479
+--- !u!1 &3790771777802938353
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4218312505315928455}
-  - component: {fileID: 847786896230299956}
-  - component: {fileID: 5930130232060295257}
+  - component: {fileID: 8609072780082926338}
+  - component: {fileID: 5626733535000604874}
+  - component: {fileID: 2643604200681694295}
   m_Layer: 0
-  m_Name: CardGunGen
+  m_Name: CardGunFly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4218312505315928455
+--- !u!4 &8609072780082926338
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
+  m_GameObject: {fileID: 3790771777802938353}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,13 +32,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &847786896230299956
+--- !u!212 &5626733535000604874
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
+  m_GameObject: {fileID: 3790771777802938353}
   m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 152
-  m_Sprite: {fileID: 21300000, guid: 7012e40b776d24244bacfe23746b5361, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3dd77bdb1ad67da4dbab462dac7ebc3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82,18 +82,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5930130232060295257
+--- !u!114 &2643604200681694295
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
+  m_GameObject: {fileID: 3790771777802938353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c59beccab9ee77d4ab70e3bf611de943, type: 3}
+  m_Script: {fileID: 11500000, guid: f0b60e8204435fc4d84d412306f13082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRateMultiplier: 1
-  bulletsPerShotAdder: 1
-  shotRangeMultiplier: 1
+  prefab: {fileID: 3790771777802938353}
+  ricochet: 0
+  piercing: 0
+  homing: 0
+  teleporting: 0
+  magnet: 0
+  enemy:
+    serializedVersion: 2
+    m_Bits: 0
+  magnetting:
+    serializedVersion: 2
+    m_Bits: 0

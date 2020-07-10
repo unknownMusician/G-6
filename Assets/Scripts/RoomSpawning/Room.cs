@@ -10,9 +10,6 @@ public class Room : MonoBehaviour {
     // GameObject, which contains enemies in the room
     public GameObject enemies;
 
-    // GameObject, which contains content of the whole room
-    public GameObject room;
-
     ////////////////////////////////////////////////////////////
     // fixed by unknownMusician
     // check if it's correct & delete these comments
@@ -22,7 +19,7 @@ public class Room : MonoBehaviour {
     }
 
     private void Start() {
-        enemies = room.transform.GetChild(0).gameObject;
+        enemies = this.gameObject.transform.GetChild(0).gameObject;
     }
 
     //public Room(GameObject roomGameObject) {
