@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 8902850384399324636}
   - component: {fileID: 8902850384399324637}
   - component: {fileID: 6413423544453468081}
-  - component: {fileID: 2085181756462975332}
+  - component: {fileID: 5608625482266719809}
   - component: {fileID: 583393509581014047}
   - component: {fileID: 7440309013352402495}
-  - component: {fileID: 6014421048331058279}
   m_Layer: 11
   m_Name: Knife
   m_TagString: Untagged
@@ -107,32 +106,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &2085181756462975332
-BoxCollider2D:
+--- !u!58 &5608625482266719809
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902850384399324635}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05, y: 0.05}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
-    newSize: {x: 0.32, y: 0.32}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: -0.1, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1.4, y: 0.1}
-  m_EdgeRadius: 0
+  m_Radius: 0.3
 --- !u!114 &583393509581014047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +140,7 @@ MonoBehaviour:
   rigidBody: {fileID: 6413423544453468081}
   spriteRenderer: {fileID: 8902850384399324637}
   animator: {fileID: 7440309013352402495}
-  weaponCollider: {fileID: 2085181756462975332}
+  weaponCollider: {fileID: 0}
   hitStrenght: 10
   standardDamage: 0
 --- !u!95 &7440309013352402495
@@ -173,33 +162,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!60 &6014421048331058279
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8902850384399324635}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
-    newSize: {x: 0.32, y: 0.32}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.54291993, y: -0.18020086}
-      - {x: 0.33033866, y: 0.29865777}
-      - {x: -0.18547806, y: 0.45503306}
-      - {x: -0.1993526, y: -0.87684554}
-      - {x: 0.34033096, y: -0.73842275}

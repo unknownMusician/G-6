@@ -37,7 +37,7 @@ public abstract class Weapon : MonoBehaviour {
 
     #region Private Variables
 
-    protected List<Card> cards;
+    protected GameObject friend;
 
     protected Timer timer;
 
@@ -92,24 +92,25 @@ public abstract class Weapon : MonoBehaviour {
     }
     public void DisablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Kinematic; // "disabled" Rigidbody2D
+        weaponCollider.enabled = false; // disabled Collider2D
         rigidBody.velocity = Vector2.zero;
         rigidBody.angularVelocity = 0;
         this.transform.rotation = Quaternion.identity;
-        weaponCollider.enabled = false; // disabled Collider2D
     }
 
     #endregion
 
     #region Overrided Methods
 
-    protected void OnCollisionEnter2D(Collision2D collision) {
-        Rigidbody2D crb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (crb != null) {
-            Vector2 dist = collision.transform.position - this.transform.position;
-            crb.velocity += dist.normalized * hitStrenght;
+    protected void OnTriggerEnter2D(Collider2D collider) {
+        if (friend != null && !collider.gameObject.Equals(friend)) {
+            CharacterBase cb = collider.gameObject.GetComponent<CharacterBase>();
+            if (cb != null) {
+                cb.TakeDamage(rigidBody.velocity.normalized * hitStrenght);
+            }
+            DisablePhysics();
+            Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
         }
-        DisablePhysics();
-        Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
     }
 
     #endregion
