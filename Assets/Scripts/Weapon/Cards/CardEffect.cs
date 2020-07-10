@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffect : MonoBehaviour, CardGun, CardWeapon {
+public class CardEffect : MonoBehaviour, CardGun, CardMelee {
 
     const string TAG = "CardGunEffect: ";
 
     #region Parameters
+
+    public GameObject Prefab { get; }
 
     public CardGunEffectProps Props { get { return new CardGunEffectProps(frost, fire, poison, stunn, vampire); } }
 
     #endregion
 
     #region Public Variables
+
+    [SerializeField]
+    protected GameObject prefab;
 
     [SerializeField]
     private bool frost = false;

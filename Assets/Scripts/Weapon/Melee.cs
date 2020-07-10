@@ -33,8 +33,8 @@ public class Melee : Weapon {
 
     #region Service Methods
 
-    public override List<Card> GetAllCardsList() {
-        List<Card> cards = new List<Card>();
+    public override List<GameObject> GetAllCardsList() {
+        List<GameObject> cards = new List<GameObject>();
         return cards;
     }
 

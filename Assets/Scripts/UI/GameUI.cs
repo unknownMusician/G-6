@@ -71,7 +71,7 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        patrons.text = MainData.ClipPatrons.ToString() + "/" + MainData.OverallPatrons.ToString();
+        patrons.text = MainData.ClipBullets.ToString() + "/" + MainData.PocketBullets.ToString();
 
     }
 

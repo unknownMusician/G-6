@@ -8,11 +8,16 @@ public class CardGunFly : MonoBehaviour, CardGun {
 
     #region Parameters
 
+    public GameObject Prefab { get; }
+
     public CardGunFlyProps Props { get { return new CardGunFlyProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
 
     #endregion
 
     #region Public Variables
+
+    [SerializeField]
+    protected GameObject prefab;
 
     [SerializeField]
     private bool ricochet = false;

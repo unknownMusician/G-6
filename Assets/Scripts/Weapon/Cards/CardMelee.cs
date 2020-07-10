@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface CardWeapon : Card {
+public interface CardMelee : Card {
 
 }
