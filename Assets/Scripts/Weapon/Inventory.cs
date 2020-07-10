@@ -194,7 +194,7 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region Hand
+    #region Aim
 
     public void Aim(Vector3 worldPoint) {
         Vector2 distance = worldPoint - this.transform.position;
