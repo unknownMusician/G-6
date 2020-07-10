@@ -39,8 +39,4 @@ public class Room : MonoBehaviour {
         readonly public static byte regular = 1;
         readonly public static byte finish = 2;
     }
-
-    public bool IsThereAnyEnemy(GameObject room) {
-        return room.transform.GetChild(0).childCount != 0;
-    }
 }
