@@ -48,6 +48,7 @@ public class Gun : Weapon {
     //////////
 
     private bool CanAttack { get { return canAttack; } set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); } }
+    private Vector3 WorldFirePoint { get { return transform.position + transform.rotation * localFirePoint; } }
 
     private CardGunGen.CardGunGenProps ActualCardGenProps { get { return CardGen == null ? StandardCardGenProps : CardGen.Props; } }
     private CardGunFly.CardGunFlyProps ActualCardFlyProps { get { return CardFly == null ? StandardCardFlyProps : CardFly.Props; } }
@@ -110,8 +111,8 @@ public class Gun : Weapon {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + transform.rotation * localFirePoint, 0.2f);
-        Gizmos.DrawRay(transform.position + transform.rotation * localFirePoint, transform.rotation * Vector3.right);
+        Gizmos.DrawSphere(WorldFirePoint, 0.2f);
+        Gizmos.DrawRay(WorldFirePoint, transform.rotation * Vector3.right);
         Gizmos.color = Color.gray;
         Gizmos.DrawRay(transform.position, transform.rotation * Vector3.right);
     }
@@ -121,7 +122,7 @@ public class Gun : Weapon {
     #region Service Methods
 
     private void InstantiateBullet() {
-        GameObject blt = Instantiate(bullet, transform.position + transform.rotation * localFirePoint, transform.rotation);
+        GameObject blt = Instantiate(bullet, WorldFirePoint, transform.rotation);
         Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
         blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
         Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
@@ -155,9 +156,7 @@ public class Gun : Weapon {
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            GameObject child = this.transform.GetChild(i).gameObject;
-            CardGun card = child.GetComponent<CardGun>();
-            InstallUnknownCard(card); // there will already be null-check
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>()); // there will already be null-check
         }
     }
 

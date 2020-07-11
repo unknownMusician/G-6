@@ -77,48 +77,33 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            Inventory.ChooseNext();
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            Inventory.ChoosePrev();
-        }
-        if (Input.GetButtonDown("WeaponSlot1"))
-        {
-            Inventory.Choose(Inventory.Slots.FIRST);
-        }
-        else if (Input.GetButtonDown("WeaponSlot2"))
-        {
-            Inventory.Choose(Inventory.Slots.SECOND);
-        }
-        else if (Input.GetButtonDown("WeaponSlot3"))
-        {
-            Inventory.Choose(Inventory.Slots.THIRD);
-        }
-        else if (Input.GetButtonDown("WeaponSlot4"))
-        {
-            Inventory.Choose(Inventory.Slots.FOURTH);
-        }
-        if (Inventory.Weapon != null)
-        {
-            if (Input.GetButtonDown("ChangeWeaponState"))
-            {
-                Inventory.Weapon.ChangeState();
-            }
-            if (Input.GetButtonDown("Reload"))
-            {
-                Inventory.Reload();
-            }
-        }
+        // To-Do
     }
     protected override void WeaponFixedControl()
     {
-        if (Inventory.Weapon != null)
-        {
+        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+            Inventory.ChooseNext();
+        } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+            Inventory.ChoosePrev();
+        }
+        if (Input.GetButtonDown("WeaponSlot1")) {
+            Inventory.Choose(Inventory.Slots.FIRST);
+        } else if (Input.GetButtonDown("WeaponSlot2")) {
+            Inventory.Choose(Inventory.Slots.SECOND);
+        } else if (Input.GetButtonDown("WeaponSlot3")) {
+            Inventory.Choose(Inventory.Slots.THIRD);
+        } else if (Input.GetButtonDown("WeaponSlot4")) {
+            Inventory.Choose(Inventory.Slots.FOURTH);
+        }
+        if (Inventory.Weapon != null) {
+            if (Input.GetButtonDown("ChangeWeaponState")) {
+                Inventory.Weapon.ChangeState();
+            }
+            if (Input.GetButtonDown("Reload")) {
+                Inventory.Reload();
+            }
             if (Input.GetButton("Fire1"))
                 Inventory.Weapon.Attack();
         }

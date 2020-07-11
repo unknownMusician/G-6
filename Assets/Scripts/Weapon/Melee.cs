@@ -8,7 +8,8 @@ public class Melee : Weapon {
 
     #region Properties
 
-    public override List<GameObject> AllCardPrefabList { get {
+    public override List<GameObject> AllCardPrefabList {
+        get {
             List<GameObject> cards = new List<GameObject>();
             if (CardShape)
                 cards.Add(CardShape.Prefab);
@@ -17,7 +18,14 @@ public class Melee : Weapon {
             if (CardEff)
                 cards.Add(CardEff.Prefab);
             return cards;
-        } }
+        }
+    }
+
+    //
+
+    private Vector3 WorldHitCentrePoint { get { return transform.position + this.transform.rotation * localHitCentrePoint; } }
+
+
 
     #endregion
 
@@ -50,9 +58,9 @@ public class Melee : Weapon {
 
     #region Private Variables
 
-    protected CardMeleeShape.CardMeleeShapeProps StandardCardShapeProps;
-    protected CardMeleeMemory.CardMeleeMemoryProps StandardCardMemoryProps;
-    protected CardEffect.CardGunEffectProps StandardCardEffProps;
+    protected CardMeleeShape.CardMeleeShapeProps StandardCardShapeProps = new CardMeleeShape.CardMeleeShapeProps();
+    protected CardMeleeMemory.CardMeleeMemoryProps StandardCardMemoryProps = new CardMeleeMemory.CardMeleeMemoryProps();
+    protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
 
     #endregion
 
@@ -60,7 +68,7 @@ public class Melee : Weapon {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + this.transform.rotation * localHitCentrePoint, hitAreaRadius);
+        Gizmos.DrawWireSphere(WorldHitCentrePoint, hitAreaRadius);
         Gizmos.color = Color.gray;
         Gizmos.DrawRay(transform.position, transform.rotation * Vector3.right);
     }
@@ -79,7 +87,6 @@ public class Melee : Weapon {
     #region Overrided Methods
 
     private void Start() {
-        InitializeStandardGunCardProps();
         GetCardsFromChildren();
         InstallModCards();
     }
@@ -92,41 +99,27 @@ public class Melee : Weapon {
         OnAttackAction?.Invoke();
     }
     protected override void InstallModCards() {
-        if (CardShape != null)
-            InstallCard(CardShape);
-        if (CardMemory != null)
-            InstallCard(CardMemory);
-        if (CardEff != null)
-            InstallCard(CardEff);
+        InstallCard(CardShape);
+        InstallCard(CardMemory);
+        InstallCard(CardEff);
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            GameObject child = this.transform.GetChild(i).gameObject;
-            CardGun card = child.GetComponent<CardGun>();
-            if (card != null) {
-                InstallUnknownCard(card);
-            }
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>());
         }
     }
 
     #endregion
 
     #region WorkingWithCards Methods
-    protected void InitializeStandardGunCardProps() {
-        StandardCardShapeProps = new CardMeleeShape.CardMeleeShapeProps();
-        StandardCardMemoryProps = new CardMeleeMemory.CardMeleeMemoryProps();
-        StandardCardEffProps = new CardEffect.CardGunEffectProps();
-    }
+
     public bool InstallUnknownCard(CardGun card) {
-        if (card != null) {
-            if (card is CardMeleeShape) {
-                InstallCard((CardMeleeShape)card);
-            } else if (card is CardMeleeMemory) {
-                InstallCard((CardMeleeMemory)card);
-            } else if (card is CardEffect) {
-                InstallCard((CardEffect)card);
-            }
-            return true;
+        if (card is CardMeleeShape) {
+            return InstallCard((CardMeleeShape)card);
+        } else if (card is CardMeleeMemory) {
+            return InstallCard((CardMeleeMemory)card);
+        } else if (card is CardEffect) {
+            return InstallCard((CardEffect)card);
         }
         return false;
     }
@@ -161,10 +154,10 @@ public class Melee : Weapon {
         return false;
     }
     private void PrepareCardforInstall(CardMelee cardGen) {
-        ////////////////
+        //To-Do
     }
     private bool RemoveCard(CardMelee card) {
-        ///////////////
+        //To-Do
         return true;
     }
 
@@ -173,7 +166,7 @@ public class Melee : Weapon {
     #region Main Methods
 
     private void Shield() {
-        //
+        // To-Do
     }
     private void Hit() {
         if (canAttack) {
@@ -190,8 +183,7 @@ public class Melee : Weapon {
                 CardMemoryProps = CardMemory.Props;
             }
 
-            Vector3 worldCentrePoint = this.transform.position + this.transform.rotation * localHitCentrePoint;
-            Collider2D[] cols = Physics2D.OverlapCircleAll(worldCentrePoint, hitAreaRadius);
+            Collider2D[] cols = Physics2D.OverlapCircleAll(WorldHitCentrePoint, hitAreaRadius);
             HashSet<GameObject> objs = new HashSet<GameObject>();
             foreach (Collider2D col in cols) {
                 objs.Add(col.gameObject);
