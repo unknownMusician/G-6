@@ -251,4 +251,15 @@ public class Gun : Weapon {
     }
 
     #endregion
+
+    #region Inner Classes
+
+    public class GunInfo {
+        public GameObject WeaponPrefab;
+        public List<GameObject> CardPrefabs;
+        public int ActualClipBullet;
+        public int ActualPocketBullet;
+    }
+
+    #endregion
 }
