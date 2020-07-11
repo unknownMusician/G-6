@@ -9,18 +9,19 @@ public class Menu : MonoBehaviour
     public GameObject destroy1;
     public GameObject destroy2;
     public GameObject destroy3;
+    public GameObject destroy4;
     public void LoadMainMenu()
     {
         Destroy(destroy1);
         Destroy(destroy2);
         Destroy(destroy3);
+        Destroy(destroy4);
         SceneManager.LoadScene("MainMenu");
     }
     public void Continue()
     {
         this.gameObject.active = false;
-        Time.timeScale = 1f;
-        PauseMenu.GameIsPaused = false;
+        PauseMenu.Resume();
 
     }
     public void LoadSetting()

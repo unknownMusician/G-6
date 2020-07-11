@@ -6,6 +6,25 @@ using UnityEngine.UI;
 
 public class MainData
 {
+    #region Invertary Cards
+    public static Action ActionInventoryCards;
+    private static List<GameObject> inventoryCards;
+
+    public static List<GameObject> InventoryCards
+    {
+        get
+        {
+            return inventoryCards;
+        }
+        set
+        {
+            inventoryCards = value;
+            ActionWeapons();
+        }
+    }
+
+    #endregion
+
     #region Weapons
     public static Action ActionWeapons;
     private static List<Weapon.Info> inventoryWeapons;

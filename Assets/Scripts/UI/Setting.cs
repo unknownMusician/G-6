@@ -34,8 +34,7 @@ public class Setting : MonoBehaviour
             mainMenu.SetActive(true);
             prap = false;
         }
-        Time.timeScale = 1f;
-        PauseMenu.GameIsPaused = false;
+        PauseMenu.Resume();
     }
 
     public void AudioVolume(float sliderValue)
