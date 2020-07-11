@@ -6,6 +6,21 @@ public class Melee : Weapon {
 
     const string TAG = "Melee: ";
 
+    #region Properties
+
+    public override List<GameObject> AllCardPrefabList { get {
+            List<GameObject> cards = new List<GameObject>();
+            if (CardShape)
+                cards.Add(CardShape.Prefab);
+            if (CardMemory)
+                cards.Add(CardMemory.Prefab);
+            if (CardEff)
+                cards.Add(CardEff.Prefab);
+            return cards;
+        } }
+
+    #endregion
+
     #region Public Variables
 
     [Space]
@@ -53,17 +68,6 @@ public class Melee : Weapon {
     #endregion
 
     #region Service Methods
-
-    public override List<GameObject> GetAllCardsList() {
-        List<GameObject> cards = new List<GameObject>();
-        if (CardShape)
-            cards.Add(CardShape.Prefab);
-        if (CardMemory)
-            cards.Add(CardMemory.Prefab);
-        if (CardEff)
-            cards.Add(CardEff.Prefab);
-        return cards;
-    }
 
     //private void SendBulletsToMainData() {
     //    MainData.ClipBullets = clipActualBullets;

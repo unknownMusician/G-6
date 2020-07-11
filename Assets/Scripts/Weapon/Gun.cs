@@ -8,11 +8,47 @@ public class Gun : Weapon {
 
     const string TAG = "Gun: ";
 
-    #region Parameters
+    #region Properties
 
-    public int ClipMaxBullets { get { return clipMaxBullets; } }
-    public int PocketActualBullets { get { return pocketActualBullets; } }
-    public int ClipActualBullets { get { return clipActualBullets; } }
+    public int ClipMaxBullets {
+        get { return clipMaxBullets; }
+        private set {
+            clipMaxBullets = value;
+            CheckNSendBullets();
+        }
+    }
+    public int PocketActualBullets {
+        get { return pocketActualBullets; }
+        private set {
+            pocketActualBullets = value;
+            CheckNSendBullets();
+        }
+    }
+    public int ClipActualBullets {
+        get { return clipActualBullets; }
+        private set {
+            clipActualBullets = value;
+            CheckNSendBullets();
+        }
+    }
+
+    public override List<GameObject> AllCardPrefabList {
+        get {
+            List<GameObject> cards = new List<GameObject>();
+            if (CardGen)
+                cards.Add(CardGen.Prefab);
+            if (CardFly)
+                cards.Add(CardFly.Prefab);
+            if (CardEff)
+                cards.Add(CardEff.Prefab);
+            return cards;
+        }
+    }
+
+    //////////
+
+    private CardGunGen.CardGunGenProps ActualCardGenProps { get { return CardGen == null ? StandardCardGenProps : CardGen.Props; } }
+    private CardGunFly.CardGunFlyProps ActualCardFlyProps { get { return CardFly == null ? StandardCardFlyProps : CardFly.Props; } }
 
     #endregion
 
@@ -60,9 +96,9 @@ public class Gun : Weapon {
 
     #region Private Variables
 
-    protected CardGunGen.CardGunGenProps StandardCardGenProps;
-    protected CardGunFly.CardGunFlyProps StandardCardFlyProps;
-    protected CardEffect.CardGunEffectProps StandardCardEffProps;
+    protected CardGunGen.CardGunGenProps StandardCardGenProps = new CardGunGen.CardGunGenProps();
+    protected CardGunFly.CardGunFlyProps StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
+    protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
 
     private bool isLoaded = true;
 
@@ -82,20 +118,10 @@ public class Gun : Weapon {
 
     #region Service Methods
 
-    public override List<GameObject> GetAllCardsList() {
-        List<GameObject> cards = new List<GameObject>();
-        if (CardGen)
-            cards.Add(CardGen.Prefab);
-        if (CardFly)
-            cards.Add(CardFly.Prefab);
-        if (CardEff)
-            cards.Add(CardEff.Prefab);
-        return cards;
-    }
-
+    // To-Do
     private void SendBulletsToMainData() {
-        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = clipActualBullets;
-        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = pocketActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = ClipActualBullets;
         MainData.ActionWeapons();
     }
 
@@ -104,7 +130,6 @@ public class Gun : Weapon {
     #region Overrided Methods
 
     private void Start() {
-        InitializeStandardGunCardProps();
         GetCardsFromChildren();
         InstallModCards();
     }
@@ -117,41 +142,30 @@ public class Gun : Weapon {
         OnAttackAction?.Invoke();
     }
     protected override void InstallModCards() {
-        if (CardGen != null)
-            InstallCard(CardGen);
-        if (CardFly != null)
-            InstallCard(CardFly);
-        if (CardEff != null)
-            InstallCard(CardEff);
+        InstallCard(CardGen); // there will already be null-check
+        InstallCard(CardFly); // there will already be null-check
+        InstallCard(CardEff); // there will already be null-check
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
             GameObject child = this.transform.GetChild(i).gameObject;
             CardGun card = child.GetComponent<CardGun>();
-            if (card != null) {
-                InstallUnknownCard(card);
-            }
+            InstallUnknownCard(card); // there will already be null-check
         }
     }
 
     #endregion
 
     #region WorkingWithCards Methods
-    protected void InitializeStandardGunCardProps() {
-        StandardCardGenProps = new CardGunGen.CardGunGenProps();
-        StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
-        StandardCardEffProps = new CardEffect.CardGunEffectProps();
-    }
+
     public bool InstallUnknownCard(CardGun card) {
-        if (card != null) {
-            if (card is CardGunGen) {
-                InstallCard((CardGunGen)card);
-            } else if (card is CardGunFly) {
-                InstallCard((CardGunFly)card);
-            } else if (card is CardEffect) {
-                InstallCard((CardEffect)card);
-            }
-            return true;
+        // switch-case does not fit here
+        if (card is CardGunGen) {
+            return InstallCard((CardGunGen)card);
+        } else if (card is CardGunFly) {
+            return InstallCard((CardGunFly)card);
+        } else if (card is CardEffect) {
+            return InstallCard((CardEffect)card);
         }
         return false;
     }
@@ -186,11 +200,11 @@ public class Gun : Weapon {
         return false;
     }
     private void PrepareCardforInstall(CardGun cardGen) {
-        ////////////////
+        // To-Do
     }
     private bool RemoveCard(CardGun card) {
-        ///////////////
-        return true;
+        // To-Do
+        return false;
     }
 
     #endregion
@@ -198,39 +212,27 @@ public class Gun : Weapon {
     #region Main Methods
 
     private void Hit() {
+        // To-Do
         animator.SetTrigger("hit");
     }
     private void Shoot() {
         if (canAttack && isLoaded) {
-            CardGunGen.CardGunGenProps CardGenProps;
-            if (CardGen == null) {
-                CardGenProps = StandardCardGenProps;
-            } else {
-                CardGenProps = CardGen.Props;
-            }
-            CardGunFly.CardGunFlyProps CardFlyProps;
-            if (CardFly == null) {
-                CardFlyProps = StandardCardFlyProps;
-            } else {
-                CardFlyProps = CardFly.Props;
-            }
-            int bulletsPerShot = Mathf.Min(CardGenProps.BulletsPerShotAdder + 1, clipActualBullets);
+            int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ClipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
                 GameObject blt = Instantiate(bullet, transform.position + transform.rotation * localFirePoint, transform.rotation);
-                Destroy(blt, bulletLifeTime * CardGenProps.ShotRangeMultiplier);
-                blt.GetComponent<Bullet>().SetParams(standardDamage, CardFlyProps);
+                Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
+                blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
                 Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
                 blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
                         transform.rotation.eulerAngles.x,
                         transform.rotation.eulerAngles.y,
                         transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
                     * Vector2.right * bulletSpeed;
-                clipActualBullets--;
+                ClipActualBullets--;
             }
-            CheckNSendBullets();
             canAttack = false;
-            SetReliefTimer(1 / CardGenProps.FireRateMultiplier);
-            Debug.Log(TAG + "Bullets: " + clipActualBullets + "/" + pocketActualBullets);
+            SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier);
+            Debug.Log(TAG + "Bullets: " + ClipActualBullets + "/" + PocketActualBullets);
         }
     }
 
@@ -239,7 +241,7 @@ public class Gun : Weapon {
     #region WorkingWithBullets methods
 
     private void CheckNSendBullets() {
-        if (clipActualBullets > 0) {
+        if (ClipActualBullets > 0) {
             isLoaded = true;
         } else {
             isLoaded = false;
@@ -247,13 +249,13 @@ public class Gun : Weapon {
         SendBulletsToMainData();
     }
     public void Reload() {
-        int bulletsNeeded = clipMaxBullets - clipActualBullets;
-        if (bulletsNeeded <= pocketActualBullets) {
-            clipActualBullets += bulletsNeeded;
-            pocketActualBullets -= bulletsNeeded;
+        int bulletsNeeded = ClipMaxBullets - ClipActualBullets;
+        if (bulletsNeeded <= PocketActualBullets) {
+            ClipActualBullets += bulletsNeeded;
+            PocketActualBullets -= bulletsNeeded;
         } else {
-            clipActualBullets += pocketActualBullets;
-            pocketActualBullets = 0;
+            ClipActualBullets += PocketActualBullets;
+            PocketActualBullets = 0;
         }
         CheckNSendBullets();
     }

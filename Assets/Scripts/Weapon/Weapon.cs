@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Timers;
 using System;
 
-public abstract class Weapon : MonoBehaviour {
+public abstract class Weapon : EncyclopediaObject {
 
     const string TAG = "Weapon: ";
 
@@ -13,11 +13,20 @@ public abstract class Weapon : MonoBehaviour {
     public Action OnInstallCardAction;
     #endregion
 
-    #region Public Variables
-    [SerializeField]
-    private GameObject weaponPrefab;
+    #region Properties
 
     public GameObject WeaponPrefab { get { return weaponPrefab; } }
+
+    public Collider2D WeaponCollider { get { return weaponCollider; } }
+
+    public abstract List<GameObject> AllCardPrefabList { get; }
+
+    #endregion
+
+    #region Public Variables
+
+    [SerializeField]
+    private GameObject weaponPrefab;
 
     [SerializeField]
     protected GameObject weaponHolder = null;
@@ -49,9 +58,9 @@ public abstract class Weapon : MonoBehaviour {
     #region Constants
 
     public enum State {
-        Main = 0,
-        Alt = 1,
-        Throwed = 2
+        Main,
+        Alt,
+        Throwed
     }
 
     #endregion
@@ -61,15 +70,6 @@ public abstract class Weapon : MonoBehaviour {
     public abstract void Attack();
     protected abstract void InstallModCards();
     protected abstract void GetCardsFromChildren();
-    public abstract List<GameObject> GetAllCardsList();
-
-    #endregion
-
-    #region Getters
-
-    public Collider2D GetWeaponCollider() {
-        return weaponCollider;
-    }
 
     #endregion
 
@@ -83,14 +83,15 @@ public abstract class Weapon : MonoBehaviour {
         timer.AutoReset = false;
         timer.Enabled = true;
     }
+    // for Timer
     protected void SetCanAttack(object sender, ElapsedEventArgs e) {
         canAttack = true;
     }
-    public void EnablePhysics() {
+    protected void EnablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
         weaponCollider.enabled = true; // enabled Collider2D
     }
-    public void DisablePhysics() {
+    protected void DisablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Kinematic; // "disabled" Rigidbody2D
         weaponCollider.enabled = false; // disabled Collider2D
         rigidBody.velocity = Vector2.zero;
@@ -122,16 +123,15 @@ public abstract class Weapon : MonoBehaviour {
             state = State.Main;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
             animator.SetBool("secondState", false);
-            //weaponCollider.enabled = false;
 
         } else {
             state = State.Alt;
             this.transform.rotation = Quaternion.Euler(0, 0, -90);
             animator.SetBool("secondState", true);
-            //weaponCollider.enabled = true;
         }
         Debug.Log(TAG + "Changed state");
     }
+    // To-Do
     private void Drop() {
         state = State.Throwed;
 

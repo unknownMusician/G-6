@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardMeleeShape : MonoBehaviour, CardMelee {
+public class CardMeleeShape : EncyclopediaObject, CardMelee {
 
     const string TAG = "CardMeleeShape: ";
 

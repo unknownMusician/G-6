@@ -36,7 +36,7 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region Parameters
+    #region Properties
 
     public Weapon Weapon { get { return weapons[activeWeapon]; } }
 
@@ -81,9 +81,9 @@ public class Inventory : MonoBehaviour {
             if (weapons[i] != null) {
                 if (weapons[i] is Gun) {
                     Gun gun = (Gun)weapons[i];
-                    allWeapons.Add(new Gun.Info(gun.WeaponPrefab, gun.GetAllCardsList(), gun.ClipActualBullets, gun.PocketActualBullets));
+                    allWeapons.Add(new Gun.Info(gun.WeaponPrefab, gun.AllCardPrefabList, gun.ClipActualBullets, gun.PocketActualBullets));
                 } else {
-                    allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList()));
+                    allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].AllCardPrefabList));
                 }
             }
         }
