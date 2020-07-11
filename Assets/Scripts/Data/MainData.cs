@@ -28,7 +28,9 @@ public class MainData
     {
         get
         {
-            return inventoryWeapons[activeWeaponIndex];
+            if (inventoryWeapons != null)
+                return inventoryWeapons[activeWeaponIndex];
+            return null;
         }
     }
 
