@@ -15,14 +15,39 @@ public class GameUI : MonoBehaviour
     public Image weapon;
     public GameObject menu;
     public GameObject setting;
+    public GameObject weaponSettings;
 
 
     private static Action UpdatInformation;
 
-    void OnGUI()
+    void Update()
     {
-        if (Event.current.Equals(Event.KeyboardEvent(KeyCode.Escape.ToString())))
-            menu.active = !menu.active;
+        if (Input.GetButtonDown("Setting"))
+        {
+            if (PauseMenu.GameIsPaused)
+            {
+                menu.SetActive(false);
+                PauseMenu.Resume();
+            }
+            else
+            {
+                PauseMenu.Pause();
+                menu.SetActive(true);
+            }
+        }
+        if (Input.GetButtonDown("WeaponSettings"))
+        {
+            if (PauseMenu.GameIsPaused)
+            {
+                PauseMenu.Resume();
+                weaponSettings.SetActive(false);
+            }
+            else
+            {
+                PauseMenu.Pause();
+                weaponSettings.SetActive(true);
+            }
+        }
     }
 
     public void LoadSetting()

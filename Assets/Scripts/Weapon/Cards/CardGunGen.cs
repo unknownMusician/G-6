@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardGunGen : MonoBehaviour, CardGun {
+public class CardGunGen : EncyclopediaObject, CardGun {
 
     const string TAG = "CardGunGen: ";
 

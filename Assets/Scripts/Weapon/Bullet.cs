@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : EncyclopediaObject {
 
     const string TAG = "Bullet: ";
 
     #region Public Variables
 
     [SerializeField]
-    private Rigidbody2D rb;
+    private Rigidbody2D rb = null;
 
     #endregion
 

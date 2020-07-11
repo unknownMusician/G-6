@@ -77,48 +77,33 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            Inventory.ChooseNext();
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            Inventory.ChoosePrev();
-        }
-        if (Input.GetButtonDown("WeaponSlot1"))
-        {
-            Inventory.Choose(Inventory.Slots.FIRST);
-        }
-        else if (Input.GetButtonDown("WeaponSlot2"))
-        {
-            Inventory.Choose(Inventory.Slots.SECOND);
-        }
-        else if (Input.GetButtonDown("WeaponSlot3"))
-        {
-            Inventory.Choose(Inventory.Slots.THIRD);
-        }
-        else if (Input.GetButtonDown("WeaponSlot4"))
-        {
-            Inventory.Choose(Inventory.Slots.FOURTH);
-        }
-        if (Inventory.Weapon != null)
-        {
-            if (Input.GetButtonDown("ChangeWeaponState"))
-            {
-                Inventory.Weapon.ChangeState();
-            }
-            if (Input.GetButtonDown("Reload"))
-            {
-                Inventory.Reload();
-            }
-        }
+        // To-Do
     }
     protected override void WeaponFixedControl()
     {
-        if (Inventory.Weapon != null)
-        {
+        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+            Inventory.ChooseNext();
+        } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+            Inventory.ChoosePrev();
+        }
+        if (Input.GetButtonDown("WeaponSlot1")) {
+            Inventory.Choose(Inventory.Slots.FIRST);
+        } else if (Input.GetButtonDown("WeaponSlot2")) {
+            Inventory.Choose(Inventory.Slots.SECOND);
+        } else if (Input.GetButtonDown("WeaponSlot3")) {
+            Inventory.Choose(Inventory.Slots.THIRD);
+        } else if (Input.GetButtonDown("WeaponSlot4")) {
+            Inventory.Choose(Inventory.Slots.FOURTH);
+        }
+        if (Inventory.Weapon != null) {
+            if (Input.GetButtonDown("ChangeWeaponState")) {
+                Inventory.Weapon.ChangeState();
+            }
+            if (Input.GetButtonDown("Reload")) {
+                Inventory.Reload();
+            }
             if (Input.GetButton("Fire1"))
                 Inventory.Weapon.Attack();
         }
@@ -133,38 +118,20 @@ public class PlayerBehaviour : CharacterBase
     /// <summary>
     /// Some code to indicate checkers
     /// </summary>
-    protected void OnDrawGizmos()
+    protected void OnDrawGizmos() 
     {
-        var color = Gizmos.color;
-        Gizmos.color = Color.green;
-
-        foreach (KeyValuePair<Side, List<Transform>> kvp in Checkers)
-        {
-            switch (kvp.Key)
-            {
-                case Side.Up:
-                    Gizmos.color = Color.blue;
-                    break;
-                case Side.Down:
-                    Gizmos.color = Color.grey;
-                    break;
-                case Side.Left:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case Side.Right:
-                    Gizmos.color = Color.green;
-                    break;
-                default:
-                    break;
-            }
-            foreach (Transform v in kvp.Value)
-            {
-                Gizmos.DrawSphere(v.position, 0.1f);
-            }
-
+        Gizmos.color = Color.grey;
+        foreach (Transform tr in GroundCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
         }
-
-        Gizmos.color = color;
+        Gizmos.color = Color.green;
+        foreach (Transform tr in RightSideCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
+        }
+        Gizmos.color = Color.yellow;
+        foreach (Transform tr in LeftSideCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
+        }
     }
 
 }
