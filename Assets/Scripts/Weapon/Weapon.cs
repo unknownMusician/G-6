@@ -31,7 +31,7 @@ public abstract class Weapon : MonoBehaviour {
     protected Collider2D weaponCollider = null;
 
     [SerializeField]
-    protected float hitStrenght = 10;
+    protected float throwHitDamage = 10;
 
     #endregion
 
@@ -103,10 +103,10 @@ public abstract class Weapon : MonoBehaviour {
     #region Overrided Methods
 
     protected void OnTriggerEnter2D(Collider2D collider) {
-        if (friend != null && !collider.gameObject.Equals(friend)) {
+        if (state == State.Throwed && !collider.gameObject.Equals(friend)) {
             CharacterBase cb = collider.gameObject.GetComponent<CharacterBase>();
             if (cb != null) {
-                cb.TakeDamage(rigidBody.velocity.normalized * hitStrenght);
+                cb.TakeDamage(rigidBody.velocity.normalized * throwHitDamage);
             }
             DisablePhysics();
             Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
@@ -136,16 +136,17 @@ public abstract class Weapon : MonoBehaviour {
         state = State.Throwed;
 
         this.gameObject.transform.parent = null; // unparented weapon
-        EnablePhysics();
+        Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
         Debug.Log(TAG + "Dropped weapon");
     }
-    public void Throw(Vector2 direction) {
+    public void Throw(GameObject whoThrowed, Vector2 direction) {
         state = State.Throwed;
+        friend = whoThrowed;
 
         this.gameObject.transform.parent = null; // unparented weapon
         EnablePhysics();
         rigidBody.velocity += direction; // "throwed" the weapon
-        rigidBody.angularVelocity = -direction.magnitude * 30;
+        rigidBody.angularVelocity = -direction.magnitude * 150f;
     }
 
     #endregion

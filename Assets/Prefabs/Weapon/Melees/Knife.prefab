@@ -100,7 +100,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -116,7 +116,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.1, y: 0}
@@ -140,9 +140,14 @@ MonoBehaviour:
   rigidBody: {fileID: 6413423544453468081}
   spriteRenderer: {fileID: 8902850384399324637}
   animator: {fileID: 7440309013352402495}
-  weaponCollider: {fileID: 0}
-  hitStrenght: 10
-  standardDamage: 0
+  weaponCollider: {fileID: 5608625482266719809}
+  throwHitDamage: 10
+  localHitCentrePoint: {x: 0.5, y: 0, z: 0}
+  hitAreaRadius: 1.5
+  standardDamage: 20
+  CardShape: {fileID: 0}
+  CardMemory: {fileID: 0}
+  CardEff: {fileID: 0}
 --- !u!95 &7440309013352402495
 Animator:
   serializedVersion: 3

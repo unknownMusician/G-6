@@ -194,11 +194,11 @@ public class Inventory : MonoBehaviour {
         if (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) {
             strenght *= ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow);
         }
-        Debug.Log(TAG + "Throwed with the stenght: " + strenght);
         if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].Throw(this.gameObject.transform.rotation * Vector2.right * strenght);
+            weapons[activeWeapon].Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
             weapons[activeWeapon] = null;
         }
+        Debug.Log(TAG + "Throwed with the stenght: " + strenght);
     }
     public void Reload() {
         if (weapons[activeWeapon] != null && weapons[activeWeapon] is Gun) {

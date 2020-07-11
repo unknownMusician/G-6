@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 public class Setting : MonoBehaviour
 {
-    private bool isFullScreen = Screen.fullScreen;
+    private bool isFullScreen;
     private Resolution[] rsl;
     private List<string> resolutions;
     public AudioMixer audiomixer;
-    public Dropdown resolutiondropdown;
+    public Dropdown resolutiondDropdown;
     public static bool prap = false;
     public GameObject mainMenu;
     public GameObject setting;
@@ -26,22 +26,23 @@ public class Setting : MonoBehaviour
 
     public void Awake()
     {
+        isFullScreen = Screen.fullScreen;
         resolutions = new List<string>();
         rsl = Screen.resolutions;
         foreach (var i in rsl)
         {
             resolutions.Add(i.width + "x" + i.height);
         }
-        resolutiondropdown.ClearOptions();
-        resolutiondropdown.AddOptions(resolutions);
+        resolutiondDropdown.ClearOptions();
+        resolutiondDropdown.AddOptions(resolutions);
     }
 
     public void Exit()
     {
-        setting.active = false;
+        setting.SetActive(false);
         if (prap)
         {
-            mainMenu.active = true;
+            mainMenu.SetActive(true);
             prap = false;
         }
         Time.timeScale = 1f;

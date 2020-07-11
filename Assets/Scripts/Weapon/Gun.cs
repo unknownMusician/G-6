@@ -17,6 +17,8 @@ public class Gun : Weapon {
     [SerializeField]
     private Vector3 localFirePoint = Vector3.right;
 
+    [Space]
+    [Space]
     [SerializeField]
     private float standardDamage;
     [SerializeField]
@@ -27,6 +29,7 @@ public class Gun : Weapon {
     private float bulletLifeTime = 1;
 
     [Space]
+    [Space]
     [SerializeField]
     private int clipMaxBullets = 9;
     [SerializeField]
@@ -34,6 +37,7 @@ public class Gun : Weapon {
     [SerializeField]
     private int clipActualBullets = 5;
 
+    [Space]
     [Space]
     [SerializeField]
     protected CardGunGen CardGen;
@@ -61,6 +65,9 @@ public class Gun : Weapon {
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position + localFirePoint, 0.2f);
+        Gizmos.DrawRay(transform.position + localFirePoint, transform.rotation * Vector3.right);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawRay(transform.position, transform.rotation * Vector3.right);
     }
 
     #endregion
@@ -179,7 +186,7 @@ public class Gun : Weapon {
 
     #endregion
 
-    #region Damaging Methods
+    #region Main Methods
 
     private void Hit() {
         animator.SetTrigger("hit");
