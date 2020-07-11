@@ -64,8 +64,8 @@ public class Gun : Weapon {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + localFirePoint, 0.2f);
-        Gizmos.DrawRay(transform.position + localFirePoint, transform.rotation * Vector3.right);
+        Gizmos.DrawSphere(transform.position + transform.rotation * localFirePoint, 0.2f);
+        Gizmos.DrawRay(transform.position + transform.rotation * localFirePoint, transform.rotation * Vector3.right);
         Gizmos.color = Color.gray;
         Gizmos.DrawRay(transform.position, transform.rotation * Vector3.right);
     }
