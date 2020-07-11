@@ -64,6 +64,7 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         Prepare();
+        SendInventoryWeaponsToMainData();
     }
 
     #endregion
