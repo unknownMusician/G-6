@@ -71,7 +71,7 @@ public class Inventory : MonoBehaviour {
     #region MainData Methods
 
     private void SendActiveWeaponToMainData() {
-        MainData.ActiveWeapon = new Weapon.Info(Weapon.WeaponPrefab, Weapon.GetAllCardsList());
+        MainData.ActiveWeaponIndex = activeWeapon;
     }
 
     private void SendInventoryWeaponsToMainData() {
