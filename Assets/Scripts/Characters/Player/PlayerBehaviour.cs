@@ -133,38 +133,20 @@ public class PlayerBehaviour : CharacterBase
     /// <summary>
     /// Some code to indicate checkers
     /// </summary>
-    protected void OnDrawGizmos()
+    protected void OnDrawGizmos() 
     {
-        var color = Gizmos.color;
-        Gizmos.color = Color.green;
-
-        foreach (KeyValuePair<Side, List<Transform>> kvp in Checkers)
-        {
-            switch (kvp.Key)
-            {
-                case Side.Up:
-                    Gizmos.color = Color.blue;
-                    break;
-                case Side.Down:
-                    Gizmos.color = Color.grey;
-                    break;
-                case Side.Left:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case Side.Right:
-                    Gizmos.color = Color.green;
-                    break;
-                default:
-                    break;
-            }
-            foreach (Transform v in kvp.Value)
-            {
-                Gizmos.DrawSphere(v.position, 0.1f);
-            }
-
+        Gizmos.color = Color.grey;
+        foreach (Transform tr in GroundCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
         }
-
-        Gizmos.color = color;
+        Gizmos.color = Color.green;
+        foreach (Transform tr in RightSideCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
+        }
+        Gizmos.color = Color.yellow;
+        foreach (Transform tr in LeftSideCheckers) {
+            Gizmos.DrawSphere(tr.position, 0.1f);
+        }
     }
 
 }
