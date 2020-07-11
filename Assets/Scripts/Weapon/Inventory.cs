@@ -78,7 +78,12 @@ public class Inventory : MonoBehaviour {
         List<Weapon.Info> allWeapons = new List<Weapon.Info>();
         for (int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
-                allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList()));
+                if (weapons[i] is Gun) {
+                    Gun gun = (Gun)weapons[i];
+                    allWeapons.Add(new Gun.Info(gun.WeaponPrefab, gun.GetAllCardsList(), gun.ClipActualBullets, gun.PocketActualBullets));
+                } else {
+                    allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList()));
+                }
             }
         }
         MainData.InventoryWeapons = allWeapons;

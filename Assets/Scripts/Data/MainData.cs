@@ -9,7 +9,7 @@ public class MainData
     #region Weapons
     public static Action ActionWeapons;
     private static List<Weapon.Info> inventoryWeapons;
-    private static Weapon.Info activeWeapon;
+    private static int activeWeaponIndex;
 
     public static List<Weapon.Info> InventoryWeapons
     {
@@ -28,14 +28,17 @@ public class MainData
     {
         get
         {
-            return activeWeapon;
-        }
-        set
-        {
-            activeWeapon = value;
-            ActionWeapons();
+            return inventoryWeapons[activeWeaponIndex];
         }
     }
+
+    public static int ActiveWeaponIndex {
+        set {
+            activeWeaponIndex = value;
+        }
+    }
+
+    public static
 
     #endregion
 

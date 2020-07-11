@@ -8,6 +8,14 @@ public class Gun : Weapon {
 
     const string TAG = "Gun: ";
 
+    #region Parameters
+
+    public int ClipMaxBullets { get { return clipMaxBullets; } }
+    public int PocketActualBullets { get { return pocketActualBullets; } }
+    public int ClipActualBullets { get { return clipActualBullets; } }
+
+    #endregion
+
     #region Public Variables
 
     [Space]
@@ -86,8 +94,8 @@ public class Gun : Weapon {
     }
 
     private void SendBulletsToMainData() {
-        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullet = clipActualBullets;
-        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullet = pocketActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = clipActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = pocketActualBullets;
     }
 
     #endregion
@@ -98,7 +106,6 @@ public class Gun : Weapon {
         InitializeStandardGunCardProps();
         GetCardsFromChildren();
         InstallModCards();
-        SendBulletsToMainData();
     }
     public override void Attack() {
         if (state == State.Alt) {
@@ -255,13 +262,13 @@ public class Gun : Weapon {
     #region Inner Classes
 
     public new class Info : Weapon.Info {
-        public int ActualClipBullet;
-        public int ActualPocketBullet;
+        public int ActualClipBullets;
+        public int ActualPocketBullets;
 
-        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullet, int actualPocketBullet)
+        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullets, int actualPocketBullets)
             : base(weaponPrefab, cardPrefabs) {
-            this.ActualClipBullet = actualClipBullet;
-            this.ActualPocketBullet = actualPocketBullet;
+            this.ActualClipBullets = actualClipBullets;
+            this.ActualPocketBullets = actualPocketBullets;
         }
     }
 
