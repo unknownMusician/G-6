@@ -150,4 +150,13 @@ public abstract class Weapon : MonoBehaviour {
     }
 
     #endregion
+
+    #region Inner Classes
+
+    public class WeaponInfo {
+        public GameObject WeaponPrefab;
+        public List<GameObject> CardPrefabs;
+    }
+
+    #endregion
 }

@@ -210,4 +210,12 @@ public class Melee : Weapon {
     }
 
     #endregion
+
+    #region Inner Classes
+
+    public class MeleeInfo : WeaponInfo {
+
+    }
+
+    #endregion
 }

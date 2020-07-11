@@ -254,9 +254,7 @@ public class Gun : Weapon {
 
     #region Inner Classes
 
-    public class GunInfo {
-        public GameObject WeaponPrefab;
-        public List<GameObject> CardPrefabs;
+    public class GunInfo : Weapon.WeaponInfo {
         public int ActualClipBullet;
         public int ActualPocketBullet;
     }
