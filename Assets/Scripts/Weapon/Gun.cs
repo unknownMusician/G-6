@@ -218,7 +218,7 @@ public class Gun : Weapon {
                     * Vector2.right * bulletSpeed;
                 clipActualBullets--;
             }
-            CheckBullets();
+            CheckNSendBullets();
             canAttack = false;
             SetReliefTimer(1 / CardGenProps.FireRateMultiplier);
             Debug.Log(TAG + "Bullets: " + clipActualBullets + "/" + pocketActualBullets);
@@ -229,12 +229,13 @@ public class Gun : Weapon {
 
     #region WorkingWithBullets methods
 
-    private void CheckBullets() {
+    private void CheckNSendBullets() {
         if (clipActualBullets > 0) {
             isLoaded = true;
         } else {
             isLoaded = false;
         }
+        SendBulletsToMainData();
     }
     public void Reload() {
         int bulletsNeeded = clipMaxBullets - clipActualBullets;
@@ -245,7 +246,7 @@ public class Gun : Weapon {
             clipActualBullets += pocketActualBullets;
             pocketActualBullets = 0;
         }
-        CheckBullets();
+        CheckNSendBullets();
     }
 
     #endregion
