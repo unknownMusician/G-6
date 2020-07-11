@@ -213,7 +213,7 @@ public class Melee : Weapon {
 
     #region Inner Classes
 
-    public class MeleeInfo : WeaponInfo {
+    public new class Info : Weapon.Info {
 
     }
 

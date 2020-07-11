@@ -71,8 +71,10 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        patrons.text = MainData.ActiveWeapon.ActualClipBullet.ToString() + "/" + MainData.ActiveWeapon.ActualPocketBullet.ToString();
-
+        if (MainData.ActiveWeapon is Gun.Info)
+            patrons.text = ((Gun.Info)MainData.ActiveWeapon).ActualClipBullet.ToString() + "/" + ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullet.ToString();
+        else
+            patrons.text = "0/0";
     }
 
     public void SetImageWeapon()

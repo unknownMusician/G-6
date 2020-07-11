@@ -8,10 +8,10 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Gun.GunInfo> inventoryWeapons;
-    private static Gun.GunInfo activeWeapon;
+    private static List<Weapon.Info> inventoryWeapons;
+    private static Weapon.Info activeWeapon;
 
-    public static List<Gun.GunInfo> InventoryWeapons
+    public static List<Weapon.Info> InventoryWeapons
     {
         get
         {
@@ -24,7 +24,7 @@ public class MainData
         }
     }
 
-    public static Gun.GunInfo ActiveWeapon
+    public static Weapon.Info ActiveWeapon
     {
         get
         {

@@ -153,7 +153,7 @@ public abstract class Weapon : MonoBehaviour {
 
     #region Inner Classes
 
-    public class WeaponInfo {
+    public class Info {
         public GameObject WeaponPrefab;
         public List<GameObject> CardPrefabs;
     }

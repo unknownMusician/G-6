@@ -254,7 +254,7 @@ public class Gun : Weapon {
 
     #region Inner Classes
 
-    public class GunInfo : Weapon.WeaponInfo {
+    public new class Info : Weapon.Info {
         public int ActualClipBullet;
         public int ActualPocketBullet;
     }
