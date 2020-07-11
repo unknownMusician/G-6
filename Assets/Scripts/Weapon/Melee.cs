@@ -205,7 +205,19 @@ public class Melee : Weapon {
             }
             canAttack = false;
             SetReliefTimer(1 / CardShapeProps.AttackSpeedMultiplier);
-            Debug.Log(TAG + "Hit (" + actualHitCounter + " target" + ((actualHitCounter == 1) ? "" :"s") + ")");
+            Debug.Log(TAG + "Hit (" + actualHitCounter + " target" + ((actualHitCounter == 1) ? "" : "s") + ")");
+        }
+    }
+
+    #endregion
+
+    #region Inner Classes
+
+    public new class Info : Weapon.Info {
+
+        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs)
+            : base(weaponPrefab, cardPrefabs) {
+            //
         }
     }
 

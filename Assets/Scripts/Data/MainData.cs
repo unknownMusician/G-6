@@ -8,68 +8,39 @@ public class MainData
 {
     #region Weapons
     public static Action ActionWeapons;
-    private static Dictionary<GameObject,List<GameObject>> inventoryWeapons;
-    private static GameObject activeWeapon;
+    private static List<Weapon.Info> inventoryWeapons;
+    private static int activeWeaponIndex = 0;
 
-    public static List<GameObject> ActiveCards
+    public static List<Weapon.Info> InventoryWeapons
     {
         get
         {
-            return inventoryWeapons[activeWeapon];
-        }
-    }
-
-    public static Dictionary<GameObject, List<GameObject>> InventoryWeapons {
-        get {
             return inventoryWeapons;
         }
-        set {
+        set
+        {
             inventoryWeapons = value;
             ActionWeapons();
         }
     }
 
-    public static GameObject ActiveWeapon {
-        get {
-            return activeWeapon;
+    public static Weapon.Info ActiveWeapon
+    {
+        get
+        {
+            return inventoryWeapons == null ? null : inventoryWeapons[activeWeaponIndex];
         }
-        set {
-            activeWeapon = value;
+    }
+
+    public static int ActiveWeaponIndex
+    {
+        set
+        {
+            activeWeaponIndex = value;
             ActionWeapons();
         }
     }
 
-    #endregion
-
-    #region Patrons
-    public static Action ActionPatrons;
-    private static int pocketBullets = 0;
-    private static int clipBullets = 0;
-
-    public static int PocketBullets
-    {
-        get
-        {
-            return pocketBullets;
-        }
-        set
-        {
-            pocketBullets = value;
-            ActionPatrons();
-        }
-    }
-    public static int ClipBullets
-    {
-        get
-        {
-            return clipBullets;
-        }
-        set
-        {
-            clipBullets = value;
-            ActionPatrons();
-        }
-    }
     #endregion
 
     #region HP

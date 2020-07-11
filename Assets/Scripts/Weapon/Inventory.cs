@@ -64,6 +64,7 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         Prepare();
+        SendInventoryWeaponsToMainData();
     }
 
     #endregion
@@ -71,14 +72,19 @@ public class Inventory : MonoBehaviour {
     #region MainData Methods
 
     private void SendActiveWeaponToMainData() {
-        MainData.ActiveWeapon = Weapon.WeaponPrefab;
+        MainData.ActiveWeaponIndex = activeWeapon;
     }
 
     private void SendInventoryWeaponsToMainData() {
-        Dictionary<GameObject, List<GameObject>> allWeapons = new Dictionary<GameObject, List<GameObject>>();
+        List<Weapon.Info> allWeapons = new List<Weapon.Info>();
         for (int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
-                allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
+                if (weapons[i] is Gun) {
+                    Gun gun = (Gun)weapons[i];
+                    allWeapons.Add(new Gun.Info(gun.WeaponPrefab, gun.GetAllCardsList(), gun.ClipActualBullets, gun.PocketActualBullets));
+                } else {
+                    allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList()));
+                }
             }
         }
         MainData.InventoryWeapons = allWeapons;
