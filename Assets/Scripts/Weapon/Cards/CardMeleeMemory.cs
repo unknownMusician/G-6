@@ -20,7 +20,7 @@ public class CardMeleeMemory : EncyclopediaObject, CardMelee {
     protected GameObject prefab;
 
     [SerializeField]
-    private CardMeleeMemoryProps.MemoryType memory;
+    private CardMeleeMemoryProps.MemoryType memory = CardMeleeMemoryProps.MemoryType.Null;
 
     #endregion
 

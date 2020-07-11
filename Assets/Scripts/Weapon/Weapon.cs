@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Timers;
 using System;
@@ -20,13 +19,14 @@ public abstract class Weapon : EncyclopediaObject {
     public Collider2D WeaponCollider { get { return weaponCollider; } }
 
     public abstract List<GameObject> AllCardPrefabList { get; }
+    protected abstract bool CanAttack { get; set; }
 
     #endregion
 
     #region Public Variables
 
     [SerializeField]
-    private GameObject weaponPrefab;
+    private GameObject weaponPrefab = null;
 
     [SerializeField]
     protected GameObject weaponHolder = null;

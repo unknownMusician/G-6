@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Melee : Weapon {
@@ -21,11 +20,17 @@ public class Melee : Weapon {
         }
     }
 
-    //
+    //////////
 
+    protected override bool CanAttack {
+        get { return canAttack; }
+        set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
+    }
     private Vector3 WorldHitCentrePoint { get { return transform.position + this.transform.rotation * localHitCentrePoint; } }
 
-
+    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps { get { return CardShape == null ? StandardCardShapeProps : CardShape.Props; } }
+    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps { get { return CardMemory == null ? StandardCardMemoryProps : CardMemory.Props; } }
+    private CardEffect.CardGunEffectProps ActualCardEffectProps { get { return CardEff == null ? StandardCardEffProps : CardEff.Props; } }
 
     #endregion
 
@@ -41,7 +46,7 @@ public class Melee : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    private float standardDamage;
+    private float standardDamage = 10f;
 
     [Space]
     [Space]
@@ -169,20 +174,7 @@ public class Melee : Weapon {
         // To-Do
     }
     private void Hit() {
-        if (canAttack) {
-            CardMeleeShape.CardMeleeShapeProps CardShapeProps;
-            if (CardShape == null) {
-                CardShapeProps = StandardCardShapeProps;
-            } else {
-                CardShapeProps = CardShape.Props;
-            }
-            CardMeleeMemory.CardMeleeMemoryProps CardMemoryProps;
-            if (CardMemory == null) {
-                CardMemoryProps = StandardCardMemoryProps;
-            } else {
-                CardMemoryProps = CardMemory.Props;
-            }
-
+        if (CanAttack) {
             Collider2D[] cols = Physics2D.OverlapCircleAll(WorldHitCentrePoint, hitAreaRadius);
             HashSet<GameObject> objs = new HashSet<GameObject>();
             foreach (Collider2D col in cols) {
@@ -199,8 +191,7 @@ public class Melee : Weapon {
                     }
                 }
             }
-            canAttack = false;
-            SetReliefTimer(1 / CardShapeProps.AttackSpeedMultiplier);
+            CanAttack = false;
             Debug.Log(TAG + "Hit (" + actualHitCounter + " target" + ((actualHitCounter == 1) ? "" : "s") + ")");
         }
     }

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Timers;
-using System;
 
 public class Gun : Weapon {
 
@@ -47,11 +44,15 @@ public class Gun : Weapon {
 
     //////////
 
-    private bool CanAttack { get { return canAttack; } set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); } }
+    protected override bool CanAttack {
+        get { return canAttack; }
+        set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
+    }
     private Vector3 WorldFirePoint { get { return transform.position + transform.rotation * localFirePoint; } }
 
     private CardGunGen.CardGunGenProps ActualCardGenProps { get { return CardGen == null ? StandardCardGenProps : CardGen.Props; } }
     private CardGunFly.CardGunFlyProps ActualCardFlyProps { get { return CardFly == null ? StandardCardFlyProps : CardFly.Props; } }
+    private CardEffect.CardGunEffectProps ActualCardEffectProps { get { return CardEff == null ? StandardCardEffProps : CardEff.Props; } }
 
     #endregion
 
@@ -67,7 +68,7 @@ public class Gun : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    private float standardDamage;
+    private float standardDamage = 10f;
     [SerializeField]
     private float bulletSpeed = 20;
     [SerializeField]
@@ -121,7 +122,7 @@ public class Gun : Weapon {
 
     #region Service Methods
 
-    private void InstantiateBullet() {
+    private void InstantiateBullet(int index) {
         GameObject blt = Instantiate(bullet, WorldFirePoint, transform.rotation);
         Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
         blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
@@ -129,7 +130,7 @@ public class Gun : Weapon {
         blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
                 transform.rotation.eulerAngles.x,
                 transform.rotation.eulerAngles.y,
-                transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
+                transform.rotation.eulerAngles.z + (Mathf.Pow(-1, index) * index / 2 * spread))
             * Vector2.right * bulletSpeed;
     }
 
@@ -225,7 +226,7 @@ public class Gun : Weapon {
         if (CanAttack && isLoaded) {
             int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ClipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
-                InstantiateBullet();
+                InstantiateBullet(i);
                 ClipActualBullets--;
             }
             CanAttack = false;
