@@ -86,8 +86,8 @@ public class Gun : Weapon {
     }
 
     private void SendBulletsToMainData() {
-        MainData.ClipBullets = clipActualBullets;
-        MainData.PocketBullets = pocketActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullet = clipActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullet = pocketActualBullets;
     }
 
     #endregion
@@ -257,6 +257,12 @@ public class Gun : Weapon {
     public new class Info : Weapon.Info {
         public int ActualClipBullet;
         public int ActualPocketBullet;
+
+        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullet, int actualPocketBullet)
+            : base(weaponPrefab, cardPrefabs) {
+            this.ActualClipBullet = actualClipBullet;
+            this.ActualPocketBullet = actualPocketBullet;
+        }
     }
 
     #endregion

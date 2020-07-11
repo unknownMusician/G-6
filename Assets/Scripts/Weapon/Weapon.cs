@@ -156,6 +156,11 @@ public abstract class Weapon : MonoBehaviour {
     public class Info {
         public GameObject WeaponPrefab;
         public List<GameObject> CardPrefabs;
+
+        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs) {
+            this.WeaponPrefab = weaponPrefab;
+            this.CardPrefabs = cardPrefabs;
+        }
     }
 
     #endregion
