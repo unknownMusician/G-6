@@ -98,6 +98,7 @@ public class Gun : Weapon {
         InitializeStandardGunCardProps();
         GetCardsFromChildren();
         InstallModCards();
+        SendBulletsToMainData();
     }
     public override void Attack() {
         if (state == State.Alt) {
