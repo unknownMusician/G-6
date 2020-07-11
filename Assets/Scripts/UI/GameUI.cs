@@ -46,7 +46,7 @@ public class GameUI : MonoBehaviour
         MainData.ActionMoney += SetMoney;
         SetMoney();
         //Patrons
-        MainData.ActionPatrons += SetPatrons;
+        MainData.ActionWeapons += SetPatrons;
         SetPatrons();
         //Imageweapon
         MainData.ActionWeapons += SetImageWeapon;
@@ -71,14 +71,14 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        patrons.text = MainData.ClipBullets.ToString() + "/" + MainData.PocketBullets.ToString();
+        patrons.text = MainData.ActiveWeapon.ActualClipBullet.ToString() + "/" + MainData.ActiveWeapon.ActualPocketBullet.ToString();
 
     }
 
     public void SetImageWeapon()
     {
         if (MainData.ActiveWeapon != null)
-            weapon.sprite = MainData.ActiveWeapon.gameObject.GetComponent<SpriteRenderer>().sprite;
+            weapon.sprite = MainData.ActiveWeapon.WeaponPrefab.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 
 }
