@@ -37,6 +37,7 @@ public class MainData
         set
         {
             activeWeaponIndex = value;
+            ActionWeapons();
         }
     }
 
