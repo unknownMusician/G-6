@@ -96,6 +96,7 @@ public class Gun : Weapon {
     private void SendBulletsToMainData() {
         ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = clipActualBullets;
         ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = pocketActualBullets;
+        MainData.ActionWeapons();
     }
 
     #endregion
