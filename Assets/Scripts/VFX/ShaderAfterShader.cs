@@ -50,14 +50,6 @@ public class ShaderAfterShader : MonoBehaviour {
 
         Vector4 resolution = new Vector4(Camera.main.pixelWidth, Camera.main.pixelHeight);
 
-        //Debug.Log(
-        //    "pl3: (" + Mathf.Floor(playerPos.x) + " ; " + Mathf.Floor(playerPos.y) + "); " + 
-        //    "m3 : (" + Mathf.Floor(mousePos.x) + " ; " + Mathf.Floor(mousePos.y) + "); " +
-        //    "pl4: (" + plPos.x + " ; " + plPos.y + "); " +
-        //    "lk4: (" + lkPos.x + " ; " + lkPos.y + "); " +
-        //    "ang: (" + angle + "); "
-        //    );
-
         materials[0].SetVector("_PlayerPos", plPos);
         materials[0].SetVector("_LookPos", lkPos);
         materials[0].SetFloat("_LookAngle", angle);

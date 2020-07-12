@@ -9,7 +9,7 @@ public class Bullet : EncyclopediaObject {
     #region Public Variables
 
     [SerializeField]
-    private Rigidbody2D rb;
+    private Rigidbody2D rb = null;
 
     #endregion
 

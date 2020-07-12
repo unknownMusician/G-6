@@ -20,7 +20,7 @@ public class Menu : MonoBehaviour
     }
     public void Continue()
     {
-        this.gameObject.active = false;
+        this.gameObject.SetActive(false);
         PauseMenu.Resume();
 
     }

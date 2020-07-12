@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Timers;
-using System;
 
 public class Gun : Weapon {
 
@@ -47,8 +44,15 @@ public class Gun : Weapon {
 
     //////////
 
+    protected override bool CanAttack {
+        get { return canAttack; }
+        set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
+    }
+    private Vector3 WorldFirePoint { get { return transform.position + transform.rotation * localFirePoint; } }
+
     private CardGunGen.CardGunGenProps ActualCardGenProps { get { return CardGen == null ? StandardCardGenProps : CardGen.Props; } }
     private CardGunFly.CardGunFlyProps ActualCardFlyProps { get { return CardFly == null ? StandardCardFlyProps : CardFly.Props; } }
+    private CardEffect.CardGunEffectProps ActualCardEffectProps { get { return CardEff == null ? StandardCardEffProps : CardEff.Props; } }
 
     #endregion
 
@@ -64,7 +68,7 @@ public class Gun : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    private float standardDamage;
+    private float standardDamage = 10f;
     [SerializeField]
     private float bulletSpeed = 20;
     [SerializeField]
@@ -108,8 +112,8 @@ public class Gun : Weapon {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + transform.rotation * localFirePoint, 0.2f);
-        Gizmos.DrawRay(transform.position + transform.rotation * localFirePoint, transform.rotation * Vector3.right);
+        Gizmos.DrawSphere(WorldFirePoint, 0.2f);
+        Gizmos.DrawRay(WorldFirePoint, transform.rotation * Vector3.right);
         Gizmos.color = Color.gray;
         Gizmos.DrawRay(transform.position, transform.rotation * Vector3.right);
     }
@@ -118,11 +122,16 @@ public class Gun : Weapon {
 
     #region Service Methods
 
-    // To-Do
-    private void SendBulletsToMainData() {
-        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
-        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = ClipActualBullets;
-        MainData.ActionWeapons();
+    private void InstantiateBullet(int index) {
+        GameObject blt = Instantiate(bullet, WorldFirePoint, transform.rotation);
+        Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
+        blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
+        Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
+        blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
+                transform.rotation.eulerAngles.x,
+                transform.rotation.eulerAngles.y,
+                transform.rotation.eulerAngles.z + (Mathf.Pow(-1, index) * index / 2 * spread))
+            * Vector2.right * bulletSpeed;
     }
 
     #endregion
@@ -148,9 +157,7 @@ public class Gun : Weapon {
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            GameObject child = this.transform.GetChild(i).gameObject;
-            CardGun card = child.GetComponent<CardGun>();
-            InstallUnknownCard(card); // there will already be null-check
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>()); // there will already be null-check
         }
     }
 
@@ -216,22 +223,13 @@ public class Gun : Weapon {
         animator.SetTrigger("hit");
     }
     private void Shoot() {
-        if (canAttack && isLoaded) {
+        if (CanAttack && isLoaded) {
             int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ClipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
-                GameObject blt = Instantiate(bullet, transform.position + transform.rotation * localFirePoint, transform.rotation);
-                Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
-                blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
-                Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
-                blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
-                        transform.rotation.eulerAngles.x,
-                        transform.rotation.eulerAngles.y,
-                        transform.rotation.eulerAngles.z + (Mathf.Pow(-1, i) * i / 2 * spread))
-                    * Vector2.right * bulletSpeed;
+                InstantiateBullet(i);
                 ClipActualBullets--;
             }
-            canAttack = false;
-            SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier);
+            CanAttack = false;
             Debug.Log(TAG + "Bullets: " + ClipActualBullets + "/" + PocketActualBullets);
         }
     }
@@ -241,12 +239,11 @@ public class Gun : Weapon {
     #region WorkingWithBullets methods
 
     private void CheckNSendBullets() {
-        if (ClipActualBullets > 0) {
-            isLoaded = true;
-        } else {
-            isLoaded = false;
-        }
-        SendBulletsToMainData();
+        isLoaded = ClipActualBullets > 0;
+
+        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
+        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = PocketActualBullets;
+        MainData.ActionWeapons();
     }
     public void Reload() {
         int bulletsNeeded = ClipMaxBullets - ClipActualBullets;
@@ -257,7 +254,6 @@ public class Gun : Weapon {
             ClipActualBullets += PocketActualBullets;
             PocketActualBullets = 0;
         }
-        CheckNSendBullets();
     }
 
     #endregion
