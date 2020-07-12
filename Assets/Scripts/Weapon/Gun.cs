@@ -41,6 +41,7 @@ public class Gun : Weapon {
             return cards;
         }
     }
+    public new NestedInfo Info => new Gun.NestedInfo(WeaponPrefab, AllCardPrefabList, ClipActualBullets, PocketActualBullets);
 
     //////////
 
@@ -48,12 +49,12 @@ public class Gun : Weapon {
         get => canAttack;
         set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
     }
-    protected bool IsLoaded { get => ClipActualBullets > 0; }
-    private Vector3 WorldFirePoint { get => transform.position + transform.rotation * localFirePoint; }
+    protected bool IsLoaded => ClipActualBullets > 0;
+    private Vector3 WorldFirePoint => transform.position + transform.rotation * localFirePoint;
 
-    private CardGunGen.CardGunGenProps ActualCardGenProps { get => CardGen?.Props ?? StandardCardGenProps; }
-    private CardGunFly.CardGunFlyProps ActualCardFlyProps { get => CardFly?.Props ?? StandardCardFlyProps; }
-    private CardEffect.CardGunEffectProps ActualCardEffectProps { get => CardEff?.Props ?? StandardCardEffProps; }
+    private CardGunGen.CardGunGenProps ActualCardGenProps => CardGen?.Props ?? StandardCardGenProps;
+    private CardGunFly.CardGunFlyProps ActualCardFlyProps => CardFly?.Props ?? StandardCardFlyProps;
+    private CardEffect.CardGunEffectProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
 
     #endregion
 
@@ -229,8 +230,8 @@ public class Gun : Weapon {
     #region WorkingWithBullets methods
 
     private void SendBullets() {
-        ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
-        ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = PocketActualBullets;
+        ((Gun.NestedInfo)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
+        ((Gun.NestedInfo)MainData.ActiveWeapon).ActualPocketBullets = PocketActualBullets;
         MainData.ActionWeapons();
     }
     public void Reload() {
@@ -248,11 +249,11 @@ public class Gun : Weapon {
 
     #region Inner Structures
 
-    public new class Info : Weapon.Info {
+    public new class NestedInfo : Weapon.NestedInfo {
         public int ActualClipBullets;
         public int ActualPocketBullets;
 
-        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullets, int actualPocketBullets)
+        public NestedInfo(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullets, int actualPocketBullets)
             : base(weaponPrefab, cardPrefabs) {
             this.ActualClipBullets = actualClipBullets;
             this.ActualPocketBullets = actualPocketBullets;

@@ -128,35 +128,35 @@ public class PlayerBehaviour : CharacterBase
         Inventory.Aim(weaponAimPoint);
 
         if (weaponChooseNext) {
-            Inventory.ChooseNext();
+            Inventory.ActiveSlot++;
             weaponChooseNext = false;
         } else if (weaponChoosePrev) {
-            Inventory.ChoosePrev();
+            Inventory.ActiveSlot--;
             weaponChoosePrev = false;
         }
         if (weaponChooseFirst) {
-            Inventory.Choose(Inventory.Slots.FIRST);
+            Inventory.ActiveSlot = Inventory.Slots.FIRST;
             weaponChooseFirst = false;
         } else if (weaponChooseSecond) {
-            Inventory.Choose(Inventory.Slots.SECOND);
+            Inventory.ActiveSlot = Inventory.Slots.SECOND;
             weaponChooseSecond = false;
         } else if (weaponChooseThird) {
-            Inventory.Choose(Inventory.Slots.THIRD);
+            Inventory.ActiveSlot = Inventory.Slots.THIRD;
             weaponChooseThird = false;
         } else if (weaponChooseFourth) {
-            Inventory.Choose(Inventory.Slots.FOURTH);
+            Inventory.ActiveSlot = Inventory.Slots.FOURTH;
             weaponChooseFourth = false;
         }
         if (weaponChangeState) {
-            Inventory.Weapon.ChangeState();
+            Inventory.ChangeWeaponState();
             weaponChangeState = false;
         }
         if (weaponReload) {
-            Inventory.Reload();
+            Inventory.ReloadGun();
             weaponReload = false;
         }
         if (weaponAttack) {
-            Inventory.Weapon.Attack();
+            Inventory.AttackWithWeapon();
             weaponAttack = false;
         }
         if (weaponThrowPress) {

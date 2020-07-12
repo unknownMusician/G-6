@@ -27,37 +27,41 @@ public class MainData
 
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.Info> inventoryWeapons;
+    private static List<Weapon.NestedInfo> inventoryWeapons;
     private static int activeWeaponIndex = 0;
 
-    public static List<Weapon.Info> InventoryWeapons
+    public static List<Weapon.NestedInfo> InventoryWeapons
     {
-        get
-        {
-            return inventoryWeapons;
-        }
+        get => inventoryWeapons;
         set
         {
+            if (inventoryWeapons != null && inventoryWeapons.Count == value.Count) {
+                int length = inventoryWeapons.Count;
+                for (int i = 0; i < length; i++) {
+                    if (!inventoryWeapons[i].Equals(value[i])) {
+                        break;
+                    }
+                    if (i == length - 1) {
+                        return;
+                    }
+                }
+            }
             inventoryWeapons = value;
             ActionWeapons();
         }
     }
 
-    public static Weapon.Info ActiveWeapon
-    {
-        get
-        {
-            return inventoryWeapons == null ? null : inventoryWeapons[activeWeaponIndex];
-        }
-    }
+    public static Weapon.NestedInfo ActiveWeapon { get => inventoryWeapons?[activeWeaponIndex]; }
 
     public static int ActiveWeaponIndex
     {
         get => activeWeaponIndex;
         set
         {
-            activeWeaponIndex = value;
-            ActionWeapons();
+            if (activeWeaponIndex != value) {
+                activeWeaponIndex = value;
+                ActionWeapons();
+            }
         }
     }
 

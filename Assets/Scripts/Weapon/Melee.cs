@@ -27,11 +27,11 @@ public class Melee : Weapon {
         get => canAttack;
         set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
     }
-    private Vector3 WorldHitCentrePoint { get => transform.position + this.transform.rotation * localHitCentrePoint; }
+    private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
 
-    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps { get => CardShape?.Props ?? StandardCardShapeProps; }
-    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps { get => CardMemory?.Props ?? StandardCardMemoryProps; }
-    private CardEffect.CardGunEffectProps ActualCardEffectProps { get => CardEff?.Props ?? StandardCardEffProps; }
+    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps => CardShape?.Props ?? StandardCardShapeProps;
+    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps => CardMemory?.Props ?? StandardCardMemoryProps;
+    private CardEffect.CardGunEffectProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
 
     #endregion
 
@@ -191,7 +191,7 @@ public class Melee : Weapon {
 
     #region Inner Classes
 
-    public new class Info : Weapon.Info {
+    public new class Info : Weapon.NestedInfo {
 
         public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs)
             : base(weaponPrefab, cardPrefabs) {

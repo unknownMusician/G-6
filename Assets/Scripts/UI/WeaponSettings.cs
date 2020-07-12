@@ -47,7 +47,7 @@ public class WeaponSettings : MonoBehaviour
             Destroy(child.gameObject);
         }
         //(ScrollView)WeaponsScrollView.Clear();
-        foreach (Weapon.Info weapon in MainData.InventoryWeapons)
+        foreach (Weapon.NestedInfo weapon in MainData.InventoryWeapons)
         {
             var instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
             instance.transform.SetParent(WeaponContent, false);
@@ -57,7 +57,7 @@ public class WeaponSettings : MonoBehaviour
         }
     }
 
-    private void WeaponClick(Weapon.Info activewepon)
+    private void WeaponClick(Weapon.NestedInfo activewepon)
     {
         WeaponMainImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
         WeaponName.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaName;

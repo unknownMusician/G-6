@@ -25,13 +25,24 @@ public class Inventory : MonoBehaviour {
 
     #region Properties
 
-    public Weapon Weapon { get { return weapons[activeWeapon]; } }
+    public Weapon Weapon { get => weapons[activeWeapon]; private set => weapons[activeWeapon] = value; }
 
-    private int ActiveWeaponIndex {
+    public int ActiveSlot {
         get => activeWeapon;
         set {
-            activeWeapon = value;
-            SendActiveWeaponToMainData();
+            int fValue = value;
+            while (fValue < 0)
+                fValue += weapons.Count;
+            fValue %= weapons.Count;
+
+            if (fValue == activeWeapon) {
+                return;
+            }
+            weapons[activeWeapon]?.gameObject.SetActive(false);
+            weapons[fValue]?.gameObject.SetActive(true);
+            activeWeapon = fValue;
+
+            MainData.ActiveWeaponIndex = ActiveSlot; // Sending to ActiveSlot to MainData
         }
     }
 
@@ -50,7 +61,7 @@ public class Inventory : MonoBehaviour {
 
     #region Private Variables
 
-    private int activeWeapon; // index
+    private int activeWeapon = 0; // index
     protected float tmpWhenThrowButtonPressed;
 
     #endregion
@@ -58,137 +69,62 @@ public class Inventory : MonoBehaviour {
     #region Overrided Methods
 
     private void Start() {
-        GetCardsFromChildren();
+        GetWeaponsFromChildren();
         SendInventoryWeaponsToMainData();
-        MainData.ActionWeapons += RecieveActiveWeaponIndexFromMainData;
+        MainData.ActionWeapons += ReceiveActiveWeaponIndexFromMainData;
     }
 
     #endregion
 
     #region MainData Methods
 
-    private void SendActiveWeaponToMainData() {
-        if (MainData.ActiveWeaponIndex != activeWeapon) {
-            MainData.ActiveWeaponIndex = activeWeapon;
-        }
-    }
-
     private void SendInventoryWeaponsToMainData() {
-        List<Weapon.Info> allWeapons = new List<Weapon.Info>();
+        List<Weapon.NestedInfo> allWeapons = new List<Weapon.NestedInfo>();
         for (int i = 0; i < weapons.Count; i++) {
-            if (weapons[i] != null) {
-                allWeapons.Add(weapons[i] is Gun gun ?
-                    new Gun.Info(gun.WeaponPrefab, gun.AllCardPrefabList, gun.ClipActualBullets, gun.PocketActualBullets) :
-                    new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].AllCardPrefabList));
-            }
+            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun.Info : weapons[i].Info));
         }
         MainData.InventoryWeapons = allWeapons;
     }
 
     ////////
 
-    public void RecieveActiveWeaponIndexFromMainData() {
-        //activeWeapon = MainData.ActiveWeaponIndex;
-        Choose(MainData.ActiveWeaponIndex);
-    }
+    public void ReceiveActiveWeaponIndexFromMainData() => ActiveSlot = MainData.ActiveWeaponIndex;
 
     #endregion
 
     #region WorkingWithSlots Methods
 
-    private void GetCardsFromChildren() {
+    private void GetWeaponsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
             Weapon weapon = this.transform.GetChild(i).gameObject.GetComponent<Weapon>();
             if (weapon != null) {
                 for (int j = 0; j < weapons.Count; j++) {
                     if (weapons[j] == null) {
                         weapons[j] = weapon;
+                        ActiveSlot = j;
                         break;
                     }
                 }
             }
         }
-
-        for (int i = 0; i < this.transform.childCount; i++) {
-            if (i == 0) {
-                weapons[0].gameObject.SetActive(true);
-                activeWeapon = 0;
-                continue;
-            }
-            weapons[i].gameObject.SetActive(false);
-        }
+        ActiveSlot = 0;
     }
     public void Choose(int index) {
-        if (index < 0 || index >= weapons.Count) {
-            Debug.Log(TAG + "This is an IndexOutOfBoundsExeption in Inventory");
-            return;
-        }
-        if (index == activeWeapon) {
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[index] != null) {
-            weapons[index].gameObject.SetActive(true);
-        }
-        activeWeapon = index;
-        SendActiveWeaponToMainData();
+        ActiveSlot = index;
     }
     public void ChooseNext() {
-        if (activeWeapon == weapons.Count - 1) {
-            if (weapons[activeWeapon] != null) {
-                weapons[activeWeapon].gameObject.SetActive(false);
-            }
-            if (weapons[0] != null) {
-                weapons[0].gameObject.SetActive(true);
-            }
-            activeWeapon = 0;
-            SendActiveWeaponToMainData();
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[activeWeapon + 1] != null) {
-            weapons[activeWeapon + 1].gameObject.SetActive(true);
-        }
-        activeWeapon++;
-        SendActiveWeaponToMainData();
+        ActiveSlot++;
     }
     public void ChoosePrev() {
-        if (activeWeapon == 0) {
-            if (weapons[activeWeapon] != null) {
-                weapons[activeWeapon].gameObject.SetActive(false);
-            }
-            if (weapons[weapons.Count - 1] != null) {
-                weapons[weapons.Count - 1].gameObject.SetActive(true);
-            }
-            activeWeapon = weapons.Count - 1;
-            SendActiveWeaponToMainData();
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[activeWeapon - 1] != null) {
-            weapons[activeWeapon - 1].gameObject.SetActive(true);
-        }
-        activeWeapon--;
-        SendActiveWeaponToMainData();
-    }
-    public int GetCount() {
-        return weapons.Count;
+        ActiveSlot--;
     }
 
     #endregion
 
     #region WorkingWithWeapon Methods
 
-    public void Attack() {
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].Attack();
-        }
+    public void AttackWithWeapon() {
+        Weapon?.Attack();
     }
     public void ThrowPress() {
         tmpWhenThrowButtonPressed = Time.time;
@@ -196,26 +132,21 @@ public class Inventory : MonoBehaviour {
         Debug.Log(TAG + "Started Timer to Throw");
     }
     public void ThrowRelease() {
-        float strenght = throwStrenght;
         float actTime = Time.time;
-        if (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) {
-            strenght *= ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow);
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
-            weapons[activeWeapon] = null;
-        }
+        float strenght = throwStrenght * (
+            (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) ? ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow) : 1f);
+        Weapon?.Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
+        Weapon = null;
+
         Debug.Log(TAG + "Throwed with the stenght: " + strenght);
     }
-    public void Reload() {
-        if (weapons[activeWeapon] != null && weapons[activeWeapon] is Gun) {
-            ((Gun)weapons[activeWeapon]).Reload();
+    public void ReloadGun() {
+        if (Weapon is Gun gun) {
+            gun?.Reload();
         }
     }
-    public void ChangeState() {
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].ChangeState();
-        }
+    public void ChangeWeaponState() {
+        Weapon?.ChangeState();
     }
 
     #endregion
