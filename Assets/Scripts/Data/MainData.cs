@@ -53,6 +53,7 @@ public class MainData
 
     public static int ActiveWeaponIndex
     {
+        get => activeWeaponIndex;
         set
         {
             activeWeaponIndex = value;

@@ -6,6 +6,8 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
+    #region Card Inventory
+
     private static List<Card> cards = new List<Card>();
     public static List<Card> Cards { get; }
     public static bool AddCard(Card card) {
@@ -17,21 +19,6 @@ public class Inventory : MonoBehaviour {
 
     public static bool RemoveCard(Card card) {
         return cards.Remove(card);
-    }
-
-    #region Actions
-
-    // 
-
-    #endregion
-
-    #region Constants
-
-    public static class Slots {
-        readonly public static int FIRST = 0;
-        readonly public static int SECOND = 1;
-        readonly public static int THIRD = 2;
-        readonly public static int FOURTH = 3;
     }
 
     #endregion
@@ -65,6 +52,7 @@ public class Inventory : MonoBehaviour {
     private void Start() {
         Prepare();
         SendInventoryWeaponsToMainData();
+        MainData.ActionWeapons += RecieveActiveWeaponIndexFromMainData;
     }
 
     #endregion
@@ -88,6 +76,13 @@ public class Inventory : MonoBehaviour {
             }
         }
         MainData.InventoryWeapons = allWeapons;
+    }
+
+    ////////
+    
+    public void RecieveActiveWeaponIndexFromMainData() {
+        activeWeapon = MainData.ActiveWeaponIndex;
+        Choose(activeWeapon);
     }
 
     #endregion
@@ -225,6 +220,17 @@ public class Inventory : MonoBehaviour {
         Vector2 distance = worldPoint - this.transform.position;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    #endregion
+
+    #region Inner Structures
+
+    public static class Slots {
+        readonly public static int FIRST = 0;
+        readonly public static int SECOND = 1;
+        readonly public static int THIRD = 2;
+        readonly public static int FOURTH = 3;
     }
 
     #endregion
