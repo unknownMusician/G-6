@@ -18,11 +18,11 @@ public class GameUI : MonoBehaviour
     public GameObject weaponSettings;
 
 
-    private bool p=true;
+    //private bool p = true;
 
     void Update()
     {
-        if (Input.GetButtonDown("Setting") && !weaponSettings.active)
+        if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
         {
             if (PauseMenu.GameIsPaused)
             {
@@ -36,7 +36,7 @@ public class GameUI : MonoBehaviour
             }
 
         }
-        if (Input.GetButtonDown("WeaponSettings") && !menu.active)
+        if (Input.GetButtonDown("WeaponSettings") && !menu.activeInHierarchy)
         {
             if (PauseMenu.GameIsPaused)
             {
