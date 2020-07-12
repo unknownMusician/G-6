@@ -105,8 +105,6 @@ public class Gun : Weapon {
     protected CardGunFly.CardGunFlyProps StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
     protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
 
-    private bool isLoaded = true;
-
     #endregion
 
     #region Gizmos

@@ -21,8 +21,7 @@ public class Menu : MonoBehaviour
     public void Continue()
     {
         this.gameObject.SetActive(false);
-        PauseMenu.Resume();
-
+        PauseMenu.GameIsPaused = false;
     }
     public void LoadSetting()
     {

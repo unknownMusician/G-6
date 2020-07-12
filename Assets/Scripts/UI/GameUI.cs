@@ -27,11 +27,11 @@ public class GameUI : MonoBehaviour
             if (PauseMenu.GameIsPaused)
             {
                 menu.SetActive(false);
-                PauseMenu.Resume();
+                PauseMenu.GameIsPaused = false;
             }
             else
             {
-                PauseMenu.Pause();
+                PauseMenu.GameIsPaused = true;
                 menu.SetActive(true);
             }
         }
@@ -39,14 +39,14 @@ public class GameUI : MonoBehaviour
         {
             if (PauseMenu.GameIsPaused)
             {
-                PauseMenu.Resume();
+                PauseMenu.GameIsPaused = false;
                 weaponSettings.SetActive(false);
                 weaponSettings.gameObject.GetComponent<WeaponSettings>().DisActiveWeaponSettings();
 
             }
             else
             {
-                PauseMenu.Pause();
+                PauseMenu.GameIsPaused = true;
                 weaponSettings.SetActive(true);
                 weaponSettings.gameObject.GetComponent<WeaponSettings>().ActiveWeaponSettings();
             }
