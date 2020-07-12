@@ -27,6 +27,14 @@ public class Inventory : MonoBehaviour {
 
     public Weapon Weapon { get { return weapons[activeWeapon]; } }
 
+    private int ActiveWeaponIndex {
+        get => activeWeapon;
+        set {
+            activeWeapon = value;
+            SendActiveWeaponToMainData();
+        }
+    }
+
     #endregion
 
     #region Public Variables
@@ -50,7 +58,7 @@ public class Inventory : MonoBehaviour {
     #region Overrided Methods
 
     private void Start() {
-        Prepare();
+        GetCardsFromChildren();
         SendInventoryWeaponsToMainData();
         MainData.ActionWeapons += RecieveActiveWeaponIndexFromMainData;
     }
@@ -60,39 +68,37 @@ public class Inventory : MonoBehaviour {
     #region MainData Methods
 
     private void SendActiveWeaponToMainData() {
-        MainData.ActiveWeaponIndex = activeWeapon;
+        if (MainData.ActiveWeaponIndex != activeWeapon) {
+            MainData.ActiveWeaponIndex = activeWeapon;
+        }
     }
 
     private void SendInventoryWeaponsToMainData() {
         List<Weapon.Info> allWeapons = new List<Weapon.Info>();
         for (int i = 0; i < weapons.Count; i++) {
             if (weapons[i] != null) {
-                if (weapons[i] is Gun) {
-                    Gun gun = (Gun)weapons[i];
-                    allWeapons.Add(new Gun.Info(gun.WeaponPrefab, gun.AllCardPrefabList, gun.ClipActualBullets, gun.PocketActualBullets));
-                } else {
-                    allWeapons.Add(new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].AllCardPrefabList));
-                }
+                allWeapons.Add(weapons[i] is Gun gun ?
+                    new Gun.Info(gun.WeaponPrefab, gun.AllCardPrefabList, gun.ClipActualBullets, gun.PocketActualBullets) :
+                    new Weapon.Info(weapons[i].WeaponPrefab, weapons[i].AllCardPrefabList));
             }
         }
         MainData.InventoryWeapons = allWeapons;
     }
 
     ////////
-    
+
     public void RecieveActiveWeaponIndexFromMainData() {
-        activeWeapon = MainData.ActiveWeaponIndex;
-        Choose(activeWeapon);
+        //activeWeapon = MainData.ActiveWeaponIndex;
+        Choose(MainData.ActiveWeaponIndex);
     }
 
     #endregion
 
     #region WorkingWithSlots Methods
 
-    private void Prepare() {
+    private void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            GameObject child = this.transform.GetChild(i).gameObject;
-            Weapon weapon = child.GetComponent<Weapon>();
+            Weapon weapon = this.transform.GetChild(i).gameObject.GetComponent<Weapon>();
             if (weapon != null) {
                 for (int j = 0; j < weapons.Count; j++) {
                     if (weapons[j] == null) {
@@ -113,7 +119,7 @@ public class Inventory : MonoBehaviour {
         }
     }
     public void Choose(int index) {
-        if (index < 0 || index >= this.transform.childCount) {
+        if (index < 0 || index >= weapons.Count) {
             Debug.Log(TAG + "This is an IndexOutOfBoundsExeption in Inventory");
             return;
         }
