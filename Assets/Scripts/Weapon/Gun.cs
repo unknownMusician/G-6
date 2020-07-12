@@ -8,24 +8,24 @@ public class Gun : Weapon {
     #region Properties
 
     public int ClipMaxBullets {
-        get { return clipMaxBullets; }
+        get => clipMaxBullets;
         private set {
             clipMaxBullets = value;
-            CheckNSendBullets();
+            SendBullets();
         }
     }
     public int PocketActualBullets {
-        get { return pocketActualBullets; }
+        get => pocketActualBullets;
         private set {
             pocketActualBullets = value;
-            CheckNSendBullets();
+            SendBullets();
         }
     }
     public int ClipActualBullets {
-        get { return clipActualBullets; }
+        get => clipActualBullets;
         private set {
             clipActualBullets = value;
-            CheckNSendBullets();
+            SendBullets();
         }
     }
 
@@ -45,14 +45,15 @@ public class Gun : Weapon {
     //////////
 
     protected override bool CanAttack {
-        get { return canAttack; }
-        set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
+        get => canAttack;
+        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
     }
-    private Vector3 WorldFirePoint { get { return transform.position + transform.rotation * localFirePoint; } }
+    protected bool IsLoaded { get => ClipActualBullets > 0; }
+    private Vector3 WorldFirePoint { get => transform.position + transform.rotation * localFirePoint; }
 
-    private CardGunGen.CardGunGenProps ActualCardGenProps { get { return CardGen == null ? StandardCardGenProps : CardGen.Props; } }
-    private CardGunFly.CardGunFlyProps ActualCardFlyProps { get { return CardFly == null ? StandardCardFlyProps : CardFly.Props; } }
-    private CardEffect.CardGunEffectProps ActualCardEffectProps { get { return CardEff == null ? StandardCardEffProps : CardEff.Props; } }
+    private CardGunGen.CardGunGenProps ActualCardGenProps { get => CardGen?.Props ?? StandardCardGenProps; }
+    private CardGunFly.CardGunFlyProps ActualCardFlyProps { get => CardFly?.Props ?? StandardCardFlyProps; }
+    private CardEffect.CardGunEffectProps ActualCardEffectProps { get => CardEff?.Props ?? StandardCardEffProps; }
 
     #endregion
 
@@ -165,17 +166,8 @@ public class Gun : Weapon {
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(CardGun card) {
-        // switch-case does not fit here
-        if (card is CardGunGen) {
-            return InstallCard((CardGunGen)card);
-        } else if (card is CardGunFly) {
-            return InstallCard((CardGunFly)card);
-        } else if (card is CardEffect) {
-            return InstallCard((CardEffect)card);
-        }
-        return false;
-    }
+    public bool InstallUnknownCard(CardGun card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
+
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
             RemoveCard(this.CardGen);
@@ -223,7 +215,7 @@ public class Gun : Weapon {
         animator.SetTrigger("hit");
     }
     private void Shoot() {
-        if (CanAttack && isLoaded) {
+        if (CanAttack && IsLoaded) {
             int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ClipActualBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
                 InstantiateBullet(i);
@@ -238,9 +230,7 @@ public class Gun : Weapon {
 
     #region WorkingWithBullets methods
 
-    private void CheckNSendBullets() {
-        isLoaded = ClipActualBullets > 0;
-
+    private void SendBullets() {
         ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
         ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets = PocketActualBullets;
         MainData.ActionWeapons();
@@ -258,7 +248,7 @@ public class Gun : Weapon {
 
     #endregion
 
-    #region Inner Classes
+    #region Inner Structures
 
     public new class Info : Weapon.Info {
         public int ActualClipBullets;
