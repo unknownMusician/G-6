@@ -75,42 +75,96 @@ public class PlayerBehaviour : CharacterBase
 
     #region WeaponControl
 
+    private bool weaponChooseNext = false;
+    private bool weaponChoosePrev = false;
+    private bool weaponChooseFirst = false;
+    private bool weaponChooseSecond = false;
+    private bool weaponChooseThird = false;
+    private bool weaponChooseFourth = false;
+    private bool weaponChangeState = false;
+    private bool weaponReload = false;
+    private bool weaponAttack = false;
+    private bool weaponThrowPress = false;
+    private bool weaponThrowRelease = false;
+    private Vector3 weaponAimPoint = Vector3.right;
+
     protected override void WeaponControl()
     {
-        // To-Do
-    }
-    protected override void WeaponFixedControl()
-    {
-        Inventory.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-            Inventory.ChooseNext();
+            weaponChooseNext = true;
         } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-            Inventory.ChoosePrev();
+            weaponChoosePrev = true;
         }
         if (Input.GetButtonDown("WeaponSlot1")) {
-            Inventory.Choose(Inventory.Slots.FIRST);
+            weaponChooseFirst = true;
         } else if (Input.GetButtonDown("WeaponSlot2")) {
-            Inventory.Choose(Inventory.Slots.SECOND);
+            weaponChooseSecond = true;
         } else if (Input.GetButtonDown("WeaponSlot3")) {
-            Inventory.Choose(Inventory.Slots.THIRD);
+            weaponChooseThird = true;
         } else if (Input.GetButtonDown("WeaponSlot4")) {
-            Inventory.Choose(Inventory.Slots.FOURTH);
+            weaponChooseFourth = true;
         }
         if (Inventory.Weapon != null) {
             if (Input.GetButtonDown("ChangeWeaponState")) {
-                Inventory.Weapon.ChangeState();
+                weaponChangeState = true;
             }
             if (Input.GetButtonDown("Reload")) {
-                Inventory.Reload();
+                weaponReload = true;
             }
             if (Input.GetButton("Fire1"))
-                Inventory.Weapon.Attack();
+                weaponAttack = true;
         }
         if (Input.GetButtonDown("Throw"))
-            Inventory.ThrowPress();
+            weaponThrowPress = true;
         if (Input.GetButtonUp("Throw"))
+            weaponThrowRelease = true;
+    }
+    protected override void WeaponFixedControl()
+    {
+        Inventory.Aim(weaponAimPoint);
+
+        if (weaponChooseNext) {
+            Inventory.ChooseNext();
+            weaponChooseNext = false;
+        } else if (weaponChoosePrev) {
+            Inventory.ChoosePrev();
+            weaponChoosePrev = false;
+        }
+        if (weaponChooseFirst) {
+            Inventory.Choose(Inventory.Slots.FIRST);
+            weaponChooseFirst = false;
+        } else if (weaponChooseSecond) {
+            Inventory.Choose(Inventory.Slots.SECOND);
+            weaponChooseSecond = false;
+        } else if (weaponChooseThird) {
+            Inventory.Choose(Inventory.Slots.THIRD);
+            weaponChooseThird = false;
+        } else if (weaponChooseFourth) {
+            Inventory.Choose(Inventory.Slots.FOURTH);
+            weaponChooseFourth = false;
+        }
+        if (weaponChangeState) {
+            Inventory.Weapon.ChangeState();
+            weaponChangeState = false;
+        }
+        if (weaponReload) {
+            Inventory.Reload();
+            weaponReload = false;
+        }
+        if (weaponAttack) {
+            Inventory.Weapon.Attack();
+            weaponAttack = false;
+        }
+        if (weaponThrowPress) {
+            Inventory.ThrowPress();
+            weaponThrowPress = false;
+        }
+        if (weaponThrowRelease) {
             Inventory.ThrowRelease();
+            weaponThrowRelease = false;
+        }
     }
 
     #endregion

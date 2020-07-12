@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Melee : Weapon {
@@ -23,14 +24,14 @@ public class Melee : Weapon {
     //////////
 
     protected override bool CanAttack {
-        get { return canAttack; }
-        set { canAttack = value; if (!value) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
+        get => canAttack;
+        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
     }
-    private Vector3 WorldHitCentrePoint { get { return transform.position + this.transform.rotation * localHitCentrePoint; } }
+    private Vector3 WorldHitCentrePoint { get => transform.position + this.transform.rotation * localHitCentrePoint; }
 
-    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps { get { return CardShape == null ? StandardCardShapeProps : CardShape.Props; } }
-    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps { get { return CardMemory == null ? StandardCardMemoryProps : CardMemory.Props; } }
-    private CardEffect.CardGunEffectProps ActualCardEffectProps { get { return CardEff == null ? StandardCardEffProps : CardEff.Props; } }
+    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps { get => CardShape?.Props ?? StandardCardShapeProps; }
+    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps { get => CardMemory?.Props ?? StandardCardMemoryProps; }
+    private CardEffect.CardGunEffectProps ActualCardEffectProps { get => CardEff?.Props ?? StandardCardEffProps; }
 
     #endregion
 
@@ -118,16 +119,8 @@ public class Melee : Weapon {
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(CardGun card) {
-        if (card is CardMeleeShape) {
-            return InstallCard((CardMeleeShape)card);
-        } else if (card is CardMeleeMemory) {
-            return InstallCard((CardMeleeMemory)card);
-        } else if (card is CardEffect) {
-            return InstallCard((CardEffect)card);
-        }
-        return false;
-    }
+    public bool InstallUnknownCard(CardGun card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
+
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
             RemoveCard(this.CardShape);
@@ -176,23 +169,21 @@ public class Melee : Weapon {
     private void Hit() {
         if (CanAttack) {
             Collider2D[] cols = Physics2D.OverlapCircleAll(WorldHitCentrePoint, hitAreaRadius);
-            HashSet<GameObject> objs = new HashSet<GameObject>();
-            foreach (Collider2D col in cols) {
-                objs.Add(col.gameObject);
-            }
-            int actualHitCounter = 0;
-            foreach (GameObject obj in objs) {
-                if (!obj.Equals(this.transform.parent.parent.gameObject)) {
-                    Vector3 hitPoint = obj.transform.position;
-                    CharacterBase cb = obj.GetComponent<CharacterBase>();
-                    if (cb != null) {
-                        cb.TakeDamage((hitPoint - this.transform.position).normalized * standardDamage);
-                        actualHitCounter++;
-                    }
-                }
-            }
+            //
+            int actualHits = (from col in cols
+                        group col by col.gameObject into gameObj
+                        where !gameObj.Key.Equals(this.transform.parent.parent.gameObject)
+                        group gameObj.Key by gameObj.Key.GetComponent<CharacterBase>() into charBase
+                        where charBase.Key != null
+                        let hitPoint = charBase.Key.gameObject.transform.position
+                        select charBase.Key)
+                        .Select(x => {
+                            x.TakeDamage((x.gameObject.transform.position - transform.position).normalized * standardDamage);
+                            return x;
+                            })
+                        .Count();
             CanAttack = false;
-            Debug.Log(TAG + "Hit (" + actualHitCounter + " target" + ((actualHitCounter == 1) ? "" : "s") + ")");
+            Debug.Log(TAG + "Hit (" + actualHits + " target" + ((actualHits == 1) ? "" : "s") + ")");
         }
     }
 
