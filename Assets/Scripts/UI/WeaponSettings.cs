@@ -30,6 +30,7 @@ public class WeaponSettings : MonoBehaviour
     public void Awake()
     {
         SetWeapons();
+        WeaponClick(MainData.ActiveWeapon);
         SetAllCards();
     }
 
@@ -37,7 +38,6 @@ public class WeaponSettings : MonoBehaviour
     {
         Debug.Log("Pidor");
         SetImageToScrollView();
-        WeaponClick(MainData.ActiveWeapon);
     }
 
     private void SetImageToScrollView()
@@ -62,6 +62,7 @@ public class WeaponSettings : MonoBehaviour
         WeaponMainImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
         WeaponName.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaName;
         WeaponDescription.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaDescription;
+        MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
     }
 
     private void SetAllCards()
