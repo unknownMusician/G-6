@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
@@ -9,24 +10,34 @@ public class WeaponSettings : MonoBehaviour
 {
     public RectTransform WeaponButtonPrefab;
     public RectTransform WeaponContent;
-
-    public Image MainWeaponImage;
+    public Image WeaponMainImage;
     public Text WeaponName;
     public Text WeaponDescription;
 
-    public List<Weapon.Info> Weapons;
-    public void Awake()
+    public RectTransform CardPrefab;
+    public RectTransform CardContent;
+    public Text CardDescription;
+
+    public void ActiveWeaponSettings()
     {
         MainData.ActionWeapons += SetWeapons;
-        SetImageToScrollView();
+    }
+    public void DisActiveWeaponSettings()
+    {
+        MainData.ActionWeapons -= SetWeapons;
+    }
+
+    public void Awake()
+    {
+        SetWeapons();
+        SetAllCards();
     }
 
     private void SetWeapons()
     {
-        Debug.Log("pidor");
-        //Weapons = MainData.InventoryWeapons;
+        Debug.Log("Pidor");
         SetImageToScrollView();
-
+        WeaponClick(MainData.ActiveWeapon);
     }
 
     private void SetImageToScrollView()
@@ -48,11 +59,15 @@ public class WeaponSettings : MonoBehaviour
 
     private void WeaponClick(Weapon.Info activewepon)
     {
-        MainWeaponImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
-        WeaponName.text = activewepon.WeaponPrefab.name;
-        //WeaponDescription = activewepon.WeaponPrefab.
+        WeaponMainImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
+        WeaponName.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaName;
+        WeaponDescription.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaDescription;
     }
 
+    private void SetAllCards()
+    {
+
+    }
     public void Exit()
     {
         //PauseMenu.Resume();

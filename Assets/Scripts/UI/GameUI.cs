@@ -41,11 +41,14 @@ public class GameUI : MonoBehaviour
             {
                 PauseMenu.Resume();
                 weaponSettings.SetActive(false);
+                weaponSettings.gameObject.GetComponent<WeaponSettings>().DisActiveWeaponSettings();
+
             }
             else
             {
                 PauseMenu.Pause();
                 weaponSettings.SetActive(true);
+                weaponSettings.gameObject.GetComponent<WeaponSettings>().ActiveWeaponSettings();
             }
         }
     }
