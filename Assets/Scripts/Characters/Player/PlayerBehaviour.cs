@@ -90,36 +90,38 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!PauseMenu.GameIsPaused) {
+            weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-            weaponChooseNext = true;
-        } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-            weaponChoosePrev = true;
-        }
-        if (Input.GetButtonDown("WeaponSlot1")) {
-            weaponChooseFirst = true;
-        } else if (Input.GetButtonDown("WeaponSlot2")) {
-            weaponChooseSecond = true;
-        } else if (Input.GetButtonDown("WeaponSlot3")) {
-            weaponChooseThird = true;
-        } else if (Input.GetButtonDown("WeaponSlot4")) {
-            weaponChooseFourth = true;
-        }
-        if (Inventory.Weapon != null) {
-            if (Input.GetButtonDown("ChangeWeaponState")) {
-                weaponChangeState = true;
+            if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+                weaponChooseNext = true;
+            } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+                weaponChoosePrev = true;
             }
-            if (Input.GetButtonDown("Reload")) {
-                weaponReload = true;
+            if (Input.GetButtonDown("WeaponSlot1")) {
+                weaponChooseFirst = true;
+            } else if (Input.GetButtonDown("WeaponSlot2")) {
+                weaponChooseSecond = true;
+            } else if (Input.GetButtonDown("WeaponSlot3")) {
+                weaponChooseThird = true;
+            } else if (Input.GetButtonDown("WeaponSlot4")) {
+                weaponChooseFourth = true;
             }
-            if (Input.GetButton("Fire1"))
-                weaponAttack = true;
+            if (Inventory.Weapon != null) {
+                if (Input.GetButtonDown("ChangeWeaponState")) {
+                    weaponChangeState = true;
+                }
+                if (Input.GetButtonDown("Reload")) {
+                    weaponReload = true;
+                }
+                if (Input.GetButton("Fire1"))
+                    weaponAttack = true;
+            }
+            if (Input.GetButtonDown("Throw"))
+                weaponThrowPress = true;
+            if (Input.GetButtonUp("Throw"))
+                weaponThrowRelease = true;
         }
-        if (Input.GetButtonDown("Throw"))
-            weaponThrowPress = true;
-        if (Input.GetButtonUp("Throw"))
-            weaponThrowRelease = true;
     }
     protected override void WeaponFixedControl()
     {
