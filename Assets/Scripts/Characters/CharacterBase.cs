@@ -237,9 +237,10 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected void EffectsFixedControl()
     {
-        foreach (KeyValuePair<CardEffect.EffectType, EffectControl> currentEffect in CurrentEffects)
+        foreach (CardEffect.EffectType effect in Enum.GetValues(typeof(CardEffect.EffectType)).Cast<CardEffect.EffectType>())
         {
-            currentEffect.Value.Act(Time.deltaTime);
+            if(CurrentEffects.ContainsKey(effect))
+                CurrentEffects[effect].Act(Time.deltaTime);
         }
     }
     protected void Die()
@@ -306,7 +307,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now : hh:mm:ss t z}");
+        Say($"Ouch, I've taken {damage} damage at {DateTime.Now : hh:mm:ss t z}. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }

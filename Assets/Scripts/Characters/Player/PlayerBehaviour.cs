@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase
 {
-    new private void Start()
+    private new void Start()
     {
-        base.Start();
 
         MaxHP = 100f;
         MaxSP = 100f;
@@ -17,16 +16,18 @@ public class PlayerBehaviour : CharacterBase
         SP = MaxSP;
         OP = MaxOP;
 
-        CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
-            new CardEffect.NestedProps(
-                CardEffect.EffectType.Fire,
-                1,
-                20000,
-                1000000000
-                ), this );
+        base.Start();
+
+        //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+        //    new CardEffect.NestedProps(
+        //        CardEffect.EffectType.Fire,
+        //        1,
+        //        20,
+        //        1
+        //        ), this );
     }
 
-    new protected void Update()
+    protected new void Update()
     {
         if (State != State.Dead)
         {
