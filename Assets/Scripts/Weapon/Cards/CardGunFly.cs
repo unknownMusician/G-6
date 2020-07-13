@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardGunFly : EncyclopediaObject, CardGun {
+public class CardGunFly : Card {
 
     const string TAG = "CardGunFly: ";
 

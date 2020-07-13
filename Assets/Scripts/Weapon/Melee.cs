@@ -111,7 +111,7 @@ public class Melee : Weapon {
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>());
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<Card>());
         }
     }
 
@@ -119,7 +119,7 @@ public class Melee : Weapon {
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(CardGun card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
+    public bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
 
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
@@ -151,10 +151,10 @@ public class Melee : Weapon {
         }
         return false;
     }
-    private void PrepareCardforInstall(CardMelee cardGen) {
+    private void PrepareCardforInstall(Card cardGen) {
         //To-Do
     }
-    private bool RemoveCard(CardMelee card) {
+    private bool RemoveCard(Card card) {
         //To-Do
         return true;
     }

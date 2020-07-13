@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
+public class CardEffect : Card {
 
     const string TAG = "CardGunEffect: ";
 
