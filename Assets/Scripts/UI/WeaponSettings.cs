@@ -69,7 +69,7 @@ public class WeaponSettings : MonoBehaviour
     {
         foreach (RectTransform child in CardContent)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
         if (MainData.InventoryCards != null)
         {
