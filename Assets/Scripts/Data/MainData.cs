@@ -16,10 +16,8 @@ public class MainData
         get => inventoryCards;
         set
         {
-            if (!inventoryCards.SequenceEqual(value)) {
-                inventoryCards = value;
-                ActionWeapons();
-            }
+            inventoryCards = value;
+            ActionWeapons();
         }
     }
 
@@ -35,21 +33,23 @@ public class MainData
         get => inventoryWeapons;
         set
         {
-            if (!inventoryWeapons.SequenceEqual(value)) {
-                inventoryWeapons = value;
-                ActionWeapons();
-            }
+            inventoryWeapons = value;
+            ActionWeapons();
         }
     }
 
-    public static Weapon.NestedInfo ActiveWeapon { get => inventoryWeapons?[activeWeaponIndex]; }
+    public static Weapon.NestedInfo ActiveWeapon
+    {
+        get => inventoryWeapons?[activeWeaponIndex];
+    }
 
     public static int ActiveWeaponIndex
     {
         get => activeWeaponIndex;
         set
         {
-            if (activeWeaponIndex != value) {
+            if (activeWeaponIndex != value)
+            {
                 activeWeaponIndex = value;
                 ActionWeapons();
             }
