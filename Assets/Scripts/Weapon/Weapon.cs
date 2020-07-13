@@ -15,7 +15,6 @@ public abstract class Weapon : EncyclopediaObject {
     #region Properties
 
     public GameObject WeaponPrefab => weaponPrefab;
-    public Collider2D WeaponCollider => weaponCollider;
 
     public abstract List<GameObject> AllCardPrefabList { get; }
     public virtual NestedInfo Info => new Weapon.NestedInfo(WeaponPrefab, AllCardPrefabList);

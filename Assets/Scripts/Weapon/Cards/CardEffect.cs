@@ -8,9 +8,7 @@ public class CardEffect : Card {
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
-    public NestedProps Props { get { return new NestedProps(frost, fire, poison, stunn, vampire); } }
+    public NestedProps Props { get { return new NestedProps(effect, duration, interval, damage); } }
 
     #endregion
 
@@ -58,6 +56,9 @@ public class CardEffect : Card {
 
         public NestedProps(EffectType effect, float dmg, float duration, float interval) {
             this.Effect = effect;
+            this.DMG = dmg;
+            this.Duration = duration;
+            this.Interval = interval;
         }
 
         #endregion
