@@ -10,7 +10,7 @@ public class CardMeleeShape : Card {
 
     public GameObject Prefab { get; }
 
-    public CardMeleeShapeProps Props { get { return new CardMeleeShapeProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
+    public NestedProps Props { get { return new NestedProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
 
     #endregion
 
@@ -36,7 +36,7 @@ public class CardMeleeShape : Card {
 
     #endregion
 
-    public class CardMeleeShapeProps {
+    public class NestedProps {
 
         #region Parameters
 
@@ -48,7 +48,7 @@ public class CardMeleeShape : Card {
 
         #region Constructors
 
-        public CardMeleeShapeProps(
+        public NestedProps(
             float attackSpeedMultiplier = 1,
             float attackRangeMultiplier = 1,
             float attackDamageMultiplier = 1

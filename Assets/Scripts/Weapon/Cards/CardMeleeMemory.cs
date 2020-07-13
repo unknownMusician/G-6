@@ -10,7 +10,7 @@ public class CardMeleeMemory : Card {
 
     public GameObject Prefab { get; }
 
-    public CardMeleeMemoryProps Props { get { return new CardMeleeMemoryProps(memory); } }
+    public NestedProps Props { get { return new NestedProps(memory); } }
 
     #endregion
 
@@ -20,7 +20,7 @@ public class CardMeleeMemory : Card {
     protected GameObject prefab;
 
     [SerializeField]
-    private CardMeleeMemoryProps.MemoryType memory = CardMeleeMemoryProps.MemoryType.Null;
+    private NestedProps.MemoryType memory = NestedProps.MemoryType.Null;
 
     #endregion
 
@@ -32,7 +32,7 @@ public class CardMeleeMemory : Card {
 
     #endregion
 
-    public class CardMeleeMemoryProps {
+    public class NestedProps {
 
         #region Parameters
 
@@ -56,7 +56,7 @@ public class CardMeleeMemory : Card {
 
         #region Constructors
 
-        public CardMeleeMemoryProps(MemoryType memory = MemoryType.Null) {
+        public NestedProps(MemoryType memory = MemoryType.Null) {
             this.Memory = memory;
         }
 
