@@ -30,8 +30,8 @@ Material:
     - _ShowInColor: 0
     - _ViewWidth: 6
     m_Colors:
-    - _LookPos: {r: -0.32968602, g: 0.29103214, b: 0, a: 0}
+    - _LookPos: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: -0.01, b: 0, a: 0}
     - _OffsetRot: {r: 0, g: -0.05, b: 0, a: 0}
     - _PlayerPos: {r: 0.5, g: 0.39999998, b: 0, a: 0}
-    - _Resolution: {r: 1051, g: 591, b: 0, a: 0}
+    - _Resolution: {r: 640, g: 480, b: 0, a: 0}

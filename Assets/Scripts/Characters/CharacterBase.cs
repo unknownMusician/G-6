@@ -32,6 +32,9 @@ public abstract class CharacterBase : MonoBehaviour
 
     [SerializeField]
     protected Dictionary<Side, List<Transform>> Checkers;
+
+    [SerializeField]
+    public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
     #endregion
 
     #region Properties
@@ -47,7 +50,6 @@ public abstract class CharacterBase : MonoBehaviour
     public float HP { get; protected set; }
     public float SP { get; protected set; }
     public float OP { get; protected set; }
-    // ? public float MP { get; protected set; } // Mana Point
     #endregion
 
     #region Other Public Props
@@ -233,9 +235,17 @@ public abstract class CharacterBase : MonoBehaviour
         return false;
     }
 
+    protected void EffectsFixedControl()
+    {
+        foreach (KeyValuePair<CardEffect.EffectType, EffectControl> currentEffect in CurrentEffects)
+        {
+            currentEffect.Value.Act(Time.deltaTime);
+        }
+    }
     protected void Die()
     {
         State = State.Dead;
+        Say("Hm, bye. I'm dead");
     }
     #endregion
 
@@ -271,6 +281,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected void FixedUpdate()
     {
         WeaponFixedControl();
+        EffectsFixedControl();
     }
     protected void OnCollisionEnter2D(Collision2D collision)
     {
@@ -293,6 +304,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
+        Say($"Ouch, I've taken {damage} damage at {DateTime.Now : hh:mm:ss t z}");
         if (HP <= 0)
             Die();
     }
@@ -304,8 +316,20 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop) {
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
+        TakeEffect(prop);
     }
 
+    public void TakeEffect(CardEffect.NestedProps prop)
+    {
+        if (CurrentEffects.ContainsKey(prop.Effect))
+        {
+            CurrentEffects[prop.Effect].ChangeParams(prop);
+        }
+        else
+        {
+            CurrentEffects[prop.Effect] = new EffectControl(prop, this);
+        }
+    }
     #endregion
 
 }
