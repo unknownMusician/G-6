@@ -100,8 +100,8 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        if (MainData.ActiveWeapon is Gun.NestedInfo)
-            patrons.text = ((Gun.NestedInfo)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun.NestedInfo)MainData.ActiveWeapon).ActualPocketBullets.ToString();
+        if (MainData.ActiveWeapon is Gun)
+            patrons.text = ((Gun)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun)MainData.ActiveWeapon).ActualPocketBullets.ToString();
         else
             patrons.text = "0/0";
     }

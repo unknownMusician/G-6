@@ -9,7 +9,13 @@ public class Inventory : MonoBehaviour {
     #region Card Inventory
 
     private static List<Card> cards = new List<Card>();
-    public static List<Card> Cards { get => cards; set => cards = value; }
+    public static List<Card> Cards {
+        get => cards;
+        set {
+            cards = value;
+            MainData.InventoryCards = cards;
+        }
+    }
 
     #endregion
 
@@ -70,9 +76,9 @@ public class Inventory : MonoBehaviour {
     #region MainData Methods
 
     private void SendInventoryWeaponsToMainData() {
-        List<Weapon.NestedInfo> allWeapons = new List<Weapon.NestedInfo>();
+        List<Weapon> allWeapons = new List<Weapon>();
         for (int i = 0; i < weapons.Count; i++) {
-            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun.Info : weapons[i].Info));
+            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun : weapons[i]));
         }
         MainData.InventoryWeapons = allWeapons;
     }

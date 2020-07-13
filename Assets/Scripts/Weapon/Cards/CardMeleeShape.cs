@@ -9,7 +9,7 @@ public class CardMeleeShape : Card {
     #region Parameters
 
     public NestedProps Props { get { return new NestedProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
-    public override NestedInfo Info => new NestedInfo(Prefab, CardType.CardMeleeShape);
+    public override CardType Type => CardType.CardMeleeShape;
 
     #endregion
 

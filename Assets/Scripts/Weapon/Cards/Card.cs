@@ -9,19 +9,9 @@ public abstract class Card : EncyclopediaObject {
 
     public GameObject Prefab { get; }
 
-    public abstract NestedInfo Info { get; }
+    public abstract CardType Type { get; }
 
     #endregion
-
-    public class NestedInfo {
-        public GameObject Prefab;
-        public CardType Type;
-
-        public NestedInfo(GameObject prefab, CardType type) {
-            this.Prefab = prefab;
-            this.Type = type;
-        }
-    }
 
     public enum CardType {
         CardEffect,

@@ -9,9 +9,9 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static List<Card.NestedInfo> inventoryCards;
+    private static List<Card> inventoryCards;
 
-    public static List<Card.NestedInfo> InventoryCards
+    public static List<Card> InventoryCards
     {
         get => inventoryCards;
         set
@@ -25,10 +25,10 @@ public class MainData
 
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.NestedInfo> inventoryWeapons;
+    private static List<Weapon> inventoryWeapons;
     private static int activeWeaponIndex = 0;
 
-    public static List<Weapon.NestedInfo> InventoryWeapons
+    public static List<Weapon> InventoryWeapons
     {
         get => inventoryWeapons;
         set
@@ -38,7 +38,7 @@ public class MainData
         }
     }
 
-    public static Weapon.NestedInfo ActiveWeapon
+    public static Weapon ActiveWeapon
     {
         get => inventoryWeapons?[activeWeaponIndex];
     }

@@ -9,7 +9,7 @@ public class CardGunFly : Card {
     #region Parameters
 
     public NestedProps Props { get { return new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
-    public override NestedInfo Info => new NestedInfo(Prefab, CardType.CardGunFly);
+    public override CardType Type => CardType.CardGunFly;
 
     #endregion
 

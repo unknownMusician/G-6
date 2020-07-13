@@ -47,21 +47,21 @@ public class WeaponSettings : MonoBehaviour
             Destroy(child.gameObject);
         }
         //(ScrollView)WeaponsScrollView.Clear();
-        foreach (Weapon.NestedInfo weapon in MainData.InventoryWeapons)
+        foreach (Weapon weapon in MainData.InventoryWeapons)
         {
             GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
             instance.transform.SetParent(WeaponContent, false);
             instance.GetComponent<Image>().sprite =
-                weapon.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+                weapon.GetComponent<SpriteRenderer>().sprite;
             instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
         }
     }
 
-    private void WeaponClick(Weapon.NestedInfo activewepon)
+    private void WeaponClick(Weapon activewepon)
     {
-        WeaponMainImage.sprite = activewepon.Prefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
-        WeaponName.text = activewepon.Prefab.GetComponent<Weapon>().encyclopediaName;
-        WeaponDescription.text = activewepon.Prefab.GetComponent<Weapon>().encyclopediaDescription;
+        WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
+        WeaponName.text = activewepon.GetComponent<Weapon>().encyclopediaName;
+        WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
     }
 
@@ -72,7 +72,7 @@ public class WeaponSettings : MonoBehaviour
             Destroy(child);
         }
 
-        foreach (Card.NestedInfo card in MainData.InventoryCards)
+        foreach (Card card in MainData.InventoryCards)
         {
             GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
             instanse.transform.SetParent(CardContent, false);
@@ -80,7 +80,7 @@ public class WeaponSettings : MonoBehaviour
         }
     }
 
-    private void CardClick(Card.NestedInfo activecard)
+    private void CardClick(Card activecard)
     {
         //instanse.transform.GetChild(2).gameObject.GetComponent<Button>()
 

@@ -9,7 +9,7 @@ public class CardMeleeMemory : Card {
     #region Parameters
 
     public NestedProps Props { get { return new NestedProps(memory); } }
-    public override NestedInfo Info => new NestedInfo(Prefab, CardType.CardMeleeMemory);
+    public override CardType Type => CardType.CardMeleeMemory;
 
     #endregion
 

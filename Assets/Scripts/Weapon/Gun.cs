@@ -7,29 +7,35 @@ public class Gun : Weapon {
 
     #region Properties
 
-    public int ClipMaxBullets {
+    public int MaxClipBullets {
         get => clipMaxBullets;
         private set {
-            clipMaxBullets = value;
-            SendBullets();
+            if (clipMaxBullets != value) {
+                clipMaxBullets = value;
+                SendBullets();
+            }
         }
     }
-    public int PocketActualBullets {
+    public int ActualPocketBullets {
         get => pocketActualBullets;
         private set {
-            pocketActualBullets = value;
-            SendBullets();
+            if (pocketActualBullets != value) {
+                pocketActualBullets = value;
+                SendBullets();
+            }
         }
     }
-    public int ClipActualBullets {
+    public int ActualClipBullets {
         get => clipActualBullets;
         private set {
-            clipActualBullets = value;
-            SendBullets();
+            if (clipActualBullets != value) {
+                clipActualBullets = value;
+                SendBullets();
+            }
         }
     }
 
-    public override List<GameObject> AllCardPrefabList {
+    public override List<GameObject> CardPrefabs {
         get {
             List<GameObject> cards = new List<GameObject>();
             if (CardGen)
@@ -41,7 +47,6 @@ public class Gun : Weapon {
             return cards;
         }
     }
-    public new NestedInfo Info => new Gun.NestedInfo(Prefab, AllCardPrefabList, ClipActualBullets, PocketActualBullets);
 
     //////////
 
@@ -49,7 +54,7 @@ public class Gun : Weapon {
         get => canAttack;
         set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
     }
-    protected bool IsLoaded => ClipActualBullets > 0;
+    protected bool IsLoaded => ActualClipBullets > 0;
     private Vector3 WorldFirePoint => transform.position + transform.rotation * localFirePoint;
 
     private CardGunGen.NestedProps ActualCardGenProps => CardGen?.Props ?? StandardCardGenProps;
@@ -215,13 +220,13 @@ public class Gun : Weapon {
     }
     private void Shoot() {
         if (CanAttack && IsLoaded) {
-            int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ClipActualBullets);
+            int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ActualClipBullets);
             for (int i = 0; i < bulletsPerShot; i++) {
                 InstantiateBullet(i);
-                ClipActualBullets--;
+                ActualClipBullets--;
             }
             CanAttack = false;
-            Debug.Log(TAG + "Bullets: " + ClipActualBullets + "/" + PocketActualBullets);
+            Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
         }
     }
 
@@ -230,33 +235,18 @@ public class Gun : Weapon {
     #region WorkingWithBullets methods
 
     private void SendBullets() {
-        ((Gun.NestedInfo)MainData.ActiveWeapon).ActualClipBullets = ClipActualBullets;
-        ((Gun.NestedInfo)MainData.ActiveWeapon).ActualPocketBullets = PocketActualBullets;
+        ((Gun)MainData.ActiveWeapon).ActualClipBullets = ActualClipBullets;
+        ((Gun)MainData.ActiveWeapon).ActualPocketBullets = ActualPocketBullets;
         MainData.ActionWeapons();
     }
     public void Reload() {
-        int bulletsNeeded = ClipMaxBullets - ClipActualBullets;
-        if (bulletsNeeded <= PocketActualBullets) {
-            ClipActualBullets += bulletsNeeded;
-            PocketActualBullets -= bulletsNeeded;
+        int bulletsNeeded = MaxClipBullets - ActualClipBullets;
+        if (bulletsNeeded <= ActualPocketBullets) {
+            ActualClipBullets += bulletsNeeded;
+            ActualPocketBullets -= bulletsNeeded;
         } else {
-            ClipActualBullets += PocketActualBullets;
-            PocketActualBullets = 0;
-        }
-    }
-
-    #endregion
-
-    #region Inner Structures
-
-    public new class NestedInfo : Weapon.NestedInfo {
-        public int ActualClipBullets;
-        public int ActualPocketBullets;
-
-        public NestedInfo(GameObject weaponPrefab, List<GameObject> cardPrefabs, int actualClipBullets, int actualPocketBullets)
-            : base(weaponPrefab, cardPrefabs) {
-            this.ActualClipBullets = actualClipBullets;
-            this.ActualPocketBullets = actualPocketBullets;
+            ActualClipBullets += ActualPocketBullets;
+            ActualPocketBullets = 0;
         }
     }
 

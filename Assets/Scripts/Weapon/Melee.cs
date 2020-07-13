@@ -8,7 +8,7 @@ public class Melee : Weapon {
 
     #region Properties
 
-    public override List<GameObject> AllCardPrefabList {
+    public override List<GameObject> CardPrefabs {
         get {
             List<GameObject> cards = new List<GameObject>();
             if (CardShape)
@@ -184,18 +184,6 @@ public class Melee : Weapon {
                         .Count();
             CanAttack = false;
             Debug.Log(TAG + "Hit (" + actualHits + " target" + ((actualHits == 1) ? "" : "s") + ")");
-        }
-    }
-
-    #endregion
-
-    #region Inner Classes
-
-    public new class Info : Weapon.NestedInfo {
-
-        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs)
-            : base(weaponPrefab, cardPrefabs) {
-            //
         }
     }
 
