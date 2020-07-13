@@ -269,6 +269,8 @@ public abstract class CharacterBase : MonoBehaviour
         Checkers.Add(Side.Left, LeftSideCheckers);
         Checkers.Add(Side.Right, RightSideCheckers);
 
+        CurrentEffects = new Dictionary<CardEffect.EffectType, EffectControl>();
+
         State = CheckState();
     }
     protected void Update()

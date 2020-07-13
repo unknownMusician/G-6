@@ -7,6 +7,7 @@ public class PlayerBehaviour : CharacterBase
 {
     new private void Start()
     {
+        base.Start();
 
         MaxHP = 100f;
         MaxSP = 100f;
@@ -19,12 +20,10 @@ public class PlayerBehaviour : CharacterBase
         CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
             new CardEffect.NestedProps(
                 CardEffect.EffectType.Fire,
-                20,
+                1,
                 20000,
-                1000
+                1000000000
                 ), this );
-
-        base.Start();
     }
 
     new protected void Update()
