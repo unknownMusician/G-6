@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardMeleeMemory : EncyclopediaObject, CardMelee {
+public class CardMeleeMemory : Card {
 
     const string TAG = "CardGunFly: ";
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
     public NestedProps Props { get { return new NestedProps(memory); } }
+    public override CardType Type => CardType.CardMeleeMemory;
 
     #endregion
 

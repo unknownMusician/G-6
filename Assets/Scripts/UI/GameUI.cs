@@ -42,14 +42,11 @@ public class GameUI : MonoBehaviour
             {
                 PauseMenu.GameIsPaused = false;
                 weaponSettings.SetActive(false);
-                weaponSettings.gameObject.GetComponent<WeaponSettings>().DisActiveWeaponSettings();
-
             }
             else
             {
                 PauseMenu.GameIsPaused = true;
                 weaponSettings.SetActive(true);
-                weaponSettings.gameObject.GetComponent<WeaponSettings>().ActiveWeaponSettings();
             }
         }
     }
@@ -100,8 +97,8 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        if (MainData.ActiveWeapon is Gun.NestedInfo)
-            patrons.text = ((Gun.NestedInfo)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun.NestedInfo)MainData.ActiveWeapon).ActualPocketBullets.ToString();
+        if (MainData.ActiveWeapon is Gun)
+            patrons.text = ((Gun)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun)MainData.ActiveWeapon).ActualPocketBullets.ToString();
         else
             patrons.text = "0/0";
     }
@@ -109,7 +106,7 @@ public class GameUI : MonoBehaviour
     public void SetImageWeapon()
     {
         if (MainData.ActiveWeapon != null)
-            weapon.sprite = MainData.ActiveWeapon.WeaponPrefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+            weapon.sprite = MainData.ActiveWeapon.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 
 }

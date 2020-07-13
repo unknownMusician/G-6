@@ -7,18 +7,20 @@ public class Inventory : MonoBehaviour {
     const string TAG = "Inventory: ";
 
     #region Card Inventory
+    public Card testCard;
 
-    private static List<Card> cards = new List<Card>();
-    public static List<Card> Cards { get; }
-    public static bool AddCard(Card card) {
-        if (cards.Count >= 10)
-            return false;
-        cards.Add(card);
-        return true;
-    }
+    private List<Card> cards = new List<Card>();
+    public List<Card> Cards {
+        // To-Do
+        get => cards;
+        set {
+            cards = value;
 
-    public static bool RemoveCard(Card card) {
-        return cards.Remove(card);
+            var list = new List<Card>(cards) {
+                Weapon.CardPrefabs[0].GetComponent<Card>()
+            };
+            MainData.InventoryCards = list;
+        }
     }
 
     #endregion
@@ -71,7 +73,15 @@ public class Inventory : MonoBehaviour {
     private void Start() {
         GetWeaponsFromChildren();
         SendInventoryWeaponsToMainData();
-        MainData.ActionWeapons += ReceiveActiveWeaponIndexFromMainData;
+        MainData.ActionWeapons += () => ActiveSlot = MainData.ActiveWeaponIndex;
+
+
+        var list = new List<Card>() {
+                testCard
+            };
+        MainData.InventoryCards = list;
+        // To-Do
+        //MainData.ActionInventoryCards += () => 
     }
 
     #endregion
@@ -79,16 +89,14 @@ public class Inventory : MonoBehaviour {
     #region MainData Methods
 
     private void SendInventoryWeaponsToMainData() {
-        List<Weapon.NestedInfo> allWeapons = new List<Weapon.NestedInfo>();
+        List<Weapon> allWeapons = new List<Weapon>();
         for (int i = 0; i < weapons.Count; i++) {
-            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun.Info : weapons[i].Info));
+            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun : weapons[i]));
         }
         MainData.InventoryWeapons = allWeapons;
     }
 
     ////////
-
-    public void ReceiveActiveWeaponIndexFromMainData() => ActiveSlot = MainData.ActiveWeaponIndex;
 
     #endregion
 
