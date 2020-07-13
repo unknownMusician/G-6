@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +9,9 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static ImmutableList<Card.NestedInfo> inventoryCards;
+    private static List<Card.NestedInfo> inventoryCards;
 
-    public static ImmutableList<Card.NestedInfo> InventoryCards
+    public static List<Card.NestedInfo> InventoryCards
     {
         get => inventoryCards;
         set
@@ -28,10 +27,10 @@ public class MainData
 
     #region Weapons
     public static Action ActionWeapons;
-    private static ImmutableList<Weapon.NestedInfo> inventoryWeapons;
+    private static List<Weapon.NestedInfo> inventoryWeapons;
     private static int activeWeaponIndex = 0;
 
-    public static ImmutableList<Weapon.NestedInfo> InventoryWeapons
+    public static List<Weapon.NestedInfo> InventoryWeapons
     {
         get => inventoryWeapons;
         set

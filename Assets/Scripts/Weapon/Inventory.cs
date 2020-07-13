@@ -9,17 +9,7 @@ public class Inventory : MonoBehaviour {
     #region Card Inventory
 
     private static List<Card> cards = new List<Card>();
-    public static List<Card> Cards { get; }
-    public static bool AddCard(Card card) {
-        if (cards.Count >= 10)
-            return false;
-        cards.Add(card);
-        return true;
-    }
-
-    public static bool RemoveCard(Card card) {
-        return cards.Remove(card);
-    }
+    public static List<Card> Cards { get => cards; set => cards = value; }
 
     #endregion
 
@@ -71,7 +61,8 @@ public class Inventory : MonoBehaviour {
     private void Start() {
         GetWeaponsFromChildren();
         SendInventoryWeaponsToMainData();
-        MainData.ActionWeapons += ReceiveActiveWeaponIndexFromMainData;
+        MainData.ActionWeapons += () => ActiveSlot = MainData.ActiveWeaponIndex;
+        //MainData.ActionInventoryCards += () => 
     }
 
     #endregion
@@ -87,8 +78,6 @@ public class Inventory : MonoBehaviour {
     }
 
     ////////
-
-    public void ReceiveActiveWeaponIndexFromMainData() => ActiveSlot = MainData.ActiveWeaponIndex;
 
     #endregion
 

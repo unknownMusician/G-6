@@ -55,7 +55,7 @@ public class CardEffect : Card {
 
         #region Constructors
 
-        public NestedProps(EffectType effect, float dmg, float duration, float interval) {
+        public NestedProps(EffectType effect = EffectType.Standard, float dmg = 5f, float duration = 10f, float interval = 1f) {
             this.Effect = effect;
             this.DMG = dmg;
             this.Duration = duration;
