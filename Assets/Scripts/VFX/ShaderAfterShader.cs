@@ -74,5 +74,27 @@ public class ShaderAfterShader : MonoBehaviour {
         Graphics.Blit(bufferRt, finalRt, materials[1]);
     }
 
+    private void OnDestroy() {
+        materials[0].SetVector("_PlayerPos", Vector2.zero);
+        materials[0].SetVector("_LookPos", Vector2.zero);
+        materials[0].SetFloat("_LookAngle", 0);
+        materials[0].SetVector("_Resolution", Vector2.zero);
+        materials[0].SetFloat("_ViewWidth", 0);
+        materials[0].SetVector("_Offset", Vector2.zero);
+        materials[0].SetVector("_OffsetRot", Vector2.zero);
+        materials[0].SetFloat("_ShowInColor", 0);
+        materials[0].SetFloat("_Intensity", intensity);
+
+        materials[1].SetVector("_PlayerPos", Vector2.zero);
+        materials[1].SetVector("_LookPos", Vector2.zero);
+        materials[1].SetFloat("_LookAngle", 0);
+        materials[1].SetVector("_Resolution", Vector2.zero);
+        materials[1].SetFloat("_ViewWidth", 0);
+        materials[1].SetVector("_Offset", Vector2.zero);
+        materials[1].SetVector("_OffsetRot", Vector2.zero);
+        materials[1].SetFloat("_ShowInColor", 0);
+        materials[1].SetFloat("_Intensity", intensity);
+    }
+
     #endregion
 }
