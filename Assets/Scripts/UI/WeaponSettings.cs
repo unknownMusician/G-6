@@ -18,30 +18,27 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
-    public void ActiveWeaponSettings()
-    {
-        MainData.ActionWeapons += SetImageToScrollView;
-        MainData.ActionInventoryCards += SetAllCards;
-    }
-    public void DisActiveWeaponSettings()
-    {
-        MainData.ActionWeapons -= SetImageToScrollView;
-        MainData.ActionInventoryCards -= SetAllCards;
-
-    }
 
     public void Awake()
     {
+        MainData.ActionWeapons += SetImageToScrollView;
         SetImageToScrollView();
         WeaponClick(MainData.ActiveWeapon);
 
+        MainData.ActionInventoryCards += SetAllCards;
         SetAllCards();
     }
 
+    public void OnDisable()
+    {
+        MainData.ActionWeapons -= SetImageToScrollView;
+        MainData.ActionInventoryCards -= SetAllCards;
+    }
 
 
     private void SetImageToScrollView()
     {
+        Debug.Log("pidor");
         foreach (RectTransform child in WeaponContent)
         {
             Destroy(child.gameObject);
