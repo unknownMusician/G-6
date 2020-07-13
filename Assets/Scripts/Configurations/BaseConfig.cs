@@ -22,7 +22,7 @@ public class BaseConfig<TData> where TData : class
 
             using (FileStream fs = new FileStream(_path, FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, Data);
+                this.Data = (TData)formatter.Deserialize(fs);
             }
 
         }
