@@ -104,8 +104,7 @@ public class Bullet : EncyclopediaObject {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        GameObject collidedObject = collision.gameObject;
-        var cb = collidedObject.GetComponent<CharacterBase>();
+        var cb = collision.gameObject.GetComponent<CharacterBase>();
         if (cb != null) {
             cb.TakeDamage(rb.velocity.normalized * damage);
             Destroy(this.gameObject);
@@ -138,8 +137,7 @@ public class Bullet : EncyclopediaObject {
         }
 
         if (homing) {
-            if (Physics2D.OverlapCircle(transform.position, 20, enemy) != null)
-                aim = Physics2D.OverlapCircle(transform.position, 20, enemy).gameObject;
+            aim = Physics2D.OverlapCircle(transform.position, 20, enemy)?.gameObject;
         }
 
         if (piercing) {

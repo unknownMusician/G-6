@@ -14,19 +14,36 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Properties
 
-    public GameObject WeaponPrefab { get { return weaponPrefab; } }
-
-    public Collider2D WeaponCollider { get { return weaponCollider; } }
+    public GameObject WeaponPrefab => weaponPrefab;
+    public Collider2D WeaponCollider => weaponCollider;
 
     public abstract List<GameObject> AllCardPrefabList { get; }
+    public virtual NestedInfo Info => new Weapon.NestedInfo(WeaponPrefab, AllCardPrefabList);
     protected abstract bool CanAttack { get; set; }
+    protected virtual Weapon.State WeaponState {
+        get => state;
+        set {
+            state = value;
+            Debug.Log(TAG + "Changed state: " + WeaponState);
+            switch (WeaponState) {
+                case State.Main:
+                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    animator.SetBool("secondState", false);
+                    break;
+                case State.Alt:
+                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    animator.SetBool("secondState", true);
+                    break;
+            }
+        }
+    }
 
     #endregion
 
     #region Public Variables
 
     [SerializeField]
-    private GameObject weaponPrefab = null;
+    protected GameObject weaponPrefab = null;
 
     [SerializeField]
     protected GameObject weaponHolder = null;
@@ -55,16 +72,6 @@ public abstract class Weapon : EncyclopediaObject {
 
     #endregion
 
-    #region Constants
-
-    public enum State {
-        Main,
-        Alt,
-        Throwed
-    }
-
-    #endregion
-
     #region Abstract Methods
 
     public abstract void Attack();
@@ -78,14 +85,10 @@ public abstract class Weapon : EncyclopediaObject {
     protected void SetReliefTimer(float time) {
         // Create a timer with a two second interval.
         timer = new System.Timers.Timer(time * 1000);
-        // Hook up the Elapsed event for the timer. 
-        timer.Elapsed += SetCanAttack;
+        // Hook up the Elapsed event for the timer.
+        timer.Elapsed += (sender, e) => { CanAttack = true; };
         timer.AutoReset = false;
         timer.Enabled = true;
-    }
-    // for Timer
-    protected void SetCanAttack(object sender, ElapsedEventArgs e) {
-        canAttack = true;
     }
     protected void EnablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
@@ -105,10 +108,7 @@ public abstract class Weapon : EncyclopediaObject {
 
     protected void OnTriggerEnter2D(Collider2D collider) {
         if (state == State.Throwed && !collider.gameObject.Equals(friend)) {
-            CharacterBase cb = collider.gameObject.GetComponent<CharacterBase>();
-            if (cb != null) {
-                cb.TakeDamage(rigidBody.velocity.normalized * throwHitDamage);
-            }
+            collider.gameObject.GetComponent<CharacterBase>()?.TakeDamage(rigidBody.velocity.normalized * throwHitDamage);
             DisablePhysics();
             Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
         }
@@ -118,29 +118,19 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Main Methods
 
-    public void ChangeState() {
-        if (state == State.Alt) {
-            state = State.Main;
-            this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            animator.SetBool("secondState", false);
+    public void ChangeState() => WeaponState = (WeaponState == State.Alt) ? State.Main : State.Alt;
 
-        } else {
-            state = State.Alt;
-            this.transform.rotation = Quaternion.Euler(0, 0, -90);
-            animator.SetBool("secondState", true);
-        }
-        Debug.Log(TAG + "Changed state");
-    }
     // To-Do
-    private void Drop() {
-        state = State.Throwed;
+    //private void Drop() {
+    //    WeaponState = State.Throwed;
 
-        this.gameObject.transform.parent = null; // unparented weapon
-        Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
-        Debug.Log(TAG + "Dropped weapon");
-    }
+    //    this.gameObject.transform.parent = null; // unparented weapon
+    //    Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
+    //    Debug.Log(TAG + "Dropped weapon");
+    //}
+
     public void Throw(GameObject whoThrowed, Vector2 direction) {
-        state = State.Throwed;
+        WeaponState = State.Throwed;
         friend = whoThrowed;
 
         this.gameObject.transform.parent = null; // unparented weapon
@@ -151,16 +141,22 @@ public abstract class Weapon : EncyclopediaObject {
 
     #endregion
 
-    #region Inner Classes
+    #region Inner Structures
 
-    public class Info {
+    public class NestedInfo {
         public GameObject WeaponPrefab;
         public List<GameObject> CardPrefabs;
 
-        public Info(GameObject weaponPrefab, List<GameObject> cardPrefabs) {
+        public NestedInfo(GameObject weaponPrefab, List<GameObject> cardPrefabs) {
             this.WeaponPrefab = weaponPrefab;
             this.CardPrefabs = cardPrefabs;
         }
+    }
+
+    public enum State {
+        Main,
+        Alt,
+        Throwed
     }
 
     #endregion

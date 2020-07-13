@@ -18,34 +18,38 @@ public class GameUI : MonoBehaviour
     public GameObject weaponSettings;
 
 
-    private static Action UpdatInformation;
+    //private bool p = true;
 
     void Update()
     {
-        if (Input.GetButtonDown("Setting"))
+        if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
         {
             if (PauseMenu.GameIsPaused)
             {
                 menu.SetActive(false);
-                PauseMenu.Resume();
+                PauseMenu.GameIsPaused = false;
             }
             else
             {
-                PauseMenu.Pause();
+                PauseMenu.GameIsPaused = true;
                 menu.SetActive(true);
             }
+
         }
-        if (Input.GetButtonDown("WeaponSettings"))
+        if (Input.GetButtonDown("WeaponSettings") && !menu.activeInHierarchy)
         {
             if (PauseMenu.GameIsPaused)
             {
-                PauseMenu.Resume();
+                PauseMenu.GameIsPaused = false;
                 weaponSettings.SetActive(false);
+                weaponSettings.gameObject.GetComponent<WeaponSettings>().DisActiveWeaponSettings();
+
             }
             else
             {
-                PauseMenu.Pause();
+                PauseMenu.GameIsPaused = true;
                 weaponSettings.SetActive(true);
+                weaponSettings.gameObject.GetComponent<WeaponSettings>().ActiveWeaponSettings();
             }
         }
     }
@@ -96,8 +100,8 @@ public class GameUI : MonoBehaviour
 
     public void SetPatrons()
     {
-        if (MainData.ActiveWeapon is Gun.Info)
-            patrons.text = ((Gun.Info)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun.Info)MainData.ActiveWeapon).ActualPocketBullets.ToString();
+        if (MainData.ActiveWeapon is Gun.NestedInfo)
+            patrons.text = ((Gun.NestedInfo)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun.NestedInfo)MainData.ActiveWeapon).ActualPocketBullets.ToString();
         else
             patrons.text = "0/0";
     }

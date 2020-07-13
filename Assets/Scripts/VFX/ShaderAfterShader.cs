@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class ShaderAfterShader : MonoBehaviour {
 
-    readonly string TAG = "ShaderAfterShader: ";
+    //readonly string TAG = "ShaderAfterShader: ";
 
     #region Public Variables
 
