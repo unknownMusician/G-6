@@ -19,8 +19,8 @@ public class MainData
         {
             if (!inventoryCards.SequenceEqual(value)) {
                 inventoryCards = value;
+                ActionWeapons();
             }
-            ActionWeapons();
         }
     }
 
