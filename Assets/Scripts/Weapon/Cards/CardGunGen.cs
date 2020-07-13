@@ -8,9 +8,8 @@ public class CardGunGen : Card {
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
     public NestedProps Props { get { return new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
+    public override NestedInfo Info => new NestedInfo(Prefab, CardType.CardGunGen);
 
     #endregion
 

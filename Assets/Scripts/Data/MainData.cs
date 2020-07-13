@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static List<GameObject> inventoryCards;
+    private static ImmutableList<GameObject> inventoryCards;
 
     public static List<GameObject> InventoryCards
     {

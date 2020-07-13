@@ -52,16 +52,16 @@ public class WeaponSettings : MonoBehaviour
             var instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
             instance.transform.SetParent(WeaponContent, false);
             instance.GetComponent<Image>().sprite =
-                weapon.WeaponPrefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+                weapon.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
             instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
         }
     }
 
     private void WeaponClick(Weapon.NestedInfo activewepon)
     {
-        WeaponMainImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
-        WeaponName.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaName;
-        WeaponDescription.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaDescription;
+        WeaponMainImage.sprite = activewepon.Prefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
+        WeaponName.text = activewepon.Prefab.GetComponent<Weapon>().encyclopediaName;
+        WeaponDescription.text = activewepon.Prefab.GetComponent<Weapon>().encyclopediaDescription;
         MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
     }
 

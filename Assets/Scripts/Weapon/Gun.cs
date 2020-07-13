@@ -41,7 +41,7 @@ public class Gun : Weapon {
             return cards;
         }
     }
-    public new NestedInfo Info => new Gun.NestedInfo(WeaponPrefab, AllCardPrefabList, ClipActualBullets, PocketActualBullets);
+    public new NestedInfo Info => new Gun.NestedInfo(Prefab, AllCardPrefabList, ClipActualBullets, PocketActualBullets);
 
     //////////
 

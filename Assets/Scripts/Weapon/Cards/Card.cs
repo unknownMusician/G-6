@@ -14,6 +14,20 @@ public abstract class Card : EncyclopediaObject {
     #endregion
 
     public class NestedInfo {
-        GameObject 
+        public GameObject Prefab;
+        public CardType Type;
+
+        public NestedInfo(GameObject prefab, CardType type) {
+            this.Prefab = prefab;
+            this.Type = type;
+        }
+    }
+
+    public enum CardType {
+        CardEffect,
+        CardGunGen,
+        CardGunFly,
+        CardMeleeShape,
+        CardMeleeMemory
     }
 }

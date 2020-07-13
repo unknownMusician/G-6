@@ -9,6 +9,7 @@ public class CardEffect : Card {
     #region Parameters
 
     public NestedProps Props { get { return new NestedProps(effect, duration, interval, damage); } }
+    public override NestedInfo Info => new NestedInfo(Prefab, CardType.CardEffect);
 
     #endregion
 
