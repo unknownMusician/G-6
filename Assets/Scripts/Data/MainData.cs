@@ -14,10 +14,7 @@ public class MainData
 
     public static ImmutableList<Card.NestedInfo> InventoryCards
     {
-        get
-        {
-            return inventoryCards;
-        }
+        get => inventoryCards;
         set
         {
             if (!inventoryCards.SequenceEqual(value)) {
