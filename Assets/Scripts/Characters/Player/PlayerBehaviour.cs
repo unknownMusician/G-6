@@ -16,6 +16,14 @@ public class PlayerBehaviour : CharacterBase
         SP = MaxSP;
         OP = MaxOP;
 
+        CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+            new CardEffect.NestedProps(
+                CardEffect.EffectType.Fire,
+                20,
+                20000,
+                1000
+                ), this );
+
         base.Start();
     }
 
