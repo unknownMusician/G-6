@@ -52,9 +52,9 @@ public class Gun : Weapon {
     protected bool IsLoaded => ClipActualBullets > 0;
     private Vector3 WorldFirePoint => transform.position + transform.rotation * localFirePoint;
 
-    private CardGunGen.CardGunGenProps ActualCardGenProps => CardGen?.Props ?? StandardCardGenProps;
-    private CardGunFly.CardGunFlyProps ActualCardFlyProps => CardFly?.Props ?? StandardCardFlyProps;
-    private CardEffect.CardGunEffectProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
+    private CardGunGen.NestedProps ActualCardGenProps => CardGen?.Props ?? StandardCardGenProps;
+    private CardGunFly.NestedProps ActualCardFlyProps => CardFly?.Props ?? StandardCardFlyProps;
+    private CardEffect.NestedProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
 
     #endregion
 
@@ -102,9 +102,9 @@ public class Gun : Weapon {
 
     #region Private Variables
 
-    protected CardGunGen.CardGunGenProps StandardCardGenProps = new CardGunGen.CardGunGenProps();
-    protected CardGunFly.CardGunFlyProps StandardCardFlyProps = new CardGunFly.CardGunFlyProps();
-    protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
+    protected CardGunGen.NestedProps StandardCardGenProps = new CardGunGen.NestedProps();
+    protected CardGunFly.NestedProps StandardCardFlyProps = new CardGunFly.NestedProps();
+    protected CardEffect.NestedProps StandardCardEffProps = new CardEffect.NestedProps();
 
     #endregion
 
@@ -157,7 +157,7 @@ public class Gun : Weapon {
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>()); // there will already be null-check
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<Card>()); // there will already be null-check
         }
     }
 
@@ -165,7 +165,7 @@ public class Gun : Weapon {
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(CardGun card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
+    public bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
 
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
@@ -197,10 +197,10 @@ public class Gun : Weapon {
         }
         return false;
     }
-    private void PrepareCardforInstall(CardGun cardGen) {
+    private void PrepareCardforInstall(Card cardGen) {
         // To-Do
     }
-    private bool RemoveCard(CardGun card) {
+    private bool RemoveCard(Card card) {
         // To-Do
         return false;
     }

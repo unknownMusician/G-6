@@ -301,6 +301,10 @@ public abstract class CharacterBase : MonoBehaviour
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
     }
+    public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop) {
+        rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
+        TakeDamage(damageVector.magnitude);
+    }
 
     #endregion
 

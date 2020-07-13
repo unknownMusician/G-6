@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
+public class CardEffect : Card {
 
     const string TAG = "CardGunEffect: ";
 
@@ -10,7 +10,7 @@ public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
 
     public GameObject Prefab { get; }
 
-    public CardGunEffectProps Props { get { return new CardGunEffectProps(frost, fire, poison, stunn, vampire); } }
+    public NestedProps Props { get { return new NestedProps(frost, fire, poison, stunn, vampire); } }
 
     #endregion
 
@@ -20,52 +20,44 @@ public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
     protected GameObject prefab;
 
     [SerializeField]
-    private bool frost = false;
+    private EffectType effect = EffectType.Standard;
     [SerializeField]
-    private bool fire = false;
+    private float duration = 10f;
     [SerializeField]
-    private bool poison = false;
+    private float interval = 1f;
     [SerializeField]
-    private bool stunn = false;
-    [SerializeField]
-    private bool vampire = false;
+    private float damage = 5f;
 
     #endregion
 
     #region Service Methods
 
     public override string ToString() {
-        return "CardGunFly (" + frost + "; " + fire + "; " + poison + "; " + stunn + "; " + vampire + ")";
+        return "CardGunFly (" + effect + "; " + duration + "; " + interval + "; " + damage + ")";
     }
 
     #endregion
 
-    public class CardGunEffectProps {
+    #region Inner Structures
+
+    public class NestedProps {
 
         #region Parameters
 
-        public bool Frost { get; }
-        public bool Fire { get; }
-        public bool Poison { get; }
-        public bool Stunn { get; }
-        public bool Vampire { get; }
+        public EffectType Effect { get; }
+
+        public float Duration { get; }
+
+        public float Interval { get; }
+
+        public float DMG { get; }
 
         #endregion
 
         #region Constructors
 
-        public CardGunEffectProps(
-            bool frost = false,
-            bool fire = false,
-            bool poison = false,
-            bool stunn = false,
-            bool vampire = false
-            ) {
-            Frost = frost;
-            Fire = fire;
-            Poison = poison;
-            Stunn = stunn;
-            Vampire = vampire;
+        public NestedProps(EffectType effect, float dmg, float duration, float interval) {
+            this.Effect = effect;
         }
 
         #endregion
@@ -73,9 +65,20 @@ public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
         #region Service Methods
 
         public override string ToString() {
-            return "CardGunFly (" + Frost + "; " + Fire + "; " + Poison + "; " + Stunn + "; " + Vampire + ")";
+            return "CardGunFly (" + Effect + "; " + Duration + "; " + Interval + "; " + DMG + ")";
         }
 
         #endregion
     }
+
+    public enum EffectType {
+        Standard,
+        Frost,
+        Fire,
+        Poison,
+        Stunn,
+        Vampire
+    }
+
+    #endregion
 }

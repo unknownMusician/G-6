@@ -29,9 +29,9 @@ public class Melee : Weapon {
     }
     private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
 
-    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps => CardShape?.Props ?? StandardCardShapeProps;
-    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps => CardMemory?.Props ?? StandardCardMemoryProps;
-    private CardEffect.CardGunEffectProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
+    private CardMeleeShape.NestedProps ActualCardShapeProps => CardShape?.Props ?? StandardCardShapeProps;
+    private CardMeleeMemory.NestedProps ActualCardMemoryProps => CardMemory?.Props ?? StandardCardMemoryProps;
+    private CardEffect.NestedProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
 
     #endregion
 
@@ -64,9 +64,9 @@ public class Melee : Weapon {
 
     #region Private Variables
 
-    protected CardMeleeShape.CardMeleeShapeProps StandardCardShapeProps = new CardMeleeShape.CardMeleeShapeProps();
-    protected CardMeleeMemory.CardMeleeMemoryProps StandardCardMemoryProps = new CardMeleeMemory.CardMeleeMemoryProps();
-    protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
+    protected CardMeleeShape.NestedProps StandardCardShapeProps = new CardMeleeShape.NestedProps();
+    protected CardMeleeMemory.NestedProps StandardCardMemoryProps = new CardMeleeMemory.NestedProps();
+    protected CardEffect.NestedProps StandardCardEffProps = new CardEffect.NestedProps();
 
     #endregion
 
@@ -111,7 +111,7 @@ public class Melee : Weapon {
     }
     protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<CardGun>());
+            InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<Card>());
         }
     }
 
@@ -119,7 +119,7 @@ public class Melee : Weapon {
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(CardGun card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
+    public bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
 
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
@@ -151,10 +151,10 @@ public class Melee : Weapon {
         }
         return false;
     }
-    private void PrepareCardforInstall(CardMelee cardGen) {
+    private void PrepareCardforInstall(Card cardGen) {
         //To-Do
     }
-    private bool RemoveCard(CardMelee card) {
+    private bool RemoveCard(Card card) {
         //To-Do
         return true;
     }
