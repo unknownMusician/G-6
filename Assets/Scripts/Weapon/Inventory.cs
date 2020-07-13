@@ -7,13 +7,19 @@ public class Inventory : MonoBehaviour {
     const string TAG = "Inventory: ";
 
     #region Card Inventory
+    public Card testCard;
 
-    private static List<Card> cards = new List<Card>();
-    public static List<Card> Cards {
+    private List<Card> cards = new List<Card>();
+    public List<Card> Cards {
+        // To-Do
         get => cards;
         set {
             cards = value;
-            MainData.InventoryCards = cards;
+
+            var list = new List<Card>(cards) {
+                Weapon.CardPrefabs[0].GetComponent<Card>()
+            };
+            MainData.InventoryCards = list;
         }
     }
 
@@ -68,6 +74,13 @@ public class Inventory : MonoBehaviour {
         GetWeaponsFromChildren();
         SendInventoryWeaponsToMainData();
         MainData.ActionWeapons += () => ActiveSlot = MainData.ActiveWeaponIndex;
+
+
+        var list = new List<Card>() {
+                testCard
+            };
+        MainData.InventoryCards = list;
+        // To-Do
         //MainData.ActionInventoryCards += () => 
     }
 
