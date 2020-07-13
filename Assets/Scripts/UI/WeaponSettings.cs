@@ -49,7 +49,7 @@ public class WeaponSettings : MonoBehaviour
         //(ScrollView)WeaponsScrollView.Clear();
         foreach (Weapon.NestedInfo weapon in MainData.InventoryWeapons)
         {
-            var instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
+            GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
             instance.transform.SetParent(WeaponContent, false);
             instance.GetComponent<Image>().sprite =
                 weapon.WeaponPrefab.gameObject.GetComponent<SpriteRenderer>().sprite;
@@ -67,8 +67,25 @@ public class WeaponSettings : MonoBehaviour
 
     private void SetAllCards()
     {
+        foreach (RectTransform child in CardContent)
+        {
+            Destroy(child);
+        }
+
+        foreach (Card.NestedInfo card in MainData.InventoryCards)
+        {
+            GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
+            instanse.transform.SetParent(CardContent, false);
+            instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card); });
+        }
+    }
+
+    private void CardClick(Card.NestedInfo activecard)
+    {
+        //instanse.transform.GetChild(2).gameObject.GetComponent<Button>()
 
     }
+
     public void Exit()
     {
         //PauseMenu.Resume();

@@ -8,9 +8,9 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static List<GameObject> inventoryCards;
+    private static List<Card.NestedInfo> inventoryCards;
 
-    public static List<GameObject> InventoryCards
+    public static List<Card.NestedInfo> InventoryCards
     {
         get
         {
