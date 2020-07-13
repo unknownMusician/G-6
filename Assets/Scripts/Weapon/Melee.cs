@@ -29,9 +29,9 @@ public class Melee : Weapon {
     }
     private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
 
-    private CardMeleeShape.CardMeleeShapeProps ActualCardShapeProps => CardShape?.Props ?? StandardCardShapeProps;
-    private CardMeleeMemory.CardMeleeMemoryProps ActualCardMemoryProps => CardMemory?.Props ?? StandardCardMemoryProps;
-    private CardEffect.CardGunEffectProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
+    private CardMeleeShape.NestedProps ActualCardShapeProps => CardShape?.Props ?? StandardCardShapeProps;
+    private CardMeleeMemory.NestedProps ActualCardMemoryProps => CardMemory?.Props ?? StandardCardMemoryProps;
+    private CardEffect.NestedProps ActualCardEffectProps => CardEff?.Props ?? StandardCardEffProps;
 
     #endregion
 
@@ -64,9 +64,9 @@ public class Melee : Weapon {
 
     #region Private Variables
 
-    protected CardMeleeShape.CardMeleeShapeProps StandardCardShapeProps = new CardMeleeShape.CardMeleeShapeProps();
-    protected CardMeleeMemory.CardMeleeMemoryProps StandardCardMemoryProps = new CardMeleeMemory.CardMeleeMemoryProps();
-    protected CardEffect.CardGunEffectProps StandardCardEffProps = new CardEffect.CardGunEffectProps();
+    protected CardMeleeShape.NestedProps StandardCardShapeProps = new CardMeleeShape.NestedProps();
+    protected CardMeleeMemory.NestedProps StandardCardMemoryProps = new CardMeleeMemory.NestedProps();
+    protected CardEffect.NestedProps StandardCardEffProps = new CardEffect.NestedProps();
 
     #endregion
 

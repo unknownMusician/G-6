@@ -10,7 +10,7 @@ public class CardGunFly : EncyclopediaObject, CardGun {
 
     public GameObject Prefab { get; }
 
-    public CardGunFlyProps Props { get { return new CardGunFlyProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
+    public NestedProps Props { get { return new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
 
     #endregion
 
@@ -44,7 +44,7 @@ public class CardGunFly : EncyclopediaObject, CardGun {
 
     #endregion
 
-    public class CardGunFlyProps {
+    public class NestedProps {
 
         #region Parameters
 
@@ -60,7 +60,7 @@ public class CardGunFly : EncyclopediaObject, CardGun {
 
         #region Constructors
 
-        public CardGunFlyProps(
+        public NestedProps(
             bool ricochet = false,
             bool piercing = false,
             bool homing = false,

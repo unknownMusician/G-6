@@ -54,7 +54,7 @@ public class Bullet : EncyclopediaObject {
         Prepare();
     }
 
-    public void SetParams(float dmg, CardGunFly.CardGunFlyProps bulletProps) {
+    public void SetParams(float dmg, CardGunFly.NestedProps bulletProps) {
 
         this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
@@ -77,7 +77,6 @@ public class Bullet : EncyclopediaObject {
 
     private void Update() {
         this.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg);
-
 
         if (homing && aim != null) {
 

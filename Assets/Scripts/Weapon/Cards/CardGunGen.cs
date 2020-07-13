@@ -10,7 +10,7 @@ public class CardGunGen : EncyclopediaObject, CardGun {
 
     public GameObject Prefab { get; }
 
-    public CardGunGenProps Props { get { return new CardGunGenProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
+    public NestedProps Props { get { return new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
 
     #endregion
 
@@ -36,7 +36,7 @@ public class CardGunGen : EncyclopediaObject, CardGun {
 
     #endregion
 
-    public class CardGunGenProps {
+    public class NestedProps {
 
         #region Parameters
 
@@ -48,7 +48,7 @@ public class CardGunGen : EncyclopediaObject, CardGun {
 
         #region Constructors
 
-        public CardGunGenProps(
+        public NestedProps(
             float fireRateMultiplier = 1,
             int bulletsPerShotAdder = 0,
             float shotRangeMultiplier = 1
