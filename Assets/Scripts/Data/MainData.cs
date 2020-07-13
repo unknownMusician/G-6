@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,9 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static List<Card.NestedInfo> inventoryCards;
+    private static ImmutableList<Card.NestedInfo> inventoryCards;
 
-    public static List<Card.NestedInfo> InventoryCards
+    public static ImmutableList<Card.NestedInfo> InventoryCards
     {
         get
         {
@@ -19,7 +20,9 @@ public class MainData
         }
         set
         {
-            inventoryCards = value;
+            if (!inventoryCards.SequenceEqual(value)) {
+                inventoryCards = value;
+            }
             ActionWeapons();
         }
     }
@@ -28,27 +31,18 @@ public class MainData
 
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.NestedInfo> inventoryWeapons;
+    private static ImmutableList<Weapon.NestedInfo> inventoryWeapons;
     private static int activeWeaponIndex = 0;
 
-    public static List<Weapon.NestedInfo> InventoryWeapons
+    public static ImmutableList<Weapon.NestedInfo> InventoryWeapons
     {
         get => inventoryWeapons;
         set
         {
-            if (inventoryWeapons != null && inventoryWeapons.Count == value.Count) {
-                int length = inventoryWeapons.Count;
-                for (int i = 0; i < length; i++) {
-                    if (!inventoryWeapons[i].Equals(value[i])) {
-                        break;
-                    }
-                    if (i == length - 1) {
-                        return;
-                    }
-                }
+            if (!inventoryWeapons.SequenceEqual(value)) {
+                inventoryWeapons = value;
+                ActionWeapons();
             }
-            inventoryWeapons = value;
-            ActionWeapons();
         }
     }
 
