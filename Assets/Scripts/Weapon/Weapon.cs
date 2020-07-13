@@ -14,11 +14,9 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Properties
 
-    public GameObject WeaponPrefab => weaponPrefab;
-    public Collider2D WeaponCollider => weaponCollider;
+    public GameObject Prefab => weaponPrefab;
 
-    public abstract List<GameObject> AllCardPrefabList { get; }
-    public virtual NestedInfo Info => new Weapon.NestedInfo(WeaponPrefab, AllCardPrefabList);
+    public abstract List<GameObject> CardPrefabs { get; }
     protected abstract bool CanAttack { get; set; }
     protected virtual Weapon.State WeaponState {
         get => state;
@@ -142,16 +140,6 @@ public abstract class Weapon : EncyclopediaObject {
     #endregion
 
     #region Inner Structures
-
-    public class NestedInfo {
-        public GameObject WeaponPrefab;
-        public List<GameObject> CardPrefabs;
-
-        public NestedInfo(GameObject weaponPrefab, List<GameObject> cardPrefabs) {
-            this.WeaponPrefab = weaponPrefab;
-            this.CardPrefabs = cardPrefabs;
-        }
-    }
 
     public enum State {
         Main,

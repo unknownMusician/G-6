@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardMeleeShape : EncyclopediaObject, CardMelee {
+public class CardMeleeShape : Card {
 
     const string TAG = "CardMeleeShape: ";
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
     public NestedProps Props { get { return new NestedProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
+    public override CardType Type => CardType.CardMeleeShape;
 
     #endregion
 

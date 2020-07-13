@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +9,11 @@ public class MainData
 {
     #region Invertary Cards
     public static Action ActionInventoryCards;
-    private static List<GameObject> inventoryCards;
+    private static List<Card> inventoryCards;
 
-    public static List<GameObject> InventoryCards
+    public static List<Card> InventoryCards
     {
-        get
-        {
-            return inventoryCards;
-        }
+        get => inventoryCards;
         set
         {
             inventoryCards = value;
@@ -27,38 +25,31 @@ public class MainData
 
     #region Weapons
     public static Action ActionWeapons;
-    private static List<Weapon.NestedInfo> inventoryWeapons;
+    private static List<Weapon> inventoryWeapons;
     private static int activeWeaponIndex = 0;
 
-    public static List<Weapon.NestedInfo> InventoryWeapons
+    public static List<Weapon> InventoryWeapons
     {
         get => inventoryWeapons;
         set
         {
-            if (inventoryWeapons != null && inventoryWeapons.Count == value.Count) {
-                int length = inventoryWeapons.Count;
-                for (int i = 0; i < length; i++) {
-                    if (!inventoryWeapons[i].Equals(value[i])) {
-                        break;
-                    }
-                    if (i == length - 1) {
-                        return;
-                    }
-                }
-            }
             inventoryWeapons = value;
             ActionWeapons();
         }
     }
 
-    public static Weapon.NestedInfo ActiveWeapon { get => inventoryWeapons?[activeWeaponIndex]; }
+    public static Weapon ActiveWeapon
+    {
+        get => inventoryWeapons?[activeWeaponIndex];
+    }
 
     public static int ActiveWeaponIndex
     {
         get => activeWeaponIndex;
         set
         {
-            if (activeWeaponIndex != value) {
+            if (activeWeaponIndex != value)
+            {
                 activeWeaponIndex = value;
                 ActionWeapons();
             }

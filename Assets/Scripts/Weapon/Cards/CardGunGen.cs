@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardGunGen : EncyclopediaObject, CardGun {
+public class CardGunGen : Card {
 
     const string TAG = "CardGunGen: ";
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
     public NestedProps Props { get { return new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
+    public override CardType Type => CardType.CardGunGen;
 
     #endregion
 

@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Intensity: 0
-    - _LookAngle: -2.4668517
+    - _LookAngle: -3.0110037
     - _PxIntensity: 50
     - _ShowInColor: 0
     - _ViewWidth: 6

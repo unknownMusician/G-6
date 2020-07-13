@@ -18,57 +18,89 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
-    public void ActiveWeaponSettings()
-    {
-        MainData.ActionWeapons += SetWeapons;
-    }
-    public void DisActiveWeaponSettings()
-    {
-        MainData.ActionWeapons -= SetWeapons;
-    }
 
     public void Awake()
     {
-        SetWeapons();
+        MainData.ActionWeapons += SetImageToScrollView;
+        SetImageToScrollView();
         WeaponClick(MainData.ActiveWeapon);
+
+        MainData.ActionInventoryCards += SetAllCards;
         SetAllCards();
     }
 
-    private void SetWeapons()
+    public void OnDisable()
     {
-        Debug.Log("Pidor");
-        SetImageToScrollView();
+        MainData.ActionWeapons -= SetImageToScrollView;
+        MainData.ActionInventoryCards -= SetAllCards;
     }
+
 
     private void SetImageToScrollView()
     {
+        Debug.Log("pidor");
         foreach (RectTransform child in WeaponContent)
         {
             Destroy(child.gameObject);
         }
-        //(ScrollView)WeaponsScrollView.Clear();
-        foreach (Weapon.NestedInfo weapon in MainData.InventoryWeapons)
+        if (MainData.InventoryWeapons != null)
         {
-            var instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
-            instance.transform.SetParent(WeaponContent, false);
-            instance.GetComponent<Image>().sprite =
-                weapon.WeaponPrefab.gameObject.GetComponent<SpriteRenderer>().sprite;
-            instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
+            //(ScrollView)WeaponsScrollView.Clear();
+            foreach (Weapon weapon in MainData.InventoryWeapons)
+            {
+                GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
+                instance.transform.SetParent(WeaponContent, false);
+                instance.GetComponent<Image>().sprite =
+                    weapon.GetComponent<SpriteRenderer>().sprite;
+                instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
+            }
         }
     }
 
-    private void WeaponClick(Weapon.NestedInfo activewepon)
+    private void WeaponClick(Weapon activewepon)
     {
-        WeaponMainImage.sprite = activewepon.WeaponPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().sprite;
-        WeaponName.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaName;
-        WeaponDescription.text = activewepon.WeaponPrefab.GetComponent<Weapon>().encyclopediaDescription;
+        WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
+        WeaponName.text = activewepon.GetComponent<Weapon>().encyclopediaName;
+        WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
     }
 
     private void SetAllCards()
     {
+        foreach (RectTransform child in CardContent)
+        {
+            Destroy(child.gameObject);
+        }
+        if (MainData.InventoryCards != null)
+        {
+
+            foreach (Card card in MainData.InventoryCards)
+            {
+                GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
+                instanse.transform.SetParent(CardContent, false);
+
+                instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card, instanse); });
+
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite =
+                    card.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+
+                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text =
+                    card.Prefab.GetComponent<Card>().encyclopediaName;
+
+
+            }
+        }
+    }
+
+    private void CardClick(Card activecard, GameObject instanse)
+    {
+        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
+
+        CardDescription.text =
+            activecard.Prefab.GetComponent<Card>().encyclopediaDescription;
 
     }
+
     public void Exit()
     {
         //PauseMenu.Resume();

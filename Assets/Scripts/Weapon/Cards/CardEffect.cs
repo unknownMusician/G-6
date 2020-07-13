@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
+public class CardEffect : Card {
 
     const string TAG = "CardGunEffect: ";
 
     #region Parameters
 
-    public GameObject Prefab { get; }
-
-    public NestedProps Props { get { return new NestedProps(frost, fire, poison, stunn, vampire); } }
+    public NestedProps Props => new NestedProps(effect, duration, interval, damage);
+    public override CardType Type => CardType.CardEffect;
 
     #endregion
 
@@ -56,8 +55,11 @@ public class CardEffect : EncyclopediaObject, CardGun, CardMelee {
 
         #region Constructors
 
-        public NestedProps(EffectType effect, float dmg, float duration, float interval) {
+        public NestedProps(EffectType effect = EffectType.Standard, float dmg = 5f, float duration = 10f, float interval = 1f) {
             this.Effect = effect;
+            this.DMG = dmg;
+            this.Duration = duration;
+            this.Interval = interval;
         }
 
         #endregion
