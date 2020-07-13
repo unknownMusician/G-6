@@ -20,25 +20,25 @@ public class WeaponSettings : MonoBehaviour
 
     public void ActiveWeaponSettings()
     {
-        MainData.ActionWeapons += SetWeaponSetings;
+        MainData.ActionWeapons += SetImageToScrollView;
+        MainData.ActionInventoryCards += SetAllCards;
     }
     public void DisActiveWeaponSettings()
     {
-        MainData.ActionWeapons -= SetWeaponSetings;
+        MainData.ActionWeapons -= SetImageToScrollView;
+        MainData.ActionInventoryCards -= SetAllCards;
+
     }
 
     public void Awake()
     {
-        SetWeaponSetings();
+        SetImageToScrollView();
         WeaponClick(MainData.ActiveWeapon);
+
         SetAllCards();
     }
 
-    private void SetWeaponSetings()
-    {
-        Debug.Log("Pidor");
-        SetImageToScrollView();
-    }
+
 
     private void SetImageToScrollView()
     {
@@ -46,14 +46,17 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        //(ScrollView)WeaponsScrollView.Clear();
-        foreach (Weapon weapon in MainData.InventoryWeapons)
+        if (MainData.InventoryWeapons != null)
         {
-            GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
-            instance.transform.SetParent(WeaponContent, false);
-            instance.GetComponent<Image>().sprite =
-                weapon.GetComponent<SpriteRenderer>().sprite;
-            instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
+            //(ScrollView)WeaponsScrollView.Clear();
+            foreach (Weapon weapon in MainData.InventoryWeapons)
+            {
+                GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
+                instance.transform.SetParent(WeaponContent, false);
+                instance.GetComponent<Image>().sprite =
+                    weapon.GetComponent<SpriteRenderer>().sprite;
+                instance.GetComponent<Button>().onClick.AddListener(delegate { WeaponClick(weapon); });
+            }
         }
     }
 
@@ -71,18 +74,33 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child);
         }
-
-        foreach (Card card in MainData.InventoryCards)
+        if (MainData.InventoryCards != null)
         {
-            GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
-            instanse.transform.SetParent(CardContent, false);
-            instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card); });
+
+            foreach (Card card in MainData.InventoryCards)
+            {
+                GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
+                instanse.transform.SetParent(CardContent, false);
+
+                instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card, instanse); });
+
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite =
+                    card.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+
+                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text =
+                    card.Prefab.GetComponent<Card>().encyclopediaName;
+
+
+            }
         }
     }
 
-    private void CardClick(Card activecard)
+    private void CardClick(Card activecard, GameObject instanse)
     {
-        //instanse.transform.GetChild(2).gameObject.GetComponent<Button>()
+        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
+
+        CardDescription.text =
+            activecard.Prefab.GetComponent<Card>().encyclopediaDescription;
 
     }
 
