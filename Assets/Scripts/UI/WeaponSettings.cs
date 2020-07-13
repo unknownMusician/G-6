@@ -20,21 +20,21 @@ public class WeaponSettings : MonoBehaviour
 
     public void ActiveWeaponSettings()
     {
-        MainData.ActionWeapons += SetWeapons;
+        MainData.ActionWeapons += SetWeaponSetings;
     }
     public void DisActiveWeaponSettings()
     {
-        MainData.ActionWeapons -= SetWeapons;
+        MainData.ActionWeapons -= SetWeaponSetings;
     }
 
     public void Awake()
     {
-        SetWeapons();
+        SetWeaponSetings();
         WeaponClick(MainData.ActiveWeapon);
         SetAllCards();
     }
 
-    private void SetWeapons()
+    private void SetWeaponSetings()
     {
         Debug.Log("Pidor");
         SetImageToScrollView();
