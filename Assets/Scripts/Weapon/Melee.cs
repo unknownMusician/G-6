@@ -25,7 +25,8 @@ public class Melee : Weapon {
 
     protected override bool CanAttack {
         get => canAttack;
-        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
+        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier);
+        }
     }
     private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
 
@@ -171,16 +172,16 @@ public class Melee : Weapon {
             Collider2D[] cols = Physics2D.OverlapCircleAll(WorldHitCentrePoint, hitAreaRadius);
             //
             int actualHits = (from col in cols
-                        group col by col.gameObject into gameObj
-                        where !gameObj.Key.Equals(this.transform.parent.parent.gameObject)
-                        group gameObj.Key by gameObj.Key.GetComponent<CharacterBase>() into charBase
-                        where charBase.Key != null
-                        let hitPoint = charBase.Key.gameObject.transform.position
-                        select charBase.Key)
+                              group col by col.gameObject into gameObj
+                              where !gameObj.Key.Equals(this.transform.parent.parent.gameObject)
+                              group gameObj.Key by gameObj.Key.GetComponent<CharacterBase>() into charBase
+                              where charBase.Key != null
+                              let hitPoint = charBase.Key.gameObject.transform.position
+                              select charBase.Key)
                         .Select(x => {
                             x.TakeDamage((x.gameObject.transform.position - transform.position).normalized * standardDamage);
                             return x;
-                            })
+                        })
                         .Count();
             CanAttack = false;
             Debug.Log(TAG + "Hit (" + actualHits + " target" + ((actualHits == 1) ? "" : "s") + ")");
