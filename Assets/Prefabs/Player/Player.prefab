@@ -139,6 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4333165458613876750}
   - component: {fileID: 2847807284984056052}
+  - component: {fileID: 5123512593254433161}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -175,11 +176,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testCard: {fileID: 0}
+  fistFight: {fileID: 5123512593254433161}
   weapons:
   - {fileID: 0}
   - {fileID: 0}
   throwStrenght: 25
   secondsToMaxThrow: 1
+--- !u!114 &5123512593254433161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4333165458613876737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d48a9ad7d506ed45b4ea762fc7246ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localFistFightCentrePoint: {x: 1, y: 0, z: 0}
+  fistFightAreaRadius: 1
+  attackSpeedMultiplier: 1
+  damage: 1
 --- !u!1 &4333165458918672411
 GameObject:
   m_ObjectHideFlags: 0
