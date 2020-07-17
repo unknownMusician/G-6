@@ -17,7 +17,7 @@ public class MainData
         set
         {
             inventoryCards = value;
-            ActionWeapons();
+            ActionWeapons?.Invoke();
         }
     }
 
@@ -26,6 +26,7 @@ public class MainData
     #region Weapons
     public static Action ActionWeapons;
     private static List<Weapon> inventoryWeapons;
+    public static Action ActionActiveWeapon;
     private static int activeWeaponIndex = 0;
 
     public static List<Weapon> InventoryWeapons
@@ -34,7 +35,7 @@ public class MainData
         set
         {
             inventoryWeapons = value;
-            ActionWeapons();
+            ActionWeapons?.Invoke();
         }
     }
 
@@ -51,7 +52,7 @@ public class MainData
             if (activeWeaponIndex != value)
             {
                 activeWeaponIndex = value;
-                ActionWeapons();
+                ActionActiveWeapon?.Invoke();
             }
         }
     }
@@ -72,7 +73,7 @@ public class MainData
         set
         {
             overallHP = value;
-            ActionHP();
+            ActionHP?.Invoke();
         }
     }
     public static int CurrentHP
@@ -84,7 +85,7 @@ public class MainData
         set
         {
             currentHP = value;
-            ActionHP();
+            ActionHP?.Invoke();
         }
     }
     #endregion
@@ -103,7 +104,7 @@ public class MainData
         set
         {
             overallEndurance = value;
-            ActionEndurance();
+            ActionEndurance?.Invoke();
         }
     }
     public static int CurrentEndurance
@@ -115,7 +116,7 @@ public class MainData
         set
         {
             currentEndurance = value;
-            ActionEndurance();
+            ActionEndurance?.Invoke();
         }
     }
     #endregion
@@ -134,7 +135,7 @@ public class MainData
         set
         {
             overallXP = value;
-            ActionXP();
+            ActionXP?.Invoke();
         }
     }
     public static int CurrentXP
@@ -146,7 +147,7 @@ public class MainData
         set
         {
             currentXP = value;
-            ActionXP();
+            ActionXP?.Invoke();
         }
     }
     #endregion
@@ -164,7 +165,7 @@ public class MainData
         set
         {
             currentLevel = value;
-            ActionLevel();
+            ActionLevel?.Invoke();
         }
     }
 
@@ -183,7 +184,7 @@ public class MainData
         set
         {
             currentMoney = value;
-            ActionMoney();
+            ActionMoney?.Invoke();
         }
     }
 
@@ -203,7 +204,7 @@ public class MainData
         set
         {
             currentPosition = value;
-            ActionPosition();
+            ActionPosition?.Invoke();
         }
     }
     #endregion

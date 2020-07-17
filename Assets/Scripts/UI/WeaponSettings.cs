@@ -81,13 +81,8 @@ public class WeaponSettings : MonoBehaviour
 
                 instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card, instanse); });
 
-                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite =
-                    card.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
-
-                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text =
-                    card.Prefab.GetComponent<Card>().encyclopediaName;
-
-
+                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.GetComponent<Card>().encyclopediaName;
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.GetComponent<SpriteRenderer>().sprite;
             }
         }
     }
@@ -97,7 +92,7 @@ public class WeaponSettings : MonoBehaviour
         instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
 
         CardDescription.text =
-            activecard.Prefab.GetComponent<Card>().encyclopediaDescription;
+            activecard.GetComponent<Card>().encyclopediaDescription;
 
     }
 
