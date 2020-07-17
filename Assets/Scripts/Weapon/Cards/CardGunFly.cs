@@ -6,10 +6,27 @@ public class CardGunFly : Card {
 
     const string TAG = "CardGunFly: ";
 
-    #region Parameters
+    #region Properties
 
-    public NestedProps Props { get { return new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value); } }
+    public NestedProps Props => new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
     public override CardType Type => CardType.CardGunFly;
+    public override Dictionary<Sprite, string> Modules {
+        get {
+            var dict = new Dictionary<Sprite, string>();
+            // To-Do: localization
+            if (Props.Ricochet)
+                dict.Add(moduleSprites[0], "Рикошет.");
+            if (Props.Piercing)
+                dict.Add(moduleSprites[1], "Бронебойность.");
+            if (Props.Homing)
+                dict.Add(moduleSprites[2], "Самонаведение на " + Props.Enemy + ".");
+            if (Props.Teleporting)
+                dict.Add(moduleSprites[3], "Телепортация.");
+            if (Props.Magnet)
+                dict.Add(moduleSprites[4], "Притягивание " + Props.Magnetting + ".");
+            return dict;
+        }
+    }
 
     #endregion
 
@@ -30,6 +47,12 @@ public class CardGunFly : Card {
     [SerializeField]
     private LayerMask magnetting = 0;
 
+    //////
+
+    [Space]
+    [SerializeField]
+    protected List<Sprite> moduleSprites;
+
     #endregion
 
     #region Service Methods
@@ -44,26 +67,26 @@ public class CardGunFly : Card {
 
         #region Parameters
 
-        public int Enemy { get; }
-        public int Magnetting { get; }
-        public bool Ricochet { get; }
-        public bool Piercing { get; }
-        public bool Homing { get; }
-        public bool Teleporting { get; }
-        public bool Magnet { get; }
+        public LayerMask Enemy { get; } = 0;
+        public LayerMask Magnetting { get; } = 0;
+        public bool Ricochet { get; } = false;
+        public bool Piercing { get; } = false;
+        public bool Homing { get; } = false;
+        public bool Teleporting { get; } = false;
+        public bool Magnet { get; } = false;
 
         #endregion
 
         #region Constructors
 
         public NestedProps(
-            bool ricochet = false,
-            bool piercing = false,
-            bool homing = false,
-            bool teleporting = false,
-            bool magnet = false,
-            int enemy = 0,
-            int magnetting = 0
+            bool ricochet,
+            bool piercing,
+            bool homing,
+            bool teleporting,
+            bool magnet,
+            LayerMask enemy,
+            LayerMask magnetting
             ) {
             this.Ricochet = ricochet;
             this.Piercing = piercing;
@@ -72,7 +95,11 @@ public class CardGunFly : Card {
             this.Magnet = magnet;
             this.Enemy = enemy;
             this.Magnetting = magnetting;
-        }
+        } public NestedProps(bool ricochet, bool piercing, bool teleporting) {
+            this.Ricochet = ricochet;
+            this.Piercing = piercing;
+            this.Teleporting = teleporting;
+        } public NestedProps() { }
 
         #endregion
 
