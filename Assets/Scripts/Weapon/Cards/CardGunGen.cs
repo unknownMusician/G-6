@@ -14,9 +14,6 @@ public class CardGunGen : Card {
     #endregion
 
     #region Public Variables
-    [SerializeField]
-    protected GameObject prefab;
-
 
     [SerializeField]
     protected float fireRateMultiplier = 1;

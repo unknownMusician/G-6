@@ -47,6 +47,9 @@ public class Gun : Weapon {
             return cards;
         }
     }
+    protected CardGunGen CardGen;
+    protected CardGunFly CardFly;
+    protected CardEffect CardEff;
 
     //////////
 
@@ -95,13 +98,13 @@ public class Gun : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    protected CardGunGen CardGen;
+    protected CardGunGen cardGen;
     [Space]
     [SerializeField]
-    protected CardGunFly CardFly;
+    protected CardGunFly cardFly;
     [Space]
     [SerializeField]
-    protected CardEffect CardEff;
+    protected CardEffect cardEff;
 
     #endregion
 
@@ -212,26 +215,6 @@ public class Gun : Weapon {
 
     #endregion
 
-    #region Main Methods
-
-    private void Hit() {
-        // To-Do
-        animator.SetTrigger("hit");
-    }
-    private void Shoot() {
-        if (CanAttack && IsLoaded) {
-            int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ActualClipBullets);
-            for (int i = 0; i < bulletsPerShot; i++) {
-                InstantiateBullet(i);
-                ActualClipBullets--;
-            }
-            CanAttack = false;
-            Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
-        }
-    }
-
-    #endregion
-
     #region WorkingWithBullets methods
 
     private void SendBullets() {
@@ -247,6 +230,26 @@ public class Gun : Weapon {
         } else {
             ActualClipBullets += ActualPocketBullets;
             ActualPocketBullets = 0;
+        }
+    }
+
+    #endregion
+
+    #region Main Methods
+
+    private void Hit() {
+        // To-Do
+        animator.SetTrigger("hit");
+    }
+    private void Shoot() {
+        if (CanAttack && IsLoaded) {
+            int bulletsPerShot = Mathf.Min(ActualCardGenProps.BulletsPerShotAdder + 1, ActualClipBullets);
+            for (int i = 0; i < bulletsPerShot; i++) {
+                InstantiateBullet(i);
+                ActualClipBullets--;
+            }
+            CanAttack = false;
+            Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
         }
     }
 

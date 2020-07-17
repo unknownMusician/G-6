@@ -16,9 +16,6 @@ public class CardMeleeMemory : Card {
     #region Public Variables
 
     [SerializeField]
-    protected GameObject prefab;
-
-    [SerializeField]
     private NestedProps.MemoryType memory = NestedProps.MemoryType.Null;
 
     #endregion

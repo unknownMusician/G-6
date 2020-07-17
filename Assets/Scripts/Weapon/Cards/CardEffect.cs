@@ -16,9 +16,6 @@ public class CardEffect : Card {
     #region Public Variables
 
     [SerializeField]
-    protected GameObject prefab;
-
-    [SerializeField]
     private EffectType effect = EffectType.Standard;
     [SerializeField]
     private float duration = 10f;

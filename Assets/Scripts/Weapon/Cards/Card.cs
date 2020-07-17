@@ -7,9 +7,19 @@ public abstract class Card : EncyclopediaObject {
 
     #region Properties
 
-    public GameObject Prefab { get; }
+    public GameObject Prefab => prefab;
+    public Sprite SpriteUI => spriteUI;
 
     public abstract CardType Type { get; }
+
+    #endregion
+
+    #region Variables
+
+    [SerializeField]
+    protected GameObject prefab;
+    [SerializeField]
+    protected Sprite spriteUI;
 
     #endregion
 

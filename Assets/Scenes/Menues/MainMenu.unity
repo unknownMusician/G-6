@@ -887,7 +887,7 @@ MonoBehaviour:
   WeaponMainImage: {fileID: 1131747870}
   WeaponName: {fileID: 131849773}
   WeaponDescription: {fileID: 1216085353}
-  CardPrefab: {fileID: 8500484285780978995, guid: 6d2981c2c9279ff45bcb6d8dc56dccb2,
+  CardPrefab: {fileID: 7566928616574131498, guid: b6f5155fe24210b49a2e7bdbcb24b044,
     type: 3}
   CardContent: {fileID: 1375949908}
   CardDescription: {fileID: 1959958283}

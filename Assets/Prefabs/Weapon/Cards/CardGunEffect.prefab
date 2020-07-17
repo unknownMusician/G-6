@@ -71,12 +71,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 152
-  m_Sprite: {fileID: 21300000, guid: b0942878b600c7a4880eb730053ee2e1, type: 3}
+  m_Sprite: {fileID: -7557494978891415441, guid: 507f8927a27b47e498c01c2880b1b7b4,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 1.6}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -94,9 +95,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38449124f455a0e45a83be548244d3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  encyclopediaName: EncyclopediaObject
+  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   prefab: {fileID: 6242605618657418628}
-  frost: 0
-  fire: 0
-  poison: 0
-  stunn: 0
-  vampire: 0
+  spriteUI: {fileID: -3596292837194420457, guid: ea9eeb19348abe747a8a0e0f96e08876,
+    type: 3}
+  effect: 0
+  duration: 10
+  interval: 1
+  damage: 5

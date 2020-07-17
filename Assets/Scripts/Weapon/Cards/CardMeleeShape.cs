@@ -14,9 +14,6 @@ public class CardMeleeShape : Card {
     #endregion
 
     #region Public Variables
-    [SerializeField]
-    protected GameObject prefab;
-
 
     [SerializeField]
     protected float attackSpeedMultiplier = 1f;

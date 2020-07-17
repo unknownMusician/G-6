@@ -16,9 +16,6 @@ public class CardGunFly : Card {
     #region Public Variables
 
     [SerializeField]
-    protected GameObject prefab;
-
-    [SerializeField]
     private bool ricochet = false;
     [SerializeField]
     private bool piercing = false;
