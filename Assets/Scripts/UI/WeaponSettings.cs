@@ -29,18 +29,18 @@ public class WeaponSettings : MonoBehaviour
     #region Action Subsription Managment
     public void Awake()
     {
-        MainData.ActionWeapons += SetAllWeapons;
+        MainData.ActionInventoryWeaponsChange += SetAllWeapons;
         SetAllWeapons();
         WeaponClick(MainData.ActiveWeapon);
 
-        MainData.ActionInventoryCards += SetAllCards;
+        MainData.ActionInventoryCardsChange += SetAllCards;
         SetAllCards();
     }
 
     public void OnDisable()
     {
-        MainData.ActionWeapons -= SetAllWeapons;
-        MainData.ActionInventoryCards -= SetAllCards;
+        MainData.ActionInventoryWeaponsChange -= SetAllWeapons;
+        MainData.ActionInventoryCardsChange -= SetAllCards;
     }
 
     #endregion
@@ -53,10 +53,10 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.InventoryWeapons != null)
+        if (MainData.Inventory.AllWeapons != null)
         {
             //(ScrollView)WeaponsScrollView.Clear();
-            foreach (Weapon weapon in MainData.InventoryWeapons)
+            foreach (Weapon weapon in MainData.Inventory.AllWeapons)
             {
                 GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
                 instance.transform.SetParent(WeaponContent, false);
@@ -72,7 +72,8 @@ public class WeaponSettings : MonoBehaviour
         WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
         WeaponName.text = activewepon.GetComponent<Weapon>().encyclopediaName;
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
-        MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
+        MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
+        MainData.ActionInventoryActiveSlotChange();
     }
 
     #endregion
@@ -85,10 +86,10 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.InventoryCards != null)
+        if (MainData.Inventory.Cards != null)
         {
 
-            foreach (Card card in MainData.InventoryCards)
+            foreach (Card card in MainData.Inventory.Cards)
             {
                 GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
                 instanse.transform.SetParent(CardContent, false);
@@ -123,19 +124,19 @@ public class WeaponSettings : MonoBehaviour
         if (MainData.ActiveWeapon.InstallUnknownCard(activecard))
         {
             CardViewOnUI(activecard);
-            MainData.InventoryCards.Remove(activecard);
-            MainData.ActionInventoryCards();
+            MainData.Inventory.Cards.Remove(activecard);
+            MainData.ActionInventoryCardsChange();
         }
     }
 
     //TODO
     private void UnInstallCardClick(Card card)
     {
-        bool isUnInstalling = MainData.ActiveWeapon.UnInstallUnknownCard(card);
+        bool isUnInstalling = MainData.ActiveWeapon.UninstallUnknownCard(card);
         if (isUnInstalling)
         {
-            MainData.InventoryCards.Add(card);
-            MainData.ActionInventoryCards();
+            MainData.Inventory.Cards.Add(card);
+            MainData.ActionInventoryCardsChange();
         }
     }
 
@@ -194,7 +195,7 @@ public class WeaponSettings : MonoBehaviour
             effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
             effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
         }
-    }    
+    }
 
     #endregion
     public void Exit()
