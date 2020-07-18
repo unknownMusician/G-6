@@ -176,11 +176,11 @@ public class Gun : Weapon {
         }
     }
 
+    public override bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
+
     #endregion
 
     #region WorkingWithCards Methods
-
-    public bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
 
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {

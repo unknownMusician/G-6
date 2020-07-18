@@ -74,6 +74,7 @@ public abstract class Weapon : EncyclopediaObject {
 
     public abstract void Attack();
     protected abstract void InstallCardsFromChildren();
+    public abstract bool InstallUnknownCard(Card card);
 
     #endregion
 

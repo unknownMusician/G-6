@@ -28,16 +28,34 @@ public class MainData
     private static List<Weapon> inventoryWeapons;
     public static Action ActionActiveWeapon;
     private static int activeWeaponIndex = 0;
+    
     //
+
     private static GameObject player;
 
     public static GameObject Player { get => player; set => player = value; }
     public static PlayerBehaviour PlayerBehaviour => Player?.GetComponent<PlayerBehaviour>();
     public static Inventory Inventory => Player?.transform.GetChild(0)?.gameObject.GetComponent<Inventory>();
     public static Weapon ActiveWeapon => Inventory?.Weapon;
+    
     //
+
     public static Action ActionPlayerPosition;
-    public Vector3 PlayerPosition { get => Player.transform.position; }
+    public static Vector3 PlayerPosition { get => Player.transform.position; }
+
+    private static int coins = 5;
+    // To-Do: add coins to PlayerBehaviour;
+    public static Action ActionPlayerCoins;
+    public static int PlayerCoins {
+        get => coins;
+        set {
+            coins = value;
+            ActionPlayerCoins?.Invoke();
+        }
+    }
+
+
+
     //
 
     public static List<Weapon> InventoryWeapons
@@ -194,23 +212,5 @@ public class MainData
         }
     }
 
-    #endregion
-
-    //TODO start data
-    #region Position
-    private static Vector3 currentPosition;
-
-    public static Vector3 CurrentPosition
-    {
-        get
-        {
-            return currentPosition;
-        }
-        set
-        {
-            currentPosition = value;
-            ActionPlayerPosition?.Invoke();
-        }
-    }
     #endregion
 }

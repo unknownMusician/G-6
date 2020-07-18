@@ -44,9 +44,9 @@ public class SaveData
 
         position = new float[3] //Получение позиции
 		{
-            MainData.CurrentPosition.x,
-            MainData.CurrentPosition.y,
-            MainData.CurrentPosition.z,
+            MainData.PlayerPosition.x,
+            MainData.PlayerPosition.y,
+            MainData.PlayerPosition.z,
         };
     }
 

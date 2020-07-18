@@ -118,11 +118,11 @@ public class Melee : Weapon {
         }
     }
 
+    public override bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
+
     #endregion
 
     #region WorkingWithCards Methods
-
-    public bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
 
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
