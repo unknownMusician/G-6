@@ -33,7 +33,8 @@ public class Melee : Weapon {
 
     protected override bool CanAttack {
         get => canAttack;
-        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier); }
+        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier);
+        }
     }
     private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
 

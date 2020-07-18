@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase
 {
-    new private void Start()
+    private new void Start()
     {
 
         MaxHP = 100f;
@@ -17,9 +17,17 @@ public class PlayerBehaviour : CharacterBase
         OP = MaxOP;
 
         base.Start();
+
+        //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+        //    new CardEffect.NestedProps(
+        //        CardEffect.EffectType.Fire,
+        //        1,
+        //        20,
+        //        1
+        //        ), this );
     }
 
-    new protected void Update()
+    protected new void Update()
     {
         if (State != State.Dead)
         {
@@ -93,30 +101,24 @@ public class PlayerBehaviour : CharacterBase
         if (!PauseMenu.GameIsPaused) {
             weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 weaponChooseNext = true;
-            } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 weaponChoosePrev = true;
-            }
-            if (Input.GetButtonDown("WeaponSlot1")) {
+            if (Input.GetButtonDown("WeaponSlot1"))
                 weaponChooseFirst = true;
-            } else if (Input.GetButtonDown("WeaponSlot2")) {
+            else if (Input.GetButtonDown("WeaponSlot2"))
                 weaponChooseSecond = true;
-            } else if (Input.GetButtonDown("WeaponSlot3")) {
+            else if (Input.GetButtonDown("WeaponSlot3"))
                 weaponChooseThird = true;
-            } else if (Input.GetButtonDown("WeaponSlot4")) {
+            else if (Input.GetButtonDown("WeaponSlot4"))
                 weaponChooseFourth = true;
-            }
-            if (Inventory.Weapon != null) {
-                if (Input.GetButtonDown("ChangeWeaponState")) {
-                    weaponChangeState = true;
-                }
-                if (Input.GetButtonDown("Reload")) {
-                    weaponReload = true;
-                }
-                if (Input.GetButton("Fire1"))
-                    weaponAttack = true;
-            }
+            if (Input.GetButtonDown("ChangeWeaponState"))
+                weaponChangeState = true;
+            if (Input.GetButtonDown("Reload"))
+                weaponReload = true;
+            if (Input.GetButton("Fire1"))
+                weaponAttack = true;
             if (Input.GetButtonDown("Throw"))
                 weaponThrowPress = true;
             if (Input.GetButtonUp("Throw"))
@@ -156,7 +158,7 @@ public class PlayerBehaviour : CharacterBase
             weaponReload = false;
         }
         if (weaponAttack) {
-            Inventory.AttackWithWeapon();
+            Inventory.AttackWithWeaponOrFist();
             weaponAttack = false;
         }
         if (weaponThrowPress) {

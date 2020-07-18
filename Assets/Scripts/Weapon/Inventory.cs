@@ -27,7 +27,13 @@ public class Inventory : MonoBehaviour {
 
     #region Properties
 
-    public Weapon Weapon { get => weapons[activeWeapon]; private set => weapons[activeWeapon] = value; }
+    public Weapon Weapon {
+        get => weapons[activeWeapon];
+        private set {
+            weapons[activeWeapon] = value;
+            MainData.InventoryWeapons = new List<Weapon>(weapons);
+        }
+    }
 
     public int ActiveSlot {
         get => activeWeapon;
@@ -52,6 +58,10 @@ public class Inventory : MonoBehaviour {
 
     #region Public Variables
 
+    [SerializeField]
+    private FistFight fistFight = null;
+
+    [Space]
     [SerializeField]
     private List<Weapon> weapons = null;
     [SerializeField]
@@ -86,20 +96,6 @@ public class Inventory : MonoBehaviour {
 
     #endregion
 
-    #region MainData Methods
-
-    private void SendInventoryWeaponsToMainData() {
-        List<Weapon> allWeapons = new List<Weapon>();
-        for (int i = 0; i < weapons.Count; i++) {
-            allWeapons.Add(weapons[i] == null ? null : ((weapons[i] is Gun gun) ? gun : weapons[i]));
-        }
-        MainData.InventoryWeapons = allWeapons;
-    }
-
-    ////////
-
-    #endregion
-
     #region WorkingWithSlots Methods
 
     private void GetWeaponsFromChildren() {
@@ -131,8 +127,12 @@ public class Inventory : MonoBehaviour {
 
     #region WorkingWithWeapon Methods
 
-    public void AttackWithWeapon() {
-        Weapon?.Attack();
+    public void AttackWithWeaponOrFist() {
+        if (Weapon != null) {
+            Weapon?.Attack();
+        } else {
+            fistFight.Attack();
+        }
     }
     public void ThrowPress() {
         tmpWhenThrowButtonPressed = Time.time;
@@ -145,6 +145,8 @@ public class Inventory : MonoBehaviour {
             (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) ? ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow) : 1f);
         Weapon?.Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
         Weapon = null;
+
+        MainData.InventoryWeapons = new List<Weapon>(weapons);
 
         Debug.Log(TAG + "Throwed with the stenght: " + strenght);
     }
