@@ -25,13 +25,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Intensity: 0
-    - _LookAngle: -3.0110037
+    - _LookAngle: 2.1476364
     - _PxIntensity: 50
     - _ShowInColor: 0
     - _ViewWidth: 6
     m_Colors:
-    - _LookPos: {r: -0.32968602, g: 0.29103214, b: 0, a: 0}
+    - _LookPos: {r: -0.273549, g: 1.5888325, b: 0, a: 0}
     - _Offset: {r: 0, g: -0.01, b: 0, a: 0}
     - _OffsetRot: {r: 0, g: -0.05, b: 0, a: 0}
-    - _PlayerPos: {r: 0.5, g: 0.39999998, b: 0, a: 0}
+    - _PlayerPos: {r: 0.5, g: 0.3999672, b: 0, a: 0}
     - _Resolution: {r: 1051, g: 591, b: 0, a: 0}
