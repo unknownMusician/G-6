@@ -6,29 +6,45 @@ public class CardGunGen : Card {
 
     const string TAG = "CardGunGen: ";
 
-    #region Parameters
+    #region Properties
 
-    public NestedProps Props { get { return new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier); } }
+    public NestedProps Props => new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier);
     public override CardType Type => CardType.CardGunGen;
+    public override Dictionary<Sprite, string> Modules {
+        get {
+            var dict = new Dictionary<Sprite, string>();
+            // To-Do: localization
+            if (Props.FireRateMultiplier != 1f)
+                dict.Add(moduleSprites[0], "+" + ((Props.FireRateMultiplier - 1f) * 100) + "% к скорострельности.");
+            if (Props.BulletsPerShotAdder != 0)
+                dict.Add(moduleSprites[1], "+" + Props.BulletsPerShotAdder + " пуль к выстрелу.");
+            if (Props.ShotRangeMultiplier != 1f)
+                dict.Add(moduleSprites[2], "+" + ((Props.ShotRangeMultiplier - 1f) * 100) + "% к дальности выстрела.");
+            return dict;
+        }
+    }
 
     #endregion
 
     #region Public Variables
-    [SerializeField]
-    protected GameObject prefab;
-
 
     [SerializeField]
-    protected float fireRateMultiplier = 1;
+    protected float fireRateMultiplier = 1f;
     [SerializeField]
     protected int bulletsPerShotAdder = 0;
     [SerializeField]
-    protected float shotRangeMultiplier = 1;
+    protected float shotRangeMultiplier = 1f;
+
+    //////
+
+    [Space]
+    [SerializeField]
+    protected List<Sprite> moduleSprites;
 
     #endregion
 
     #region Service Methods
- 
+
     public override string ToString() {
         return "CardGunGen (" + fireRateMultiplier + "; " + bulletsPerShotAdder + "; " + shotRangeMultiplier + ")";
     }

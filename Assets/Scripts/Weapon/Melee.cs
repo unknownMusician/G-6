@@ -19,6 +19,14 @@ public class Melee : Weapon {
                 cards.Add(CardEff.Prefab);
             return cards;
         }
+        protected set {
+            while (transform.childCount > 0)
+                Destroy(transform.GetChild(0).gameObject);
+            foreach (var cardPref in value) {
+                Instantiate(cardPref, transform.position, transform.rotation, this.transform);
+            }
+            InstallCardsFromChildren();
+        }
     }
 
     //////////
@@ -94,8 +102,7 @@ public class Melee : Weapon {
     #region Overrided Methods
 
     private void Start() {
-        GetCardsFromChildren();
-        InstallModCards();
+        InstallCardsFromChildren();
     }
     public override void Attack() {
         if (state == State.Alt) {
@@ -105,12 +112,7 @@ public class Melee : Weapon {
         }
         OnAttackAction?.Invoke();
     }
-    protected override void InstallModCards() {
-        InstallCard(CardShape);
-        InstallCard(CardMemory);
-        InstallCard(CardEff);
-    }
-    protected override void GetCardsFromChildren() {
+    protected override void InstallCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
             InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<Card>());
         }
@@ -156,7 +158,8 @@ public class Melee : Weapon {
         //To-Do
     }
     private bool RemoveCard(Card card) {
-        //To-Do
+        if (card != null)
+            Destroy(card.gameObject);
         return true;
     }
 

@@ -82,9 +82,8 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         GetWeaponsFromChildren();
-        MainData.InventoryWeapons = new List<Weapon>(weapons);
-        MainData.ActiveWeaponIndex = ActiveSlot;
-        MainData.ActionWeapons += () => ActiveSlot = MainData.ActiveWeaponIndex;
+        SendInventoryWeaponsToMainData();
+        MainData.ActionActiveWeapon += () => ActiveSlot = MainData.ActiveWeaponIndex;
 
 
         var list = new List<Card>() {

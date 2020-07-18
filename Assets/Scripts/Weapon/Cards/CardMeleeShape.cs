@@ -6,17 +6,27 @@ public class CardMeleeShape : Card {
 
     const string TAG = "CardMeleeShape: ";
 
-    #region Parameters
+    #region Properties
 
     public NestedProps Props { get { return new NestedProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
     public override CardType Type => CardType.CardMeleeShape;
+    public override Dictionary<Sprite, string> Modules {
+        get {
+            var dict = new Dictionary<Sprite, string>();
+            // To-Do: localization
+            if (Props.AttackSpeedMultiplier != 1f)
+                dict.Add(moduleSprites[0], "+" + ((Props.AttackSpeedMultiplier - 1f) * 100) + "% к скорости удара.");
+            if (Props.AttackRangeMultiplier != 0)
+                dict.Add(moduleSprites[1], "+" + ((Props.AttackRangeMultiplier - 1f) * 100) + "% к дальности удара.");
+            if (Props.AttackDamageMultiplier != 1f)
+                dict.Add(moduleSprites[2], "+" + ((Props.AttackDamageMultiplier - 1f) * 100) + "% к урону от удара.");
+            return dict;
+        }
+    }
 
     #endregion
 
     #region Public Variables
-    [SerializeField]
-    protected GameObject prefab;
-
 
     [SerializeField]
     protected float attackSpeedMultiplier = 1f;
@@ -24,6 +34,12 @@ public class CardMeleeShape : Card {
     protected float attackRangeMultiplier = 1f;
     [SerializeField]
     protected float attackDamageMultiplier = 1f;
+
+    //////
+
+    [Space]
+    [SerializeField]
+    protected List<Sprite> moduleSprites;
 
     #endregion
 
