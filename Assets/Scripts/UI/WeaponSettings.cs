@@ -18,15 +18,15 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
-    //public RectTransform
-    public RectTransform Card1ContentForMainWeapon;
-    public RectTransform Card2ContentForMainWeapon;
-    public RectTransform Card3ContentForMainWeapon;
+    public RectTransform CardEffectContentOnWeapon;
+    public Image CardImageActiveOnWeapon;
+    public Text CardNameActiveOnWeapon;
+
 
     public void Awake()
     {
-        MainData.ActionWeapons += SetImageToScrollView;
-        SetImageToScrollView();
+        MainData.ActionWeapons += SetAllWeapons;
+        SetAllWeapons();
         WeaponClick(MainData.ActiveWeapon);
 
         MainData.ActionInventoryCards += SetAllCards;
@@ -35,12 +35,12 @@ public class WeaponSettings : MonoBehaviour
 
     public void OnDisable()
     {
-        MainData.ActionWeapons -= SetImageToScrollView;
+        MainData.ActionWeapons -= SetAllWeapons;
         MainData.ActionInventoryCards -= SetAllCards;
     }
 
-
-    private void SetImageToScrollView()
+    #region Weapons
+    private void SetAllWeapons()
     {
         Debug.Log("pidor");
         foreach (RectTransform child in WeaponContent)
@@ -69,6 +69,10 @@ public class WeaponSettings : MonoBehaviour
         MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
     }
 
+    #endregion
+
+    #region Cards
+
     private void SetAllCards()
     {
         foreach (RectTransform child in CardContent)
@@ -83,10 +87,13 @@ public class WeaponSettings : MonoBehaviour
                 GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
                 instanse.transform.SetParent(CardContent, false);
 
-                instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card, instanse); });
+                instanse.GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    CardClick(card, instanse);
+                });
 
                 instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.GetComponent<Card>().encyclopediaName;
-                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.GetComponent<SpriteRenderer>().sprite;
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.SpriteUI;
             }
         }
     }
@@ -95,10 +102,43 @@ public class WeaponSettings : MonoBehaviour
     {
         instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
 
+        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().onClick.AddListener(delegate
+        {
+            CardInstallClick(activecard, instanse);
+        });
+
         CardDescription.text =
             activecard.GetComponent<Card>().encyclopediaDescription;
 
     }
+
+    private void CardInstallClick(Card activecard, GameObject instanse)
+    {
+        bool isCompability = false;
+        switch (activecard.Type)
+        {
+            case Card.CardType.CardEffect:
+                CardImageActiveOnWeapon.sprite = activecard.SpriteUI;
+                break;
+            case Card.CardType.CardGunGen:
+                break;
+            case Card.CardType.CardGunFly:
+                break;
+            case Card.CardType.CardMeleeShape:
+                break;
+            case Card.CardType.CardMeleeMemory:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        if (isCompability)
+        {
+
+        }
+    }
+
+    #endregion
 
     public void Exit()
     {
