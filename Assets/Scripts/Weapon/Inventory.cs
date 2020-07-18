@@ -34,6 +34,18 @@ public class Inventory : MonoBehaviour {
         }
     }
 
+    public List<Weapon> AllWeapons {
+        get {
+            var list = new List<Weapon>();
+            foreach (var weapon in weapons) {
+                if (weapon != null) {
+                    list.Add(weapon);
+                }
+            }
+            return list;
+        }
+    }
+
     public int ActiveSlot {
         get => activeWeapon;
         set {
