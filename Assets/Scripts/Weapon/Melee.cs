@@ -8,28 +8,11 @@ public class Melee : Weapon {
 
     #region Properties
 
-    public override List<GameObject> CardPrefabs {
-        get {
-            List<GameObject> cards = new List<GameObject>();
-            if (CardShape)
-                cards.Add(CardShape.Prefab);
-            if (CardMemory)
-                cards.Add(CardMemory.Prefab);
-            if (CardEff)
-                cards.Add(CardEff.Prefab);
-            return cards;
-        }
-        protected set {
-            while (transform.childCount > 0)
-                Destroy(transform.GetChild(0).gameObject);
-            foreach (var cardPref in value) {
-                Instantiate(cardPref, transform.position, transform.rotation, this.transform);
-            }
-            InstallCardsFromChildren();
-        }
-    }
+    public CardMeleeShape CardShape { get => cardShape; private set => cardShape = value; }
+    public CardMeleeMemory CardMemory { get => cardMemory; private set => cardMemory = value; }
+    public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
-    //////////
+    ////////////
 
     protected override bool CanAttack {
         get => canAttack;
@@ -61,13 +44,13 @@ public class Melee : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    protected CardMeleeShape CardShape;
+    private CardMeleeShape cardShape;
     [Space]
     [SerializeField]
-    protected CardMeleeMemory CardMemory;
+    private CardMeleeMemory cardMemory;
     [Space]
     [SerializeField]
-    protected CardEffect CardEff;
+    private CardEffect cardEff;
 
     #endregion
 
@@ -119,6 +102,22 @@ public class Melee : Weapon {
     }
 
     public override bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
+    public override bool UninstallUnknownCard(Card card) {
+        if (card != null) {
+            var answer = transform.parent.GetComponent<Inventory>().Cards.Remove(card);
+            transform.parent.GetComponent<Inventory>().Cards = transform.parent.GetComponent<Inventory>().Cards;
+            if (card is CardMeleeShape)
+                this.CardShape = null;
+            else if (card is CardMeleeMemory)
+                this.CardMemory = null;
+            else if (card is CardEffect)
+                this.CardEff = null;
+            else
+                Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
+            return answer;
+        }
+        return false;
+    }
 
     #endregion
 
@@ -126,7 +125,7 @@ public class Melee : Weapon {
 
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
-            RemoveCard(this.CardShape);
+            UninstallUnknownCard(this.CardShape);
             PrepareCardforInstall(cardShape);
             this.CardShape = cardShape;
             OnInstallCardAction?.Invoke();
@@ -136,7 +135,7 @@ public class Melee : Weapon {
     }
     public bool InstallCard(CardMeleeMemory cardMemory) {
         if (cardMemory != null) {
-            RemoveCard(this.CardMemory);
+            UninstallUnknownCard(this.CardMemory);
             PrepareCardforInstall(cardMemory);
             this.CardMemory = cardMemory;
             OnInstallCardAction?.Invoke();
@@ -146,7 +145,7 @@ public class Melee : Weapon {
     }
     public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
-            RemoveCard(this.CardEff);
+            UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
             OnInstallCardAction?.Invoke();
@@ -156,11 +155,6 @@ public class Melee : Weapon {
     }
     private void PrepareCardforInstall(Card cardGen) {
         //To-Do
-    }
-    private bool RemoveCard(Card card) {
-        if (card != null)
-            Destroy(card.gameObject);
-        return true;
     }
 
     #endregion
