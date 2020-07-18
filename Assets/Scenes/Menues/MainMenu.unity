@@ -1220,23 +1220,21 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175100022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e90c52d2c8aec04294c602031d4adf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponButtonPrefab: {fileID: 363089276696256104, guid: 8b3807056b02abb459e24702565ae81a,
-    type: 3}
-  WeaponContent: {fileID: 312669296}
-  WeaponMainImage: {fileID: 1131747870}
-  WeaponName: {fileID: 131849773}
-  WeaponDescription: {fileID: 1216085353}
-  CardPrefab: {fileID: 7566928616574131498, guid: b6f5155fe24210b49a2e7bdbcb24b044,
-    type: 3}
-  CardContent: {fileID: 1375949908}
-  CardDescription: {fileID: 1959958283}
---- !u!114 &175100024
+  m_GameObject: {fileID: 171566813}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 668541741}
+  m_Father: {fileID: 666198699}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 65, y: -0.0000037551}
+  m_SizeDelta: {x: 20, y: 267.65}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &171566815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
