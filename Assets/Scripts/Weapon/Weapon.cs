@@ -16,7 +16,7 @@ public abstract class Weapon : EncyclopediaObject {
 
     public GameObject Prefab => weaponPrefab;
 
-    public abstract List<GameObject> CardPrefabs { get; protected set; }
+    public abstract List<GameObject> CardPrefabs { get; }
     protected abstract bool CanAttack { get; set; }
     protected virtual Weapon.State WeaponState {
         get => state;
@@ -73,7 +73,8 @@ public abstract class Weapon : EncyclopediaObject {
     #region Abstract Methods
 
     public abstract void Attack();
-    protected abstract void InstallCardsFromChildren();
+    protected abstract void InstallModCards();
+    protected abstract void GetCardsFromChildren();
 
     #endregion
 
