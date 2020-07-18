@@ -148,7 +148,8 @@ public class WeaponSettings : MonoBehaviour
         bool isUnInstalling = MainData.ActiveWeapon.UnInstallUnknownCard(card);
         if (isUnInstalling)
         {
-
+            UnInitializeUiCardOnWeapon();
+            MainData.InventoryCards.Add();
         }
     }
 
