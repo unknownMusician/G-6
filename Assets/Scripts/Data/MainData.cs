@@ -20,7 +20,7 @@ public class MainData
 
     //
 
-    public static Action ActionPlayerPosition;
+    public static Action ActionPlayerPositionChange;
     public static Vector3 PlayerPosition { get => Player.transform.position; }
 
     private static int coins = 5;
@@ -34,18 +34,18 @@ public class MainData
         }
     }
 
-    private static int xp;
-    private static int maxXp;
+    private static float xp;
+    private static float maxXp;
     // To-Do: add xp to PlayerBehaviour;
     public static Action ActionXPChange;
-    public static int XP {
+    public static float PlayerXP {
         get => xp;
         set {
             xp = value;
             ActionXPChange?.Invoke();
         }
     }
-    public static int MaxXP {
+    public static float PlayerMaxXP {
         get => maxXp;
         set {
             maxXp = value;
@@ -53,12 +53,15 @@ public class MainData
         }
     }
 
-    public float PlayerHP => PlayerBehaviour.HP;
-    public float PlayerMaxHP => PlayerBehaviour.MaxHP;
-    public float PlayerSP => PlayerBehaviour.SP;
-    public float PlayerMaxSP => PlayerBehaviour.MaxSP;
-    public float PlayerOP => PlayerBehaviour.OP;
-    public float PlayerMaxOP => PlayerBehaviour.MaxOP;
+    public static float PlayerHP => PlayerBehaviour.HP;
+    public static float PlayerMaxHP => PlayerBehaviour.MaxHP;
+    public static Action ActionHPChange;
+    public static float PlayerSP => PlayerBehaviour.SP;
+    public static float PlayerMaxSP => PlayerBehaviour.MaxSP;
+    public static Action ActionSPChange;
+    public static float PlayerOP => PlayerBehaviour.OP;
+    public static float PlayerMaxOP => PlayerBehaviour.MaxOP;
+    public static Action ActionOPChange;
 
     #endregion
 

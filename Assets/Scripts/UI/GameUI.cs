@@ -61,37 +61,38 @@ public class GameUI : MonoBehaviour
     public void Start()
     {
         //health
-        MainData.ActionHP += SetHelth;
+        MainData.ActionHPChange += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
         SetHelth();
         //endurance
-        MainData.ActionHP += SetEndurance;
+        MainData.ActionHPChange += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
         SetEndurance();
         //money
-        MainData.ActionMoney += SetMoney;
+        MainData.ActionPlayerCoinsChange += SetMoney;
         SetMoney();
         //Patrons
-        MainData.ActionWeapons += SetPatrons;
+        MainData.ActionGunBulletsChange += SetPatrons;
         SetPatrons();
         //Imageweapon
-        MainData.ActionWeapons += SetImageWeapon;
+        MainData.ActionInventoryActiveSlotChange += SetImageWeapon;
+        MainData.ActionInventoryWeaponsChange += SetImageWeapon;
         SetImageWeapon();
     }
 
     public void SetHelth()
     {
-        health.maxValue = MainData.OverallHP;
-        health.value = MainData.CurrentHP;
+        health.maxValue = MainData.PlayerMaxHP;
+        health.value = MainData.PlayerHP;
     }
     public void SetEndurance()
     {
-        endurance.maxValue = MainData.OverallHP;
-        endurance.value = MainData.CurrentHP;
+        endurance.maxValue = MainData.PlayerMaxHP;
+        endurance.value = MainData.PlayerHP;
     }
     public void SetMoney()
     {
-        money.text = "Money:" + MainData.CurrentMoney.ToString();
+        money.text = "Money:" + MainData.PlayerCoins.ToString();
 
     }
 
