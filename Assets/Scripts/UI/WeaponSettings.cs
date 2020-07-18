@@ -124,19 +124,15 @@ public class WeaponSettings : MonoBehaviour
         if (MainData.ActiveWeapon.InstallUnknownCard(activecard))
         {
             CardViewOnUI(activecard);
-            MainData.Inventory.Cards.Remove(activecard);
-            MainData.ActionInventoryCardsChange();
         }
     }
 
     //TODO
     private void UnInstallCardClick(Card card)
     {
-        bool isUnInstalling = MainData.ActiveWeapon.UninstallUnknownCard(card);
-        if (isUnInstalling)
+        if (MainData.ActiveWeapon.UninstallUnknownCard(card))
         {
-            MainData.Inventory.Cards.Add(card);
-            MainData.ActionInventoryCardsChange();
+
         }
     }
 
