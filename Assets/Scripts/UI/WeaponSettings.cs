@@ -100,7 +100,7 @@ public class WeaponSettings : MonoBehaviour
                 });
 
                 instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.encyclopediaName;
-                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.SpriteUI;
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.gameObject.GetComponent<SpriteRenderer>().sprite;
             }
         }
     }

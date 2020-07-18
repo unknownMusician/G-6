@@ -9,7 +9,26 @@ public class MainData
 {
     #region Main GameObjects
 
-    public static GameObject Player { get; set; }
+    private static GameObject player;
+
+    public static GameObject Player
+    {
+        get
+        {
+            return player;
+        }
+        set
+        {
+            player = value;
+            ActionPlayerCoinsChange?.Invoke();
+            ActionPlayerPositionChange?.Invoke();
+            ActionHPChange?.Invoke();
+            ActionXPChange?.Invoke();
+            ActionSPChange?.Invoke();
+            ActionOPChange?.Invoke();
+        }
+    }
+
     public static GameObject RoomSpawner { get; set; }
 
     #endregion

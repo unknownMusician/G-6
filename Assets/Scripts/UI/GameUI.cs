@@ -63,21 +63,16 @@ public class GameUI : MonoBehaviour
         //health
         MainData.ActionHPChange += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
-        SetHelth();
         //endurance
         MainData.ActionHPChange += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
-        SetEndurance();
         //money
         MainData.ActionPlayerCoinsChange += SetMoney;
-        SetMoney();
         //Patrons
         MainData.ActionGunBulletsChange += SetPatrons;
-        SetPatrons();
         //Imageweapon
         MainData.ActionInventoryActiveSlotChange += SetImageWeapon;
         MainData.ActionInventoryWeaponsChange += SetImageWeapon;
-        SetImageWeapon();
     }
 
     public void SetHelth()
