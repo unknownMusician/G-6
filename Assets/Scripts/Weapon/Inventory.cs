@@ -14,11 +14,22 @@ public class Inventory : MonoBehaviour {
         set {
             // To-Do: check if they are same;
             cards = value;
-            foreach (var card in cards) {
-                card.gameObject.transform.SetParent(inventiryCardsFolder);
-            }
+            foreach (var card in cards)
+                card.gameObject.transform.SetParent(inventoryCardsFolder);
             MainData.ActionInventoryCardsChange?.Invoke();
         }
+    }
+
+    private void GetCardsFromChildren() {
+        for (int i = 0; i < inventoryCardsFolder.childCount; i++) {
+            Card card = inventoryCardsFolder.GetChild(i).gameObject.GetComponent<Card>();
+            if (card != null) {
+                Cards.Add(card);
+                card.transform.position = this.transform.position;
+                card.gameObject.SetActive(false);
+            }
+        }
+        Cards = Cards;
     }
 
     #endregion
@@ -76,7 +87,7 @@ public class Inventory : MonoBehaviour {
     [SerializeField]
     private List<Weapon> weapons = null;
     [SerializeField]
-    private Transform inventiryCardsFolder = null;
+    private Transform inventoryCardsFolder = null;
     [SerializeField]
     protected float throwStrenght;
     [SerializeField]
@@ -95,6 +106,7 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         GetWeaponsFromChildren();
+        GetCardsFromChildren();
     }
 
     #endregion
