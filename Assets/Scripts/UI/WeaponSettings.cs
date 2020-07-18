@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
@@ -18,11 +20,13 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
+    public RectTransform CardEffectPrefab;
     public RectTransform CardEffectContentOnWeapon;
     public Image CardImageActiveOnWeapon;
     public Text CardNameActiveOnWeapon;
+    public Button CardButtonUnInstall;
 
-
+    #region Action Subsription Managment
     public void Awake()
     {
         MainData.ActionWeapons += SetAllWeapons;
@@ -38,6 +42,8 @@ public class WeaponSettings : MonoBehaviour
         MainData.ActionWeapons -= SetAllWeapons;
         MainData.ActionInventoryCards -= SetAllCards;
     }
+
+    #endregion
 
     #region Weapons
     private void SetAllWeapons()
@@ -92,7 +98,7 @@ public class WeaponSettings : MonoBehaviour
                     CardClick(card, instanse);
                 });
 
-                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.GetComponent<Card>().encyclopediaName;
+                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.encyclopediaName;
                 instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.SpriteUI;
             }
         }
@@ -104,7 +110,7 @@ public class WeaponSettings : MonoBehaviour
 
         instanse.transform.GetChild(2).gameObject.GetComponent<Button>().onClick.AddListener(delegate
         {
-            CardInstallClick(activecard, instanse);
+            CardInstallClick(activecard);
         });
 
         CardDescription.text =
@@ -112,32 +118,45 @@ public class WeaponSettings : MonoBehaviour
 
     }
 
-    private void CardInstallClick(Card activecard, GameObject instanse)
+    private void CardInstallClick(Card activecard)
     {
-        bool isCompability = false;
-        switch (activecard.Type)
-        {
-            case Card.CardType.CardEffect:
-                CardImageActiveOnWeapon.sprite = activecard.SpriteUI;
-                break;
-            case Card.CardType.CardGunGen:
-                break;
-            case Card.CardType.CardGunFly:
-                break;
-            case Card.CardType.CardMeleeShape:
-                break;
-            case Card.CardType.CardMeleeMemory:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        bool isCompability = MainData.ActiveWeapon.InstallUnknownCard(activecard);
 
         if (isCompability)
         {
+            CardImageActiveOnWeapon.sprite = activecard.SpriteUI;
+            CardNameActiveOnWeapon.text = activecard.encyclopediaName;
+            //TODO
+            //CardUnInstall
+            foreach (KeyValuePair<Sprite, string> module in activecard.Modules)
+            {
+                GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
+                effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
+                effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
+                effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+            }
 
+            MainData.InventoryCards.Remove(activecard);
+            MainData.ActionInventoryCards();
+        }
+
+    }
+
+    //TODO
+    private void UnInstallCardClick(Card card)
+    {
+        bool isUnInstalling = MainData.ActiveWeapon.UnInstallUnknownCard(card);
+        if (isUnInstalling)
+        {
+            UnInitializeUiCardOnWeapon();
+            MainData.InventoryCards.Add();
         }
     }
 
+    private void UnInitializeUiCardOnWeapon()
+    {
+
+    }
     #endregion
 
     public void Exit()
