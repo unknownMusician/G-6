@@ -206,11 +206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608794beb310636408bc77a183596f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testCard: {fileID: 0}
   fistFight: {fileID: 5123512593254433161}
   weapons:
   - {fileID: 0}
   - {fileID: 0}
+  inventoryCardsFolder: {fileID: 3748323133502076558}
   throwStrenght: 25
   secondsToMaxThrow: 1
 --- !u!114 &5123512593254433161
