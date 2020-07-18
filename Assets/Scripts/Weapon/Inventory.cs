@@ -82,7 +82,6 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         GetWeaponsFromChildren();
-        SendInventoryWeaponsToMainData();
         MainData.ActionActiveWeapon += () => ActiveSlot = MainData.ActiveWeaponIndex;
 
 

@@ -28,6 +28,17 @@ public class MainData
     private static List<Weapon> inventoryWeapons;
     public static Action ActionActiveWeapon;
     private static int activeWeaponIndex = 0;
+    //
+    private static GameObject player;
+
+    public static GameObject Player { get => player; set => player = value; }
+    public static PlayerBehaviour PlayerBehaviour => Player?.GetComponent<PlayerBehaviour>();
+    public static Inventory Inventory => Player?.transform.GetChild(0)?.gameObject.GetComponent<Inventory>();
+    public static Weapon ActiveWeapon => Inventory?.Weapon;
+    //
+    public static Action ActionPlayerPosition;
+    public Vector3 PlayerPosition { get => Player.transform.position; }
+    //
 
     public static List<Weapon> InventoryWeapons
     {
@@ -37,11 +48,6 @@ public class MainData
             inventoryWeapons = value;
             ActionWeapons?.Invoke();
         }
-    }
-
-    public static Weapon ActiveWeapon
-    {
-        get => inventoryWeapons?[activeWeaponIndex];
     }
 
     public static int ActiveWeaponIndex
@@ -90,33 +96,33 @@ public class MainData
     }
     #endregion
 
-    #region Endurance
-    public static Action ActionEndurance;
-    private static int overallEndurance = 100;
-    private static int currentEndurance = 100;
+    #region Stamina
+    public static Action ActionSP;
+    private static int overallSP = 100;
+    private static int currentSP = 100;
 
-    public static int OverallEndurance
+    public static int OverallSP
     {
         get
         {
-            return overallEndurance;
+            return overallSP;
         }
         set
         {
-            overallEndurance = value;
-            ActionEndurance?.Invoke();
+            overallSP = value;
+            ActionSP?.Invoke();
         }
     }
-    public static int CurrentEndurance
+    public static int CurrentSP
     {
         get
         {
-            return currentEndurance;
+            return currentSP;
         }
         set
         {
-            currentEndurance = value;
-            ActionEndurance?.Invoke();
+            currentSP = value;
+            ActionSP?.Invoke();
         }
     }
     #endregion
@@ -192,7 +198,6 @@ public class MainData
 
     //TODO start data
     #region Position
-    public static Action ActionPosition;
     private static Vector3 currentPosition;
 
     public static Vector3 CurrentPosition
@@ -204,7 +209,7 @@ public class MainData
         set
         {
             currentPosition = value;
-            ActionPosition?.Invoke();
+            ActionPlayerPosition?.Invoke();
         }
     }
     #endregion
