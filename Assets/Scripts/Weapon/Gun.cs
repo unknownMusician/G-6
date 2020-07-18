@@ -46,14 +46,6 @@ public class Gun : Weapon {
                 cards.Add(CardEff.Prefab);
             return cards;
         }
-        protected set {
-            while (transform.childCount > 0)
-                Destroy(transform.GetChild(0).gameObject);
-            foreach (var cardPref in value) {
-                Instantiate(cardPref, transform.position, transform.rotation, this.transform);
-            }
-            InstallCardsFromChildren();
-        }
     }
 
     //////////
@@ -103,13 +95,13 @@ public class Gun : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    public CardGunGen CardGen;
+    protected CardGunGen CardGen;
     [Space]
     [SerializeField]
-    public CardGunFly CardFly;
+    protected CardGunFly CardFly;
     [Space]
     [SerializeField]
-    public CardEffect CardEff;
+    protected CardEffect CardEff;
 
     #endregion
 
@@ -152,15 +144,8 @@ public class Gun : Weapon {
     #region Overrided Methods
 
     private void Start() {
-        // To-Do
-        GameObject obj = Instantiate(Prefab);
-        Debug.Log(TAG + "Created");
-        Destroy(obj);
-        Debug.Log(TAG + "Destroyed");
-        Instantiate(obj);
-        Debug.Log(TAG + "Copied");
-
-        InstallCardsFromChildren();
+        GetCardsFromChildren();
+        InstallModCards();
     }
     public override void Attack() {
         if (state == State.Alt) {
@@ -170,7 +155,12 @@ public class Gun : Weapon {
         }
         OnAttackAction?.Invoke();
     }
-    protected override void InstallCardsFromChildren() {
+    protected override void InstallModCards() {
+        InstallCard(CardGen); // there will already be null-check
+        InstallCard(CardFly); // there will already be null-check
+        InstallCard(CardEff); // there will already be null-check
+    }
+    protected override void GetCardsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
             InstallUnknownCard(this.transform.GetChild(i).gameObject.GetComponent<Card>()); // there will already be null-check
         }
@@ -216,29 +206,8 @@ public class Gun : Weapon {
         // To-Do
     }
     private bool RemoveCard(Card card) {
-        if (card != null)
-            Destroy(card.gameObject);
-        return true;
-    }
-
-    #endregion
-
-    #region WorkingWithBullets methods
-
-    private void SendBullets() {
-        ((Gun)MainData.ActiveWeapon).ActualClipBullets = ActualClipBullets;
-        ((Gun)MainData.ActiveWeapon).ActualPocketBullets = ActualPocketBullets;
-        MainData.ActionWeapons();
-    }
-    public void Reload() {
-        int bulletsNeeded = MaxClipBullets - ActualClipBullets;
-        if (bulletsNeeded <= ActualPocketBullets) {
-            ActualClipBullets += bulletsNeeded;
-            ActualPocketBullets -= bulletsNeeded;
-        } else {
-            ActualClipBullets += ActualPocketBullets;
-            ActualPocketBullets = 0;
-        }
+        // To-Do
+        return false;
     }
 
     #endregion
@@ -258,6 +227,26 @@ public class Gun : Weapon {
             }
             CanAttack = false;
             Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
+        }
+    }
+
+    #endregion
+
+    #region WorkingWithBullets methods
+
+    private void SendBullets() {
+        ((Gun)MainData.ActiveWeapon).ActualClipBullets = ActualClipBullets;
+        ((Gun)MainData.ActiveWeapon).ActualPocketBullets = ActualPocketBullets;
+        MainData.ActionWeapons();
+    }
+    public void Reload() {
+        int bulletsNeeded = MaxClipBullets - ActualClipBullets;
+        if (bulletsNeeded <= ActualPocketBullets) {
+            ActualClipBullets += bulletsNeeded;
+            ActualPocketBullets -= bulletsNeeded;
+        } else {
+            ActualClipBullets += ActualPocketBullets;
+            ActualPocketBullets = 0;
         }
     }
 
