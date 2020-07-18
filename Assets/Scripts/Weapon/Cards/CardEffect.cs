@@ -6,17 +6,23 @@ public class CardEffect : Card {
 
     const string TAG = "CardGunEffect: ";
 
-    #region Parameters
+    #region Properties
 
     public NestedProps Props => new NestedProps(effect, duration, interval, damage);
     public override CardType Type => CardType.CardEffect;
+    public override Dictionary<Sprite, string> Modules {
+        get {
+            var dict = new Dictionary<Sprite, string>();
+            // To-Do: localization
+            if (Props.Effect != EffectType.Standard)
+                dict.Add(moduleSprites[(int)Props.Effect], "Заклинает врага на " + Props.Effect + " на " + Props.Duration + "сек, нанося " + Props.DMG + "урона каждые " + Props.Interval + "сек" + ".");
+            return dict;
+        }
+    }
 
     #endregion
 
     #region Public Variables
-
-    [SerializeField]
-    protected GameObject prefab;
 
     [SerializeField]
     private EffectType effect = EffectType.Standard;
@@ -26,6 +32,12 @@ public class CardEffect : Card {
     private float interval = 1f;
     [SerializeField]
     private float damage = 5f;
+
+    //////
+
+    [Space]
+    [SerializeField]
+    protected List<Sprite> moduleSprites;
 
     #endregion
 
@@ -74,12 +86,12 @@ public class CardEffect : Card {
     }
 
     public enum EffectType {
-        Standard,
-        Frost,
-        Fire,
-        Poison,
-        Stunn,
-        Vampire
+        Standard = -1,
+        Frost = 0,
+        Fire = 1,
+        Poison = 2,
+        Stunn = 3,
+        Vampire = 4
     }
 
     #endregion

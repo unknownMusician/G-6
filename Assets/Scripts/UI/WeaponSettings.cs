@@ -18,10 +18,6 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
-    //public RectTransform
-    public RectTransform Card1ContentForMainWeapon;
-    public RectTransform Card2ContentForMainWeapon;
-    public RectTransform Card3ContentForMainWeapon;
 
     public void Awake()
     {
