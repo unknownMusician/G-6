@@ -8,6 +8,7 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[,] miniMapMatrix;
 
     [Range(0, 100)]
+    private (int, int) finishRoomCoord;
     public int amountOfRooms;
     public int rows;
     public int columns;
@@ -236,6 +237,9 @@ public class RoomSpawner : MonoBehaviour {
                                             roomDirectionsDataMatrix[i - 1, j].setRight(-1);
                                             roomDirectionsDataMatrix[i - 1, j].setBottom(1);
                                             roomDirectionsDataMatrix[i - 1, j].setLeft(-1);
+                                            if (amountOfRooms == 0) {
+                                                finishRoomCoord = (i - 1, j);
+                                            }
                                             amountOfRooms -= 1;
                                         }
                                     }
@@ -249,6 +253,9 @@ public class RoomSpawner : MonoBehaviour {
                                             roomDirectionsDataMatrix[i, j + 1].setRight(-1);
                                             roomDirectionsDataMatrix[i, j + 1].setBottom(-1);
                                             roomDirectionsDataMatrix[i, j + 1].setLeft(1);
+                                            if (amountOfRooms == 0) {
+                                                finishRoomCoord = (i, j + 1);
+                                            }
                                             amountOfRooms -= 1;
                                         }
                                     }
@@ -262,8 +269,10 @@ public class RoomSpawner : MonoBehaviour {
                                             roomDirectionsDataMatrix[i + 1, j].setRight(-1);
                                             roomDirectionsDataMatrix[i + 1, j].setBottom(-1);
                                             roomDirectionsDataMatrix[i + 1, j].setLeft(-1);
+                                            if (amountOfRooms == 0) {
+                                                finishRoomCoord = (i + 1, j);
+                                            }
                                             amountOfRooms -= 1;
-
                                         }
                                     }
                                 }
@@ -276,11 +285,13 @@ public class RoomSpawner : MonoBehaviour {
                                             roomDirectionsDataMatrix[i, j - 1].setRight(1);
                                             roomDirectionsDataMatrix[i, j - 1].setBottom(-1);
                                             roomDirectionsDataMatrix[i, j - 1].setLeft(-1);
+                                            if (amountOfRooms == 0) {
+                                                finishRoomCoord = (i, j - 1);
+                                            }
                                             amountOfRooms -= 1;
-
                                         }
                                     }
-                                }
+                                } 
                             }
                         }
                     }
@@ -418,6 +429,7 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
+        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().setRoomType(Room.RoomType.finish);
     }
 
     public GameObject[,] GetRoomsMatrix() {
