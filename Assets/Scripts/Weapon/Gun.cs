@@ -12,7 +12,6 @@ public class Gun : Weapon {
         private set {
             if (clipMaxBullets != value) {
                 clipMaxBullets = value;
-                SendBullets();
             }
         }
     }
@@ -21,7 +20,7 @@ public class Gun : Weapon {
         private set {
             if (pocketActualBullets != value) {
                 pocketActualBullets = value;
-                SendBullets();
+                MainData.ActionGunBulletsChange?.Invoke();
             }
         }
     }
@@ -30,31 +29,16 @@ public class Gun : Weapon {
         private set {
             if (clipActualBullets != value) {
                 clipActualBullets = value;
-                SendBullets();
+                MainData.ActionGunBulletsChange?.Invoke();
             }
         }
     }
 
-    public override List<GameObject> CardPrefabs {
-        get {
-            List<GameObject> cards = new List<GameObject>();
-            if (CardGen)
-                cards.Add(CardGen.Prefab);
-            if (CardFly)
-                cards.Add(CardFly.Prefab);
-            if (CardEff)
-                cards.Add(CardEff.Prefab);
-            return cards;
-        }
-        protected set {
-            while (transform.childCount > 0)
-                Destroy(transform.GetChild(0).gameObject);
-            foreach (var cardPref in value) {
-                Instantiate(cardPref, transform.position, transform.rotation, this.transform);
-            }
-            InstallCardsFromChildren();
-        }
-    }
+    //////////
+
+    public CardGunGen CardGen { get => cardGen; private set => cardGen = value; }
+    public CardGunFly CardFly { get => cardFly; private set => cardFly = value; }
+    public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
     //////////
 
@@ -103,13 +87,13 @@ public class Gun : Weapon {
     [Space]
     [Space]
     [SerializeField]
-    public CardGunGen CardGen;
+    private CardGunGen cardGen;
     [Space]
     [SerializeField]
-    public CardGunFly CardFly;
+    private CardGunFly cardFly;
     [Space]
     [SerializeField]
-    public CardEffect CardEff;
+    private CardEffect cardEff;
 
     #endregion
 
@@ -176,15 +160,31 @@ public class Gun : Weapon {
         }
     }
 
+    public override bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
+    public override bool UninstallUnknownCard(Card card) {
+        if (card != null) {
+            var answer = transform.parent.GetComponent<Inventory>().Cards.Remove(card);
+            transform.parent.GetComponent<Inventory>().Cards = transform.parent.GetComponent<Inventory>().Cards;
+            if (card is CardGunGen)
+                this.CardGen = null;
+            else if (card is CardGunFly)
+                this.CardFly = null;
+            else if (card is CardEffect)
+                this.CardEff = null;
+            else
+                Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
+            return answer;
+        }
+        return false;
+    }
+
     #endregion
 
     #region WorkingWithCards Methods
 
-    public bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
-
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
-            RemoveCard(this.CardGen);
+            UninstallUnknownCard(this.CardGen);
             PrepareCardforInstall(cardGen);
             this.CardGen = cardGen;
             OnInstallCardAction?.Invoke();
@@ -194,7 +194,7 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardGunFly cardFly) {
         if (cardFly != null) {
-            RemoveCard(this.CardFly);
+            UninstallUnknownCard(this.CardFly);
             PrepareCardforInstall(cardFly);
             this.CardFly = cardFly;
             OnInstallCardAction?.Invoke();
@@ -204,7 +204,7 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
-            RemoveCard(this.CardEff);
+            UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
             OnInstallCardAction?.Invoke();
@@ -215,21 +215,11 @@ public class Gun : Weapon {
     private void PrepareCardforInstall(Card cardGen) {
         // To-Do
     }
-    private bool RemoveCard(Card card) {
-        if (card != null)
-            Destroy(card.gameObject);
-        return true;
-    }
 
     #endregion
 
     #region WorkingWithBullets methods
 
-    private void SendBullets() {
-        ((Gun)MainData.ActiveWeapon).ActualClipBullets = ActualClipBullets;
-        ((Gun)MainData.ActiveWeapon).ActualPocketBullets = ActualPocketBullets;
-        MainData.ActionWeapons();
-    }
     public void Reload() {
         int bulletsNeeded = MaxClipBullets - ActualClipBullets;
         if (bulletsNeeded <= ActualPocketBullets) {

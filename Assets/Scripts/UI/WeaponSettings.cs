@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
@@ -18,39 +20,43 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform CardContent;
     public Text CardDescription;
 
-    //public RectTransform
-    public RectTransform Card1ContentForMainWeapon;
-    public RectTransform Card2ContentForMainWeapon;
-    public RectTransform Card3ContentForMainWeapon;
+    public RectTransform CardEffectPrefab;
+    public RectTransform CardEffectContentOnWeapon;
+    public Image CardImageActiveOnWeapon;
+    public Text CardNameActiveOnWeapon;
+    public Button CardButtonUnInstall;
 
+    #region Action Subsription Managment
     public void Awake()
     {
-        MainData.ActionWeapons += SetImageToScrollView;
-        SetImageToScrollView();
+        MainData.ActionInventoryWeaponsChange += SetAllWeapons;
+        SetAllWeapons();
         WeaponClick(MainData.ActiveWeapon);
 
-        MainData.ActionInventoryCards += SetAllCards;
+        MainData.ActionInventoryCardsChange += SetAllCards;
         SetAllCards();
     }
 
     public void OnDisable()
     {
-        MainData.ActionWeapons -= SetImageToScrollView;
-        MainData.ActionInventoryCards -= SetAllCards;
+        MainData.ActionInventoryWeaponsChange -= SetAllWeapons;
+        MainData.ActionInventoryCardsChange -= SetAllCards;
     }
 
+    #endregion
 
-    private void SetImageToScrollView()
+    #region Weapons
+    private void SetAllWeapons()
     {
         Debug.Log("pidor");
         foreach (RectTransform child in WeaponContent)
         {
             Destroy(child.gameObject);
         }
-        if (MainData.InventoryWeapons != null)
+        if (MainData.Inventory.AllWeapons != null)
         {
             //(ScrollView)WeaponsScrollView.Clear();
-            foreach (Weapon weapon in MainData.InventoryWeapons)
+            foreach (Weapon weapon in MainData.Inventory.AllWeapons)
             {
                 GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
                 instance.transform.SetParent(WeaponContent, false);
@@ -66,8 +72,13 @@ public class WeaponSettings : MonoBehaviour
         WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
         WeaponName.text = activewepon.GetComponent<Weapon>().encyclopediaName;
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
-        MainData.ActiveWeaponIndex = MainData.InventoryWeapons.FindIndex(((i) => i == activewepon));
+        MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
+        MainData.ActionInventoryActiveSlotChange();
     }
+
+    #endregion
+
+    #region Cards
 
     private void SetAllCards()
     {
@@ -75,18 +86,21 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.InventoryCards != null)
+        if (MainData.Inventory.Cards != null)
         {
 
-            foreach (Card card in MainData.InventoryCards)
+            foreach (Card card in MainData.Inventory.Cards)
             {
                 GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
                 instanse.transform.SetParent(CardContent, false);
 
-                instanse.GetComponent<Button>().onClick.AddListener(delegate { CardClick(card, instanse); });
+                instanse.GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    CardClick(card, instanse);
+                });
 
-                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.GetComponent<Card>().encyclopediaName;
-                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.GetComponent<SpriteRenderer>().sprite;
+                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.encyclopediaName;
+                instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.gameObject.GetComponent<SpriteRenderer>().sprite;
             }
         }
     }
@@ -95,11 +109,95 @@ public class WeaponSettings : MonoBehaviour
     {
         instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
 
+        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().onClick.AddListener(delegate
+        {
+            CardInstallClick(activecard);
+        });
+
         CardDescription.text =
             activecard.GetComponent<Card>().encyclopediaDescription;
 
     }
 
+    private void CardInstallClick(Card activecard)
+    {
+        if (MainData.ActiveWeapon.InstallUnknownCard(activecard))
+        {
+            CardViewOnUI(activecard);
+            MainData.Inventory.Cards.Remove(activecard);
+            MainData.ActionInventoryCardsChange();
+        }
+    }
+
+    //TODO
+    private void UnInstallCardClick(Card card)
+    {
+        bool isUnInstalling = MainData.ActiveWeapon.UninstallUnknownCard(card);
+        if (isUnInstalling)
+        {
+            MainData.Inventory.Cards.Add(card);
+            MainData.ActionInventoryCardsChange();
+        }
+    }
+
+    #endregion
+
+    #region Button Click View Cards On Weapon
+
+    public void ViewCard1()
+    {
+        if (MainData.ActiveWeapon is Gun)
+        {
+            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
+        }
+        else
+        {
+            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
+        }
+    }
+    public void ViewCard2()
+    {
+        //if (MainData.ActiveWeapon is Gun)
+        //{
+        //    CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
+        //}
+        //else
+        //{
+        //    CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
+        //}
+    }
+    public void ViewCard3()
+    {
+        //if (MainData.ActiveWeapon is Gun)
+        //{
+        //    CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
+        //}
+        //else
+        //{
+        //    CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
+        //}
+    }
+
+    #endregion
+
+    #region HelperMethods
+
+    private void CardViewOnUI(Card card)
+    {
+        CardImageActiveOnWeapon.sprite = card.SpriteUI;
+        CardNameActiveOnWeapon.text = card.encyclopediaName;
+        //TODO
+        //CardUnInstall
+        foreach (KeyValuePair<Sprite, string> module in card.Modules)
+        {
+            GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
+            effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
+            effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
+            effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+        }
+    }
+
+    #endregion
     public void Exit()
     {
         //PauseMenu.Resume();

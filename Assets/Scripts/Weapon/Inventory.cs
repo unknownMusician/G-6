@@ -7,20 +7,29 @@ public class Inventory : MonoBehaviour {
     const string TAG = "Inventory: ";
 
     #region Card Inventory
-    public Card testCard;
 
     private List<Card> cards = new List<Card>();
     public List<Card> Cards {
-        // To-Do
         get => cards;
         set {
+            // To-Do: check if they are same;
             cards = value;
-
-            var list = new List<Card>(cards) {
-                Weapon.CardPrefabs[0].GetComponent<Card>()
-            };
-            MainData.InventoryCards = list;
+            foreach (var card in cards)
+                card.gameObject.transform.SetParent(inventoryCardsFolder);
+            MainData.ActionInventoryCardsChange?.Invoke();
         }
+    }
+
+    private void GetCardsFromChildren() {
+        for (int i = 0; i < inventoryCardsFolder.childCount; i++) {
+            Card card = inventoryCardsFolder.GetChild(i).gameObject.GetComponent<Card>();
+            if (card != null) {
+                Cards.Add(card);
+                card.transform.position = this.transform.position;
+                card.gameObject.SetActive(false);
+            }
+        }
+        Cards = Cards;
     }
 
     #endregion
@@ -30,8 +39,21 @@ public class Inventory : MonoBehaviour {
     public Weapon Weapon {
         get => weapons[activeWeapon];
         private set {
+            // To-Do: check if they are same;
             weapons[activeWeapon] = value;
-            MainData.InventoryWeapons = new List<Weapon>(weapons);
+            MainData.ActionInventoryWeaponsChange?.Invoke();
+        }
+    }
+
+    public List<Weapon> AllWeapons {
+        get {
+            var list = new List<Weapon>();
+            foreach (var weapon in weapons) {
+                if (weapon != null) {
+                    list.Add(weapon);
+                }
+            }
+            return list;
         }
     }
 
@@ -50,7 +72,7 @@ public class Inventory : MonoBehaviour {
             weapons[fValue]?.gameObject.SetActive(true);
             activeWeapon = fValue;
 
-            MainData.ActiveWeaponIndex = ActiveSlot; // Sending to ActiveSlot to MainData
+            MainData.ActionInventoryActiveSlotChange?.Invoke();
         }
     }
 
@@ -64,6 +86,8 @@ public class Inventory : MonoBehaviour {
     [Space]
     [SerializeField]
     private List<Weapon> weapons = null;
+    [SerializeField]
+    private Transform inventoryCardsFolder = null;
     [SerializeField]
     protected float throwStrenght;
     [SerializeField]
@@ -82,16 +106,7 @@ public class Inventory : MonoBehaviour {
 
     private void Start() {
         GetWeaponsFromChildren();
-        SendInventoryWeaponsToMainData();
-        MainData.ActionActiveWeapon += () => ActiveSlot = MainData.ActiveWeaponIndex;
-
-
-        var list = new List<Card>() {
-                testCard
-            };
-        MainData.InventoryCards = list;
-        // To-Do
-        //MainData.ActionInventoryCards += () => 
+        GetCardsFromChildren();
     }
 
     #endregion
@@ -145,8 +160,6 @@ public class Inventory : MonoBehaviour {
             (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) ? ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow) : 1f);
         Weapon?.Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
         Weapon = null;
-
-        MainData.InventoryWeapons = new List<Weapon>(weapons);
 
         Debug.Log(TAG + "Throwed with the stenght: " + strenght);
     }

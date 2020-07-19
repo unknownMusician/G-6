@@ -16,6 +16,8 @@ public class PlayerBehaviour : CharacterBase
         SP = MaxSP;
         OP = MaxOP;
 
+        MainData.Player = this.gameObject;
+
         base.Start();
 
         //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(

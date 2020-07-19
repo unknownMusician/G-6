@@ -7,205 +7,109 @@ using UnityEngine.UI;
 
 public class MainData
 {
-    #region Invertary Cards
-    public static Action ActionInventoryCards;
-    private static List<Card> inventoryCards;
+    #region Main GameObjects
 
-    public static List<Card> InventoryCards
+    private static GameObject player;
+
+    public static GameObject Player
     {
-        get => inventoryCards;
+        get
+        {
+            return player;
+        }
         set
         {
-            inventoryCards = value;
-            ActionWeapons?.Invoke();
+            player = value;
+            ActionPlayerCoinsChange?.Invoke();
+            ActionPlayerPositionChange?.Invoke();
+            ActionHPChange?.Invoke();
+            ActionXPChange?.Invoke();
+            ActionSPChange?.Invoke();
+            ActionOPChange?.Invoke();
         }
     }
+
+    public static GameObject RoomSpawner { get; set; }
 
     #endregion
 
-    #region Weapons
-    public static Action ActionWeapons;
-    private static List<Weapon> inventoryWeapons;
-    public static Action ActionActiveWeapon;
-    private static int activeWeaponIndex = 0;
+    #region Player
 
-    public static List<Weapon> InventoryWeapons
-    {
-        get => inventoryWeapons;
-        set
-        {
-            inventoryWeapons = value;
-            ActionWeapons?.Invoke();
+    public static PlayerBehaviour PlayerBehaviour => Player?.GetComponent<PlayerBehaviour>();
+
+    //
+
+    public static Action ActionPlayerPositionChange;
+    public static Vector3 PlayerPosition { get => Player.transform.position; }
+
+    private static int coins = 5;
+    // To-Do: add coins to PlayerBehaviour;
+    public static Action ActionPlayerCoinsChange;
+    public static int PlayerCoins {
+        get => coins;
+        set {
+            coins = value;
+            ActionPlayerCoinsChange?.Invoke();
         }
     }
 
-    public static Weapon ActiveWeapon
-    {
-        get => inventoryWeapons?[activeWeaponIndex];
-    }
-
-    public static int ActiveWeaponIndex
-    {
-        get => activeWeaponIndex;
-        set
-        {
-            if (activeWeaponIndex != value)
-            {
-                activeWeaponIndex = value;
-                ActionActiveWeapon?.Invoke();
-            }
+    private static float xp;
+    private static float maxXp;
+    // To-Do: add xp to PlayerBehaviour;
+    public static Action ActionXPChange;
+    public static float PlayerXP {
+        get => xp;
+        set {
+            xp = value;
+            ActionXPChange?.Invoke();
         }
     }
+    public static float PlayerMaxXP {
+        get => maxXp;
+        set {
+            maxXp = value;
+            ActionXPChange?.Invoke();
+        }
+    }
+
+    public static float PlayerHP => PlayerBehaviour.HP;
+    public static float PlayerMaxHP => PlayerBehaviour.MaxHP;
+    public static Action ActionHPChange;
+    public static float PlayerSP => PlayerBehaviour.SP;
+    public static float PlayerMaxSP => PlayerBehaviour.MaxSP;
+    public static Action ActionSPChange;
+    public static float PlayerOP => PlayerBehaviour.OP;
+    public static float PlayerMaxOP => PlayerBehaviour.MaxOP;
+    public static Action ActionOPChange;
 
     #endregion
 
-    #region HP
-    public static Action ActionHP;
-    private static int overallHP = 100;
-    private static int currentHP = 100;
+    #region Inventory & Guns
 
-    public static int OverallHP
-    {
-        get
-        {
-            return overallHP;
-        }
-        set
-        {
-            overallHP = value;
-            ActionHP?.Invoke();
-        }
-    }
-    public static int CurrentHP
-    {
-        get
-        {
-            return currentHP;
-        }
-        set
-        {
-            currentHP = value;
-            ActionHP?.Invoke();
-        }
-    }
-    #endregion
+    // To-Do: add NORMAL inventoryCards to Inventory;
+    public static Inventory Inventory => Player?.transform.GetChild(0)?.gameObject.GetComponent<Inventory>();
+    public static Weapon ActiveWeapon => Inventory?.Weapon;
 
-    #region Endurance
-    public static Action ActionEndurance;
-    private static int overallEndurance = 100;
-    private static int currentEndurance = 100;
+    public static Action ActionInventoryCardsChange;
+    public static Action ActionInventoryWeaponsChange;
+    public static Action ActionInventoryActiveSlotChange;
 
-    public static int OverallEndurance
-    {
-        get
-        {
-            return overallEndurance;
-        }
-        set
-        {
-            overallEndurance = value;
-            ActionEndurance?.Invoke();
-        }
-    }
-    public static int CurrentEndurance
-    {
-        get
-        {
-            return currentEndurance;
-        }
-        set
-        {
-            currentEndurance = value;
-            ActionEndurance?.Invoke();
-        }
-    }
-    #endregion
+    public static Action ActionGunBulletsChange;
 
-    #region XP
-    public static Action ActionXP;
-    private static int overallXP = 100;
-    private static int currentXP = 0;
-
-    public static int OverallXP
-    {
-        get
-        {
-            return overallXP;
-        }
-        set
-        {
-            overallXP = value;
-            ActionXP?.Invoke();
-        }
-    }
-    public static int CurrentXP
-    {
-        get
-        {
-            return currentXP;
-        }
-        set
-        {
-            currentXP = value;
-            ActionXP?.Invoke();
-        }
-    }
     #endregion
 
     #region Level
-    public static Action ActionLevel;
-    private static int currentLevel = 0;
 
-    public static int CurrentLevel
-    {
-        get
-        {
-            return currentLevel;
-        }
-        set
-        {
-            currentLevel = value;
-            ActionLevel?.Invoke();
+    private static int level = 1;
+    // To-Do: add level to MainData;
+    public static Action ActionLevelChange;
+    public static int Level {
+        get => level;
+        set {
+            level = value;
+            ActionLevelChange?.Invoke();
         }
     }
 
-    #endregion
-
-    #region Money
-    public static Action ActionMoney;
-    private static int currentMoney = 0;
-
-    public static int CurrentMoney
-    {
-        get
-        {
-            return currentMoney;
-        }
-        set
-        {
-            currentMoney = value;
-            ActionMoney?.Invoke();
-        }
-    }
-
-    #endregion
-
-    //TODO start data
-    #region Position
-    public static Action ActionPosition;
-    private static Vector3 currentPosition;
-
-    public static Vector3 CurrentPosition
-    {
-        get
-        {
-            return currentPosition;
-        }
-        set
-        {
-            currentPosition = value;
-            ActionPosition?.Invoke();
-        }
-    }
     #endregion
 }
