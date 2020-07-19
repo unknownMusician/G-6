@@ -1657,10 +1657,15 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 29168910}
-    - target: {fileID: 418263513678517902, guid: 0906697cca54b294ba7c76e45ac1d761,
+    - target: {fileID: 418263513612692375, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
-      propertyPath: m_Material
+      propertyPath: m_Texture
       value: 
+      objectReference: {fileID: 8400000, guid: b899af280616b134484716e86430a6f0, type: 2}
+    - target: {fileID: 418263513656780822, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 418263513956802264, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
@@ -1723,6 +1728,31 @@ PrefabInstance:
       value: View
       objectReference: {fileID: 0}
     - target: {fileID: 418263514090563323, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 29168910}
+    - target: {fileID: 418263515124309211, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3186438815087439054, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3186438815087439054, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4243358168545105450, guid: 0906697cca54b294ba7c76e45ac1d761,
+        type: 3}
+      propertyPath: m_Name
+      value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 5628862589975309998, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_Follow
       value: 
