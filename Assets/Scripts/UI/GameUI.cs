@@ -102,7 +102,7 @@ public class GameUI : MonoBehaviour
     public void SetImageWeapon()
     {
         if (MainData.ActiveWeapon != null)
-            weapon.sprite = MainData.ActiveWeapon.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
+            weapon.sprite = MainData.ActiveWeapon.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 
 }

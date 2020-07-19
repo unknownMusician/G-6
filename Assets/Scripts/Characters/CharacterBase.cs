@@ -179,6 +179,7 @@ public abstract class CharacterBase : MonoBehaviour
 
         if (isOnLayer("Ground", Side.Right) || isOnLayer("Ground", Side.Left))
             return State.Climb;
+        Debug.Log(State);
 
         return State.OnAir;
     }
