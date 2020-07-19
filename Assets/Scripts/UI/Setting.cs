@@ -8,11 +8,8 @@ using UnityEngine.UI;
 
 public class Setting : MonoBehaviour
 {
-    private bool isFullScreen = Screen.fullScreen;
-    private Resolution[] rsl;
-    private List<string> resolutions;
+    private bool isFullScreen;
     public AudioMixer audiomixer;
-    public Dropdown resolutiondropdown;
     public static bool prap = false;
     public GameObject mainMenu;
     public GameObject setting;
@@ -26,32 +23,20 @@ public class Setting : MonoBehaviour
 
     public void Awake()
     {
-        resolutions = new List<string>();
-        rsl = Screen.resolutions;
-        foreach (var i in rsl)
-        {
-            resolutions.Add(i.width + "x" + i.height);
-        }
-        resolutiondropdown.ClearOptions();
-        resolutiondropdown.AddOptions(resolutions);
+        isFullScreen = Screen.fullScreen;
     }
 
     public void Exit()
     {
-        setting.active = false;
+        setting.SetActive(false);
         if (prap)
         {
-            mainMenu.active = true;
+            mainMenu.SetActive(true);
             prap = false;
         }
-        Time.timeScale = 1f;
         PauseMenu.GameIsPaused = false;
     }
 
-    public void Resolution(int r)
-    {
-        Screen.SetResolution(rsl[r].width, rsl[r].height, isFullScreen);
-    }
     public void AudioVolume(float sliderValue)
     {
         audiomixer.SetFloat("masterVolume", sliderValue);

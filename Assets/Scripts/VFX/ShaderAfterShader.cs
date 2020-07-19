@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class ShaderAfterShader : MonoBehaviour {
 
-    readonly string TAG = "ShaderAfterShader: ";
+    //readonly string TAG = "ShaderAfterShader: ";
 
     #region Public Variables
 
@@ -50,14 +50,6 @@ public class ShaderAfterShader : MonoBehaviour {
 
         Vector4 resolution = new Vector4(Camera.main.pixelWidth, Camera.main.pixelHeight);
 
-        //Debug.Log(
-        //    "pl3: (" + Mathf.Floor(playerPos.x) + " ; " + Mathf.Floor(playerPos.y) + "); " + 
-        //    "m3 : (" + Mathf.Floor(mousePos.x) + " ; " + Mathf.Floor(mousePos.y) + "); " +
-        //    "pl4: (" + plPos.x + " ; " + plPos.y + "); " +
-        //    "lk4: (" + lkPos.x + " ; " + lkPos.y + "); " +
-        //    "ang: (" + angle + "); "
-        //    );
-
         materials[0].SetVector("_PlayerPos", plPos);
         materials[0].SetVector("_LookPos", lkPos);
         materials[0].SetFloat("_LookAngle", angle);
@@ -80,6 +72,28 @@ public class ShaderAfterShader : MonoBehaviour {
 
         Graphics.Blit(rt, bufferRt, materials[0]);
         Graphics.Blit(bufferRt, finalRt, materials[1]);
+    }
+
+    private void OnDestroy() {
+        materials[0].SetVector("_PlayerPos", Vector2.zero);
+        materials[0].SetVector("_LookPos", Vector2.zero);
+        materials[0].SetFloat("_LookAngle", 0);
+        materials[0].SetVector("_Resolution", Vector2.zero);
+        materials[0].SetFloat("_ViewWidth", 0);
+        materials[0].SetVector("_Offset", Vector2.zero);
+        materials[0].SetVector("_OffsetRot", Vector2.zero);
+        materials[0].SetFloat("_ShowInColor", 0);
+        materials[0].SetFloat("_Intensity", intensity);
+
+        materials[1].SetVector("_PlayerPos", Vector2.zero);
+        materials[1].SetVector("_LookPos", Vector2.zero);
+        materials[1].SetFloat("_LookAngle", 0);
+        materials[1].SetVector("_Resolution", Vector2.zero);
+        materials[1].SetFloat("_ViewWidth", 0);
+        materials[1].SetVector("_Offset", Vector2.zero);
+        materials[1].SetVector("_OffsetRot", Vector2.zero);
+        materials[1].SetFloat("_ShowInColor", 0);
+        materials[1].SetFloat("_Intensity", intensity);
     }
 
     #endregion

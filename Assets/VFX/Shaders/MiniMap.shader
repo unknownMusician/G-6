@@ -55,7 +55,7 @@
 
 				alpha = smoothstep(
 					0,
-					0.5	,
+					_Intensity,
 					min(uv.x, 1. - uv.x) *
 					min(uv.y, 1. - uv.y)
 				);

@@ -6,46 +6,88 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
-    private static List<Card> cards = new List<Card>();
-    public static List<Card> Cards { get; }
-    public static bool AddCard(Card card) {
-        if (cards.Count >= 10)
-            return false;
-        cards.Add(card);
-        return true;
+    #region Card Inventory
+
+    private List<Card> cards = new List<Card>();
+    public List<Card> Cards {
+        get => cards;
+        set {
+            // To-Do: check if they are same;
+            cards = value;
+            foreach (var card in cards)
+                card.gameObject.transform.SetParent(inventoryCardsFolder);
+            MainData.ActionInventoryCardsChange?.Invoke();
+        }
     }
 
-    public static bool RemoveCard(Card card) {
-        return cards.Remove(card);
+    private void GetCardsFromChildren() {
+        for (int i = 0; i < inventoryCardsFolder.childCount; i++) {
+            Card card = inventoryCardsFolder.GetChild(i).gameObject.GetComponent<Card>();
+            if (card != null) {
+                Cards.Add(card);
+                card.transform.position = this.transform.position;
+                card.gameObject.SetActive(false);
+            }
+        }
+        Cards = Cards;
     }
-
-    #region Actions
-
-    // 
 
     #endregion
 
-    #region Constants
+    #region Properties
 
-    public static class Slots {
-        readonly public static int FIRST = 0;
-        readonly public static int SECOND = 1;
-        readonly public static int THIRD = 2;
-        readonly public static int FOURTH = 3;
+    public Weapon Weapon {
+        get => weapons[activeWeapon];
+        private set {
+            // To-Do: check if they are same;
+            weapons[activeWeapon] = value;
+            MainData.ActionInventoryWeaponsChange?.Invoke();
+        }
     }
 
-    #endregion
+    public List<Weapon> AllWeapons {
+        get {
+            var list = new List<Weapon>();
+            foreach (var weapon in weapons) {
+                if (weapon != null) {
+                    list.Add(weapon);
+                }
+            }
+            return list;
+        }
+    }
 
-    #region Parameters
+    public int ActiveSlot {
+        get => activeWeapon;
+        set {
+            int fValue = value;
+            while (fValue < 0)
+                fValue += weapons.Count;
+            fValue %= weapons.Count;
 
-    public Weapon Weapon { get { return weapons[activeWeapon]; } }
+            if (fValue == activeWeapon) {
+                return;
+            }
+            weapons[activeWeapon]?.gameObject.SetActive(false);
+            weapons[fValue]?.gameObject.SetActive(true);
+            activeWeapon = fValue;
+
+            MainData.ActionInventoryActiveSlotChange?.Invoke();
+        }
+    }
 
     #endregion
 
     #region Public Variables
 
     [SerializeField]
+    private FistFight fistFight = null;
+
+    [Space]
+    [SerializeField]
     private List<Weapon> weapons = null;
+    [SerializeField]
+    private Transform inventoryCardsFolder = null;
     [SerializeField]
     protected float throwStrenght;
     [SerializeField]
@@ -55,7 +97,7 @@ public class Inventory : MonoBehaviour {
 
     #region Private Variables
 
-    private int activeWeapon; // index
+    private int activeWeapon = 0; // index
     protected float tmpWhenThrowButtonPressed;
 
     #endregion
@@ -63,124 +105,48 @@ public class Inventory : MonoBehaviour {
     #region Overrided Methods
 
     private void Start() {
-        Prepare();
-    }
-
-    #endregion
-
-    #region Service Methods
-
-    private void SendActiveWeaponToMainData() {
-        MainData.ActiveWeapon = Weapon.WeaponPrefab;
-    }
-
-    private void SendInventoryWeaponsToMainData() {
-        Dictionary<GameObject, List<Card>> allWeapons = new Dictionary<GameObject, List<Card>>();
-        for (int i = 0; i < weapons.Count; i++) {
-            if (weapons[i] != null) {
-                allWeapons.Add(weapons[i].WeaponPrefab, weapons[i].GetAllCardsList());
-            }
-        }
-        MainData.InventoryWeapons = allWeapons;
+        GetWeaponsFromChildren();
+        GetCardsFromChildren();
     }
 
     #endregion
 
     #region WorkingWithSlots Methods
 
-    private void Prepare() {
+    private void GetWeaponsFromChildren() {
         for (int i = 0; i < this.transform.childCount; i++) {
-            GameObject child = this.transform.GetChild(i).gameObject;
-            Weapon weapon = child.GetComponent<Weapon>();
+            Weapon weapon = this.transform.GetChild(i).gameObject.GetComponent<Weapon>();
             if (weapon != null) {
                 for (int j = 0; j < weapons.Count; j++) {
                     if (weapons[j] == null) {
                         weapons[j] = weapon;
+                        ActiveSlot = j;
                         break;
                     }
                 }
             }
         }
-
-        for (int i = 0; i < this.transform.childCount; i++) {
-            if (i == 0) {
-                weapons[0].gameObject.SetActive(true);
-                activeWeapon = 0;
-                continue;
-            }
-            weapons[i].gameObject.SetActive(false);
-        }
+        ActiveSlot = 0;
     }
     public void Choose(int index) {
-        if (index < 0 || index >= this.transform.childCount) {
-            Debug.Log(TAG + "This is an IndexOutOfBoundsExeption in Inventory");
-            return;
-        }
-        if (index == activeWeapon) {
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[index] != null) {
-            weapons[index].gameObject.SetActive(true);
-        }
-        activeWeapon = index;
-        SendActiveWeaponToMainData();
+        ActiveSlot = index;
     }
     public void ChooseNext() {
-        if (activeWeapon == weapons.Count - 1) {
-            if (weapons[activeWeapon] != null) {
-                weapons[activeWeapon].gameObject.SetActive(false);
-            }
-            if (weapons[0] != null) {
-                weapons[0].gameObject.SetActive(true);
-            }
-            activeWeapon = 0;
-            SendActiveWeaponToMainData();
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[activeWeapon + 1] != null) {
-            weapons[activeWeapon + 1].gameObject.SetActive(true);
-        }
-        activeWeapon++;
-        SendActiveWeaponToMainData();
+        ActiveSlot++;
     }
     public void ChoosePrev() {
-        if (activeWeapon == 0) {
-            if (weapons[activeWeapon] != null) {
-                weapons[activeWeapon].gameObject.SetActive(false);
-            }
-            if (weapons[weapons.Count - 1] != null) {
-                weapons[weapons.Count - 1].gameObject.SetActive(true);
-            }
-            activeWeapon = weapons.Count - 1;
-            SendActiveWeaponToMainData();
-            return;
-        }
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].gameObject.SetActive(false);
-        }
-        if (weapons[activeWeapon - 1] != null) {
-            weapons[activeWeapon - 1].gameObject.SetActive(true);
-        }
-        activeWeapon--;
-        SendActiveWeaponToMainData();
-    }
-    public int GetCount() {
-        return weapons.Count;
+        ActiveSlot--;
     }
 
     #endregion
 
     #region WorkingWithWeapon Methods
 
-    public void Attack() {
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].Attack();
+    public void AttackWithWeaponOrFist() {
+        if (Weapon != null) {
+            Weapon?.Attack();
+        } else {
+            fistFight.Attack();
         }
     }
     public void ThrowPress() {
@@ -189,36 +155,42 @@ public class Inventory : MonoBehaviour {
         Debug.Log(TAG + "Started Timer to Throw");
     }
     public void ThrowRelease() {
-        float strenght = throwStrenght;
         float actTime = Time.time;
-        if (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) {
-            strenght *= ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow);
-        }
+        float strenght = throwStrenght * (
+            (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) ? ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow) : 1f);
+        Weapon?.Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
+        Weapon = null;
+
         Debug.Log(TAG + "Throwed with the stenght: " + strenght);
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].Throw(this.gameObject.transform.rotation * Vector2.right * strenght);
-            weapons[activeWeapon] = null;
+    }
+    public void ReloadGun() {
+        if (Weapon is Gun gun) {
+            gun?.Reload();
         }
     }
-    public void Reload() {
-        if (weapons[activeWeapon] != null && weapons[activeWeapon] is Gun) {
-            ((Gun)weapons[activeWeapon]).Reload();
-        }
-    }
-    public void ChangeState() {
-        if (weapons[activeWeapon] != null) {
-            weapons[activeWeapon].ChangeState();
-        }
+    public void ChangeWeaponState() {
+        Weapon?.ChangeState();
     }
 
     #endregion
 
-    #region Hand
+    #region Aim
 
     public void Aim(Vector3 worldPoint) {
         Vector2 distance = worldPoint - this.transform.position;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    #endregion
+
+    #region Inner Structures
+
+    public static class Slots {
+        readonly public static int FIRST = 0;
+        readonly public static int SECOND = 1;
+        readonly public static int THIRD = 2;
+        readonly public static int FOURTH = 3;
     }
 
     #endregion

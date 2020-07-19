@@ -15,14 +15,40 @@ public class GameUI : MonoBehaviour
     public Image weapon;
     public GameObject menu;
     public GameObject setting;
+    public GameObject weaponSettings;
 
 
-    private static Action UpdatInformation;
+    //private bool p = true;
 
-    void OnGUI()
+    void Update()
     {
-        if (Event.current.Equals(Event.KeyboardEvent(KeyCode.Escape.ToString())))
-            menu.active = !menu.active;
+        if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
+        {
+            if (PauseMenu.GameIsPaused)
+            {
+                menu.SetActive(false);
+                PauseMenu.GameIsPaused = false;
+            }
+            else
+            {
+                PauseMenu.GameIsPaused = true;
+                menu.SetActive(true);
+            }
+
+        }
+        if (Input.GetButtonDown("WeaponSettings") && !menu.activeInHierarchy)
+        {
+            if (PauseMenu.GameIsPaused)
+            {
+                PauseMenu.GameIsPaused = false;
+                weaponSettings.SetActive(false);
+            }
+            else
+            {
+                PauseMenu.GameIsPaused = true;
+                weaponSettings.SetActive(true);
+            }
+        }
     }
 
     public void LoadSetting()
@@ -35,50 +61,48 @@ public class GameUI : MonoBehaviour
     public void Start()
     {
         //health
-        MainData.ActionHP += SetHelth;
+        MainData.ActionHPChange += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
-        SetHelth();
         //endurance
-        MainData.ActionHP += SetEndurance;
+        MainData.ActionHPChange += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
-        SetEndurance();
         //money
-        MainData.ActionMoney += SetMoney;
-        SetMoney();
+        MainData.ActionPlayerCoinsChange += SetMoney;
         //Patrons
-        MainData.ActionPatrons += SetPatrons;
-        SetPatrons();
+        MainData.ActionGunBulletsChange += SetPatrons;
         //Imageweapon
-        MainData.ActionWeapons += SetImageWeapon;
-        SetImageWeapon();
+        MainData.ActionInventoryActiveSlotChange += SetImageWeapon;
+        MainData.ActionInventoryWeaponsChange += SetImageWeapon;
     }
 
     public void SetHelth()
     {
-        health.maxValue = MainData.OverallHP;
-        health.value = MainData.CurrentHP;
+        health.maxValue = MainData.PlayerMaxHP;
+        health.value = MainData.PlayerHP;
     }
     public void SetEndurance()
     {
-        endurance.maxValue = MainData.OverallHP;
-        endurance.value = MainData.CurrentHP;
+        endurance.maxValue = MainData.PlayerMaxHP;
+        endurance.value = MainData.PlayerHP;
     }
     public void SetMoney()
     {
-        money.text = "Money:" + MainData.CurrentMoney.ToString();
+        money.text = "Money:" + MainData.PlayerCoins.ToString();
 
     }
 
     public void SetPatrons()
     {
-        patrons.text = MainData.ClipPatrons.ToString() + "/" + MainData.OverallPatrons.ToString();
-
+        if (MainData.ActiveWeapon is Gun)
+            patrons.text = ((Gun)MainData.ActiveWeapon).ActualClipBullets.ToString() + "/" + ((Gun)MainData.ActiveWeapon).ActualPocketBullets.ToString();
+        else
+            patrons.text = "0/0";
     }
 
     public void SetImageWeapon()
     {
         if (MainData.ActiveWeapon != null)
-            weapon.sprite = MainData.ActiveWeapon.gameObject.GetComponent<SpriteRenderer>().sprite;
+            weapon.sprite = MainData.ActiveWeapon.Prefab.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 
 }

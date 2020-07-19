@@ -4,32 +4,12 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
-
-    void Update()
-    {
-        if (Input.GetKeyDown((KeyCode.Escape)))
-        {
-            if (GameIsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
+    private static bool gameIsPaused = false;
+    public static bool GameIsPaused {
+        get => gameIsPaused;
+        set {
+            gameIsPaused = value;
+            Time.timeScale = GameIsPaused ? 0f : 1f;
         }
-    }
-
-    void Resume()
-    {
-        Time.timeScale = 1f;
-        GameIsPaused = false;
-    }
-
-    void Pause()
-    {
-        Time.timeScale = 0f;
-        GameIsPaused = true;
     }
 }

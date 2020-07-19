@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : EncyclopediaObject {
 
     const string TAG = "Bullet: ";
 
     #region Public Variables
 
     [SerializeField]
-    private Rigidbody2D rb;
+    private Rigidbody2D rb = null;
 
     #endregion
 
@@ -54,7 +54,7 @@ public class Bullet : MonoBehaviour {
         Prepare();
     }
 
-    public void SetParams(float dmg, CardGunFly.CardGunFlyProps bulletProps) {
+    public void SetParams(float dmg, CardGunFly.NestedProps bulletProps) {
 
         this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
@@ -77,7 +77,6 @@ public class Bullet : MonoBehaviour {
 
     private void Update() {
         this.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg);
-
 
         if (homing && aim != null) {
 
@@ -104,8 +103,7 @@ public class Bullet : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        GameObject collidedObject = collision.gameObject;
-        var cb = collidedObject.GetComponent<CharacterBase>();
+        var cb = collision.gameObject.GetComponent<CharacterBase>();
         if (cb != null) {
             cb.TakeDamage(rb.velocity.normalized * damage);
             Destroy(this.gameObject);
@@ -138,8 +136,7 @@ public class Bullet : MonoBehaviour {
         }
 
         if (homing) {
-            if (Physics2D.OverlapCircle(transform.position, 20, enemy) != null)
-                aim = Physics2D.OverlapCircle(transform.position, 20, enemy).gameObject;
+            aim = Physics2D.OverlapCircle(transform.position, 20, enemy)?.gameObject;
         }
 
         if (piercing) {

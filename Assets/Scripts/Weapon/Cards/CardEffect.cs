@@ -2,65 +2,76 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffect : MonoBehaviour, CardGun, CardWeapon {
+public class CardEffect : Card {
 
     const string TAG = "CardGunEffect: ";
 
-    #region Parameters
+    #region Properties
 
-    public CardGunEffectProps Props { get { return new CardGunEffectProps(frost, fire, poison, stunn, vampire); } }
+    public NestedProps Props => new NestedProps(effect, duration, interval, damage);
+    public override CardType Type => CardType.CardEffect;
+    public override Dictionary<Sprite, string> Modules {
+        get {
+            var dict = new Dictionary<Sprite, string>();
+            // To-Do: localization
+            if (Props.Effect != EffectType.Standard)
+                dict.Add(moduleSprites[(int)Props.Effect], "Заклинает врага на " + Props.Effect + " на " + Props.Duration + "сек, нанося " + Props.DMG + "урона каждые " + Props.Interval + "сек" + ".");
+            return dict;
+        }
+    }
 
     #endregion
 
     #region Public Variables
 
     [SerializeField]
-    private bool frost = false;
+    private EffectType effect = EffectType.Standard;
     [SerializeField]
-    private bool fire = false;
+    private float duration = 10f;
     [SerializeField]
-    private bool poison = false;
+    private float interval = 1f;
     [SerializeField]
-    private bool stunn = false;
+    private float damage = 5f;
+
+    //////
+
+    [Space]
     [SerializeField]
-    private bool vampire = false;
+    protected List<Sprite> moduleSprites;
 
     #endregion
 
     #region Service Methods
 
     public override string ToString() {
-        return "CardGunFly (" + frost + "; " + fire + "; " + poison + "; " + stunn + "; " + vampire + ")";
+        return "CardGunFly (" + effect + "; " + duration + "; " + interval + "; " + damage + ")";
     }
 
     #endregion
 
-    public class CardGunEffectProps {
+    #region Inner Structures
+
+    public class NestedProps {
 
         #region Parameters
 
-        public bool Frost { get; }
-        public bool Fire { get; }
-        public bool Poison { get; }
-        public bool Stunn { get; }
-        public bool Vampire { get; }
+        public EffectType Effect { get; }
+
+        public float Duration { get; }
+
+        public float Interval { get; }
+
+        public float DMG { get; }
 
         #endregion
 
         #region Constructors
 
-        public CardGunEffectProps(
-            bool frost = false,
-            bool fire = false,
-            bool poison = false,
-            bool stunn = false,
-            bool vampire = false
-            ) {
-            Frost = frost;
-            Fire = fire;
-            Poison = poison;
-            Stunn = stunn;
-            Vampire = vampire;
+        public NestedProps(EffectType effect = EffectType.Standard, float dmg = 5f, float duration = 10f, float interval = 1f) {
+            this.Effect = effect;
+            this.DMG = dmg;
+            this.Duration = duration;
+            this.Interval = interval;
         }
 
         #endregion
@@ -68,9 +79,20 @@ public class CardEffect : MonoBehaviour, CardGun, CardWeapon {
         #region Service Methods
 
         public override string ToString() {
-            return "CardGunFly (" + Frost + "; " + Fire + "; " + Poison + "; " + Stunn + "; " + Vampire + ")";
+            return "CardGunFly (" + Effect + "; " + Duration + "; " + Interval + "; " + DMG + ")";
         }
 
         #endregion
     }
+
+    public enum EffectType {
+        Standard = -1,
+        Frost = 0,
+        Fire = 1,
+        Poison = 2,
+        Stunn = 3,
+        Vampire = 4
+    }
+
+    #endregion
 }
