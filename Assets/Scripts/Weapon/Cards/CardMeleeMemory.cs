@@ -72,12 +72,12 @@ public class CardMeleeMemory : Card {
 
     public enum MemoryType {
         Null = -1,
-        KungFu = 0,
-        Taekwondo = 1,
-        Karate = 2,
-        Aikido = 3,
-        DziuDzitsu = 4,
-        Dzudo = 5
+        PirateShipMemory = 0,
+        JungleMemory = 1,
+        DesertMemory = 2,
+        ThisTimeMemory = 3,
+        AlienMemory = 4,
+        FuckYouMemory = 5
     }
 
     #endregion
