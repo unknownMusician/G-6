@@ -144,7 +144,7 @@ public class Inventory : MonoBehaviour {
 
     public void AttackWithWeaponOrFist() {
         if (Weapon != null) {
-            Weapon?.Attack();
+            Weapon.Attack();
         } else {
             fistFight.Attack();
         }
@@ -158,7 +158,7 @@ public class Inventory : MonoBehaviour {
         float actTime = Time.time;
         float strenght = throwStrenght * (
             (actTime - tmpWhenThrowButtonPressed < secondsToMaxThrow) ? ((actTime - tmpWhenThrowButtonPressed) / secondsToMaxThrow) : 1f);
-        Weapon?.Throw(this.gameObject, this.gameObject.transform.rotation * Vector2.right * strenght);
+        Weapon?.Throw(gameObject, gameObject.transform.rotation * Vector2.right * strenght);
         Weapon = null;
 
         Debug.Log(TAG + "Throwed with the stenght: " + strenght);
@@ -180,6 +180,9 @@ public class Inventory : MonoBehaviour {
         Vector2 distance = worldPoint - this.transform.position;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        //
+        transform.localScale = new Vector3(1, Mathf.Sign(worldPoint.x - transform.position.x), 1);
     }
 
     #endregion

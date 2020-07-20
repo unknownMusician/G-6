@@ -20,14 +20,13 @@ public class MainData
         set
         {
             player = value;
-            ActionPlayerCoinsChange?.Invoke();
-            ActionPlayerPositionChange?.Invoke();
-            ActionHPChange?.Invoke();
-            ActionXPChange?.Invoke();
-            ActionSPChange?.Invoke();
-            ActionOPChange?.Invoke();
+            ActionPlayerChange?.Invoke();
         }
     }
+    /// <summary>
+    /// Calls only on the start of each scene;
+    /// </summary>
+    public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionXPChange + ActionSPChange + ActionOPChange;
 
     public static GameObject RoomSpawner { get; set; }
 

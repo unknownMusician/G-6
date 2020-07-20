@@ -48,7 +48,6 @@ public class WeaponSettings : MonoBehaviour
     #region Weapons
     private void SetAllWeapons()
     {
-        Debug.Log("pidor");
         foreach (RectTransform child in WeaponContent)
         {
             Destroy(child.gameObject);
@@ -124,19 +123,16 @@ public class WeaponSettings : MonoBehaviour
         if (MainData.ActiveWeapon.InstallUnknownCard(activecard))
         {
             CardViewOnUI(activecard);
-            MainData.Inventory.Cards.Remove(activecard);
-            MainData.ActionInventoryCardsChange();
         }
     }
 
     //TODO
     private void UnInstallCardClick(Card card)
     {
-        bool isUnInstalling = MainData.ActiveWeapon.UninstallUnknownCard(card);
-        if (isUnInstalling)
+        if (MainData.ActiveWeapon.UninstallUnknownCard(card))
         {
-            MainData.Inventory.Cards.Add(card);
-            MainData.ActionInventoryCardsChange();
+            CardButtonUnInstall.onClick.RemoveAllListeners();
+            CardNullViewOnUI();
         }
     }
 
@@ -157,25 +153,25 @@ public class WeaponSettings : MonoBehaviour
     }
     public void ViewCard2()
     {
-        //if (MainData.ActiveWeapon is Gun)
-        //{
-        //    CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
-        //}
-        //else
-        //{
-        //    CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
-        //}
+        if (MainData.ActiveWeapon is Gun)
+        {
+            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardFly);
+        }
+        else
+        {
+            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardMemory);
+        }
     }
     public void ViewCard3()
     {
-        //if (MainData.ActiveWeapon is Gun)
-        //{
-        //    CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
-        //}
-        //else
-        //{
-        //    CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
-        //}
+        if (MainData.ActiveWeapon is Gun)
+        {
+            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
+        }
+        else
+        {
+            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
+        }
     }
 
     #endregion
@@ -186,14 +182,29 @@ public class WeaponSettings : MonoBehaviour
     {
         CardImageActiveOnWeapon.sprite = card.SpriteUI;
         CardNameActiveOnWeapon.text = card.encyclopediaName;
+        CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
         //TODO
         //CardUnInstall
+        foreach (RectTransform effect in CardEffectContentOnWeapon)
+        {
+            Destroy(effect.gameObject);
+        }
         foreach (KeyValuePair<Sprite, string> module in card.Modules)
         {
             GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
             effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
             effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
             effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+        }
+    }
+
+    private void CardNullViewOnUI()
+    {
+        CardImageActiveOnWeapon.sprite = null;
+        CardNameActiveOnWeapon.text = "";
+        foreach (RectTransform effect in CardEffectContentOnWeapon)
+        {
+            Destroy(effect.gameObject);
         }
     }
 
