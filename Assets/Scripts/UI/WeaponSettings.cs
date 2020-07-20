@@ -193,6 +193,7 @@ public class WeaponSettings : MonoBehaviour
         {
             CardImageActiveOnWeapon.sprite = card.SpriteUI;
             CardNameActiveOnWeapon.text = card.encyclopediaName;
+            CardButtonUnInstall.onClick.RemoveAllListeners();
             CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
 
             foreach (RectTransform effect in CardEffectContentOnWeapon)
