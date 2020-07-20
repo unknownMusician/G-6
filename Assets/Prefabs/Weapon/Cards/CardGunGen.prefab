@@ -104,6 +104,7 @@ MonoBehaviour:
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: -3596292837194420457, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
+  cardTypeForYaric: 1
   fireRateMultiplier: 1
   bulletsPerShotAdder: 1
   shotRangeMultiplier: 1

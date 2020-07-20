@@ -104,6 +104,7 @@ MonoBehaviour:
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: -1948612999104292835, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
+  cardTypeForYaric: 2
   memory: 0
   moduleSprites:
   - {fileID: -6940130241805462365, guid: b798b46da739da64e884e04e8ca84422, type: 3}

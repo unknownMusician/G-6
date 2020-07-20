@@ -104,6 +104,7 @@ MonoBehaviour:
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: 5274171114913472145, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
+  cardTypeForYaric: 3
   effect: 0
   duration: 10
   interval: 1
