@@ -26,6 +26,8 @@ public class WeaponSettings : MonoBehaviour
     public Text CardNameActiveOnWeapon;
     public Button CardButtonUnInstall;
 
+    public GameObject SelectCard;
+
     #region Action Subsription Managment
     public void Awake()
     {
@@ -106,16 +108,18 @@ public class WeaponSettings : MonoBehaviour
 
     private void CardClick(Card activecard, GameObject instanse)
     {
-        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
+        if (SelectCard)
+            SelectCard.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(false);
 
+        instanse.transform.GetChild(2).gameObject.GetComponent<Button>().gameObject.SetActive(true);
         instanse.transform.GetChild(2).gameObject.GetComponent<Button>().onClick.AddListener(delegate
         {
             CardInstallClick(activecard);
         });
-
         CardDescription.text =
             activecard.GetComponent<Card>().encyclopediaDescription;
 
+        SelectCard = instanse;
     }
 
     private void CardInstallClick(Card activecard)
