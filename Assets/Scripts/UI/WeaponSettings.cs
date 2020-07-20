@@ -142,35 +142,45 @@ public class WeaponSettings : MonoBehaviour
 
     public void ViewCard1()
     {
+        CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
         {
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Gun)MainData.ActiveWeapon).CardEff); });
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
         }
         else
         {
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Gun)MainData.ActiveWeapon).CardEff); });
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
         }
     }
+
     public void ViewCard2()
     {
+        CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
         {
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardFly);
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Gun)MainData.ActiveWeapon).CardFly); });
         }
         else
         {
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardMemory);
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Melee)MainData.ActiveWeapon).CardMemory); });
         }
     }
     public void ViewCard3()
     {
+        CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
         {
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Gun)MainData.ActiveWeapon).CardGen); });
         }
         else
         {
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(((Melee)MainData.ActiveWeapon).CardShape); });
         }
     }
 
@@ -180,21 +190,29 @@ public class WeaponSettings : MonoBehaviour
 
     private void CardViewOnUI(Card card)
     {
-        CardImageActiveOnWeapon.sprite = card.SpriteUI;
-        CardNameActiveOnWeapon.text = card.encyclopediaName;
-        CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
-        //TODO
-        //CardUnInstall
-        foreach (RectTransform effect in CardEffectContentOnWeapon)
+        if (card != null)
         {
-            Destroy(effect.gameObject);
+            CardImageActiveOnWeapon.sprite = card.SpriteUI;
+            CardNameActiveOnWeapon.text = card.encyclopediaName;
+            CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
+            //TODO
+            //CardUnInstall
+            foreach (RectTransform effect in CardEffectContentOnWeapon)
+            {
+                Destroy(effect.gameObject);
+            }
+
+            foreach (KeyValuePair<Sprite, string> module in card.Modules)
+            {
+                GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
+                effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
+                effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
+                effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+            }
         }
-        foreach (KeyValuePair<Sprite, string> module in card.Modules)
+        else
         {
-            GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
-            effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
-            effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
-            effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+            CardNullViewOnUI();
         }
     }
 
