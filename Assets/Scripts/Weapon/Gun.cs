@@ -177,6 +177,9 @@ public class Gun : Weapon {
 
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
+            MainData.Inventory.Cards.Remove(cardGen);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
+
             UninstallUnknownCard(this.CardGen);
             PrepareCardforInstall(cardGen);
             this.CardGen = cardGen;
@@ -187,6 +190,9 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardGunFly cardFly) {
         if (cardFly != null) {
+            MainData.Inventory.Cards.Remove(cardFly);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
+
             UninstallUnknownCard(this.CardFly);
             PrepareCardforInstall(cardFly);
             this.CardFly = cardFly;
@@ -197,6 +203,9 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
+            MainData.Inventory.Cards.Remove(cardEff);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
+
             UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
