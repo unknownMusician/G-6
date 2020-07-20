@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using Cinemachine;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
@@ -13,20 +14,20 @@ public class WeaponSettings : MonoBehaviour
     public RectTransform WeaponButtonPrefab;
     public RectTransform WeaponContent;
     public Image WeaponMainImage;
-    public Text WeaponName;
-    public Text WeaponDescription;
-
+    public TextMeshProUGUI WeaponName;
+    public TextMeshProUGUI WeaponDescription;
+    [Space]
     public RectTransform CardPrefab;
     public RectTransform CardContent;
-    public Text CardDescription;
-
+    public TextMeshProUGUI CardDescription;
+    [Space]
     public RectTransform CardEffectPrefab;
     public RectTransform CardEffectContentOnWeapon;
     public Image CardImageActiveOnWeapon;
-    public Text CardNameActiveOnWeapon;
+    public TextMeshProUGUI CardNameActiveOnWeapon;
     public Button CardButtonUnInstall;
 
-    public GameObject SelectCard;
+    private GameObject SelectCard;
 
     #region Action Subsription Managment
     public void Awake()
@@ -100,7 +101,7 @@ public class WeaponSettings : MonoBehaviour
                     CardClick(card, instanse);
                 });
 
-                instanse.transform.GetChild(0).gameObject.GetComponent<Text>().text = card.encyclopediaName;
+                instanse.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = card.encyclopediaName;
                 instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.gameObject.GetComponent<SpriteRenderer>().sprite;
             }
         }
@@ -204,7 +205,7 @@ public class WeaponSettings : MonoBehaviour
                 GameObject effectInstanse = Instantiate(CardEffectPrefab.gameObject);
                 effectInstanse.transform.SetParent(CardEffectContentOnWeapon, false);
                 effectInstanse.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = module.Key;
-                effectInstanse.transform.GetChild(1).gameObject.GetComponent<Text>().text = module.Value;
+                effectInstanse.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = module.Value;
             }
         }
         else
@@ -224,8 +225,5 @@ public class WeaponSettings : MonoBehaviour
     }
 
     #endregion
-    public void Exit()
-    {
-        //PauseMenu.Resume();
-    }
+
 }
