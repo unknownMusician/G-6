@@ -12,8 +12,6 @@ public class RoomSpawner : MonoBehaviour {
     public int amountOfRooms;
     public int rows;
     public int columns;
-    private int currentRow;
-    private int currentColumn;
     public CharacterBase player;
 
     public int CurrentColumn { get; set; }
@@ -49,8 +47,8 @@ public class RoomSpawner : MonoBehaviour {
         Transform playerTransform = player.transform;
         playerTransform.position = GetCurrentLocationAll();
 
-        currentColumn = columns / 2;
-        currentRow = rows / 2;
+        CurrentColumn = columns / 2;
+        CurrentRow = rows / 2;
 
         PlaceForRoom baseRoom = new PlaceForRoom(1, 1, 1, 1);
         roomDirectionsDataMatrix[rows / 2, columns / 2] = baseRoom;
@@ -178,34 +176,38 @@ public class RoomSpawner : MonoBehaviour {
                             short[] doors = point.getDoorParams();
                             if (doors[0] == 0) {
                                 float rd = Random.value;
-                                if (rd <= 0.5f) {
+                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setTop(-1);
-                                } else if (rd > 0.5f) {
+                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setTop(1);
+                                    point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[1] == 0) {
                                 float rd = Random.value;
-                                if (rd <= 0.5f) {
+                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setRight(-1);
-                                } else if (rd > 0.5f) {
+                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setRight(1);
+                                    point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[2] == 0) {
                                 float rd = Random.value;
-                                if (rd <= 0.5f) {
+                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setBottom(-1);
-                                } else if (rd > 0.5f) {
+                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setBottom(1);
+                                    point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[3] == 0) {
                                 float rd = Random.value;
-                                if (rd <= 0.5f) {
+                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setLeft(-1);
-                                } else if (rd > 0.5f) {
+                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setLeft(1);
+                                    point.AmountOfDoors += 1;
                                 }
                             }
                             amountOfRooms -= 1;
@@ -222,10 +224,11 @@ public class RoomSpawner : MonoBehaviour {
                 for (int j = 0; j < columns; j++) {
 
                     float rd = Random.value;
-                    if (rd >= 0.5) {
-                        PlaceForRoom point = roomDirectionsDataMatrix[i, j];
-
-                        if (point != null) {
+                    PlaceForRoom point = roomDirectionsDataMatrix[i, j];
+                    
+                    if (point != null) {
+                        
+                        if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
 
                             if ((point.anyEqualToOne() == true)) {
 
@@ -458,5 +461,18 @@ public class RoomSpawner : MonoBehaviour {
 
     public bool IsThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;
+    }
+
+    public bool DoWeNeedAnotherDoor(byte amountOfDoors, float randomNumber) {
+        if ((amountOfDoors == 0) & (randomNumber > 0.5f)) {
+            return true;
+        } else if ((amountOfDoors == 1) & (randomNumber > 0.85f)) {
+            return true;
+        } else if ((amountOfDoors == 2) & (randomNumber > 0.95f)) {
+            return true;
+        } else if ((amountOfDoors == 3) & (randomNumber > 0.99f)) {
+            return true;
+        }
+        return false;
     }
 }
