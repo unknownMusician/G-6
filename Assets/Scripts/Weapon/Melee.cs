@@ -106,18 +106,20 @@ public class Melee : Weapon {
     public override bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
     public override bool UninstallUnknownCard(Card card) {
         if (card != null) {
-            // To-Do: that is not so safe
-            MainData.Inventory.Cards.Add(card);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
-            if (card == CardShape)
+            bool answer = false;
+            if (answer = card == CardShape)
                 CardShape = null;
-            else if (card == CardMemory)
+            else if (answer = card == CardMemory)
                 CardMemory = null;
-            else if (card == CardEff)
+            else if (answer = card == CardEff)
                 CardEff = null;
             else
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
-            return true;
+            if (answer) {
+                MainData.Inventory.Cards.Add(card);
+                MainData.Inventory.Cards = MainData.Inventory.Cards;
+            }
+            return answer;
         }
         return false;
     }
@@ -128,12 +130,11 @@ public class Melee : Weapon {
 
     public bool InstallCard(CardMeleeShape cardShape) {
         if (cardShape != null) {
-            MainData.Inventory.Cards.Remove(cardShape);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
-
             UninstallUnknownCard(this.CardShape);
             PrepareCardforInstall(cardShape);
             this.CardShape = cardShape;
+            MainData.Inventory.Cards.Remove(cardShape);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -141,12 +142,11 @@ public class Melee : Weapon {
     }
     public bool InstallCard(CardMeleeMemory cardMemory) {
         if (cardMemory != null) {
-            MainData.Inventory.Cards.Remove(cardMemory);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
-
             UninstallUnknownCard(this.CardMemory);
             PrepareCardforInstall(cardMemory);
             this.CardMemory = cardMemory;
+            MainData.Inventory.Cards.Remove(cardMemory);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -154,12 +154,11 @@ public class Melee : Weapon {
     }
     public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
-            MainData.Inventory.Cards.Remove(cardEff);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
-
             UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
+            MainData.Inventory.Cards.Remove(cardEff);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
