@@ -23,11 +23,24 @@ public class WeaponSettings : MonoBehaviour
     [Space]
     public RectTransform CardEffectPrefab;
     public RectTransform CardEffectContentOnWeapon;
-    public Image CardImageActiveOnWeapon;
     public TextMeshProUGUI CardNameActiveOnWeapon;
     public Button CardButtonUnInstall;
+    [Space]
+    public Image CardImageOnWeapon1;
+    public Image CardImageOnWeapon2;
+    public Image CardImageOnWeapon3;
+    public Button CardButton1;
+    public Button CardButton2;
+    public Button CardButton3;
 
     private GameObject SelectCard;
+
+    void Start()
+    {
+        CardButton1.onClick.AddListener(ViewCard1);
+        CardButton2.onClick.AddListener(ViewCard2);
+        CardButton3.onClick.AddListener(ViewCard3);
+    }
 
     #region Action Subsription Managment
     public void Awake()
@@ -76,6 +89,9 @@ public class WeaponSettings : MonoBehaviour
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
+        ViewCard1();
+        ViewCard2();
+        ViewCard3();
     }
 
     #endregion
@@ -149,25 +165,43 @@ public class WeaponSettings : MonoBehaviour
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
+        {
+            CardImageOnWeapon1.sprite = ((Gun)MainData.ActiveWeapon).CardGen.SpriteUI;
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
+        }
         else
+        {
+            CardImageOnWeapon1.sprite = ((Melee)MainData.ActiveWeapon).CardShape.SpriteUI;
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
+        }
     }
     public void ViewCard2()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
+        {
+            CardImageOnWeapon2.sprite = ((Gun)MainData.ActiveWeapon).CardFly.SpriteUI;
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardFly);
+        }
         else
+        {
+            CardImageOnWeapon2.sprite = ((Melee)MainData.ActiveWeapon).CardMemory.SpriteUI;
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardMemory);
+        }
     }
     public void ViewCard3()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
+        {
+            CardImageOnWeapon3.sprite = ((Gun) MainData.ActiveWeapon).CardEff.SpriteUI;
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
+        }
         else
+        {
+            CardImageOnWeapon3.sprite = ((Melee)MainData.ActiveWeapon).CardEff.SpriteUI;
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
+        }
     }
 
     #endregion
@@ -178,7 +212,6 @@ public class WeaponSettings : MonoBehaviour
     {
         if (card != null)
         {
-            CardImageActiveOnWeapon.sprite = card.SpriteUI;
             CardNameActiveOnWeapon.text = card.encyclopediaName;
             CardButtonUnInstall.onClick.RemoveAllListeners();
             CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
