@@ -427,7 +427,7 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
-        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().setRoomType(Room.RoomType.finish);
+        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomType = Room.TypeOfTheRoom.finish;
     }
 
     public GameObject[,] GetRoomsMatrix() {
