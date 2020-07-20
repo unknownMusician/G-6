@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59beccab9ee77d4ab70e3bf611de943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
+  encyclopediaName: CardGunGen
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea

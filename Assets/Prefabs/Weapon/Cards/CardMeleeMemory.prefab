@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 152
-  m_Sprite: {fileID: -7557494978891415441, guid: 507f8927a27b47e498c01c2880b1b7b4,
+  m_Sprite: {fileID: -2613411450045547498, guid: 507f8927a27b47e498c01c2880b1b7b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b06b997608d9f6458b91bc34d4935fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
+  encyclopediaName: CardMeleeMemory
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea

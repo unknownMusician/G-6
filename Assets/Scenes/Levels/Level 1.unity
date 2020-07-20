@@ -194,6 +194,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardGunEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: effect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunEffect in G
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 876810dcae288bd41bf9b0ad3c48c4d9, type: 3}
 --- !u!1 &634175855
@@ -369,6 +379,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunGen in I
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
 --- !u!114 &672665067 stripped
@@ -450,6 +465,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: fireRateMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: bulletsPerShotAdder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: shotRangeMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunGen  in G
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
 --- !u!4 &998375058 stripped
@@ -465,6 +500,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4333165458894757143}
     m_Modifications:
+    - target: {fileID: -7951112939094162563, guid: 8d3eabbe7cda2d74d94101cdc32c90a1,
+        type: 3}
+      propertyPath: attackSpeedMultiplier
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7951112939094162563, guid: 8d3eabbe7cda2d74d94101cdc32c90a1,
+        type: 3}
+      propertyPath: attackRangeMultiplier
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7951112939094162563, guid: 8d3eabbe7cda2d74d94101cdc32c90a1,
+        type: 3}
+      propertyPath: attackDamageMultiplier
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7951112939094162563, guid: 8d3eabbe7cda2d74d94101cdc32c90a1,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardMeleeShape in M
+      objectReference: {fileID: 0}
     - target: {fileID: 1270157396700736813, guid: 8d3eabbe7cda2d74d94101cdc32c90a1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -594,6 +649,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardGunEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunEffect in I
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 876810dcae288bd41bf9b0ad3c48c4d9, type: 3}
 --- !u!1001 &1585309891
@@ -603,6 +663,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4333165458894757144}
     m_Modifications:
+    - target: {fileID: 2643604200681694295, guid: 051d0866ce640114b8e2cb2176a6e5e9,
+        type: 3}
+      propertyPath: ricochet
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643604200681694295, guid: 051d0866ce640114b8e2cb2176a6e5e9,
+        type: 3}
+      propertyPath: homing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643604200681694295, guid: 051d0866ce640114b8e2cb2176a6e5e9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunFly  in G
+      objectReference: {fileID: 0}
     - target: {fileID: 3790771777802938353, guid: 051d0866ce640114b8e2cb2176a6e5e9,
         type: 3}
       propertyPath: m_Name
@@ -798,6 +873,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardGunEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: effect
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: interval
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584877150451072419, guid: 876810dcae288bd41bf9b0ad3c48c4d9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunEffect in M
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 876810dcae288bd41bf9b0ad3c48c4d9, type: 3}
 --- !u!1001 &1975801395
@@ -807,6 +897,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4333165458894757143}
     m_Modifications:
+    - target: {fileID: -2734611994694572595, guid: a24091f30e7166948991cc2c712a69e9,
+        type: 3}
+      propertyPath: memory
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2734611994694572595, guid: a24091f30e7166948991cc2c712a69e9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardMeleeMemory in M
+      objectReference: {fileID: 0}
     - target: {fileID: 1270157396700736813, guid: a24091f30e7166948991cc2c712a69e9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1031,6 +1131,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4333165458894757145}
     m_Modifications:
+    - target: {fileID: 2643604200681694295, guid: 051d0866ce640114b8e2cb2176a6e5e9,
+        type: 3}
+      propertyPath: encyclopediaName
+      value: CardGunFly in I
+      objectReference: {fileID: 0}
     - target: {fileID: 3790771777802938353, guid: 051d0866ce640114b8e2cb2176a6e5e9,
         type: 3}
       propertyPath: m_Name

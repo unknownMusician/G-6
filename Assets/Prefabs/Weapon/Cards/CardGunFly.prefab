@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b60e8204435fc4d84d412306f13082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
+  encyclopediaName: CardGunFly
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
