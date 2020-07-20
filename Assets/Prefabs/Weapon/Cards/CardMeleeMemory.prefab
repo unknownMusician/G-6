@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2810880178507504479
+--- !u!1 &6242605618657418628
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4218312505315928455}
-  - component: {fileID: 847786896230299956}
-  - component: {fileID: 5930130232060295257}
+  - component: {fileID: 1270157396700736813}
+  - component: {fileID: 8128536240166190532}
+  - component: {fileID: -2734611994694572595}
   m_Layer: 0
-  m_Name: CardGunGen
+  m_Name: CardMeleeMemory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4218312505315928455
+--- !u!4 &1270157396700736813
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 6242605618657418628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &847786896230299956
+--- !u!212 &8128536240166190532
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
+  m_GameObject: {fileID: 6242605618657418628}
   m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 152
-  m_Sprite: {fileID: -6555575649291838755, guid: 507f8927a27b47e498c01c2880b1b7b4,
+  m_Sprite: {fileID: -7557494978891415441, guid: 507f8927a27b47e498c01c2880b1b7b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -83,16 +83,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5930130232060295257
+--- !u!114 &-2734611994694572595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810880178507504479}
+  m_GameObject: {fileID: 6242605618657418628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c59beccab9ee77d4ab70e3bf611de943, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b06b997608d9f6458b91bc34d4935fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   encyclopediaName: EncyclopediaObject
@@ -102,12 +102,7 @@ MonoBehaviour:
     commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  spriteUI: {fileID: 5274171114913472145, guid: ea9eeb19348abe747a8a0e0f96e08876,
+  spriteUI: {fileID: -1948612999104292835, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
-  fireRateMultiplier: 1
-  bulletsPerShotAdder: 1
-  shotRangeMultiplier: 1
-  moduleSprites:
-  - {fileID: 675481701817115487, guid: b798b46da739da64e884e04e8ca84422, type: 3}
-  - {fileID: 2279969112664172027, guid: b798b46da739da64e884e04e8ca84422, type: 3}
-  - {fileID: 8641133084709903401, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  memory: 0
+  moduleSprites: []
