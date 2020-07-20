@@ -149,38 +149,25 @@ public class WeaponSettings : MonoBehaviour
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
-        {
-            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
-        }
+            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
         else
-        {
-            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
-        }
+            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
     }
-
     public void ViewCard2()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
-        {
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardFly);
-        }
         else
-        {
             CardViewOnUI(((Melee)MainData.ActiveWeapon).CardMemory);
-        }
     }
     public void ViewCard3()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
         if (MainData.ActiveWeapon is Gun)
-        {
-            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
-        }
+            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
         else
-        {
-            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
-        }
+            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
     }
 
     #endregion
