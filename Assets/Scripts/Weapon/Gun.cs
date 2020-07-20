@@ -136,14 +136,6 @@ public class Gun : Weapon {
     #region Overrided Methods
 
     private void Start() {
-        // To-Do
-        GameObject obj = Instantiate(Prefab);
-        Debug.Log(TAG + "Created");
-        Destroy(obj);
-        Debug.Log(TAG + "Destroyed");
-        Instantiate(obj);
-        Debug.Log(TAG + "Copied");
-
         InstallCardsFromChildren();
     }
     public override void Attack() {

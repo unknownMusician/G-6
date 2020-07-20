@@ -14,8 +14,6 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Properties
 
-    public GameObject Prefab => weaponPrefab;
-
     protected abstract bool CanAttack { get; set; }
     protected virtual Weapon.State WeaponState {
         get => state;
@@ -38,9 +36,6 @@ public abstract class Weapon : EncyclopediaObject {
     #endregion
 
     #region Public Variables
-
-    [SerializeField]
-    protected GameObject weaponPrefab = null;
 
     [SerializeField]
     protected GameObject weaponHolder = null;
@@ -131,10 +126,15 @@ public abstract class Weapon : EncyclopediaObject {
         WeaponState = State.Throwed;
         friend = whoThrowed;
 
-        this.gameObject.transform.parent = null; // unparented weapon
+        gameObject.transform.parent = null; // unparented weapon
+
         EnablePhysics();
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
         rigidBody.velocity += direction; // "throwed" the weapon
-        rigidBody.angularVelocity = -direction.magnitude * 150f;
+        rigidBody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
+        //rigidBody.angularVelocity = -Mathf.Sign(direction.x) * direction.magnitude * 150f;
+        Debug.Log(rigidBody.angularVelocity);
     }
 
     #endregion
