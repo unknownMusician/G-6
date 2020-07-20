@@ -186,7 +186,6 @@ public class Gun : Weapon {
             CardGen = cardGen;
             MainData.Inventory.Cards.Remove(cardGen);
             MainData.Inventory.Cards = MainData.Inventory.Cards;
-            Debug.Log(cardGen);
             OnInstallCardAction?.Invoke();
             return true;
         }
