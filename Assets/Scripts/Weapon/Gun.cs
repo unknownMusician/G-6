@@ -179,7 +179,6 @@ public class Gun : Weapon {
 
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
-
             UninstallUnknownCard(CardGen);
             PrepareCardforInstall(cardGen);
             cardGen.gameObject.transform.SetParent(transform);
@@ -193,7 +192,6 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardGunFly cardFly) {
         if (cardFly != null) {
-
             UninstallUnknownCard(this.CardFly);
             PrepareCardforInstall(cardFly);
             cardFly.gameObject.transform.SetParent(transform);
@@ -207,7 +205,6 @@ public class Gun : Weapon {
     }
     public bool InstallCard(CardEffect cardEff) {
         if (cardEff != null) {
-
             UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             cardEff.gameObject.transform.SetParent(transform);
