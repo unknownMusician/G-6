@@ -29,6 +29,7 @@ public class PlaceForRoom {
     }
 
     public PlaceForRoom() {
+        AmountOfDoors = 0;
     }
 
     public void setTop(short door) {
