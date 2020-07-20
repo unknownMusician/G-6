@@ -133,6 +133,7 @@ public abstract class Weapon : EncyclopediaObject {
         transform.localScale = Vector3.one;
         rigidBody.velocity += direction; // "throwed" the weapon
         rigidBody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
+        //rigidBody.angularVelocity = -Mathf.Sign(direction.x) * direction.magnitude * 150f;
         Debug.Log(rigidBody.angularVelocity);
     }
 

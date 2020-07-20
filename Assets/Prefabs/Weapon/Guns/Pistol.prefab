@@ -142,7 +142,6 @@ MonoBehaviour:
     commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  weaponPrefab: {fileID: 8902850384399324635}
   weaponHolder: {fileID: 891501071084823941, guid: 3582863f289dbf844a13b5765ac5cd91,
     type: 3}
   rigidBody: {fileID: 1699405586130577470}
@@ -170,7 +169,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902850384399324635}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 003eaa58276c57841b2349cdf48cf0d3, type: 2}
   m_CullingMode: 0
