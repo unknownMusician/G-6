@@ -155,17 +155,18 @@ public class Gun : Weapon {
     public override bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
     public override bool UninstallUnknownCard(Card card) {
         if (card != null) {
-            var answer = transform.parent.GetComponent<Inventory>().Cards.Remove(card);
-            transform.parent.GetComponent<Inventory>().Cards = transform.parent.GetComponent<Inventory>().Cards;
-            if (card is CardGunGen)
+            // To-Do: that is not so safe
+            MainData.Inventory.Cards.Add(card);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
+            if (card == CardGen)
                 this.CardGen = null;
-            else if (card is CardGunFly)
+            else if (card == CardFly)
                 this.CardFly = null;
-            else if (card is CardEffect)
+            else if (card == CardEff)
                 this.CardEff = null;
             else
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
-            return answer;
+            return true;
         }
         return false;
     }
