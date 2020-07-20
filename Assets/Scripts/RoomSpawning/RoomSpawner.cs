@@ -44,8 +44,7 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
-        Transform playerTransform = player.transform;
-        playerTransform.position = GetCurrentLocationAll();
+        MainData.ActionPlayerChange += () => MainData.Player.transform.position = GetCurrentLocationAll();
 
         CurrentColumn = columns / 2;
         CurrentRow = rows / 2;

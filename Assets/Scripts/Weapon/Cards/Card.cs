@@ -7,7 +7,6 @@ public abstract class Card : EncyclopediaObject {
 
     #region Properties
 
-    public GameObject Prefab => prefab;
     public Sprite SpriteUI => spriteUI;
     public abstract Dictionary<Sprite, string> Modules { get; }
 
@@ -17,8 +16,6 @@ public abstract class Card : EncyclopediaObject {
 
     #region Variables
 
-    [SerializeField]
-    protected GameObject prefab;
     [SerializeField]
     protected Sprite spriteUI;
 
