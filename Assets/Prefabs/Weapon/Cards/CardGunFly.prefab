@@ -102,7 +102,6 @@ MonoBehaviour:
     commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  prefab: {fileID: 3790771777802938353}
   spriteUI: {fileID: 2122203043064787140, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
   ricochet: 0
@@ -116,3 +115,9 @@ MonoBehaviour:
   magnetting:
     serializedVersion: 2
     m_Bits: 0
+  moduleSprites:
+  - {fileID: 6539619569574371877, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 4132550447909930634, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 4247313421032746643, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -8812872976270815865, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 7973029725138031447, guid: b798b46da739da64e884e04e8ca84422, type: 3}

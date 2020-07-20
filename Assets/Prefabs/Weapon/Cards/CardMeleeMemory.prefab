@@ -105,4 +105,9 @@ MonoBehaviour:
   spriteUI: {fileID: -1948612999104292835, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
   memory: 0
-  moduleSprites: []
+  moduleSprites:
+  - {fileID: -6940130241805462365, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 1341116742598746073, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -8321974224956660160, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 5916959427460195541, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -4724636291845405044, guid: b798b46da739da64e884e04e8ca84422, type: 3}

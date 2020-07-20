@@ -108,6 +108,6 @@ MonoBehaviour:
   bulletsPerShotAdder: 1
   shotRangeMultiplier: 1
   moduleSprites:
-  - {fileID: 675481701817115487, guid: b798b46da739da64e884e04e8ca84422, type: 3}
   - {fileID: 2279969112664172027, guid: b798b46da739da64e884e04e8ca84422, type: 3}
   - {fileID: 8641133084709903401, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 3942472410718344983, guid: b798b46da739da64e884e04e8ca84422, type: 3}
