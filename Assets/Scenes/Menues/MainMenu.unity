@@ -1066,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &175100023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,9 +1092,14 @@ MonoBehaviour:
   CardEffectPrefab: {fileID: 95556487270714553, guid: df3d734e7f1dc304eabd59535d647ba5,
     type: 3}
   CardEffectContentOnWeapon: {fileID: 1936616306}
-  CardImageActiveOnWeapon: {fileID: 8162420797165542457}
   CardNameActiveOnWeapon: {fileID: 308454582}
   CardButtonUnInstall: {fileID: 8162420797257817287}
+  CardImageOnWeapon1: {fileID: 8162420797165542457}
+  CardImageOnWeapon2: {fileID: 241257592}
+  CardImageOnWeapon3: {fileID: 481218677}
+  CardButton1: {fileID: 1760453681}
+  CardButton2: {fileID: 1050882418}
+  CardButton3: {fileID: 2117267929}
 --- !u!114 &175100024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1351,7 +1356,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8162420796866704786}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1537,7 +1542,7 @@ RectTransform:
   m_LocalScale: {x: 0.9225, y: 0.9225, z: 0.9225}
   m_Children: []
   m_Father: {fileID: 8162420796866704786}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1699,7 +1704,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000030517578, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -256.8, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &312669297
 MonoBehaviour:
@@ -2228,7 +2233,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8162420796866704786}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3064,7 +3069,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4179,18 +4184,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1050882419}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 175100023}
-        m_MethodName: ViewCard2
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1050882419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5385,7 +5379,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -4.529999, y: 0}
+  m_SizeDelta: {x: -4.529999, y: -262.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1375949909
 MonoBehaviour:
@@ -7119,18 +7113,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1760453682}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 175100023}
-        m_MethodName: ViewCard1
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1760453682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7833,7 +7816,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7910,7 +7893,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -4.529999, y: 0}
+  m_SizeDelta: {x: -4.529999, y: -193.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1936616307
 MonoBehaviour:
@@ -8099,7 +8082,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8506,8 +8489,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.74, y: -30.96}
-  m_SizeDelta: {x: 30.56, y: 51.27}
+  m_AnchoredPosition: {x: 5.03, y: -32.55}
+  m_SizeDelta: {x: 31.19, y: 54.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2117267929
 MonoBehaviour:
@@ -8551,18 +8534,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2117267930}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 175100023}
-        m_MethodName: ViewCard3
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2117267930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8610,10 +8582,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 308454581}
   - {fileID: 8162420797165542462}
   - {fileID: 241257591}
   - {fileID: 481218676}
+  - {fileID: 308454581}
   - {fileID: 8162420797257817284}
   - {fileID: 109137362}
   m_Father: {fileID: 1050899994}
@@ -8771,7 +8743,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8162420796866704786}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

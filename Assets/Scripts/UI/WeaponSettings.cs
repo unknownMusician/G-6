@@ -143,7 +143,21 @@ public class WeaponSettings : MonoBehaviour
     {
         if (MainData.ActiveWeapon.InstallUnknownCard(activecard))
         {
-            CardViewOnUI(activecard);
+            //CardViewOnUI(activecard);
+            switch (activecard.CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire)
+            {
+                case 1:
+                    ViewCard1();
+                    break;
+                case 2:
+                    ViewCard2();
+                    break;
+                case 3:
+                    ViewCard3();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -153,7 +167,7 @@ public class WeaponSettings : MonoBehaviour
         if (MainData.ActiveWeapon.UninstallUnknownCard(card))
         {
             CardButtonUnInstall.onClick.RemoveAllListeners();
-            CardNullViewOnUI();
+            CardNullViewOnUI(card.CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire);
         }
     }
 
@@ -164,6 +178,10 @@ public class WeaponSettings : MonoBehaviour
     public void ViewCard1()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
+        CardImageOnWeapon1.gameObject.SetActive(true);
+        CardImageOnWeapon1.gameObject.transform.SetSiblingIndex(2);
+        CardButton1.gameObject.SetActive(true);
+
         if (MainData.ActiveWeapon is Gun)
         {
             CardImageOnWeapon1.sprite = ((Gun)MainData.ActiveWeapon).CardGen.SpriteUI;
@@ -178,6 +196,11 @@ public class WeaponSettings : MonoBehaviour
     public void ViewCard2()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
+        CardImageOnWeapon2.gameObject.SetActive(true);
+        CardImageOnWeapon2.gameObject.transform.SetSiblingIndex(2);
+        CardButton2.gameObject.SetActive(true);
+
+
         if (MainData.ActiveWeapon is Gun)
         {
             CardImageOnWeapon2.sprite = ((Gun)MainData.ActiveWeapon).CardFly.SpriteUI;
@@ -192,6 +215,11 @@ public class WeaponSettings : MonoBehaviour
     public void ViewCard3()
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
+        CardImageOnWeapon3.gameObject.SetActive(true);
+        CardImageOnWeapon3.gameObject.transform.SetSiblingIndex(2);
+        CardButton3.gameObject.SetActive(true);
+
+
         if (MainData.ActiveWeapon is Gun)
         {
             CardImageOnWeapon3.sprite = ((Gun) MainData.ActiveWeapon).CardEff.SpriteUI;
@@ -231,13 +259,33 @@ public class WeaponSettings : MonoBehaviour
         }
         else
         {
-            CardNullViewOnUI();
+            CardNullViewOnUI(null);
         }
     }
 
-    private void CardNullViewOnUI()
+    private void CardNullViewOnUI(int? cardType)
     {
-        CardImageActiveOnWeapon.sprite = null;
+        if (cardType != null) 
+        {
+            switch ((int)cardType)
+            {
+                case 1:
+                    CardImageOnWeapon1.gameObject.SetActive(false);
+                    CardButton1.gameObject.SetActive(false);
+                    break;
+                case 2:
+                    CardImageOnWeapon2.gameObject.SetActive(false);
+                    CardButton2.gameObject.SetActive(false);
+
+                    break;
+                case 3:
+                    CardImageOnWeapon3.gameObject.SetActive(false);
+                    CardButton3.gameObject.SetActive(false);
+                    break;
+                default:
+                    break;
+            }
+        }
         CardNameActiveOnWeapon.text = "";
         foreach (RectTransform effect in CardEffectContentOnWeapon)
         {
