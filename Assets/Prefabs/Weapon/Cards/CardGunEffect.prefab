@@ -95,17 +95,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38449124f455a0e45a83be548244d3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
+  encyclopediaName: CardGunEffect
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
     commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  prefab: {fileID: 6242605618657418628}
-  spriteUI: {fileID: -3596292837194420457, guid: ea9eeb19348abe747a8a0e0f96e08876,
+  spriteUI: {fileID: 5274171114913472145, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
+  cardTypeForYaric: 3
   effect: 0
   duration: 10
   interval: 1
   damage: 5
+  moduleSprites:
+  - {fileID: 7734372954204820064, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 8852742177159756912, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -6026306139748818829, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -3891731135036815119, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -8442317219950914150, guid: b798b46da739da64e884e04e8ca84422, type: 3}

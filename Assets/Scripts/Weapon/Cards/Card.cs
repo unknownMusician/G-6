@@ -11,6 +11,7 @@ public abstract class Card : EncyclopediaObject {
     public abstract Dictionary<Sprite, string> Modules { get; }
 
     public abstract CardType Type { get; }
+    public int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => cardTypeForYaric;
 
     #endregion
 
@@ -18,6 +19,8 @@ public abstract class Card : EncyclopediaObject {
 
     [SerializeField]
     protected Sprite spriteUI;
+    [SerializeField]
+    protected int cardTypeForYaric;
 
     #endregion
 

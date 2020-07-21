@@ -12,11 +12,18 @@ public class Melee : Weapon {
     public CardMeleeMemory CardMemory { get => cardMemory; private set => cardMemory = value; }
     public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
+    // UI 
+    public override Card CardSlot1 => CardShape;
+    public override Card CardSlot2 => CardMemory;
+    public override Card CardSlot3 => CardEff;
+
     ////////////
 
     protected override bool CanAttack {
         get => canAttack;
-        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier);
+        set {
+            if (!(canAttack = value))
+                SetReliefTimer(1 / ActualCardShapeProps.AttackSpeedMultiplier);
         }
     }
     private Vector3 WorldHitCentrePoint => transform.position + this.transform.rotation * localHitCentrePoint;
@@ -104,16 +111,19 @@ public class Melee : Weapon {
     public override bool InstallUnknownCard(Card card) => InstallCard(card as CardMeleeShape) || InstallCard(card as CardMeleeMemory) || InstallCard(card as CardEffect);
     public override bool UninstallUnknownCard(Card card) {
         if (card != null) {
-            var answer = transform.parent.GetComponent<Inventory>().Cards.Remove(card);
-            transform.parent.GetComponent<Inventory>().Cards = transform.parent.GetComponent<Inventory>().Cards;
-            if (card is CardMeleeShape)
-                this.CardShape = null;
-            else if (card is CardMeleeMemory)
-                this.CardMemory = null;
-            else if (card is CardEffect)
-                this.CardEff = null;
+            bool answer = false;
+            if (answer = card == CardShape)
+                CardShape = null;
+            else if (answer = card == CardMemory)
+                CardMemory = null;
+            else if (answer = card == CardEff)
+                CardEff = null;
             else
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
+            if (answer) {
+                MainData.Inventory.Cards.Add(card);
+                MainData.Inventory.Cards = MainData.Inventory.Cards;
+            }
             return answer;
         }
         return false;
@@ -128,6 +138,8 @@ public class Melee : Weapon {
             UninstallUnknownCard(this.CardShape);
             PrepareCardforInstall(cardShape);
             this.CardShape = cardShape;
+            MainData.Inventory.Cards.Remove(cardShape);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -138,6 +150,8 @@ public class Melee : Weapon {
             UninstallUnknownCard(this.CardMemory);
             PrepareCardforInstall(cardMemory);
             this.CardMemory = cardMemory;
+            MainData.Inventory.Cards.Remove(cardMemory);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -148,6 +162,8 @@ public class Melee : Weapon {
             UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
+            MainData.Inventory.Cards.Remove(cardEff);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }

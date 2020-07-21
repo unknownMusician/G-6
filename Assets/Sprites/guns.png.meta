@@ -1,40 +1,28 @@
 fileFormatVersion: 2
-guid: 507f8927a27b47e498c01c2880b1b7b4
+guid: 236e9d2269b671a44adafbcce6d2f8d5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6555575649291838755
-    second: Cards_0
+      213: 7362661061344524757
+    second: guns_0
   - first:
-      213: -1636742031616846006
-    second: Cards_1
+      213: -7349882584872989000
+    second: guns_1
   - first:
-      213: -7557494978891415441
-    second: Cards_2
+      213: -3476979527478288156
+    second: guns_2
   - first:
-      213: 6220208007999549204
-    second: Cards_3
+      213: -9170448629031416532
+    second: guns_3
   - first:
-      213: -2613411450045547498
-    second: Cards_4
+      213: -2395591618090941519
+    second: guns_4
   - first:
-      213: 6084249756908604392
-    second: Cards_5
+      213: -8012370926812475621
+    second: guns_5
   - first:
-      213: 1496609494076399042
-    second: Cards_0
-  - first:
-      213: -4763330907408239566
-    second: Cards_1
-  - first:
-      213: 5322875900323433794
-    second: Cards_2
-  - first:
-      213: 5923326318807400791
-    second: Cards_3
-  - first:
-      213: 7219211599754001155
-    second: Cards_4
+      213: 994329863909854400
+    second: guns_6
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -119,106 +107,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cards_0
+      name: guns_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 10
-        width: 10
-        height: 10
+        y: 93
+        width: 18
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2cd96edc76605c410800000000000000
-      internalID: 1496609494076399042
+      spriteID: 5d97a0be93d6d2660800000000000000
+      internalID: 7362661061344524757
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cards_1
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 10
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 234fa44e6cf35edb0800000000000000
-      internalID: -4763330907408239566
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cards_2
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 10
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 24d0446fd67aed940800000000000000
-      internalID: 5322875900323433794
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cards_3
+      name: guns_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 10
-        height: 10
+        y: 75
+        width: 18
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 751cc3167e1e33250800000000000000
-      internalID: 5923326318807400791
+      spriteID: 8bec0dbfab8fff990800000000000000
+      internalID: -7349882584872989000
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cards_4
+      name: guns_2
       rect:
         serializedVersion: 2
-        x: 10
-        y: 0
-        width: 10
-        height: 10
+        x: 0
+        y: 57
+        width: 18
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30b77b173bacf2460800000000000000
-      internalID: 7219211599754001155
+      spriteID: 4e0e955aa894fbfc0800000000000000
+      internalID: -3476979527478288156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: guns_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 39
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2d4d9b1f850cb080800000000000000
+      internalID: -9170448629031416532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: guns_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 21
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b349c0ad1621ced0800000000000000
+      internalID: -2395591618090941519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: guns_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1fccaae7175ec090800000000000000
+      internalID: -8012370926812475621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: guns_6
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 3
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ccc8e73eb19ccd00800000000000000
+      internalID: 994329863909854400
       vertices: []
       indices: 
       edges: []
@@ -235,7 +265,7 @@ TextureImporter:
     secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 1
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

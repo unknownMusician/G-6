@@ -40,6 +40,11 @@ public class Gun : Weapon {
     public CardGunFly CardFly { get => cardFly; private set => cardFly = value; }
     public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
+    // UI 
+    public override Card CardSlot1 => CardGen;
+    public override Card CardSlot2 => CardFly;
+    public override Card CardSlot3 => CardEff;
+
     //////////
 
     protected override bool CanAttack {
@@ -155,16 +160,19 @@ public class Gun : Weapon {
     public override bool InstallUnknownCard(Card card) => InstallCard(card as CardGunGen) || InstallCard(card as CardGunFly) || InstallCard(card as CardEffect);
     public override bool UninstallUnknownCard(Card card) {
         if (card != null) {
-            var answer = transform.parent.GetComponent<Inventory>().Cards.Remove(card);
-            transform.parent.GetComponent<Inventory>().Cards = transform.parent.GetComponent<Inventory>().Cards;
-            if (card is CardGunGen)
-                this.CardGen = null;
-            else if (card is CardGunFly)
-                this.CardFly = null;
-            else if (card is CardEffect)
-                this.CardEff = null;
+            bool answer = false;
+            if (answer = card == CardGen)
+                CardGen = null;
+            else if (answer = card == CardFly)
+                CardFly = null;
+            else if (answer = card == CardEff)
+                CardEff = null;
             else
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
+            if (answer) {
+                MainData.Inventory.Cards.Add(card);
+                MainData.Inventory.Cards = MainData.Inventory.Cards;
+            }
             return answer;
         }
         return false;
@@ -176,9 +184,12 @@ public class Gun : Weapon {
 
     public bool InstallCard(CardGunGen cardGen) {
         if (cardGen != null) {
-            UninstallUnknownCard(this.CardGen);
+            UninstallUnknownCard(CardGen);
             PrepareCardforInstall(cardGen);
-            this.CardGen = cardGen;
+            cardGen.gameObject.transform.SetParent(transform);
+            CardGen = cardGen;
+            MainData.Inventory.Cards.Remove(cardGen);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -188,7 +199,10 @@ public class Gun : Weapon {
         if (cardFly != null) {
             UninstallUnknownCard(this.CardFly);
             PrepareCardforInstall(cardFly);
+            cardFly.gameObject.transform.SetParent(transform);
             this.CardFly = cardFly;
+            MainData.Inventory.Cards.Remove(cardFly);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -198,7 +212,10 @@ public class Gun : Weapon {
         if (cardEff != null) {
             UninstallUnknownCard(this.CardEff);
             PrepareCardforInstall(cardEff);
+            cardEff.gameObject.transform.SetParent(transform);
             this.CardEff = cardEff;
+            MainData.Inventory.Cards.Remove(cardEff);
+            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }

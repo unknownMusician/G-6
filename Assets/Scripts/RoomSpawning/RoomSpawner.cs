@@ -39,13 +39,16 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[] Base;
     public GameObject[] Block;
 
+    private void Awake() {
+        MainData.RoomSpawner = this.gameObject;
+    }
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
-        MainData.ActionPlayerChange += () => MainData.Player.transform.position = GetCurrentLocationAll();
+        MainData.Player.transform.position = GetCurrentLocationAll();
 
         currentColumn = columns / 2;
         currentRow = rows / 2;

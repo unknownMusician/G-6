@@ -26,7 +26,6 @@ public class Inventory : MonoBehaviour {
             if (card != null) {
                 Cards.Add(card);
                 card.transform.position = this.transform.position;
-                card.gameObject.SetActive(false);
             }
         }
         Cards = Cards;

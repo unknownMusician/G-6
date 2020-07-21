@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8128536240166190532}
   - component: {fileID: -7951112939094162563}
   m_Layer: 0
-  m_Name: CardGunEffect 1
+  m_Name: CardMeleeShape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 152
-  m_Sprite: {fileID: -7557494978891415441, guid: 507f8927a27b47e498c01c2880b1b7b4,
+  m_Sprite: {fileID: 6220208007999549204, guid: 507f8927a27b47e498c01c2880b1b7b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1872771ba79dec848bdf4bc87180f30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
+  encyclopediaName: CardMeleeShape
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -104,7 +104,11 @@ MonoBehaviour:
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: 4529934356437328063, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
+  cardTypeForYaric: 1
   attackSpeedMultiplier: 1
   attackRangeMultiplier: 1
   attackDamageMultiplier: 1
-  moduleSprites: []
+  moduleSprites:
+  - {fileID: -2591416543929017400, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: 6871804029160890868, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+  - {fileID: -2496604250225788489, guid: b798b46da739da64e884e04e8ca84422, type: 3}

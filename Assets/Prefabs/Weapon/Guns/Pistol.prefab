@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 151
-  m_Sprite: {fileID: -6499825744227488493, guid: 477075e3f149aa6479b9a08bff14ecf1,
+  m_Sprite: {fileID: -7349882584872989000, guid: 236e9d2269b671a44adafbcce6d2f8d5,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   weaponCollider: {fileID: 5824781978457126539}
   throwHitDamage: 10
   bullet: {fileID: 8534761059581674040, guid: a929e10f3ff4b39488c19b9680cd6a37, type: 3}
-  localFirePoint: {x: 2, y: 0, z: 0}
+  localFirePoint: {x: 1.1, y: 0, z: 0}
   standardDamage: 20
   bulletSpeed: 20
   spread: 5

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase
 {
+    private void Awake()
+    {
+        MainData.Player = this.gameObject;
+    }
     private new void Start()
     {
 
@@ -15,8 +19,6 @@ public class PlayerBehaviour : CharacterBase
         HP = MaxHP;
         SP = MaxSP;
         OP = MaxOP;
-
-        MainData.Player = this.gameObject;
 
         base.Start();
 
