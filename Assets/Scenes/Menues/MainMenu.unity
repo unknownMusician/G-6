@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e90c52d2c8aec04294c602031d4adf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponButtonPrefab: {fileID: 363089276696256104, guid: 8b3807056b02abb459e24702565ae81a,
+  WeaponButtonPrefab: {fileID: 2707075227318319785, guid: 8b3807056b02abb459e24702565ae81a,
     type: 3}
   WeaponContent: {fileID: 312669296}
   WeaponMainImage: {fileID: 1131747870}
@@ -1722,7 +1722,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 20
   m_ChildAlignment: 3
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
@@ -4362,8 +4362,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -165.6, y: 30}
-  m_SizeDelta: {x: 255, y: 133}
+  m_AnchoredPosition: {x: -163, y: 27.37}
+  m_SizeDelta: {x: 253.59, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1131747870
 MonoBehaviour:
@@ -4385,7 +4385,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
