@@ -89,6 +89,7 @@ public class WeaponSettings : MonoBehaviour
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
+        ViewCardClear();
         ViewCard1();
         ViewCard2();
         ViewCard3();
@@ -177,20 +178,39 @@ public class WeaponSettings : MonoBehaviour
 
     public void ViewCard1()
     {
-        CardButtonUnInstall.onClick.RemoveAllListeners();
-        CardImageOnWeapon1.gameObject.SetActive(true);
-        CardImageOnWeapon1.gameObject.transform.SetSiblingIndex(2);
-        CardButton1.gameObject.SetActive(true);
-
+        bool exist = false;
         if (MainData.ActiveWeapon is Gun)
         {
-            CardImageOnWeapon1.sprite = ((Gun)MainData.ActiveWeapon).CardGen.SpriteUI;
-            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
+            if (((Gun)MainData.ActiveWeapon).CardGen != null)
+            {
+                exist = true;
+            }
         }
         else
         {
-            CardImageOnWeapon1.sprite = ((Melee)MainData.ActiveWeapon).CardShape.SpriteUI;
-            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
+            if (((Melee)MainData.ActiveWeapon).CardShape != null)
+            {
+                exist = true;
+            }
+        }
+
+        if (exist)
+        {
+            CardButtonUnInstall.onClick.RemoveAllListeners();
+            CardImageOnWeapon1.gameObject.SetActive(true);
+            CardImageOnWeapon1.gameObject.transform.SetSiblingIndex(2);
+            CardButton1.gameObject.SetActive(true);
+
+            if (MainData.ActiveWeapon is Gun)
+            {
+                CardImageOnWeapon1.sprite = ((Gun)MainData.ActiveWeapon).CardGen.SpriteUI;
+                CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
+            }
+            else
+            {
+                CardImageOnWeapon1.sprite = ((Melee)MainData.ActiveWeapon).CardShape.SpriteUI;
+                CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
+            }
         }
     }
     public void ViewCard2()
@@ -222,7 +242,7 @@ public class WeaponSettings : MonoBehaviour
 
         if (MainData.ActiveWeapon is Gun)
         {
-            CardImageOnWeapon3.sprite = ((Gun) MainData.ActiveWeapon).CardEff.SpriteUI;
+            CardImageOnWeapon3.sprite = ((Gun)MainData.ActiveWeapon).CardEff.SpriteUI;
             CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
         }
         else
@@ -232,6 +252,12 @@ public class WeaponSettings : MonoBehaviour
         }
     }
 
+    void ViewCardClear()
+    {
+        CardNullViewOnUI(1);
+        CardNullViewOnUI(2);
+        CardNullViewOnUI(3);
+    }
     #endregion
 
     #region HelperMethods
@@ -265,7 +291,7 @@ public class WeaponSettings : MonoBehaviour
 
     private void CardNullViewOnUI(int? cardType)
     {
-        if (cardType != null) 
+        if (cardType != null)
         {
             switch ((int)cardType)
             {
