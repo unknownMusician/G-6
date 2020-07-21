@@ -89,10 +89,7 @@ public class WeaponSettings : MonoBehaviour
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
-        ViewCardClear();
-        ViewCard1();
-        ViewCard2();
-        ViewCard3();
+        SetActiveCardsOnUI();
     }
 
     #endregion
@@ -169,6 +166,7 @@ public class WeaponSettings : MonoBehaviour
         {
             CardButtonUnInstall.onClick.RemoveAllListeners();
             CardNullViewOnUI(card.CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire);
+            SetActiveCardsOnUI();
         }
     }
 
@@ -176,82 +174,39 @@ public class WeaponSettings : MonoBehaviour
 
     #region Button Click View Cards On Weapon
 
-    public void ViewCard1()
+    void ViewCard1()
     {
-        bool exist = false;
-        if (MainData.ActiveWeapon is Gun)
-        {
-            if (((Gun)MainData.ActiveWeapon).CardGen != null)
-            {
-                exist = true;
-            }
-        }
-        else
-        {
-            if (((Melee)MainData.ActiveWeapon).CardShape != null)
-            {
-                exist = true;
-            }
-        }
-
-        if (exist)
-        {
-            CardButtonUnInstall.onClick.RemoveAllListeners();
-            CardImageOnWeapon1.gameObject.SetActive(true);
-            CardImageOnWeapon1.gameObject.transform.SetSiblingIndex(2);
-            CardButton1.gameObject.SetActive(true);
-
-            if (MainData.ActiveWeapon is Gun)
-            {
-                CardImageOnWeapon1.sprite = ((Gun)MainData.ActiveWeapon).CardGen.SpriteUI;
-                CardViewOnUI(((Gun)MainData.ActiveWeapon).CardGen);
-            }
-            else
-            {
-                CardImageOnWeapon1.sprite = ((Melee)MainData.ActiveWeapon).CardShape.SpriteUI;
-                CardViewOnUI(((Melee)MainData.ActiveWeapon).CardShape);
-            }
-        }
+        if (MainData.ActiveWeapon.CardSlot1 != null)
+            ViewCard(CardImageOnWeapon1, CardButton1, MainData.ActiveWeapon.CardSlot1);
     }
-    public void ViewCard2()
+    void ViewCard2()
+    {
+        if (MainData.ActiveWeapon.CardSlot2 != null)
+            ViewCard(CardImageOnWeapon2, CardButton2, MainData.ActiveWeapon.CardSlot2);
+    }
+    void ViewCard3()
+    {
+        if (MainData.ActiveWeapon.CardSlot3 != null)
+            ViewCard(CardImageOnWeapon3, CardButton3, MainData.ActiveWeapon.CardSlot3);
+    }
+
+    void ViewCard(Image img, Button btn, Card card)
     {
         CardButtonUnInstall.onClick.RemoveAllListeners();
-        CardImageOnWeapon2.gameObject.SetActive(true);
-        CardImageOnWeapon2.gameObject.transform.SetSiblingIndex(2);
-        CardButton2.gameObject.SetActive(true);
+        img.gameObject.SetActive(true);
+        img.gameObject.transform.SetSiblingIndex(2);
+        btn.gameObject.SetActive(true);
 
-
-        if (MainData.ActiveWeapon is Gun)
-        {
-            CardImageOnWeapon2.sprite = ((Gun)MainData.ActiveWeapon).CardFly.SpriteUI;
-            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardFly);
-        }
-        else
-        {
-            CardImageOnWeapon2.sprite = ((Melee)MainData.ActiveWeapon).CardMemory.SpriteUI;
-            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardMemory);
-        }
+        img.sprite = card.SpriteUI;
+        CardViewOnUI(card);
     }
-    public void ViewCard3()
+    void SetActiveCardsOnUI()
     {
-        CardButtonUnInstall.onClick.RemoveAllListeners();
-        CardImageOnWeapon3.gameObject.SetActive(true);
-        CardImageOnWeapon3.gameObject.transform.SetSiblingIndex(2);
-        CardButton3.gameObject.SetActive(true);
-
-
-        if (MainData.ActiveWeapon is Gun)
-        {
-            CardImageOnWeapon3.sprite = ((Gun)MainData.ActiveWeapon).CardEff.SpriteUI;
-            CardViewOnUI(((Gun)MainData.ActiveWeapon).CardEff);
-        }
-        else
-        {
-            CardImageOnWeapon3.sprite = ((Melee)MainData.ActiveWeapon).CardEff.SpriteUI;
-            CardViewOnUI(((Melee)MainData.ActiveWeapon).CardEff);
-        }
+        ViewCardClear();
+        ViewCard1();
+        ViewCard2();
+        ViewCard3();
     }
-
     void ViewCardClear()
     {
         CardNullViewOnUI(1);
