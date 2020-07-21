@@ -12,6 +12,11 @@ public class Melee : Weapon {
     public CardMeleeMemory CardMemory { get => cardMemory; private set => cardMemory = value; }
     public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
+    // UI 
+    public override Card CardSlot1 => CardShape;
+    public override Card CardSlot2 => CardMemory;
+    public override Card CardSlot3 => CardEff;
+
     ////////////
 
     protected override bool CanAttack {

@@ -33,6 +33,11 @@ public abstract class Weapon : EncyclopediaObject {
         }
     }
 
+    // UI 
+    public abstract Card CardSlot1 { get; }
+    public abstract Card CardSlot2 { get; }
+    public abstract Card CardSlot3 { get; }
+
     #endregion
 
     #region Public Variables
