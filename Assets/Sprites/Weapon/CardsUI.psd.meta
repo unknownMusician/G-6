@@ -32,6 +32,9 @@ TextureImporter:
   - first:
       213: -5535151306036099960
     second: CardsUI_4
+  - first:
+      213: -1756587984135341477
+    second: CardsUI_2
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -116,27 +119,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CardsUI_2
-      rect:
-        serializedVersion: 2
-        x: 92
-        y: 55
-        width: 46
-        height: 55
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19e1b0d6fae913940800000000000000
-      internalID: 5274171114913472145
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: CardsUI_3
       rect:
         serializedVersion: 2
@@ -172,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71faeb2f7b6671ec0800000000000000
-      internalID: -3596292837194420457
+      spriteID: 0ac96940bb18e6d20800000000000000
+      internalID: 3273696619380776096
       vertices: []
       indices: 
       edges: []
@@ -193,8 +175,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c0312b7c64937d10800000000000000
-      internalID: 2122203043064787140
+      spriteID: f2a81fc7e2e5854a0800000000000000
+      internalID: -6604425299781121489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardsUI_2
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 55
+        width: 46
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5ab4e409885f97e0800000000000000
+      internalID: -1756587984135341477
       vertices: []
       indices: 
       edges: []
@@ -203,7 +206,7 @@ TextureImporter:
       name: CardsUI_4
       rect:
         serializedVersion: 2
-        x: 92
+        x: 46
         y: 0
         width: 46
         height: 55
@@ -214,8 +217,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d181eaf2dc225f4e0800000000000000
-      internalID: -1948612999104292835
+      spriteID: 884cda1b6313f23b0800000000000000
+      internalID: -5535151306036099960
       vertices: []
       indices: 
       edges: []
