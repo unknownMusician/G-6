@@ -89,6 +89,7 @@ public class WeaponSettings : MonoBehaviour
         WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
         MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
+
         SetActiveCardsOnUI();
     }
 
