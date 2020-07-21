@@ -660,7 +660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303b786029053934f878d95b9e8d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 0
 --- !u!60 &4051114423131726217
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1555,7 +1554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e6b7f9268ebac45b997a60ac0905f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 0
+  direction: 3
 --- !u!60 &5758674252738682240
 PolygonCollider2D:
   m_ObjectHideFlags: 0

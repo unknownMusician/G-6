@@ -7,7 +7,21 @@ public class PlaceForRoom {
     private short bottomDoor;
     private short leftDoor;
 
+    public byte AmountOfDoors { get; set; }
+
     public PlaceForRoom(short topDoor, short rightDoor, short bottomDoor, short leftDoor) {
+        AmountOfDoors = 0;
+
+        if (topDoor == 1) {
+            AmountOfDoors += 1;
+        } else if (rightDoor == 1) {
+            AmountOfDoors += 1;
+        } else if (bottomDoor == 1) {
+            AmountOfDoors += 1;
+        } else if (leftDoor == 1) {
+            AmountOfDoors += 1;
+        }
+        
         this.topDoor = topDoor;
         this.rightDoor = rightDoor;
         this.bottomDoor = bottomDoor;
@@ -15,21 +29,34 @@ public class PlaceForRoom {
     }
 
     public PlaceForRoom() {
+        AmountOfDoors = 0;
     }
 
     public void setTop(short door) {
+        if (topDoor == 1) {
+            AmountOfDoors += 1;
+        }
         this.topDoor = door;
     }
 
     public void setRight(short door) {
+        if (rightDoor == 1) {
+            AmountOfDoors += 1;
+        }
         this.rightDoor = door;
     }
 
     public void setBottom(short door) {
+        if (bottomDoor == 1) {
+            AmountOfDoors += 1;
+        }
         this.bottomDoor = door;
     }
 
     public void setLeft(short door) {
+        if (leftDoor == 1) {
+            AmountOfDoors += 1;
+        }
         this.leftDoor = door;
     }
 
