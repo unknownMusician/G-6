@@ -40,6 +40,11 @@ public class Gun : Weapon {
     public CardGunFly CardFly { get => cardFly; private set => cardFly = value; }
     public CardEffect CardEff { get => cardEff; private set => cardEff = value; }
 
+    // UI 
+    public override Card CardSlot1 => CardGen;
+    public override Card CardSlot2 => CardFly;
+    public override Card CardSlot3 => CardEff;
+
     //////////
 
     protected override bool CanAttack {
