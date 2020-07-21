@@ -77,7 +77,6 @@ public class CardMeleeMemory : Card {
         DesertMemory = 2,
         ThisTimeMemory = 3,
         AlienMemory = 4,
-        FuckYouMemory = 5
     }
 
     #endregion

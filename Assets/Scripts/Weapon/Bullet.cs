@@ -28,6 +28,7 @@ public class Bullet : EncyclopediaObject {
 
     private GameObject aim;
     private int piercingCount;
+    private CardEffect.NestedProps effectProps;
 
     #endregion
 
@@ -41,7 +42,8 @@ public class Bullet : EncyclopediaObject {
         bool teleporting = false,
         bool magnet = false,
         int enemyLayerMask = 0,
-        int magnettingLayerMask = 0) {
+        int magnettingLayerMask = 0,
+        CardEffect.NestedProps effectProps = null) {
 
         this.damage = dmg;
         this.ricochet = ricochet;
@@ -51,10 +53,11 @@ public class Bullet : EncyclopediaObject {
         this.magnet = magnet;
         this.enemy = enemyLayerMask;
         this.magnetting = magnettingLayerMask;
+        this.effectProps = effectProps;
         Prepare();
     }
 
-    public void SetParams(float dmg, CardGunFly.NestedProps bulletProps) {
+    public void SetParams(float dmg, CardGunFly.NestedProps bulletProps, CardEffect.NestedProps effectProps = null) {
 
         this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
@@ -64,6 +67,7 @@ public class Bullet : EncyclopediaObject {
         this.magnet = bulletProps.Magnet;
         this.enemy = bulletProps.Enemy;
         this.magnetting = bulletProps.Magnetting;
+        this.effectProps = effectProps;
         Prepare();
     }
 
@@ -105,7 +109,10 @@ public class Bullet : EncyclopediaObject {
     private void OnCollisionEnter2D(Collision2D collision) {
         var cb = collision.gameObject.GetComponent<CharacterBase>();
         if (cb != null) {
-            cb.TakeDamage(rb.velocity.normalized * damage);
+            if (effectProps != null)
+                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
+            else
+                cb.TakeDamage(rb.velocity.normalized * damage);
             Destroy(this.gameObject);
             return;
         }
