@@ -225,8 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d48a9ad7d506ed45b4ea762fc7246ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localFistFightCentrePoint: {x: 1, y: 0, z: 0}
-  fistFightAreaRadius: 1
+  localFistFightCentrePoint: {x: 0.5, y: 0.2, z: 0}
+  fistFightAreaRadius: 0.7
   attackSpeedMultiplier: 1
   damage: 1
 --- !u!1 &4333165458918672411
@@ -599,6 +599,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4333165458613876750}
     m_Modifications:
+    - target: {fileID: 583393509581014047, guid: 8010f87871741d14c8c10208f6070470,
+        type: 3}
+      propertyPath: hitAreaRadius
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8902850384399324635, guid: 8010f87871741d14c8c10208f6070470,
         type: 3}
       propertyPath: m_Name
