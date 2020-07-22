@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7166514618355496438}
   - component: {fileID: 2940634800210582459}
   m_Layer: 0
-  m_Name: Point Light 2D
+  m_Name: Bullet Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Color: {r: 0.963735, g: 1, b: 0, a: 1}
   m_Intensity: 0.2
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 000000003ba94396
+  m_ApplyToSortingLayers: 000000006735e18e
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 1
   m_LightOrder: 0
