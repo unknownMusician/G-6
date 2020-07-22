@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Custom_GaussianBlurHoriz
   m_Shader: {fileID: 4800000, guid: fb9e4102ea0e56b4693db17245dd5d88, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,14 +24,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Intensity: 0
-    - _LookAngle: -2.9189162
+    - _Intensity: 1
+    - _LookAngle: 0
     - _PxIntensity: 50
     - _ShowInColor: 0
-    - _ViewWidth: 6
+    - _ViewWidth: 0
     m_Colors:
-    - _LookPos: {r: -0.28060165, g: 0.22324723, b: 0, a: 0}
-    - _Offset: {r: 0, g: -0.01, b: 0, a: 0}
-    - _OffsetRot: {r: 0, g: -0.05, b: 0, a: 0}
-    - _PlayerPos: {r: 0.5, g: 0.39999998, b: 0, a: 0}
-    - _Resolution: {r: 964, g: 542, b: 0, a: 0}
+    - _LookPos: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _OffsetRot: {r: 0, g: 0, b: 0, a: 0}
+    - _PlayerPos: {r: 0, g: 0, b: 0, a: 0}
+    - _Resolution: {r: 0, g: 0, b: 0, a: 0}

@@ -7,8 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_GaussianBlurVert
-  m_Shader: {fileID: 4800000, guid: 8cd42fc21a6753545ab097c41cc44ac5, type: 3}
+  m_Name: Shader Graphs_Glow Lit
+  m_Shader: {fileID: -6465566751694194690, guid: 0b28a2d8c76e0154089abc53be5d1cb2,
+    type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,19 +20,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: e6aad9c09aec1e44592abf8a38ffdad7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Intensity: 1
-    - _LookAngle: 0
-    - _PxIntensity: 50
-    - _ShowInColor: 0
-    - _ViewWidth: 0
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2f20767c47669f4419e25ce2e795e02d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
     m_Colors:
-    - _LookPos: {r: 0, g: 0, b: 0, a: 0}
-    - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _OffsetRot: {r: 0, g: 0, b: 0, a: 0}
-    - _PlayerPos: {r: 0, g: 0, b: 0, a: 0}
-    - _Resolution: {r: 0, g: 0, b: 0, a: 0}
+    - Color_69F47D16: {r: 0.9544354, g: 1, b: 0.033018887, a: 1}
