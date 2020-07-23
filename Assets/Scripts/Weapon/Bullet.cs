@@ -122,7 +122,27 @@ public class Bullet : EncyclopediaObject {
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
-        piercingCount--;
+        // To-Do
+        // Damage:
+        var cb = collider.gameObject.GetComponent<CharacterBase>();
+        if (cb != null) {
+            if (effectProps != null)
+                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
+            else
+                cb.TakeDamage(rb.velocity.normalized * damage);
+        }
+        // Collide:
+        if (piercingCount <= 0) {
+            if (!ricochet) {
+                Destroy(this.gameObject);
+            } else {
+                // jump
+                var moveRotation = Quaternion.FromToRotation(rb.velocity, collider.gameObject.transform.position - transform.position);
+                rb.velocity = -(moveRotation * (moveRotation * rb.velocity)).normalized * rb.velocity.magnitude;
+            }
+        } else {
+            piercingCount--;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collider) {
