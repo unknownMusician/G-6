@@ -43,8 +43,9 @@ public class WeaponSettings : MonoBehaviour
     }
 
     #region Action Subsription Managment
-    public void Awake()
+    public void OnEnable()
     {
+
         MainData.ActionInventoryWeaponsChange += SetAllWeapons;
         SetAllWeapons();
         WeaponClick(MainData.ActiveWeapon);
@@ -169,6 +170,11 @@ public class WeaponSettings : MonoBehaviour
             CardNullViewOnUI(card.CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire);
             SetActiveCardsOnUI();
         }
+
+        if (!CardButton1.gameObject.active && !CardButton2.gameObject.active && !CardButton3.gameObject.active)
+        {
+            CardButtonUnInstall.gameObject.SetActive(false);
+        }
     }
 
     #endregion
@@ -193,6 +199,7 @@ public class WeaponSettings : MonoBehaviour
 
     void ViewCard(Image img, Button btn, Card card)
     {
+        CardButtonUnInstall.gameObject.SetActive(true);
         CardButtonUnInstall.onClick.RemoveAllListeners();
         img.gameObject.SetActive(true);
         img.gameObject.transform.SetSiblingIndex(2);
