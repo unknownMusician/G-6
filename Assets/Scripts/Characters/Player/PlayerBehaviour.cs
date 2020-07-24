@@ -194,6 +194,8 @@ public class PlayerBehaviour : CharacterBase
         foreach (Transform tr in LeftSideCheckers) {
             Gizmos.DrawSphere(tr.position, 0.1f);
         }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(EnvironmentChecker.position, 0.1f);
     }
 
 }
