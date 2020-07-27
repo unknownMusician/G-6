@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -195,7 +195,7 @@ public class PlayerBehaviour : CharacterBase
             Gizmos.DrawSphere(tr.position, 0.1f);
         }
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(EnvironmentChecker.position, 0.1f);
+        Gizmos.DrawSphere(EnvironmentChecker.transform.position, 0.1f);
     }
 
 }

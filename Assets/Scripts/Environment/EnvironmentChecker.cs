@@ -7,7 +7,7 @@ public class EnvironmentChecker : MonoBehaviour
 {
     protected List<BaseEnvironment> environments;
 
-    protected BaseEnvironment ClosestEnvironment
+    public BaseEnvironment ClosestEnvironment
     {
         get
         {
@@ -26,13 +26,16 @@ public class EnvironmentChecker : MonoBehaviour
         environments = new List<BaseEnvironment>();
     }
 
-    protected void OnCollisionEnter2D(Collision2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject collisionObject = collision.gameObject;
         if (collisionObject.GetComponent<BaseEnvironment>() != null)
+        {
             environments.Add(collisionObject.GetComponent<BaseEnvironment>());
+            Debug.DrawLine(this.transform.position, collisionObject.transform.position);
+        }
     }
-    protected void OnCollisionExit2D(Collision2D collision)
+    protected void OnTriggerExit2D(Collider2D collision)
     {
         GameObject collisionObject = collision.gameObject;
         environments.Remove(collisionObject.GetComponent<BaseEnvironment>());

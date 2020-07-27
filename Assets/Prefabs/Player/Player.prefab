@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 2690968997929017861}
   - component: {fileID: 5739660461263998211}
   - component: {fileID: 3929323170341243086}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EvironmentChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 1.3
 --- !u!114 &3929323170341243086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   - {fileID: 6938791755704354251}
   - {fileID: 1901374522697826295}
   - {fileID: 1245556496924350042}
-  EnvironmentChecker: {fileID: 2690968997929017861}
+  EnvironmentChecker: {fileID: 3929323170341243086}
   CanFly: 0
   JumpForce: 25
   HorizontalSpeed: 15

@@ -12,7 +12,7 @@ public abstract class CharacterBase : MonoBehaviour
     [SerializeField]
     protected List<Transform> RightSideCheckers;
     [SerializeField] 
-    protected Transform EnvironmentChecker;
+    protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
     [SerializeField]
@@ -67,7 +67,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     #region Environment
 
-    protected BaseEnvironment InteractableObject;
+    protected BaseEnvironment InteractableObject => EnvironmentChecker.ClosestEnvironment;
 
     protected float DistanceToInteractableObject
     {
