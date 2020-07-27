@@ -41,6 +41,7 @@ public class RoomSpawner : MonoBehaviour {
     private void Awake() {
         MainData.RoomSpawner = this.gameObject;
     }
+
     private void Start() {
 
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
@@ -453,8 +454,16 @@ public class RoomSpawner : MonoBehaviour {
         return result;
     }
 
-    public GameObject GetActiveRoom() {
+    public GameObject GetGameObjectOfTheActiveRoom() {
         return roomsGameObjectMatrix[CurrentRow, CurrentColumn];
+    }
+
+    public Room GetRoomComponentOfTheActiveRoom() {
+        return roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Room>();
+    }
+
+    public Transform GetTransformComponentOfTheActiveRoom() {
+        return roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Transform>();
     }
 
     public bool IsThereAnyEnemy(int row, int column) {
