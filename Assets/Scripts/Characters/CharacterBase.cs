@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
@@ -13,6 +11,8 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
+    [SerializeField] 
+    protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
     [SerializeField]
@@ -23,6 +23,9 @@ public abstract class CharacterBase : MonoBehaviour
 
     [SerializeField]
     protected float HorizontalSpeed;
+
+    [SerializeField]
+    protected float InteractionRadius;
 
     [SerializeField]
     protected float ClimbingSpeed;
@@ -64,7 +67,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     #region Environment
 
-    protected BaseEnvironment InteractableObject;
+    protected BaseEnvironment InteractableObject => EnvironmentChecker.ClosestEnvironment;
 
     protected float DistanceToInteractableObject
     {
@@ -221,17 +224,41 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected bool TryInteract()
     {
+        //try
+        //{
+        //    if (InteractableObject == null)
+        //        return false;
+        //    InteractableObject.Interact();
+        //    return true;
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logger.LogW(ex, "Problems with interraction in CharacterBase script");
+        //}
+        //return false;
+
         try
         {
-            if (InteractableObject == null)
-                return false;
-            InteractableObject.Interact();
-            return true;
+            List<BaseEnvironment> allEnvironment = GameObject.FindObjectsOfType<BaseEnvironment>()
+                .OrderBy(p => (this.transform.position - p.transform.position).sqrMagnitude)
+                .ToList();
+
+            if (allEnvironment.Count != 0)
+            {
+                if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
+                {
+                    allEnvironment[0].Interact();
+                    Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
+                    return true;
+                }
+            }
+
         }
         catch (Exception ex)
         {
-            Logger.LogW(ex, "Problems with interraction in CharacterBase script");
+            Logger.LogW(ex, "Problems with interaction in CharacterBase script");
         }
+
         return false;
     }
 
@@ -239,7 +266,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         foreach (CardEffect.EffectType effect in Enum.GetValues(typeof(CardEffect.EffectType)).Cast<CardEffect.EffectType>())
         {
-            if(CurrentEffects.ContainsKey(effect))
+            if (CurrentEffects.ContainsKey(effect))
                 CurrentEffects[effect].Act(Time.deltaTime);
         }
     }
@@ -286,19 +313,6 @@ public abstract class CharacterBase : MonoBehaviour
         WeaponFixedControl();
         EffectsFixedControl();
     }
-    protected void OnCollisionEnter2D(Collision2D collision)
-    {
-         GameObject collisionObject = collision.gameObject;
-        if (collisionObject.GetComponent<BaseEnvironment>() != null)
-            if (collisionObject.gameObject.transform.position.magnitude < DistanceToInteractableObject)
-                InteractableObject = collisionObject.GetComponent<BaseEnvironment>();
-    }
-    protected void OnCollisionExit2D(Collision2D collision)
-    {
-        GameObject collisionObject = collision.gameObject;
-        if (collisionObject.GetComponent<BaseEnvironment>() == InteractableObject)
-            InteractableObject = null;
-    }
     #endregion
 
 
@@ -307,7 +321,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now : hh:mm:ss t z}. Now I have {HP} HP");
+        Say($"Ouch, I've taken {damage} damage at {DateTime.Now: hh:mm:ss t z}. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }
@@ -316,7 +330,8 @@ public abstract class CharacterBase : MonoBehaviour
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
     }
-    public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop) {
+    public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop)
+    {
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
         TakeEffect(prop);
