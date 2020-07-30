@@ -24,28 +24,28 @@ public class GameUI : MonoBehaviour
     {
         if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
         {
-            if (PauseMenu.GameIsPaused)
+            if (Pause.GameIsPaused)
             {
                 menu.SetActive(false);
-                PauseMenu.GameIsPaused = false;
+                Pause.GameIsPaused = false;
             }
             else
             {
-                PauseMenu.GameIsPaused = true;
+                Pause.GameIsPaused = true;
                 menu.SetActive(true);
             }
 
         }
         if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawner.GetComponent<RoomSpawner>().GetActiveRoom().GetComponent<Room>().IsThereAnyEnemy() && !menu.activeInHierarchy)
         {
-            if (PauseMenu.GameIsPaused)
+            if (Pause.GameIsPaused)
             {
-                PauseMenu.GameIsPaused = false;
+                Pause.GameIsPaused = false;
                 weaponSettings.SetActive(false);
             }
             else
             {
-                PauseMenu.GameIsPaused = true;
+                Pause.GameIsPaused = true;
                 weaponSettings.SetActive(true);
             }
         }
