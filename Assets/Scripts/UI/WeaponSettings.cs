@@ -171,7 +171,7 @@ public class WeaponSettings : MonoBehaviour
             SetActiveCardsOnUI();
         }
 
-        if (!CardButton1.gameObject.active && !CardButton2.gameObject.active && !CardButton3.gameObject.active)
+        if (!CardButton1.gameObject.activeInHierarchy && !CardButton2.gameObject.activeInHierarchy && !CardButton3.gameObject.activeInHierarchy)
         {
             CardButtonUnInstall.gameObject.SetActive(false);
         }
