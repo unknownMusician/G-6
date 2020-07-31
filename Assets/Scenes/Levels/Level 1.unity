@@ -611,9 +611,11 @@ MonoBehaviour:
   GroundCheckers: []
   LeftSideCheckers: []
   RightSideCheckers: []
+  EnvironmentChecker: {fileID: 0}
   CanFly: 0
   JumpForce: 0
   HorizontalSpeed: 0
+  InteractionRadius: 0
   ClimbingSpeed: 0
   ContactLayer:
     serializedVersion: 2

@@ -36,7 +36,7 @@ public class GameUI : MonoBehaviour
             }
 
         }
-        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawner.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
+        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
         {
             if (Pause.GameIsPaused)
             {
@@ -64,7 +64,7 @@ public class GameUI : MonoBehaviour
         MainData.ActionHPChange += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
         //endurance
-        MainData.ActionHPChange += SetEndurance;
+        MainData.ActionSPChange += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
         //money
         MainData.ActionPlayerCoinsChange += SetMoney;

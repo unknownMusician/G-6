@@ -11,7 +11,7 @@ public class MainData
 
     private static GameObject player;
 
-    public static GameObject Player
+    public static GameObject PlayerObject
     {
         get => player;
         set
@@ -25,18 +25,18 @@ public class MainData
     /// </summary>
     public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionSPChange + ActionOPChange;
 
-    public static GameObject RoomSpawner { get; set; }
+    public static GameObject RoomSpawnerObject { get; set; }
 
     #endregion
 
     #region Player
 
-    public static PlayerBehaviour PlayerBehaviour => Player?.GetComponent<PlayerBehaviour>();
+    public static PlayerBehaviour PlayerBehaviour => PlayerObject?.GetComponent<PlayerBehaviour>();
 
     //
 
     public static Action ActionPlayerPositionChange;
-    public static Vector3 PlayerPosition { get => Player.transform.position; }
+    public static Vector3 PlayerPosition { get => PlayerObject.transform.position; }
 
     private static int coins = 5;
     public static Action ActionPlayerCoinsChange;
@@ -62,7 +62,7 @@ public class MainData
 
     #region Inventory & Guns
 
-    public static Inventory Inventory => Player?.GetComponentInChildren<Inventory>();
+    public static Inventory Inventory => PlayerObject?.GetComponentInChildren<Inventory>();
     public static Weapon ActiveWeapon => Inventory?.Weapon;
 
     public static Action ActionInventoryCardsChange;

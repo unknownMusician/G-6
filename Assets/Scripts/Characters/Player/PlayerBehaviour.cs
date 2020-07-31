@@ -7,7 +7,7 @@ public class PlayerBehaviour : CharacterBase
 {
     private void Awake()
     {
-        MainData.Player = this.gameObject;
+        MainData.PlayerObject = this.gameObject;
     }
     private new void Start()
     {

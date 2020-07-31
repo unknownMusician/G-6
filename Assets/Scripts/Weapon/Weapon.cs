@@ -22,11 +22,11 @@ public abstract class Weapon : EncyclopediaObject {
             Debug.Log(TAG + "Changed state: " + WeaponState);
             switch (WeaponState) {
                 case State.Main:
-                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    this.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     animator.SetBool("secondState", false);
                     break;
                 case State.Alt:
-                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    this.transform.localRotation = Quaternion.Euler(0, 0, -90);
                     animator.SetBool("secondState", true);
                     break;
             }

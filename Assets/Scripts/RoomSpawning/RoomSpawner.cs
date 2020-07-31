@@ -39,7 +39,7 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[] Block;
 
     private void Awake() {
-        MainData.RoomSpawner = this.gameObject;
+        MainData.RoomSpawnerObject = this.gameObject;
     }
 
     private void Start() {
@@ -48,7 +48,7 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
-        MainData.Player.transform.position = GetCurrentLocationAll();
+        MainData.PlayerObject.transform.position = GetCurrentLocationAll();
 
         CurrentColumn = columns / 2;
         CurrentRow = rows / 2;
