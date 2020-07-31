@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 8563389799928808152}
   - component: {fileID: 4333165458918672391}
   - component: {fileID: 7715449821927201659}
+  - component: {fileID: 6525486680413751545}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -551,7 +552,95 @@ MonoBehaviour:
   FatiguePerFrame: 40
   HorizontalBust: 1.5
   SPRegenerationPerFrame: 10
-  Inventory: {fileID: 2847807284984056052}
+--- !u!114 &6525486680413751545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4333165458918672411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a2824b2eff0857d4e93311b466e14f4b,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7715449821927201659}
+        m_MethodName: TakeDamage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c021430f-d850-4d44-8afa-eaef4bc0bf03
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7715449821927201659}
+        m_MethodName: 
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a0717508-a040-4769-902e-3d74182df511
+    m_ActionName: Weapon/Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8daeed15-af27-4706-a5f3-5f334f3ddc98
+    m_ActionName: Weapon/ChangeWeaponState[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44a03c58-aca7-4b81-97fd-c6eca422e05e
+    m_ActionName: Weapon/Throw[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 200f56a6-7408-4466-b48e-5579d74e6f7e
+    m_ActionName: Weapon/Slot1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8dab73d7-1622-4056-8a64-71bbb3a076a1
+    m_ActionName: Weapon/Slot2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 57882988-c62b-4177-bd3a-75774986ab92
+    m_ActionName: Weapon/Slot3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bda44f08-c582-490f-86dd-f60a680c16dc
+    m_ActionName: Weapon/Slot4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3be61b4c-2fcd-4330-bbee-13216ec1e025
+    m_ActionName: Weapon/ChangeSlot[/Mouse/scroll,/Mouse/scroll]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &5375603967128161197
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerBehaviour : CharacterBase
 {
@@ -33,7 +34,6 @@ public class PlayerBehaviour : CharacterBase
             MainData.ActionOPChange?.Invoke();
         }
     }
-
 
     private void Awake()
     {
@@ -210,6 +210,21 @@ public class PlayerBehaviour : CharacterBase
             weaponThrowRelease = false;
         }
     }
+
+    #endregion
+
+    #region Input
+
+    public void InputAttack(InputAction.CallbackContext context) {
+        weaponAttack = true;
+        Debug.Log("It Works!");
+        Debug.Log(context);
+    }
+
+    //public void InputAim(InputAction.CallbackContext context) {
+    //    weaponAimPoint = context.ReadValue<Vector2>();
+    //    Debug.Log("It Works!");
+    //}
 
     #endregion
 

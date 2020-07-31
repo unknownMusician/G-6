@@ -11,10 +11,13 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
+    [Space]
     [SerializeField]
     protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
+    [Space]
+    [Space]
     [SerializeField]
     protected bool CanFly;
 
@@ -106,11 +109,10 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion  
 
 
-    #region Guns&Inventory
+    #region Weapons&Inventory
 
-    #region Fields
-    [SerializeField]
-    protected Inventory Inventory;
+    #region Properties
+    protected Inventory Inventory => GetComponentInChildren<Inventory>();
     #endregion
 
     #region Methods

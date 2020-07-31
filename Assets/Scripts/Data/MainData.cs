@@ -93,4 +93,10 @@ public class MainData
     }
 
     #endregion
+
+    #region Input
+
+    // public Controls Controls => PlayerBehaviour.Controls;
+
+    #endregion
 }
