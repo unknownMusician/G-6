@@ -82,8 +82,8 @@ public class GameUI : MonoBehaviour
     }
     public void SetEndurance()
     {
-        endurance.maxValue = MainData.PlayerMaxHP;
-        endurance.value = MainData.PlayerHP;
+        endurance.maxValue = MainData.PlayerMaxSP;
+        endurance.value = MainData.PlayerSP;
     }
     public void SetMoney()
     {

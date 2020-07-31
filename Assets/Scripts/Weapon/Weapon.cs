@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Timers;
 using System;
 
-public abstract class Weapon : MonoBehaviour {
+public abstract class Weapon : BaseEnvironment {
 
     const string TAG = "Weapon: ";
 
@@ -139,8 +139,27 @@ public abstract class Weapon : MonoBehaviour {
         transform.localScale = Vector3.one;
         rigidBody.velocity += direction; // "throwed" the weapon
         rigidBody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
-        //rigidBody.angularVelocity = -Mathf.Sign(direction.x) * direction.magnitude * 150f;
         Debug.Log(rigidBody.angularVelocity);
+    }
+
+    #endregion
+
+    #region Environment (Interaction)
+
+    public override void Interact(GameObject whoInterracted) {
+        // To-Do
+        var cb = whoInterracted?.GetComponent<CharacterBase>();
+        if (cb != null){
+            rigidBody.velocity = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
+            transform.rotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
+            DisablePhysics();
+            gameObject.transform.parent = whoInterracted.GetComponentInChildren<Inventory>().transform;
+            friend = null;
+            WeaponState = State.Main;
+            Debug.Log(TAG + "Picked");
+        }
     }
 
     #endregion
