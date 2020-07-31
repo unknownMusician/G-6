@@ -106,48 +106,28 @@ public class Bullet : EncyclopediaObject {
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        var cb = collision.gameObject.GetComponent<CharacterBase>();
-        if (cb != null) {
-            if (effectProps != null)
-                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
-            else
-                cb.TakeDamage(rb.velocity.normalized * damage);
-            Destroy(this.gameObject);
-            return;
-        }
-        if (!ricochet) {
-            Destroy(this.gameObject);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collider) {
-        // To-Do
-        // Damage:
-        var cb = collider.gameObject.GetComponent<CharacterBase>();
-        if (cb != null) {
-            if (effectProps != null)
-                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
-            else
-                cb.TakeDamage(rb.velocity.normalized * damage);
-        }
-        // Collide:
-        if (piercingCount <= 0) {
-            if (!ricochet) {
-                Destroy(this.gameObject);
-            } else {
-                // jump
-                var moveRotation = Quaternion.FromToRotation(rb.velocity, collider.gameObject.transform.position - transform.position);
-                rb.velocity = -(moveRotation * (moveRotation * rb.velocity)).normalized * rb.velocity.magnitude;
+        if (!collider.isTrigger) {
+            // Damage:
+            var cb = collider.gameObject.GetComponent<CharacterBase>();
+            if (cb != null) {
+                if (effectProps != null)
+                    cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
+                else
+                    cb.TakeDamage(rb.velocity.normalized * damage);
             }
-        } else {
-            piercingCount--;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collider) {
-        if (piercingCount <= 0) {
-            this.gameObject.GetComponent<CircleCollider2D>().isTrigger = false;
+            // Collide:
+            if (piercingCount <= 0) {
+                if (!ricochet) {
+                    Destroy(this.gameObject);
+                } else {
+                    // jump
+                    var moveRotation = Quaternion.FromToRotation(rb.velocity, collider.gameObject.transform.position - transform.position);
+                    rb.velocity = -(moveRotation * (moveRotation * rb.velocity)).normalized * rb.velocity.magnitude;
+                }
+            } else {
+                piercingCount--;
+            }
         }
     }
 
