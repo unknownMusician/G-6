@@ -25,9 +25,6 @@ public class SaveData
     public float CurrHp;
     public float HP;
 
-    public float currXP;
-    public float XP;
-
     public int level;
 
     public float[] position; //В Unity позиция игрока записана с помощью класса Vector3, но его нельзя сериализовать. Чтобы обойти эту проблему, данные о позиции будут помещены в массив типа float.
@@ -37,9 +34,6 @@ public class SaveData
         //Получение данных, которые нужно сохранить
         HP = MainData.PlayerMaxHP;
         CurrHp = MainData.PlayerHP;
-        
-        XP = MainData.PlayerMaxXP;
-        currXP = MainData.PlayerXP;
 
         level = MainData.Level;
 

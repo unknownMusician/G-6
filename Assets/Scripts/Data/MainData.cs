@@ -13,10 +13,7 @@ public class MainData
 
     public static GameObject Player
     {
-        get
-        {
-            return player;
-        }
+        get => player;
         set
         {
             player = value;
@@ -26,7 +23,7 @@ public class MainData
     /// <summary>
     /// Calls only on the start of each scene;
     /// </summary>
-    public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionXPChange + ActionSPChange + ActionOPChange;
+    public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionSPChange + ActionOPChange;
 
     public static GameObject RoomSpawner { get; set; }
 
@@ -42,32 +39,12 @@ public class MainData
     public static Vector3 PlayerPosition { get => Player.transform.position; }
 
     private static int coins = 5;
-    // To-Do: add coins to PlayerBehaviour;
     public static Action ActionPlayerCoinsChange;
     public static int PlayerCoins {
         get => coins;
         set {
             coins = value;
             ActionPlayerCoinsChange?.Invoke();
-        }
-    }
-
-    private static float xp;
-    private static float maxXp;
-    // To-Do: add xp to PlayerBehaviour;
-    public static Action ActionXPChange;
-    public static float PlayerXP {
-        get => xp;
-        set {
-            xp = value;
-            ActionXPChange?.Invoke();
-        }
-    }
-    public static float PlayerMaxXP {
-        get => maxXp;
-        set {
-            maxXp = value;
-            ActionXPChange?.Invoke();
         }
     }
 
@@ -85,8 +62,7 @@ public class MainData
 
     #region Inventory & Guns
 
-    // To-Do: add NORMAL inventoryCards to Inventory;
-    public static Inventory Inventory => Player?.transform.GetChild(0)?.gameObject.GetComponent<Inventory>();
+    public static Inventory Inventory => Player?.GetComponentInChildren<Inventory>();
     public static Weapon ActiveWeapon => Inventory?.Weapon;
 
     public static Action ActionInventoryCardsChange;
