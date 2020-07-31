@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnvTest : BaseEnvironment
 {
-    public override void Interact()
+    public override void Interact(GameObject whoInterracted)
     {
         Debug.Log("He intered? oh my!");
     }

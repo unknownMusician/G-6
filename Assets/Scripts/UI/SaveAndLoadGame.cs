@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -21,11 +22,8 @@ public class SaveAndLoadGame : MonoBehaviour
 public class SaveData
 {
     //Создание полей с игровыми параметрами
-    public float currHP;
+    public float CurrHp;
     public float HP;
-
-    public float currXP;
-    public float XP;
 
     public int level;
 
@@ -35,10 +33,7 @@ public class SaveData
     {
         //Получение данных, которые нужно сохранить
         HP = MainData.PlayerMaxHP;
-        currHP = MainData.PlayerHP;
-        
-        XP = MainData.PlayerMaxXP;
-        currXP = MainData.PlayerXP;
+        CurrHp = MainData.PlayerHP;
 
         level = MainData.Level;
 

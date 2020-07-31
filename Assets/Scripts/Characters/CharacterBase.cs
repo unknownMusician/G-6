@@ -274,7 +274,7 @@ public abstract class CharacterBase : MonoBehaviour
             {
                 if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
                 {
-                    allEnvironment[0].Interact();
+                    allEnvironment[0].Interact(this.gameObject);
                     Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
                     return true;
                 }
