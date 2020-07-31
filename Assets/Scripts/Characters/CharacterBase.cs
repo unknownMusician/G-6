@@ -11,7 +11,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
-    [SerializeField] 
+    [SerializeField]
     protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
@@ -20,6 +20,9 @@ public abstract class CharacterBase : MonoBehaviour
 
     [SerializeField]
     protected float JumpForce;
+
+    [SerializeField]
+    protected float VerticalSpeed;
 
     [SerializeField]
     protected float HorizontalSpeed;
@@ -33,11 +36,23 @@ public abstract class CharacterBase : MonoBehaviour
     [SerializeField]
     protected LayerMask ContactLayer;
 
-    [SerializeField]
-    protected Dictionary<Side, List<Transform>> Checkers;
+    [SerializeField] 
+    protected float FatiguePerFrame;
+
+    [SerializeField] 
+    protected float HorizontalBust;
 
     [SerializeField]
+    protected float SPRegenerationPerFrame;
+
+
+    protected Dictionary<Side, List<Transform>> Checkers;
+
     public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
+
+    protected float _hp;
+    protected float _sp;
+    protected float _op;
     #endregion
 
     #region Properties
@@ -50,9 +65,9 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region CurrentValues
-    public float HP { get; protected set; }
-    public float SP { get; protected set; }
-    public float OP { get; protected set; }
+    public virtual float HP { get => _hp; protected set => _hp = value > MaxHP ? MaxHP : (value < 0 ? 0 : value); }
+    public virtual float SP { get => _sp; protected set => _sp = value > MaxSP ? MaxSP : (value < 0 ? 0 : value); }
+    public virtual float OP { get => _op; protected set => _op = value > MaxSP ? MaxSP : (value < 0 ? 0 : value); }
     #endregion
 
     #region Other Public Props
@@ -121,45 +136,56 @@ public abstract class CharacterBase : MonoBehaviour
         //else
         //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
     }
-    protected void MoveX(float dir, bool jump)
+    protected void MoveX(float dir, float jump, bool run = false)
     {
+        float horizontalSpeed = HorizontalSpeed;
+        if (run && Math.Abs(dir) > 0)
+        {
+            SP -= FatiguePerFrame * Time.deltaTime;
+            horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
+        }
         switch (State)
         {
             case State.OnGround:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
                 //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
                 break;
-            case State.Climb:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
-                break;
+            //case State.Climb:
+            //    rb.velocity = new Vector2(dir * horizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+            //    //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+            //    break;
             case State.Swim:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce / 4 : rb.velocity.y);
                 //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
                 break;
             case State.OnAir:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, rb.velocity.y);
                 //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
                 break;
             default:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
                 //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
                 break;
         }
     }
     protected void MoveY(float dir, bool jump)
     {
+        float verticalSpeed = VerticalSpeed;
         if (jump)
         {
             if (ClimbingBySide() == Side.Left)
-                rb.AddForce(new Vector2(JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+                //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
+                rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
             else
-                rb.AddForce(new Vector2(-JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+                //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
+                rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
             State = State.OnAir;
-            return;
         }
-        rb.velocity = new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed);
+        else 
+            rb.velocity = new Vector2(0, dir * verticalSpeed * (SP > 0 ? 1 : 0));
         //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+        if(Math.Abs(dir) > 0)
+            SP -= FatiguePerFrame * Time.deltaTime ;
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -222,6 +248,7 @@ public abstract class CharacterBase : MonoBehaviour
         return Side.Up;
     }
 
+
     protected bool TryInteract()
     {
         //try
@@ -270,6 +297,15 @@ public abstract class CharacterBase : MonoBehaviour
                 CurrentEffects[effect].Act(Time.deltaTime);
         }
     }
+    protected void SPFixedControl()
+    {
+        if (this.State == State.OnGround)
+        {
+            float sp = SP + SPRegenerationPerFrame * Time.deltaTime;
+            SP = sp > MaxSP ? MaxSP : sp;
+        }
+    }
+
     protected void Die()
     {
         State = State.Dead;
@@ -299,6 +335,10 @@ public abstract class CharacterBase : MonoBehaviour
 
         CurrentEffects = new Dictionary<CardEffect.EffectType, EffectControl>();
 
+        HP = MaxHP;
+        SP = MaxSP;
+        OP = MaxOP;
+
         State = CheckState();
     }
     protected void Update()
@@ -312,6 +352,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         WeaponFixedControl();
         EffectsFixedControl();
+        SPFixedControl();
     }
     #endregion
 
