@@ -541,12 +541,16 @@ MonoBehaviour:
   EnvironmentChecker: {fileID: 3929323170341243086}
   CanFly: 0
   JumpForce: 25
+  VerticalSpeed: 10
   HorizontalSpeed: 15
   InteractionRadius: 30
   ClimbingSpeed: 10
   ContactLayer:
     serializedVersion: 2
     m_Bits: 32768
+  FatiguePerFrame: 40
+  HorizontalBust: 1.5
+  SPRegenerationPerFrame: 10
   Inventory: {fileID: 2847807284984056052}
 --- !u!1 &5375603967128161197
 GameObject:
