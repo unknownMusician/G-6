@@ -122,7 +122,7 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        if (!PauseMenu.GameIsPaused)
+        if (!Pause.GameIsPaused)
         {
             weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
