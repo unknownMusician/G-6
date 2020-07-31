@@ -73,6 +73,12 @@ public class MainData
 
     #endregion
 
+    #region RoomSpawner
+
+    public RoomSpawner RoomSpawner => RoomSpawnerObject.GetComponent<RoomSpawner>();
+
+    #endregion
+
     #region Level
 
     private static int level = 1;

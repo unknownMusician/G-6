@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : EncyclopediaObject {
+public class Bullet : MonoBehaviour {
 
     const string TAG = "Bullet: ";
+
+    #region Properties
+
+    public EncyclopediaObject EncyclopediaObject => gameObject.GetComponent<EncyclopediaObject>();
+
+    #endregion
 
     #region Public Variables
 

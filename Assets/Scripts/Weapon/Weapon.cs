@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Timers;
 using System;
 
-public abstract class Weapon : EncyclopediaObject {
+public abstract class Weapon : MonoBehaviour {
 
     const string TAG = "Weapon: ";
 
@@ -14,6 +14,7 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Properties
 
+    public EncyclopediaObject EncyclopediaObject => gameObject.GetComponent<EncyclopediaObject>();
     protected abstract bool CanAttack { get; set; }
     protected virtual Weapon.State WeaponState {
         get => state;

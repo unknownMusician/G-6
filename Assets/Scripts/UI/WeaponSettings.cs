@@ -86,8 +86,8 @@ public class WeaponSettings : MonoBehaviour
     private void WeaponClick(Weapon activewepon)
     {
         WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
-        WeaponName.text = activewepon.GetComponent<Weapon>().encyclopediaName;
-        WeaponDescription.text = activewepon.GetComponent<Weapon>().encyclopediaDescription;
+        WeaponName.text = activewepon.EncyclopediaObject.eName;
+        WeaponDescription.text = activewepon.EncyclopediaObject.eDescription;
         MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
 
@@ -117,7 +117,7 @@ public class WeaponSettings : MonoBehaviour
                     CardClick(card, instanse);
                 });
 
-                instanse.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = card.encyclopediaName;
+                instanse.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = card.EncyclopediaObject.eName;
                 instanse.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = card.gameObject.GetComponent<SpriteRenderer>().sprite;
             }
         }
@@ -134,7 +134,7 @@ public class WeaponSettings : MonoBehaviour
             CardInstallClick(activecard);
         });
         CardDescription.text =
-            activecard.GetComponent<Card>().encyclopediaDescription;
+            activecard.EncyclopediaObject.eDescription;
 
         SelectCard = instanse;
     }
@@ -229,7 +229,7 @@ public class WeaponSettings : MonoBehaviour
     {
         if (card != null)
         {
-            CardNameActiveOnWeapon.text = card.encyclopediaName;
+            CardNameActiveOnWeapon.text = card.EncyclopediaObject.eName;
             CardButtonUnInstall.onClick.RemoveAllListeners();
             CardButtonUnInstall.onClick.AddListener(delegate { UnInstallCardClick(card); });
 

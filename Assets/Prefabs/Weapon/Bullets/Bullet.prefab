@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 3515129503232523229}
   - component: {fileID: 8534761059581673924}
   - component: {fileID: 2093403482635423288}
+  - component: {fileID: -860603560245260921}
   m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
@@ -206,6 +207,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4ca1430b7dddc848b2c0891e2db2f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 8534761059581673924}
+--- !u!114 &-860603560245260921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534761059581674040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cf20c6e14a28147b8f89307004eca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   encyclopediaName: EncyclopediaObject
   encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -213,4 +227,3 @@ MonoBehaviour:
     commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  rb: {fileID: 8534761059581673924}

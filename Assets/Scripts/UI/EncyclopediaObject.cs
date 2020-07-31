@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EncyclopediaObject : MonoBehaviour
+public class EncyclopediaObject : MonoBehaviour
 {
-    public string encyclopediaName = "EncyclopediaObject";
-    public string encyclopediaDescription =
+    public string eName = "EncyclopediaObject";
+    public string eDescription =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
         "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in" +
         " reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, " +
