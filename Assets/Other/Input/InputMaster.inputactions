@@ -1,5 +1,5 @@
 {
-    "name": "Controls",
+    "name": "InputMaster",
     "maps": [
         {
             "name": "Player",
@@ -21,7 +21,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -49,9 +49,25 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Throw",
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "23bda3a8-9ca7-4a7d-b10d-665e081b5dc3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThrowPress",
                     "type": "Button",
                     "id": "44a03c58-aca7-4b81-97fd-c6eca422e05e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ThrowRelease",
+                    "type": "Button",
+                    "id": "fa3ed30a-6244-4e7b-bb47-05dc71339b0a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -102,9 +118,9 @@
                     "name": "",
                     "id": "c5d1c748-cc61-4529-8382-9747146d72a0",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -113,9 +129,9 @@
                     "name": "",
                     "id": "3fa59355-6976-4a4a-946b-2ad664c5de4a",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "ChangeWeaponState",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -124,21 +140,10 @@
                     "name": "",
                     "id": "3ede2c8e-48ff-4108-9c22-47dfcded38d7",
                     "path": "<Keyboard>/f",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3fc90724-dab6-429b-ab5a-3b981beaf6fe",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Slot1",
+                    "groups": "Keyboard and Mouse",
+                    "action": "ThrowPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -146,9 +151,9 @@
                     "name": "",
                     "id": "7acce02b-46f2-41c0-a1da-8ce0e19dcc39",
                     "path": "<Keyboard>/2",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Slot2",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -157,9 +162,9 @@
                     "name": "",
                     "id": "e867a0f4-380c-4cb9-8d10-a0ad1bbf767e",
                     "path": "<Keyboard>/3",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Slot3",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -168,9 +173,9 @@
                     "name": "",
                     "id": "df991077-f2b1-4a60-bf4c-81ad0e81c992",
                     "path": "<Keyboard>/4",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "Slot4",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -192,7 +197,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "ChangeSlot",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -203,13 +208,90 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "ChangeSlot",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "db83d568-2e13-4f9b-a4a9-26edc186f100",
+                    "path": "<Keyboard>/f",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "ThrowRelease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71601a69-0a4c-44d3-b6ee-e768baa72988",
+                    "path": "<Keyboard>/1",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Slot1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1384e046-a4e8-4d59-a730-ec301e19085a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "7bdf531a-284e-468d-aa69-89e2bdec2119",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "a0a4d55f-27f4-48ef-8f06-d4df8f74c5e6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a61ec04d-7897-44cd-9115-53b0f21650ce",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard and Mouse",
+            "bindingGroup": "Keyboard and Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

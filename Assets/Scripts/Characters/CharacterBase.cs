@@ -364,7 +364,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now: hh:mm:ss t z}. Now I have {HP} HP");
+        Say($"Ouch, I've taken {damage} damage. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }

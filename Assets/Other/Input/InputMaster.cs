@@ -34,7 +34,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -62,9 +62,25 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Throw"",
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""23bda3a8-9ca7-4a7d-b10d-665e081b5dc3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ThrowPress"",
                     ""type"": ""Button"",
                     ""id"": ""44a03c58-aca7-4b81-97fd-c6eca422e05e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ThrowRelease"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa3ed30a-6244-4e7b-bb47-05dc71339b0a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -115,9 +131,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""c5d1c748-cc61-4529-8382-9747146d72a0"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -126,9 +142,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""3fa59355-6976-4a4a-946b-2ad664c5de4a"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""ChangeWeaponState"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -137,21 +153,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""3ede2c8e-48ff-4108-9c22-47dfcded38d7"",
                     ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throw"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3fc90724-dab6-429b-ab5a-3b981beaf6fe"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Slot1"",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ThrowPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -159,9 +164,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""7acce02b-46f2-41c0-a1da-8ce0e19dcc39"",
                     ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Slot2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -170,9 +175,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""e867a0f4-380c-4cb9-8d10-a0ad1bbf767e"",
                     ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Slot3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -181,9 +186,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""df991077-f2b1-4a60-bf4c-81ad0e81c992"",
                     ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Slot4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -205,7 +210,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""ChangeSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -216,15 +221,92 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""ChangeSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db83d568-2e13-4f9b-a4a9-26edc186f100"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ThrowRelease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71601a69-0a4c-44d3-b6ee-e768baa72988"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Slot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1384e046-a4e8-4d59-a730-ec301e19085a"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""7bdf531a-284e-468d-aa69-89e2bdec2119"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0a4d55f-27f4-48ef-8f06-d4df8f74c5e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a61ec04d-7897-44cd-9115-53b0f21650ce"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard and Mouse"",
+            ""bindingGroup"": ""Keyboard and Mouse"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
@@ -233,12 +315,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
         m_Weapon_ChangeWeaponState = m_Weapon.FindAction("ChangeWeaponState", throwIfNotFound: true);
-        m_Weapon_Throw = m_Weapon.FindAction("Throw", throwIfNotFound: true);
+        m_Weapon_Reload = m_Weapon.FindAction("Reload", throwIfNotFound: true);
+        m_Weapon_ThrowPress = m_Weapon.FindAction("ThrowPress", throwIfNotFound: true);
+        m_Weapon_ThrowRelease = m_Weapon.FindAction("ThrowRelease", throwIfNotFound: true);
         m_Weapon_Slot1 = m_Weapon.FindAction("Slot1", throwIfNotFound: true);
         m_Weapon_Slot2 = m_Weapon.FindAction("Slot2", throwIfNotFound: true);
         m_Weapon_Slot3 = m_Weapon.FindAction("Slot3", throwIfNotFound: true);
         m_Weapon_Slot4 = m_Weapon.FindAction("Slot4", throwIfNotFound: true);
         m_Weapon_ChangeSlot = m_Weapon.FindAction("ChangeSlot", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -323,7 +410,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private IWeaponActions m_WeaponActionsCallbackInterface;
     private readonly InputAction m_Weapon_Attack;
     private readonly InputAction m_Weapon_ChangeWeaponState;
-    private readonly InputAction m_Weapon_Throw;
+    private readonly InputAction m_Weapon_Reload;
+    private readonly InputAction m_Weapon_ThrowPress;
+    private readonly InputAction m_Weapon_ThrowRelease;
     private readonly InputAction m_Weapon_Slot1;
     private readonly InputAction m_Weapon_Slot2;
     private readonly InputAction m_Weapon_Slot3;
@@ -335,7 +424,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public WeaponActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Weapon_Attack;
         public InputAction @ChangeWeaponState => m_Wrapper.m_Weapon_ChangeWeaponState;
-        public InputAction @Throw => m_Wrapper.m_Weapon_Throw;
+        public InputAction @Reload => m_Wrapper.m_Weapon_Reload;
+        public InputAction @ThrowPress => m_Wrapper.m_Weapon_ThrowPress;
+        public InputAction @ThrowRelease => m_Wrapper.m_Weapon_ThrowRelease;
         public InputAction @Slot1 => m_Wrapper.m_Weapon_Slot1;
         public InputAction @Slot2 => m_Wrapper.m_Weapon_Slot2;
         public InputAction @Slot3 => m_Wrapper.m_Weapon_Slot3;
@@ -356,9 +447,15 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ChangeWeaponState.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnChangeWeaponState;
                 @ChangeWeaponState.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnChangeWeaponState;
                 @ChangeWeaponState.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnChangeWeaponState;
-                @Throw.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrow;
-                @Throw.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrow;
-                @Throw.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrow;
+                @Reload.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @ThrowPress.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowPress;
+                @ThrowPress.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowPress;
+                @ThrowPress.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowPress;
+                @ThrowRelease.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowRelease;
+                @ThrowRelease.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowRelease;
+                @ThrowRelease.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnThrowRelease;
                 @Slot1.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnSlot1;
                 @Slot1.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnSlot1;
                 @Slot1.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnSlot1;
@@ -384,9 +481,15 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ChangeWeaponState.started += instance.OnChangeWeaponState;
                 @ChangeWeaponState.performed += instance.OnChangeWeaponState;
                 @ChangeWeaponState.canceled += instance.OnChangeWeaponState;
-                @Throw.started += instance.OnThrow;
-                @Throw.performed += instance.OnThrow;
-                @Throw.canceled += instance.OnThrow;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
+                @ThrowPress.started += instance.OnThrowPress;
+                @ThrowPress.performed += instance.OnThrowPress;
+                @ThrowPress.canceled += instance.OnThrowPress;
+                @ThrowRelease.started += instance.OnThrowRelease;
+                @ThrowRelease.performed += instance.OnThrowRelease;
+                @ThrowRelease.canceled += instance.OnThrowRelease;
                 @Slot1.started += instance.OnSlot1;
                 @Slot1.performed += instance.OnSlot1;
                 @Slot1.canceled += instance.OnSlot1;
@@ -406,6 +509,48 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public WeaponActions @Weapon => new WeaponActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_Newaction;
+    public struct UIActions
+    {
+        private @InputMaster m_Wrapper;
+        public UIActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_UI_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @Newaction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
+    private int m_KeyboardandMouseSchemeIndex = -1;
+    public InputControlScheme KeyboardandMouseScheme
+    {
+        get
+        {
+            if (m_KeyboardandMouseSchemeIndex == -1) m_KeyboardandMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard and Mouse");
+            return asset.controlSchemes[m_KeyboardandMouseSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -414,11 +559,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
     {
         void OnAttack(InputAction.CallbackContext context);
         void OnChangeWeaponState(InputAction.CallbackContext context);
-        void OnThrow(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
+        void OnThrowPress(InputAction.CallbackContext context);
+        void OnThrowRelease(InputAction.CallbackContext context);
         void OnSlot1(InputAction.CallbackContext context);
         void OnSlot2(InputAction.CallbackContext context);
         void OnSlot3(InputAction.CallbackContext context);
         void OnSlot4(InputAction.CallbackContext context);
         void OnChangeSlot(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }
