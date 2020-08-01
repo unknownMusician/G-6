@@ -11,7 +11,15 @@
                     "id": "c021430f-d850-4d44-8afa-eaef4bc0bf03",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": ""
+                },
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "654ea72e-e192-4fbe-9a37-7d370efda62f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -19,12 +27,67 @@
                     "name": "",
                     "id": "13f3928e-fdb3-4ef3-9b37-3e59949b710b",
                     "path": "<Keyboard>/space",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "c3622b74-dc7c-4148-9134-f0c8aea5129b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "5319e61f-d858-49e8-928a-fb215733e4a0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "d4babba3-8d36-44c8-859c-dd54fd48d161",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "de2fdc18-f2b9-4a66-883d-f6a99c847367",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "7b840dcf-a03d-4da5-8f9e-27025fd2ddf0",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -33,10 +96,18 @@
             "id": "35e9cc50-62dc-48e7-b13e-cc9927a6859f",
             "actions": [
                 {
-                    "name": "Attack",
-                    "type": "Button",
+                    "name": "AttackPress",
+                    "type": "Value",
                     "id": "a0717508-a040-4769-902e-3d74182df511",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "AttackRelease",
+                    "type": "Value",
+                    "id": "fe506bda-b65c-40ab-9d2f-80b0ddf4c923",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
@@ -106,9 +177,17 @@
                 },
                 {
                     "name": "ChangeSlot",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "3be61b4c-2fcd-4330-bbee-13216ec1e025",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "be8476f9-270b-4614-ac8a-c5056aa813f5",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 }
@@ -118,10 +197,10 @@
                     "name": "",
                     "id": "c5d1c748-cc61-4529-8382-9747146d72a0",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Attack",
+                    "action": "AttackPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -181,37 +260,15 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "MouseScroll",
-                    "id": "97accb26-bb3f-412c-a979-95e2710c4d9d",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "9d189e9e-2103-4d55-baa8-642ff7941321",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard and Mouse",
                     "action": "ChangeSlot",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "f9f846f5-9310-4a9b-8169-cd2b9c69bf6c",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "ChangeSlot",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "beacf1a1-e65c-45b6-b9aa-d70754b3f17b",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "ChangeSlot",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -243,6 +300,28 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d732de6d-aa76-47b7-a5bd-50c468e924b4",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d93c132b-0d3a-4dbe-9d0a-7a5c8b3aa035",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "AttackRelease",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

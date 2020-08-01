@@ -75,7 +75,7 @@ public class MainData
 
     #region RoomSpawner
 
-    public RoomSpawner RoomSpawner => RoomSpawnerObject.GetComponent<RoomSpawner>();
+    public static RoomSpawner RoomSpawner => RoomSpawnerObject.GetComponent<RoomSpawner>();
 
     #endregion
 

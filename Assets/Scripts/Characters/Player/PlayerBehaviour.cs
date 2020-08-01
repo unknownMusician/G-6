@@ -46,7 +46,8 @@ public class PlayerBehaviour : CharacterBase
         controls = new InputMaster();
 
         // Weapon Controls
-        controls.Weapon.Attack.performed += ctx => InputAttack();
+        controls.Weapon.AttackPress.performed += ctx => InputAttackPress();
+        controls.Weapon.AttackRelease.performed += ctx => InputAttackRelease();
         controls.Weapon.ChangeWeaponState.performed += ctx => InputChangeState();
         controls.Weapon.Reload.performed += ctx => InputReload();
         controls.Weapon.ThrowPress.performed += ctx => InputThrowPress();
@@ -55,7 +56,8 @@ public class PlayerBehaviour : CharacterBase
         controls.Weapon.Slot2.performed += ctx => InputWeaponSlot(1);
         controls.Weapon.Slot3.performed += ctx => InputWeaponSlot(2);
         controls.Weapon.Slot4.performed += ctx => InputWeaponSlot(3);
-        controls.Weapon.ChangeSlot.performed += 
+        controls.Weapon.ChangeSlot.performed += ctx => InputWeaponSlotPrevNext();
+        controls.Weapon.Aim.performed += ctx => InputAim();
 
     }
     private void OnEnable()
@@ -90,9 +92,9 @@ public class PlayerBehaviour : CharacterBase
         {
             base.Update();
 
-            Side = CheckSideLR(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            Side = CheckSideLR(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
 
-            if (Input.GetButtonDown("Interact"))
+            if (Keyboard.current.eKey.wasPressedThisFrame /*Input.GetButtonDown("Interact")*/) // To-Do: change to buttons and actions
             {
                 if (TryInteract())
                 {
@@ -113,8 +115,8 @@ public class PlayerBehaviour : CharacterBase
         if (State == State.OnAir)
         {
 
-            if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-                MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
+            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump"))) // To-Do: change to buttons and actions
+            //    MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
 
         }
         else
@@ -122,12 +124,12 @@ public class PlayerBehaviour : CharacterBase
             if (State != State.Climb)
             {
                 //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-                MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);
+                //MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);  // To-Do: change to buttons and actions
             }
             else
             {
                 //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
-                MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump"));
+                //MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump")); // To-Do: change to buttons and actions
             }
         }
     }
@@ -142,44 +144,19 @@ public class PlayerBehaviour : CharacterBase
     private bool weaponChooseFourth = false;
     private bool weaponChangeState = false;
     private bool weaponReload = false;
-    private bool weaponAttack = false;
+    private bool weaponAttackPress = false;
+    private bool weaponAttackRelease = false;
     private bool weaponThrowPress = false;
     private bool weaponThrowRelease = false;
-    private Vector3 weaponAimPoint = Vector3.right;
+    private Vector3 weaponAimLocalPoint = Vector3.right;
 
     protected override void WeaponControl()
     {
-        if (!Pause.GameIsPaused)
-        {
-            //weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            //if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            //    weaponChooseNext = true;
-            //else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            //    weaponChoosePrev = true;
-            //if (Input.GetButtonDown("WeaponSlot1"))
-            //    weaponChooseFirst = true;
-            //else if (Input.GetButtonDown("WeaponSlot2"))
-            //    weaponChooseSecond = true;
-            //else if (Input.GetButtonDown("WeaponSlot3"))
-            //    weaponChooseThird = true;
-            //else if (Input.GetButtonDown("WeaponSlot4"))
-            //    weaponChooseFourth = true;
-            //if (Input.GetButtonDown("ChangeWeaponState"))
-            //    weaponChangeState = true;
-            //if (Input.GetButtonDown("Reload"))
-            //    weaponReload = true;
-            //if (Input.GetButton("Fire1"))
-            //    weaponAttack = true;
-            //if (Input.GetButtonDown("Throw"))
-            //    weaponThrowPress = true;
-            //if (Input.GetButtonUp("Throw"))
-            //    weaponThrowRelease = true;
-        }
     }
     protected override void WeaponFixedControl()
     {
-        Inventory.Aim(weaponAimPoint);
+        Inventory.Aim(Camera.main.ScreenToWorldPoint(weaponAimLocalPoint));
 
         if (weaponChooseNext)
         {
@@ -221,10 +198,15 @@ public class PlayerBehaviour : CharacterBase
             Inventory.ReloadGun();
             weaponReload = false;
         }
-        if (weaponAttack)
+        if (weaponAttackPress)
         {
-            Inventory.AttackWithWeaponOrFist();
-            weaponAttack = false;
+            Inventory.AttackWithWeaponOrFistPress();
+            weaponAttackPress = false;
+        }
+        if (weaponAttackRelease)
+        {
+            Inventory.AttackWithWeaponOrFistRelease();
+            weaponAttackRelease = false;
         }
         if (weaponThrowPress)
         {
@@ -242,57 +224,68 @@ public class PlayerBehaviour : CharacterBase
 
     #region Input
 
-    public void InputAttack() {
-        weaponAttack = true;
-        Debug.Log("InputAttack");
+    public void InputAttackPress() {
+        if (!Pause.GameIsPaused)
+            weaponAttackPress = true;
+        Debug.Log("InputAttackPress");
+    }
+
+    public void InputAttackRelease() {
+        if (!Pause.GameIsPaused)
+            weaponAttackRelease = true;
+        Debug.Log("InputAttackRelease");
     }
 
     public void InputChangeState() {
-        weaponChangeState = true;
-        Debug.Log("InputChangeState");
+        if (!Pause.GameIsPaused)
+            weaponChangeState = true;
     }
 
     public void InputReload() {
-        weaponReload = true;
-        Debug.Log("InputReload");
+        if (!Pause.GameIsPaused)
+            weaponReload = true;
     }
 
     public void InputThrowPress() {
-        weaponThrowPress = true;
-        Debug.Log("InputThrowPress");
+        if (!Pause.GameIsPaused)
+            weaponThrowPress = true;
     }
 
     public void InputThrowRelease() {
-        weaponThrowRelease = true;
-        Debug.Log("InputThrowRelease");
+        if (!Pause.GameIsPaused)
+            weaponThrowRelease = true;
     }
 
     public void InputWeaponSlot(int slot) {
-        switch (slot) {
-            case 0:
-                weaponChooseFirst = true;
-                break;
-            case 1:
-                weaponChooseSecond = true;
-                break;
-            case 2:
-                weaponChooseThird = true;
-                break;
-            case 3:
-                weaponChooseFourth = true;
-                break;
-        }
-        Debug.Log("InputWeaponSlot - " + slot);
+        if (!Pause.GameIsPaused)
+            switch (slot) {
+                case 0:
+                    weaponChooseFirst = true;
+                    break;
+                case 1:
+                    weaponChooseSecond = true;
+                    break;
+                case 2:
+                    weaponChooseThird = true;
+                    break;
+                case 3:
+                    weaponChooseFourth = true;
+                    break;
+            }
     }
 
     public void InputWeaponSlotPrevNext() {
-        weaponChooseNext = true;
-        Debug.Log("InputWeaponSlotNext");
+        if (!Pause.GameIsPaused) {
+            if (Mouse.current.scroll.ReadValue().y > 0)
+                weaponChooseNext = true;
+            else if (Mouse.current.scroll.ReadValue().y < 0)
+                weaponChoosePrev = true;
+        }
     }
 
-    public void InputAim(InputAction.CallbackContext context) {
-        weaponAimPoint = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
-        Debug.Log("InputAim");
+    public void InputAim() {
+        if (!Pause.GameIsPaused)
+            weaponAimLocalPoint = Mouse.current.position.ReadValue();
     }
 
     #endregion

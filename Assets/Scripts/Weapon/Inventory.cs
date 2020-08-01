@@ -141,12 +141,15 @@ public class Inventory : MonoBehaviour {
 
     #region WorkingWithWeapon Methods
 
-    public void AttackWithWeaponOrFist() {
-        if (Weapon != null) {
-            Weapon.Attack();
-        } else {
+    public void AttackWithWeaponOrFistPress() {
+        if (Weapon != null)
+            Weapon.AttackPress();
+        else
             fistFight.Attack();
-        }
+    }
+    public void AttackWithWeaponOrFistRelease() {
+        if (Weapon != null)
+            Weapon.AttackRelease();
     }
     public void ThrowPress() {
         tmpWhenThrowButtonPressed = Time.time;

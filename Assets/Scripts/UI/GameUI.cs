@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class GameUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
+        if (Keyboard.current.iKey.wasPressedThisFrame/*Input.GetButtonDown("Setting")*/ && !weaponSettings.activeInHierarchy) // To-Do: change to buttons and actions
         {
             if (Pause.GameIsPaused)
             {
@@ -36,7 +37,7 @@ public class GameUI : MonoBehaviour
             }
 
         }
-        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
+        if (Keyboard.current.iKey.wasPressedThisFrame/*Input.GetButtonDown("WeaponSettings")*/&&!MainData.RoomSpawner.GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy) // To-Do: change to buttons and actions
         {
             if (Pause.GameIsPaused)
             {

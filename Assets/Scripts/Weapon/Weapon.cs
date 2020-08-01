@@ -67,12 +67,20 @@ public abstract class Weapon : BaseEnvironment {
 
     protected Weapon.State state;
     protected bool canAttack = true;
+    public bool attackButtonHold;
 
     #endregion
 
     #region Abstract Methods
 
     public abstract void Attack();
+    public void AttackPress() {
+        attackButtonHold = true;
+        System.Threading.Thread thread = new System.Threading.Thread(() => { while (attackButtonHold) Attack(); });
+    }
+    public void AttackRelease() {
+        attackButtonHold = false;
+    }
     protected abstract void InstallCardsFromChildren();
     public abstract bool InstallUnknownCard(Card card);
     public abstract bool UninstallUnknownCard(Card card);
@@ -149,7 +157,7 @@ public abstract class Weapon : BaseEnvironment {
     public override void Interact(GameObject whoInterracted) {
         // To-Do
         var cb = whoInterracted?.GetComponent<CharacterBase>();
-        if (cb != null){
+        if (cb != null && cb.transform != transform.parent.parent) {
             rigidBody.velocity = Vector2.zero;
             rigidBody.angularVelocity = 0f;
             transform.rotation = Quaternion.identity;
