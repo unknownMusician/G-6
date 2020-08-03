@@ -42,23 +42,30 @@ public class PlayerBehaviour : CharacterBase
         // Setting Player to MainData
         MainData.PlayerObject = this.gameObject;
 
-        // Controls
+        #region Controls
         controls = new InputMaster();
 
-        // Weapon Controls
-        controls.Weapon.AttackPress.performed += ctx => InputAttackPress();
-        controls.Weapon.AttackRelease.performed += ctx => InputAttackRelease();
-        controls.Weapon.ChangeWeaponState.performed += ctx => InputChangeState();
-        controls.Weapon.Reload.performed += ctx => InputReload();
-        controls.Weapon.ThrowPress.performed += ctx => InputThrowPress();
-        controls.Weapon.ThrowRelease.performed += ctx => InputThrowRelease();
-        controls.Weapon.Slot1.performed += ctx => InputWeaponSlot(0);
-        controls.Weapon.Slot2.performed += ctx => InputWeaponSlot(1);
-        controls.Weapon.Slot3.performed += ctx => InputWeaponSlot(2);
-        controls.Weapon.Slot4.performed += ctx => InputWeaponSlot(3);
-        controls.Weapon.ChangeSlot.performed += ctx => InputWeaponSlotPrevNext();
-        controls.Weapon.Aim.performed += ctx => InputAim();
-
+        #region Weapon Controls
+        controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
+        controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
+        controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
+        controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
+        controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
+        controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
+        controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
+        controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
+        controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
+        controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
+        controls.Weapon.ChangeSlot.performed += ctx => {
+            if (!Pause.GameIsPaused)
+                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
+        };
+        controls.Weapon.Aim.performed += ctx => {
+            if (!Pause.GameIsPaused)
+                Inventory.Aim(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+        };
+        #endregion
+        #endregion
     }
     private void OnEnable()
     {
@@ -136,156 +143,13 @@ public class PlayerBehaviour : CharacterBase
 
     #region WeaponControl
 
-    private bool weaponChooseNext = false;
-    private bool weaponChoosePrev = false;
-    private bool weaponChooseFirst = false;
-    private bool weaponChooseSecond = false;
-    private bool weaponChooseThird = false;
-    private bool weaponChooseFourth = false;
-    private bool weaponChangeState = false;
-    private bool weaponReload = false;
-    private bool weaponAttackPress = false;
-    private bool weaponAttackRelease = false;
-    private bool weaponThrowPress = false;
-    private bool weaponThrowRelease = false;
-    private Vector3 weaponAimLocalPoint = Vector3.right;
-
     protected override void WeaponControl()
     {
 
     }
     protected override void WeaponFixedControl()
     {
-        Inventory.Aim(Camera.main.ScreenToWorldPoint(weaponAimLocalPoint));
 
-        if (weaponChooseNext)
-        {
-            Inventory.ActiveSlot++;
-            weaponChooseNext = false;
-        }
-        else if (weaponChoosePrev)
-        {
-            Inventory.ActiveSlot--;
-            weaponChoosePrev = false;
-        }
-        if (weaponChooseFirst)
-        {
-            Inventory.ActiveSlot = Inventory.Slots.FIRST;
-            weaponChooseFirst = false;
-        }
-        else if (weaponChooseSecond)
-        {
-            Inventory.ActiveSlot = Inventory.Slots.SECOND;
-            weaponChooseSecond = false;
-        }
-        else if (weaponChooseThird)
-        {
-            Inventory.ActiveSlot = Inventory.Slots.THIRD;
-            weaponChooseThird = false;
-        }
-        else if (weaponChooseFourth)
-        {
-            Inventory.ActiveSlot = Inventory.Slots.FOURTH;
-            weaponChooseFourth = false;
-        }
-        if (weaponChangeState)
-        {
-            Inventory.ChangeWeaponState();
-            weaponChangeState = false;
-        }
-        if (weaponReload)
-        {
-            Inventory.ReloadGun();
-            weaponReload = false;
-        }
-        if (weaponAttackPress)
-        {
-            Inventory.AttackWithWeaponOrFistPress();
-            weaponAttackPress = false;
-        }
-        if (weaponAttackRelease)
-        {
-            Inventory.AttackWithWeaponOrFistRelease();
-            weaponAttackRelease = false;
-        }
-        if (weaponThrowPress)
-        {
-            Inventory.ThrowPress();
-            weaponThrowPress = false;
-        }
-        if (weaponThrowRelease)
-        {
-            Inventory.ThrowRelease();
-            weaponThrowRelease = false;
-        }
-    }
-
-    #endregion
-
-    #region Input
-
-    public void InputAttackPress() {
-        if (!Pause.GameIsPaused)
-            weaponAttackPress = true;
-        Debug.Log("InputAttackPress");
-    }
-
-    public void InputAttackRelease() {
-        if (!Pause.GameIsPaused)
-            weaponAttackRelease = true;
-        Debug.Log("InputAttackRelease");
-    }
-
-    public void InputChangeState() {
-        if (!Pause.GameIsPaused)
-            weaponChangeState = true;
-    }
-
-    public void InputReload() {
-        if (!Pause.GameIsPaused)
-            weaponReload = true;
-    }
-
-    public void InputThrowPress() {
-        if (!Pause.GameIsPaused)
-            weaponThrowPress = true;
-    }
-
-    public void InputThrowRelease() {
-        if (!Pause.GameIsPaused)
-            weaponThrowRelease = true;
-    }
-
-    public void InputWeaponSlot(int slot) {
-        if (!Pause.GameIsPaused)
-            switch (slot) {
-                case 0:
-                    weaponChooseFirst = true;
-                    break;
-                case 1:
-                    weaponChooseSecond = true;
-                    break;
-                case 2:
-                    weaponChooseThird = true;
-                    break;
-                case 3:
-                    weaponChooseFourth = true;
-                    break;
-            }
-    }
-
-    public void InputWeaponSlotPrevNext() {
-        if (!Pause.GameIsPaused) {
-            if (Mouse.current.scroll.ReadValue().y > 0)
-                weaponChooseNext = true;
-            else if (Mouse.current.scroll.ReadValue().y < 0)
-                weaponChoosePrev = true;
-        }
-    }
-
-    public void InputAim() {
-        if (!Pause.GameIsPaused)
-            weaponAimLocalPoint = Mouse.current.position.ReadValue();
     }
 
     #endregion

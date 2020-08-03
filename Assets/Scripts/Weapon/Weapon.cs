@@ -63,11 +63,11 @@ public abstract class Weapon : BaseEnvironment {
 
     protected GameObject friend;
 
-    protected Timer timer;
+    protected Timer reliefTimer;
 
     protected Weapon.State state;
     protected bool canAttack = true;
-    public bool attackButtonHold;
+    protected bool attackButtonHold = false;
 
     #endregion
 
@@ -76,7 +76,6 @@ public abstract class Weapon : BaseEnvironment {
     public abstract void Attack();
     public void AttackPress() {
         attackButtonHold = true;
-        System.Threading.Thread thread = new System.Threading.Thread(() => { while (attackButtonHold) Attack(); });
     }
     public void AttackRelease() {
         attackButtonHold = false;
@@ -90,12 +89,10 @@ public abstract class Weapon : BaseEnvironment {
     #region Service Methods
 
     protected void SetReliefTimer(float time) {
-        // Create a timer with a two second interval.
-        timer = new System.Timers.Timer(time * 1000);
-        // Hook up the Elapsed event for the timer.
-        timer.Elapsed += (sender, e) => { CanAttack = true; };
-        timer.AutoReset = false;
-        timer.Enabled = true;
+        reliefTimer = new Timer(time * 1000);
+        reliefTimer.Elapsed += (sender, e) => { CanAttack = true; };
+        reliefTimer.AutoReset = false;
+        reliefTimer.Enabled = true;
     }
     protected void EnablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
@@ -112,6 +109,12 @@ public abstract class Weapon : BaseEnvironment {
     #endregion
 
     #region Overrided Methods
+
+    private void Update() {
+        if (attackButtonHold) {
+            Attack();
+        }
+    }
 
     protected void OnTriggerEnter2D(Collider2D collider) {
         if (state == State.Throwed && !collider.gameObject.Equals(friend)) {

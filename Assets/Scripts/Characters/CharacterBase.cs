@@ -175,12 +175,12 @@ public abstract class CharacterBase : MonoBehaviour
         float verticalSpeed = VerticalSpeed;
         if (jump)
         {
-            if (ClimbingBySide() == Side.Left)
+            if (ClimbingBySide() == Side.Left) { }
                 //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
-            else
-                //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
+                //rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse); // To-Do: change to buttons and actions
+                    else { }
+                        //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
+                        //rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse); // To-Do: change to buttons and actions
             State = State.OnAir;
         }
         else 
