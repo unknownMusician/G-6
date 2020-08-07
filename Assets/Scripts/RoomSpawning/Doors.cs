@@ -17,7 +17,7 @@ public class Doors : MonoBehaviour {
         if (other.name == "Player") {
 
             Transform playerTransform = other.transform;
-            roomSpawner = this.transform.parent.parent.parent.GetComponent<RoomSpawner>();
+            roomSpawner = this.transform.parent.parent.parent.parent.GetComponent<RoomSpawner>();
             tempMatrix = roomSpawner.GetRoomsMatrix();
 
             if (direction == 1) {
@@ -25,12 +25,12 @@ public class Doors : MonoBehaviour {
                 tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn].SetActive(true);
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform nextRoomIerarchy = tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn].transform;
-                int amountOfChilds = nextRoomIerarchy.childCount;
+                Transform nextRoomSpawnpoints = tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn].transform.GetChild(3);
+                int amountOfChilds = nextRoomSpawnpoints.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
 
-                    Transform tempChild = nextRoomIerarchy.GetChild(i);
+                    Transform tempChild = nextRoomSpawnpoints.GetChild(i);
                     if (tempChild.name == "BottomSpawnpoint") {
 
                         Transform spawnPoint = tempChild;
@@ -46,7 +46,7 @@ public class Doors : MonoBehaviour {
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1].SetActive(true);
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1].transform.GetChild(3);
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -68,7 +68,7 @@ public class Doors : MonoBehaviour {
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].transform.GetChild(3);
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {
@@ -89,7 +89,7 @@ public class Doors : MonoBehaviour {
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1].SetActive(true);
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
 
-                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1].transform;
+                Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1].transform.GetChild(3);
                 int amountOfChilds = roomIerarchy.childCount;
 
                 for (int i = 0; i < amountOfChilds; i++) {

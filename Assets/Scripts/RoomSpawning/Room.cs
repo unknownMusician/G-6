@@ -6,8 +6,11 @@ public class Room : MonoBehaviour {
     // 0 - start room
     // 1 - regular room
     // 2 - finish room
-    private byte roomType;
     public byte RoomType { get; set; }
+    private Doors TopDoor { get; set; }
+    private Doors RightDoor { get; set; }
+    private Doors BottomDoor { get; set; }
+    private Doors LeftDoor { get; set; }
 
     public static class TypeOfTheRoom {
         readonly public static byte start = 0;
@@ -16,7 +19,21 @@ public class Room : MonoBehaviour {
     }
 
     private void Start() {
-        roomType = TypeOfTheRoom.regular;
+        RoomType = TypeOfTheRoom.regular;
+        Transform doorsCollectionObject = this.transform.GetChild(1);
+        int amountOfDoors = doorsCollectionObject.childCount;
+        for (int i = 0; i < amountOfDoors; i++) {
+            GameObject door = doorsCollectionObject.GetChild(i).gameObject;
+            if (door.name == "TopDoor") {
+                TopDoor = door.GetComponent<Doors>();
+            } else if (door.name == "RightDoor") {
+                RightDoor = door.GetComponent<Doors>();
+            } else if (door.name == "BottomDoor") {
+                BottomDoor = door.GetComponent<Doors>();
+            } else if (door.name == "LeftDoor") {
+                LeftDoor = door.GetComponent<Doors>();
+            }
+        }
     }
 
     public bool IsThereAnyEnemy() {
