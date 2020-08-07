@@ -6,6 +6,7 @@ public class Room : MonoBehaviour {
     // 0 - start room
     // 1 - regular room
     // 2 - finish room
+
     public byte RoomType { get; set; }
     private Doors TopDoor { get; set; }
     private Doors RightDoor { get; set; }

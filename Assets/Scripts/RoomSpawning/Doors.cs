@@ -63,10 +63,9 @@ public class Doors : MonoBehaviour {
 
 
             } else if (direction == 3) {
-
+                
                 tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].SetActive(true);
                 tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn].SetActive(false);
-
 
                 Transform roomIerarchy = tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn].transform.GetChild(3);
                 int amountOfChilds = roomIerarchy.childCount;
