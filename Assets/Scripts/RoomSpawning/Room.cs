@@ -19,7 +19,7 @@ public class Room : MonoBehaviour {
         readonly public static byte finish = 2;
     }
 
-    private void Start() {
+    private void Awake() {
         RoomType = TypeOfTheRoom.regular;
         Transform doorsCollectionObject = this.transform.GetChild(1);
         int amountOfDoors = doorsCollectionObject.childCount;
