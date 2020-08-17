@@ -10,6 +10,7 @@ public class PlaceForRoom {
     public byte AmountOfDoors { get; set; }
 
     public PlaceForRoom(short topDoor, short rightDoor, short bottomDoor, short leftDoor) {
+
         AmountOfDoors = 0;
 
         if (topDoor == 1) {
@@ -61,6 +62,7 @@ public class PlaceForRoom {
     }
 
     public short[] getDoorParams() {
+
         short[] doors = new short[4];
         doors[0] = topDoor;
         doors[1] = rightDoor;
@@ -71,6 +73,7 @@ public class PlaceForRoom {
     }
 
     public bool anyEqualToOne () {
+
         short[] doors = new short[4];
         doors[0] = topDoor;
         doors[1] = rightDoor;
