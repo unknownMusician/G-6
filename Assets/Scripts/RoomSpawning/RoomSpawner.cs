@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour {
@@ -48,7 +48,7 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
-        MainData.PlayerObject.transform.position = GetCurrentLocationAll();
+        MainData.Player.transform.position = getCurrentLocationAll();
 
         CurrentColumn = columns / 2;
         CurrentRow = rows / 2;
@@ -99,15 +99,15 @@ public class RoomSpawner : MonoBehaviour {
             roomsPrefabsDictionary.Add("0000", Block); // Block
         }
 
-        GenerateDungeon();
+        generateDungeon();
 
-        SpawnDungeonMap();
+        spawnDungeonMap();
 
-        SpawnDungeon();
+        spawnDungeon();
 
     }
 
-    private void GenerateDungeon() {
+    private void generateDungeon() {
 
         // Генерирует подземелье, используя абстрактную матрицу
 
@@ -179,36 +179,36 @@ public class RoomSpawner : MonoBehaviour {
                             short[] doors = point.getDoorParams();
                             if (doors[0] == 0) {
                                 float rd = Random.value;
-                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                if (!doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setTop(-1);
-                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                } else if (doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setTop(1);
                                     point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[1] == 0) {
                                 float rd = Random.value;
-                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                if (!doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setRight(-1);
-                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                } else if (doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setRight(1);
                                     point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[2] == 0) {
                                 float rd = Random.value;
-                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                if (!doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setBottom(-1);
-                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                } else if (doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setBottom(1);
                                     point.AmountOfDoors += 1;
                                 }
                             }
                             if (doors[3] == 0) {
                                 float rd = Random.value;
-                                if (!DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                if (!doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setLeft(-1);
-                                } else if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                                } else if (doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
                                     point.setLeft(1);
                                     point.AmountOfDoors += 1;
                                 }
@@ -231,7 +231,7 @@ public class RoomSpawner : MonoBehaviour {
                     
                     if (point != null) {
                         
-                        if (DoWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
+                        if (doWeNeedAnotherDoor(point.AmountOfDoors, rd)) {
 
                             if ((point.anyEqualToOne() == true)) {
 
@@ -369,7 +369,7 @@ public class RoomSpawner : MonoBehaviour {
         }
     }
 
-    private void SpawnDungeonMap() {
+    private void spawnDungeonMap() {
 
         // Спавнит прообразы комнаты, которые вместе формируют карту подземелья
 
@@ -399,7 +399,7 @@ public class RoomSpawner : MonoBehaviour {
         }
     }
 
-    private void SpawnDungeon() {
+    private void spawnDungeon() {
 
         // Спавнит комнаты и составляет из них готовое подземелье
 
@@ -438,43 +438,43 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomType = Room.TypeOfTheRoom.finish;
     }
 
-    public GameObject[,] GetRoomsMatrix() {
+    public GameObject[,] getRoomsMatrix() {
         return roomsGameObjectMatrix;
     }
 
-    public GameObject[,] GetMiniMapMatrix() {
+    public GameObject[,] getMiniMapMatrix() {
         return miniMapMatrix;
     }
 
-    public Vector2 GetCurrentLocationAll() {
-
+    public Vector2 getCurrentLocationAll() {
         CurrentRow = rows / 2;
         CurrentColumn = columns / 2;
         Vector2 result = new Vector2(CurrentColumn * 250, -CurrentRow * 200);
         return result;
     }
 
-    public GameObject GetGameObjectOfTheActiveRoom() {
+    public GameObject getGameObjectOfTheActiveRoom() {
         return roomsGameObjectMatrix[CurrentRow, CurrentColumn];
     }
 
-    public Room GetRoomComponentOfTheActiveRoom() {
+    public Room getRoomComponentOfTheActiveRoom() {
         return roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Room>();
     }
 
-    public Transform GetTransformComponentOfTheActiveRoom() {
+    public Transform getTransformComponentOfTheActiveRoom() {
         return roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Transform>();
     }
 
-    public bool IsThereAnyEnemy(int row, int column) {
+    public bool isThereAnyEnemy(int row, int column) {
         return roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0;
     }
 
-    public bool IsThereAnyEnemy(GameObject room) {
+    public bool isThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;
     }
 
-    public bool DoWeNeedAnotherDoor(byte amountOfDoors, float randomNumber) {
+    public bool doWeNeedAnotherDoor(byte amountOfDoors, float randomNumber) {
+        
         if ((amountOfDoors == 0) & (randomNumber > 0.5f)) {
             return true;
         } else if ((amountOfDoors == 1) & (randomNumber > 0.85f)) {
@@ -484,6 +484,7 @@ public class RoomSpawner : MonoBehaviour {
         } else if ((amountOfDoors == 3) & (randomNumber > 0.99f)) {
             return true;
         }
+
         return false;
     }
 }

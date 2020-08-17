@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
 
-    // roomType shows type of the room
-    // 0 - start room
-    // 1 - regular room
-    // 2 - finish room
-
     public byte RoomType { get; set; }
-    private Doors TopDoor { get; set; }
-    private Doors RightDoor { get; set; }
-    private Doors BottomDoor { get; set; }
-    private Doors LeftDoor { get; set; }
+
+    private Door topDoor;
+    private Door rightDoor;
+    private Door bottomDoor;
+    private Door leftDoor;
+
+    public GameObject TopSpawnpoint { get; set; }
+    public GameObject RightSpawnpoint { get; set; }
+    public GameObject BottomSpawnpoint { get; set; }
+    public GameObject LeftSpawnpoint { get; set; }
 
     public static class TypeOfTheRoom {
         readonly public static byte start = 0;
@@ -20,25 +21,58 @@ public class Room : MonoBehaviour {
     }
 
     private void Awake() {
+
         RoomType = TypeOfTheRoom.regular;
+
         Transform doorsCollectionObject = this.transform.GetChild(1);
         int amountOfDoors = doorsCollectionObject.childCount;
         for (int i = 0; i < amountOfDoors; i++) {
             GameObject door = doorsCollectionObject.GetChild(i).gameObject;
             if (door.name == "TopDoor") {
-                TopDoor = door.GetComponent<Doors>();
+                topDoor = door.GetComponent<Door>();
             } else if (door.name == "RightDoor") {
-                RightDoor = door.GetComponent<Doors>();
+                rightDoor = door.GetComponent<Door>();
             } else if (door.name == "BottomDoor") {
-                BottomDoor = door.GetComponent<Doors>();
+                bottomDoor = door.GetComponent<Door>();
             } else if (door.name == "LeftDoor") {
-                LeftDoor = door.GetComponent<Doors>();
+                leftDoor = door.GetComponent<Door>();
+            }
+        }
+
+        Transform spawnpointsCollectionObject = this.transform.GetChild(3);
+        int amountOfSpawnpoints = spawnpointsCollectionObject.childCount;
+        for (int i = 0; i < amountOfSpawnpoints; i++) {
+            GameObject spawnpoint = spawnpointsCollectionObject.GetChild(i).gameObject;
+            if (spawnpoint.name == "TopSpawnpoint") {
+                TopSpawnpoint = spawnpoint;
+            } else if (spawnpoint.name == "RightSpawnpoint") {
+                RightSpawnpoint = spawnpoint;
+            } else if (spawnpoint.name == "BottomSpawnpoint") {
+                BottomSpawnpoint = spawnpoint;
+            } else if (spawnpoint.name == "LeftSpawnpoint") {
+                LeftSpawnpoint = spawnpoint;
             }
         }
     }
 
-    public bool IsThereAnyEnemy() {
+    public bool isThereAnyEnemy() {
         Transform transform = GetComponent<Transform>();
         return transform.GetChild(0).childCount != 0;
+    }
+
+    public void makeAllDoorsUnvisited () {
+
+        if (topDoor != null) {
+            topDoor.Visited = false;
+        }
+        if (rightDoor != null) {
+            rightDoor.Visited = false;
+        }
+        if (bottomDoor != null) {
+            bottomDoor.Visited = false;
+        }
+        if (leftDoor != null) {
+            leftDoor.Visited = false;
+        }
     }
 }
