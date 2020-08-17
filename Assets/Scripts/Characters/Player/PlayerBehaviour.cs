@@ -5,9 +5,39 @@ using UnityEngine;
 
 public class PlayerBehaviour : CharacterBase
 {
+
+    public override float HP
+    {
+        get => _hp;
+        protected set
+        {
+            _hp = value > MaxHP ? MaxHP : (value < 0 ? 0 : value);
+            MainData.ActionHPChange?.Invoke();
+        }
+    }
+    public override float SP
+    {
+        get => _sp;
+        protected set
+        {
+            _sp = value > MaxSP ? MaxSP : (value < 0 ? 0 : value);
+            MainData.ActionSPChange?.Invoke();
+        }
+    }
+    public override float OP
+    {
+        get => _op;
+        protected set
+        {
+            _op = value > MaxOP ? MaxOP : (value < 0 ? 0 : value);
+            MainData.ActionOPChange?.Invoke();
+        }
+    }
+
+
     private void Awake()
     {
-        MainData.Player = this.gameObject;
+        MainData.PlayerObject = this.gameObject;
     }
     private new void Start()
     {
@@ -16,19 +46,15 @@ public class PlayerBehaviour : CharacterBase
         MaxSP = 100f;
         MaxOP = 100f;
 
-        HP = MaxHP;
-        SP = MaxSP;
-        OP = MaxOP;
-
         base.Start();
 
-        //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
-        //    new CardEffect.NestedProps(
-        //        CardEffect.EffectType.Fire,
-        //        1,
-        //        20,
-        //        1
-        //        ), this );
+        CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+            new CardEffect.NestedProps(
+                CardEffect.EffectType.Fire,
+                1,
+                20,
+                1
+                ), this);
     }
 
     protected new void Update()
@@ -59,28 +85,22 @@ public class PlayerBehaviour : CharacterBase
     {
         if (State == State.OnAir)
         {
-            if (State != State.Climb)
-            {
-                if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-                    MoveX(Input.GetAxis("Horizontal"), Input.GetButtonDown("Jump"));
-            }
-            else
-            {
-                if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
-                    MoveY(Input.GetAxis("Vertical"), Input.GetButtonDown("Jump"));
-            }
+
+            if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
+                MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
+
         }
         else
         {
             if (State != State.Climb)
             {
                 //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-                MoveX(Input.GetAxis("Horizontal"), Input.GetButtonDown("Jump"));
+                MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);
             }
             else
             {
                 //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
-                MoveY(Input.GetAxis("Vertical"), Input.GetButtonDown("Jump"));
+                MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump"));
             }
         }
     }
@@ -102,7 +122,8 @@ public class PlayerBehaviour : CharacterBase
 
     protected override void WeaponControl()
     {
-        if (!PauseMenu.GameIsPaused) {
+        if (!Pause.GameIsPaused)
+        {
             weaponAimPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -133,43 +154,58 @@ public class PlayerBehaviour : CharacterBase
     {
         Inventory.Aim(weaponAimPoint);
 
-        if (weaponChooseNext) {
+        if (weaponChooseNext)
+        {
             Inventory.ActiveSlot++;
             weaponChooseNext = false;
-        } else if (weaponChoosePrev) {
+        }
+        else if (weaponChoosePrev)
+        {
             Inventory.ActiveSlot--;
             weaponChoosePrev = false;
         }
-        if (weaponChooseFirst) {
+        if (weaponChooseFirst)
+        {
             Inventory.ActiveSlot = Inventory.Slots.FIRST;
             weaponChooseFirst = false;
-        } else if (weaponChooseSecond) {
+        }
+        else if (weaponChooseSecond)
+        {
             Inventory.ActiveSlot = Inventory.Slots.SECOND;
             weaponChooseSecond = false;
-        } else if (weaponChooseThird) {
+        }
+        else if (weaponChooseThird)
+        {
             Inventory.ActiveSlot = Inventory.Slots.THIRD;
             weaponChooseThird = false;
-        } else if (weaponChooseFourth) {
+        }
+        else if (weaponChooseFourth)
+        {
             Inventory.ActiveSlot = Inventory.Slots.FOURTH;
             weaponChooseFourth = false;
         }
-        if (weaponChangeState) {
+        if (weaponChangeState)
+        {
             Inventory.ChangeWeaponState();
             weaponChangeState = false;
         }
-        if (weaponReload) {
+        if (weaponReload)
+        {
             Inventory.ReloadGun();
             weaponReload = false;
         }
-        if (weaponAttack) {
+        if (weaponAttack)
+        {
             Inventory.AttackWithWeaponOrFist();
             weaponAttack = false;
         }
-        if (weaponThrowPress) {
+        if (weaponThrowPress)
+        {
             Inventory.ThrowPress();
             weaponThrowPress = false;
         }
-        if (weaponThrowRelease) {
+        if (weaponThrowRelease)
+        {
             Inventory.ThrowRelease();
             weaponThrowRelease = false;
         }
@@ -180,20 +216,25 @@ public class PlayerBehaviour : CharacterBase
     /// <summary>
     /// Some code to indicate checkers
     /// </summary>
-    protected void OnDrawGizmos() 
+    protected void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
-        foreach (Transform tr in GroundCheckers) {
+        foreach (Transform tr in GroundCheckers)
+        {
             Gizmos.DrawSphere(tr.position, 0.1f);
         }
         Gizmos.color = Color.green;
-        foreach (Transform tr in RightSideCheckers) {
+        foreach (Transform tr in RightSideCheckers)
+        {
             Gizmos.DrawSphere(tr.position, 0.1f);
         }
         Gizmos.color = Color.yellow;
-        foreach (Transform tr in LeftSideCheckers) {
+        foreach (Transform tr in LeftSideCheckers)
+        {
             Gizmos.DrawSphere(tr.position, 0.1f);
         }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(EnvironmentChecker.transform.position, 0.1f);
     }
 
 }

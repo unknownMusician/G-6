@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1270157396700736813}
   - component: {fileID: 8128536240166190532}
   - component: {fileID: 7584877150451072419}
+  - component: {fileID: 8186913550813396477}
   m_Layer: 0
   m_Name: CardGunEffect
   m_TagString: Untagged
@@ -115,3 +116,22 @@ MonoBehaviour:
   - {fileID: -6026306139748818829, guid: b798b46da739da64e884e04e8ca84422, type: 3}
   - {fileID: -3891731135036815119, guid: b798b46da739da64e884e04e8ca84422, type: 3}
   - {fileID: -8442317219950914150, guid: b798b46da739da64e884e04e8ca84422, type: 3}
+--- !u!114 &8186913550813396477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6242605618657418628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cf20c6e14a28147b8f89307004eca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  encyclopediaName: EncyclopediaObject
+  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

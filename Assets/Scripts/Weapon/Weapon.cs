@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Timers;
 using System;
 
-public abstract class Weapon : EncyclopediaObject {
+public abstract class Weapon : BaseEnvironment {
 
     const string TAG = "Weapon: ";
 
@@ -14,6 +14,7 @@ public abstract class Weapon : EncyclopediaObject {
 
     #region Properties
 
+    public EncyclopediaObject EncyclopediaObject => gameObject.GetComponent<EncyclopediaObject>();
     protected abstract bool CanAttack { get; set; }
     protected virtual Weapon.State WeaponState {
         get => state;
@@ -22,11 +23,11 @@ public abstract class Weapon : EncyclopediaObject {
             Debug.Log(TAG + "Changed state: " + WeaponState);
             switch (WeaponState) {
                 case State.Main:
-                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    this.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     animator.SetBool("secondState", false);
                     break;
                 case State.Alt:
-                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    this.transform.localRotation = Quaternion.Euler(0, 0, -90);
                     animator.SetBool("secondState", true);
                     break;
             }
@@ -138,8 +139,27 @@ public abstract class Weapon : EncyclopediaObject {
         transform.localScale = Vector3.one;
         rigidBody.velocity += direction; // "throwed" the weapon
         rigidBody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
-        //rigidBody.angularVelocity = -Mathf.Sign(direction.x) * direction.magnitude * 150f;
         Debug.Log(rigidBody.angularVelocity);
+    }
+
+    #endregion
+
+    #region Environment (Interaction)
+
+    public override void Interact(GameObject whoInterracted) {
+        // To-Do
+        var cb = whoInterracted?.GetComponent<CharacterBase>();
+        if (cb != null){
+            rigidBody.velocity = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
+            transform.rotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
+            DisablePhysics();
+            gameObject.transform.parent = whoInterracted.GetComponentInChildren<Inventory>().transform;
+            friend = null;
+            WeaponState = State.Main;
+            Debug.Log(TAG + "Picked");
+        }
     }
 
     #endregion

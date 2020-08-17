@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5824781978457126539}
   - component: {fileID: 8902850384399324638}
   - component: {fileID: 7440309013352402495}
+  - component: {fileID: 128365783755424929}
   m_Layer: 11
   m_Name: Pistol
   m_TagString: Untagged
@@ -180,3 +181,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &128365783755424929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8902850384399324635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cf20c6e14a28147b8f89307004eca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  encyclopediaName: EncyclopediaObject
+  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

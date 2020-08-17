@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour {
@@ -39,7 +39,7 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[] Block;
 
     private void Awake() {
-        MainData.RoomSpawner = this.gameObject;
+        MainData.RoomSpawnerObject = this.gameObject;
     }
 
     private void Start() {

@@ -24,28 +24,28 @@ public class GameUI : MonoBehaviour
     {
         if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
         {
-            if (PauseMenu.GameIsPaused)
+            if (Pause.GameIsPaused)
             {
                 menu.SetActive(false);
-                PauseMenu.GameIsPaused = false;
+                Pause.GameIsPaused = false;
             }
             else
             {
-                PauseMenu.GameIsPaused = true;
+                Pause.GameIsPaused = true;
                 menu.SetActive(true);
             }
 
         }
-        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawner.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
+        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
         {
-            if (PauseMenu.GameIsPaused)
+            if (Pause.GameIsPaused)
             {
-                PauseMenu.GameIsPaused = false;
+                Pause.GameIsPaused = false;
                 weaponSettings.SetActive(false);
             }
             else
             {
-                PauseMenu.GameIsPaused = true;
+                Pause.GameIsPaused = true;
                 weaponSettings.SetActive(true);
             }
         }
@@ -64,7 +64,7 @@ public class GameUI : MonoBehaviour
         MainData.ActionHPChange += SetHelth;
         health.fillRect.GetComponent<Image>().color = Color.red;
         //endurance
-        MainData.ActionHPChange += SetEndurance;
+        MainData.ActionSPChange += SetEndurance;
         endurance.fillRect.GetComponent<Image>().color = Color.green;
         //money
         MainData.ActionPlayerCoinsChange += SetMoney;
@@ -82,8 +82,8 @@ public class GameUI : MonoBehaviour
     }
     public void SetEndurance()
     {
-        endurance.maxValue = MainData.PlayerMaxHP;
-        endurance.value = MainData.PlayerHP;
+        endurance.maxValue = MainData.PlayerMaxSP;
+        endurance.value = MainData.PlayerSP;
     }
     public void SetMoney()
     {
