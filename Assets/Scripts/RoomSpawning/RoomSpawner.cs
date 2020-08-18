@@ -12,7 +12,6 @@ public class RoomSpawner : MonoBehaviour {
     public int amountOfRooms;
     public int rows;
     public int columns;
-    public CharacterBase player;
 
     public int CurrentColumn { get; set; }
     public int CurrentRow { get; set; }
@@ -48,7 +47,7 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
 
-        MainData.Player.transform.position = getCurrentLocationAll();
+        MainData.PlayerObject.transform.position = getCurrentLocationAll();
 
         CurrentColumn = columns / 2;
         CurrentRow = rows / 2;
@@ -397,6 +396,7 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
+        miniMapMatrix[CurrentRow, CurrentColumn].GetComponent<SpriteRenderer>().color = Color.red;
     }
 
     private void spawnDungeon() {

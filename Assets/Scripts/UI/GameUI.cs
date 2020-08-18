@@ -36,7 +36,7 @@ public class GameUI : MonoBehaviour
             }
 
         }
-        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().GetRoomComponentOfTheActiveRoom().IsThereAnyEnemy() && !menu.activeInHierarchy)
+        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().getRoomComponentOfTheActiveRoom().isThereAnyEnemy() && !menu.activeInHierarchy)
         {
             if (Pause.GameIsPaused)
             {

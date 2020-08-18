@@ -3,7 +3,9 @@
 public class Door : MonoBehaviour {
 
     private RoomSpawner roomSpawner;
-    private GameObject[,] tempMatrix;
+    private GameObject[,] roomMatrix;
+    private GameObject[,] miniMapMatrix;
+    private GameObject spawnpoint;
     private byte direction;
     public bool Visited { get; set; }
     
@@ -27,7 +29,8 @@ public class Door : MonoBehaviour {
 
     void Start() {
         roomSpawner = this.transform.parent.parent.parent.parent.GetComponent<RoomSpawner>();
-        tempMatrix = roomSpawner.getRoomsMatrix();
+        roomMatrix = roomSpawner.getRoomsMatrix();
+        miniMapMatrix = roomSpawner.getMiniMapMatrix();
         Visited = false;
     }
 
@@ -36,54 +39,67 @@ public class Door : MonoBehaviour {
         if (other.name == "Player") {
 
             Transform playerTransform = other.transform;
-            GameObject currentRoom = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn];
-            GameObject spawnpoint;
+            GameObject currentRoomGameObject = roomMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn];
+            GameObject currentRoomMiniMapElement = miniMapMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn];
 
             if (direction == 0) {
 
                 if (Visited == false) {
-                    GameObject nextRoom = tempMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn];
-                    nextRoom.SetActive(true);
-                    nextRoom.GetComponent<Room>().makeAllDoorsUnvisited();
-                    spawnpoint = nextRoom.GetComponent<Room>().BottomSpawnpoint;
+                    GameObject nextRoomGameObject = roomMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn];
+                    GameObject nextRoomMiniMapElement = miniMapMatrix[roomSpawner.CurrentRow - 1, roomSpawner.CurrentColumn];
+                    nextRoomGameObject.SetActive(true);
+                    nextRoomGameObject.GetComponent<Room>().makeAllDoorsUnvisited();
+                    nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.red;
+                    spawnpoint = nextRoomGameObject.GetComponent<Room>().BottomSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
-                    currentRoom.SetActive(false);
+                    currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
+                    currentRoomGameObject.SetActive(false);
                     roomSpawner.CurrentRow -= 1;
                 }
 
             } else if (direction == 1) {
 
                 if (Visited == false) {
-                    GameObject nextRoom = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1];
-                    nextRoom.SetActive(true);
-                    nextRoom.GetComponent<Room>().makeAllDoorsUnvisited();
-                    spawnpoint = nextRoom.GetComponent<Room>().LeftSpawnpoint;
+                    GameObject nextRoomGameObject = roomMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1];
+                    GameObject nextRoomMiniMapElement = miniMapMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn + 1];
+                    nextRoomGameObject.SetActive(true);
+                    nextRoomGameObject.GetComponent<Room>().makeAllDoorsUnvisited();
+                    nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.red;
+                    spawnpoint = nextRoomGameObject.GetComponent<Room>().LeftSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
-                    currentRoom.SetActive(false);
+                    currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
+                    currentRoomGameObject.SetActive(false);
                     roomSpawner.CurrentColumn += 1;
                 }
 
             } else if (direction == 2) {
 
                 if (Visited == false) {
-                    GameObject nextRoom = tempMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn];
-                    nextRoom.SetActive(true);
-                    nextRoom.GetComponent<Room>().makeAllDoorsUnvisited();
-                    spawnpoint = nextRoom.GetComponent<Room>().TopSpawnpoint;
+                    GameObject nextRoomGameObject = roomMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn];
+                    GameObject nextRoomMiniMapElement = miniMapMatrix[roomSpawner.CurrentRow + 1, roomSpawner.CurrentColumn];
+                    nextRoomGameObject.SetActive(true);
+                    nextRoomGameObject.GetComponent<Room>().makeAllDoorsUnvisited();
+                    nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.red;
+                    Debug.Log(nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color);
+                    spawnpoint = nextRoomGameObject.GetComponent<Room>().TopSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
-                    currentRoom.SetActive(false);
+                    currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
+                    currentRoomGameObject.SetActive(false);
                     roomSpawner.CurrentRow += 1;
                 }
 
             } else if (direction == 3) {
                 
                 if (Visited == false) {
-                    GameObject nextRoom = tempMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1];
-                    nextRoom.SetActive(true);
-                    nextRoom.GetComponent<Room>().makeAllDoorsUnvisited();
-                    spawnpoint = nextRoom.GetComponent<Room>().RightSpawnpoint;
+                    GameObject nextRoomGameObject = roomMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1];
+                    GameObject nextRoomMiniMapElement = miniMapMatrix[roomSpawner.CurrentRow, roomSpawner.CurrentColumn - 1];
+                    nextRoomGameObject.SetActive(true);
+                    nextRoomGameObject.GetComponent<Room>().makeAllDoorsUnvisited();
+                    nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.red;
+                    spawnpoint = nextRoomGameObject.GetComponent<Room>().RightSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
-                    currentRoom.SetActive(false);
+                        currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
+        currentRoomGameObject.SetActive(false);
                     roomSpawner.CurrentColumn -= 1;
                 }
             }
