@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿public class PlaceForRoom {
 
-public class PlaceForRoom {
+    #region Amount of doors parameter
+    public byte AmountOfDoors { get; set; }
+    #endregion
 
+    #region Doors parameters
     private short topDoor;
     private short rightDoor;
     private short bottomDoor;
     private short leftDoor;
-
-    public byte AmountOfDoors { get; set; }
+    #endregion
 
     public PlaceForRoom(short topDoor, short rightDoor, short bottomDoor, short leftDoor) {
 
