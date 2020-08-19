@@ -2,17 +2,23 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
 
+    #region RoomType parameter
     public byte RoomType { get; set; }
+    #endregion
 
+    #region Doors parameters
     private Door topDoor;
     private Door rightDoor;
     private Door bottomDoor;
     private Door leftDoor;
+    #endregion
 
+    #region Spawnpoints parameters
     public GameObject TopSpawnpoint { get; set; }
     public GameObject RightSpawnpoint { get; set; }
     public GameObject BottomSpawnpoint { get; set; }
     public GameObject LeftSpawnpoint { get; set; }
+    #endregion
 
     public static class TypeOfTheRoom {
         readonly public static byte start = 0;
@@ -24,6 +30,7 @@ public class Room : MonoBehaviour {
 
         RoomType = TypeOfTheRoom.regular;
 
+        #region Doors initialization
         Transform doorsCollectionObject = this.transform.GetChild(1);
         int amountOfDoors = doorsCollectionObject.childCount;
         for (int i = 0; i < amountOfDoors; i++) {
@@ -38,7 +45,9 @@ public class Room : MonoBehaviour {
                 leftDoor = door.GetComponent<Door>();
             }
         }
+        #endregion
 
+        #region Spawnoints initializataion
         Transform spawnpointsCollectionObject = this.transform.GetChild(3);
         int amountOfSpawnpoints = spawnpointsCollectionObject.childCount;
         for (int i = 0; i < amountOfSpawnpoints; i++) {
@@ -53,6 +62,8 @@ public class Room : MonoBehaviour {
                 LeftSpawnpoint = spawnpoint;
             }
         }
+        #endregion
+
     }
 
     public bool isThereAnyEnemy() {
@@ -61,7 +72,6 @@ public class Room : MonoBehaviour {
     }
 
     public void makeAllDoorsUnvisited () {
-
         if (topDoor != null) {
             topDoor.Visited = false;
         }
