@@ -37,7 +37,7 @@ public class Door : MonoBehaviour {
     }
 
     void Start() {
-        roomSpawner = this.transform.parent.parent.parent.parent.GetComponent<RoomSpawner>();
+        roomSpawner = MainData.RoomSpawnerObject.GetComponent<RoomSpawner>();
         roomMatrix = roomSpawner.getRoomsMatrix();
         miniMapMatrix = roomSpawner.getMiniMapMatrix();
         Visited = false;
@@ -72,6 +72,13 @@ public class Door : MonoBehaviour {
                     playerTransform.position = spawnpoint.transform.position;
                     #endregion
 
+                    #region Focusing camera on a new room
+                    float coordX = nextRoomMiniMapElement.transform.position.x;
+                    float coordY = nextRoomMiniMapElement.transform.position.y;
+                    float coordZ = roomSpawner.transform.GetChild(2).position.z;
+                    roomSpawner.transform.GetChild(2).transform.position = new Vector3(coordX, coordY, coordZ);
+                    #endregion
+
                     #region Operations with old room
                     currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
                     currentRoomGameObject.SetActive(false);
@@ -98,6 +105,13 @@ public class Door : MonoBehaviour {
                     #region Moving player to new room
                     spawnpoint = nextRoomGameObject.GetComponent<Room>().LeftSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
+                    #endregion
+
+                    #region Focusing camera on a new room
+                    float coordX = nextRoomMiniMapElement.transform.position.x;
+                    float coordY = nextRoomMiniMapElement.transform.position.y;
+                    float coordZ = roomSpawner.transform.GetChild(2).position.z;
+                    roomSpawner.transform.GetChild(2).transform.position = new Vector3(coordX, coordY, coordZ);
                     #endregion
 
                     #region Operations with old room
@@ -128,6 +142,13 @@ public class Door : MonoBehaviour {
                     playerTransform.position = spawnpoint.transform.position;
                     #endregion
 
+                    #region Focusing camera on a new room
+                    float coordX = nextRoomMiniMapElement.transform.position.x;
+                    float coordY = nextRoomMiniMapElement.transform.position.y;
+                    float coordZ = roomSpawner.transform.GetChild(2).position.z;
+                    roomSpawner.transform.GetChild(2).transform.position = new Vector3(coordX, coordY, coordZ);
+                    #endregion
+
                     #region Operations with old room
                     currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
                     currentRoomGameObject.SetActive(false);
@@ -154,6 +175,13 @@ public class Door : MonoBehaviour {
                     #region Moving player to new room
                     spawnpoint = nextRoomGameObject.GetComponent<Room>().RightSpawnpoint;
                     playerTransform.position = spawnpoint.transform.position;
+                    #endregion
+
+                    #region Focusing camera on a new room
+                    float coordX = nextRoomMiniMapElement.transform.position.x;
+                    float coordY = nextRoomMiniMapElement.transform.position.y;
+                    float coordZ = roomSpawner.transform.GetChild(2).position.z;
+                    roomSpawner.transform.GetChild(2).transform.position = new Vector3(coordX, coordY, coordZ);
                     #endregion
 
                     #region Operations with old room

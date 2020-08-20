@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 634175858}
   - component: {fileID: 634175857}
   - component: {fileID: 634175856}
+  - component: {fileID: 634175859}
   m_Layer: 0
   m_Name: MiniMap Camera
   m_TagString: Untagged
@@ -203,7 +204,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: -58.6
+  orthographic size: -25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -227,12 +228,24 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634175855}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -230.90002, y: 249.69995, z: -110.00639}
+  m_LocalPosition: {x: -250, y: 250, z: -110.00639}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 998375058}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &634175859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634175855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c713184bef1f5984c818ee4301eeacf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &643335555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -688,12 +701,16 @@ MonoBehaviour:
   EnvironmentChecker: {fileID: 0}
   CanFly: 0
   JumpForce: 0
+  VerticalSpeed: 0
   HorizontalSpeed: 0
   InteractionRadius: 0
   ClimbingSpeed: 0
   ContactLayer:
     serializedVersion: 2
     m_Bits: 0
+  FatiguePerFrame: 0
+  HorizontalBust: 0
+  SPRegenerationPerFrame: 0
   Inventory: {fileID: 0}
   player: {fileID: 29168910}
 --- !u!1001 &2076726413
