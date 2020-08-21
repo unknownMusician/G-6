@@ -2,23 +2,31 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
 
-    #region RoomType parameter
-    public byte RoomType { get; set; }
-    #endregion
+    #region Properties
 
-    #region Doors parameters
+    public byte RoomType { get; set; }
+
+    #region Doors
+
     private Door topDoor;
     private Door rightDoor;
     private Door bottomDoor;
     private Door leftDoor;
+    
     #endregion
 
-    #region Spawnpoints parameters
+    #region Spawnpoints
+    
     public GameObject TopSpawnpoint { get; set; }
     public GameObject RightSpawnpoint { get; set; }
     public GameObject BottomSpawnpoint { get; set; }
     public GameObject LeftSpawnpoint { get; set; }
+
     #endregion
+
+    #endregion
+
+    #region Class constructor
 
     public static class TypeOfTheRoom {
         readonly public static byte start = 0;
@@ -26,11 +34,18 @@ public class Room : MonoBehaviour {
         readonly public static byte finish = 2;
     }
 
+    #endregion
+
+    #region Methods
+
+    #region Awake() method
+
     private void Awake() {
 
         RoomType = TypeOfTheRoom.regular;
 
         #region Doors initialization
+
         Transform doorsCollectionObject = this.transform.GetChild(1);
         int amountOfDoors = doorsCollectionObject.childCount;
         for (int i = 0; i < amountOfDoors; i++) {
@@ -45,9 +60,11 @@ public class Room : MonoBehaviour {
                 leftDoor = door.GetComponent<Door>();
             }
         }
+        
         #endregion
 
         #region Spawnoints initializataion
+
         Transform spawnpointsCollectionObject = this.transform.GetChild(3);
         int amountOfSpawnpoints = spawnpointsCollectionObject.childCount;
         for (int i = 0; i < amountOfSpawnpoints; i++) {
@@ -62,9 +79,12 @@ public class Room : MonoBehaviour {
                 LeftSpawnpoint = spawnpoint;
             }
         }
+        
         #endregion
 
     }
+
+    #endregion
 
     public bool isThereAnyEnemy() {
         Transform transform = GetComponent<Transform>();
@@ -85,4 +105,7 @@ public class Room : MonoBehaviour {
             leftDoor.Visited = false;
         }
     }
+
+    #endregion
+
 }

@@ -3,37 +3,35 @@ using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour {
 
-    #region Rooms and mini-map matrixes parameters
+    #region Properties
+
+    #region Matrixes
+
     public PlaceForRoom[,] roomDirectionsDataMatrix;
     public GameObject[,] roomsGameObjectMatrix;
     public GameObject[,] miniMapMatrix;
+
     #endregion
 
-    #region Finishroom coordinates parameter
-    private (int, int) finishRoomCoord;
-    #endregion
+    #region Amount of rows and columns 
 
-    #region Rows and columns parameters
     public int rows;
     public int columns;
+
     #endregion
 
-    #region Current rows and columns parameters
+    #region Coordinates of current room
+
     public int CurrentColumn { get; set; }
     public int CurrentRow { get; set; }
+
     #endregion
 
-    #region Map elements prefabs parameters
-    public List<GameObject> mapElementsPrefabs;
+    #region Prefabs dictionaries
+
     private Dictionary<string, GameObject> mapElementsPrefabsDictionary;
-    #endregion
-
-    #region Room prefabs dictionary parameter
     private Dictionary<string, GameObject[]> roomsPrefabsDictionary;
-    #endregion
 
-    #region Amount of rooms parameter
-    public int amountOfRooms;
     #endregion
 
     #region Rooms prefabs arrays
@@ -55,34 +53,55 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[] Block;
     #endregion
 
+    public List<GameObject> mapElementsPrefabs;
+
+    private (int, int) finishRoomCoord;
+
+    public int amountOfRooms;
+
+    #endregion
+
+    #region Methods
+
+    #region Awake() and Start() methods
+
     private void Awake() {
         MainData.RoomSpawnerObject = this.gameObject;
     }
 
     private void Start() {
 
-        #region Initialization of rooms and mini-map matrixes
+        #region Matrixes initialization
+
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
+        
         #endregion
 
         #region Teleporting player to base room
-        MainData.PlayerObject.transform.position = getCurrentLocationAll();
+
+        MainData.PlayerObject.transform.position = getCoordinatesOfTheActiveRoom();
+        
         #endregion
 
-        #region Setting of current column and current row
+        #region Current row and column initialization
+
         CurrentColumn = columns / 2;
         CurrentRow = rows / 2;
+        
         #endregion
 
         #region Creating base room
+
         PlaceForRoom baseRoom = new PlaceForRoom(1, 1, 1, 1);
-        roomDirectionsDataMatrix[rows / 2, columns / 2] = baseRoom;
+        roomDirectionsDataMatrix[CurrentRow, CurrentColumn] = baseRoom;
         amountOfRooms -= 1;
+        
         #endregion
 
         #region mapElementsPrefabsDictionary initialization and filling
+
         mapElementsPrefabsDictionary = new Dictionary<string, GameObject>();
 
         mapElementsPrefabsDictionary.Add("2000", mapElementsPrefabs[0]);     // T
@@ -101,9 +120,11 @@ public class RoomSpawner : MonoBehaviour {
         mapElementsPrefabsDictionary.Add("2220", mapElementsPrefabs[13]); // notL
         mapElementsPrefabsDictionary.Add("2222", mapElementsPrefabs[14]); // Base
         mapElementsPrefabsDictionary.Add("0000", mapElementsPrefabs[15]); // Block
+        
         #endregion
 
         #region roomsPrefabsDictionary initialization and filling
+
         roomsPrefabsDictionary = new Dictionary<string, GameObject[]>();
 
         roomsPrefabsDictionary.Add("2000", T);     // T
@@ -122,19 +143,25 @@ public class RoomSpawner : MonoBehaviour {
         roomsPrefabsDictionary.Add("2220", notL); // notL
         roomsPrefabsDictionary.Add("2222", Base); // Base
         roomsPrefabsDictionary.Add("0000", Block); // Block
+        
         #endregion
 
         generateDungeon();
 
-        spawnDungeonMap();
-
         spawnDungeon();
 
+        spawnDungeonMap();
+
     }
+
+    #endregion
+
+    #region Generate and spawn methods
 
     private void generateDungeon() {
 
         #region Generating dungeon
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
@@ -143,6 +170,7 @@ public class RoomSpawner : MonoBehaviour {
                 if (amountOfRooms > 0) {
                     
                     #region Creating PlaceForRoom objects for every place for room
+
                     if ((i - 1 >= 0) && (roomDirectionsDataMatrix[i - 1, j] != null)) {
                         if (point == null) {
                             roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
@@ -195,9 +223,11 @@ public class RoomSpawner : MonoBehaviour {
                         }
                         point.setLeft(-1);
                     }
+
                     #endregion
 
                     #region Random door filling
+
                     if ((point != null) && (point.anyEqualToOne() == true)) {
                         short[] doors = point.getDoorParams();
                         if (doors[0] == 0) {
@@ -238,6 +268,7 @@ public class RoomSpawner : MonoBehaviour {
                         }
                         amountOfRooms -= 1;
                     }
+
                     #endregion
 
                 } else {
@@ -245,9 +276,11 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
+
         #endregion
 
-        #region Adding rooms to fit amounf of rooms
+        #region Adding rooms to fit amount of rooms
+
         while (amountOfRooms >= 0) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
@@ -330,9 +363,11 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
+
         #endregion
 
         #region Closing doors to nowhere, etc.
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
 
@@ -395,6 +430,7 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
+
         #endregion
 
     }
@@ -467,6 +503,10 @@ public class RoomSpawner : MonoBehaviour {
         roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomType = Room.TypeOfTheRoom.finish;
     }
 
+    #endregion
+
+    #region Get() methods of matrixes
+
     public GameObject[,] getRoomsMatrix() {
         return roomsGameObjectMatrix;
     }
@@ -475,9 +515,11 @@ public class RoomSpawner : MonoBehaviour {
         return miniMapMatrix;
     }
 
-    public Vector2 getCurrentLocationAll() {
-        CurrentRow = rows / 2;
-        CurrentColumn = columns / 2;
+    #endregion
+
+    #region Get() methods of active room components
+
+    public Vector2 getCoordinatesOfTheActiveRoom() {
         Vector2 result = new Vector2(CurrentColumn * 250, -CurrentRow * 200);
         return result;
     }
@@ -494,6 +536,10 @@ public class RoomSpawner : MonoBehaviour {
         return roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Transform>();
     }
 
+    #endregion
+
+    #region Overloads of isThereAnyEnemy()
+
     public bool isThereAnyEnemy(int row, int column) {
         return roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0;
     }
@@ -501,6 +547,94 @@ public class RoomSpawner : MonoBehaviour {
     public bool isThereAnyEnemy(GameObject room) {
         return room.transform.GetChild(0).transform.childCount != 0;
     }
+
+    #endregion
+
+    #region Methods of going to next room operations
+
+    public void goToNextRoom(Transform playerTransform, int direction) {
+
+        GameObject currentRoomGameObject = roomsGameObjectMatrix[CurrentRow, CurrentColumn];
+        GameObject currentRoomMiniMapElement = miniMapMatrix[CurrentRow, CurrentColumn];
+
+        GameObject nextRoomGameObject = getNextRoomGameObject(direction);
+        GameObject nextRoomMiniMapElement = getNextRoomMiniMapElement(direction);
+
+        nextRoomGameObject.SetActive(true);
+        nextRoomGameObject.GetComponent<Room>().makeAllDoorsUnvisited();
+        nextRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.red;
+
+        GameObject spawnpoint = getNextRoomSpawnpoint(direction, nextRoomGameObject);
+        playerTransform.position = spawnpoint.transform.position;
+
+        focusCameraOnANewRoom(nextRoomMiniMapElement);
+
+        currentRoomMiniMapElement.GetComponent<SpriteRenderer>().color = Color.white;
+        currentRoomGameObject.SetActive(false);
+
+        changeCurrentCoordAfterGoingToNextRoom(direction);
+
+    }
+
+    public GameObject getNextRoomGameObject(int direction) {
+        if (direction == 0) {
+            return roomsGameObjectMatrix[CurrentRow - 1, CurrentColumn];
+        } else if (direction == 1) {
+            return roomsGameObjectMatrix[CurrentRow, CurrentColumn + 1];
+        } else if (direction == 2) {
+            return roomsGameObjectMatrix[CurrentRow + 1, CurrentColumn];
+        } else if (direction == 3) {
+            return roomsGameObjectMatrix[CurrentRow, CurrentColumn - 1];
+        }
+        return null;
+    }
+
+    public GameObject getNextRoomMiniMapElement(int direction) {
+        if (direction == 0) {
+            return miniMapMatrix[CurrentRow - 1, CurrentColumn];
+        } else if (direction == 1) {
+            return miniMapMatrix[CurrentRow, CurrentColumn + 1];
+        } else if (direction == 2) {
+            return miniMapMatrix[CurrentRow + 1, CurrentColumn];
+        } else if (direction == 3) {
+            return miniMapMatrix[CurrentRow, CurrentColumn - 1];
+        }
+        return null;
+    }
+
+    public GameObject getNextRoomSpawnpoint(int direction, GameObject nextRoom) {
+        if (direction == 0) {
+            return nextRoom.GetComponent<Room>().BottomSpawnpoint;
+        } else if (direction == 1) {
+            return nextRoom.GetComponent<Room>().LeftSpawnpoint;
+        } else if (direction == 2) {
+            return nextRoom.GetComponent<Room>().TopSpawnpoint;
+        } else if (direction == 3) {
+            return nextRoom.GetComponent<Room>().RightSpawnpoint;
+        }
+        return null;
+    }
+
+    public void focusCameraOnANewRoom(GameObject nextRoomMiniMapElement) {
+        float coordX = nextRoomMiniMapElement.transform.position.x;
+        float coordY = nextRoomMiniMapElement.transform.position.y;
+        float coordZ = this.transform.GetChild(2).position.z;
+        this.transform.GetChild(2).position = new Vector3(coordX, coordY, coordZ);
+    }
+
+    public void changeCurrentCoordAfterGoingToNextRoom(int direction) {
+        if (direction == 0) {
+            CurrentRow -= 1;
+        } else if (direction == 1) {
+            CurrentColumn += 1;
+        } else if (direction == 2) {
+            CurrentRow += 1;
+        } else if (direction == 3) {
+            CurrentColumn -= 1;
+        }
+    }
+
+    #endregion
 
     public bool doWeNeedAnotherDoor(byte amountOfDoors, float randomNumber) {
         if ((amountOfDoors == 0) & (randomNumber > 0.5f)) {
@@ -514,4 +648,7 @@ public class RoomSpawner : MonoBehaviour {
         }
         return false;
     }
+
+    #endregion
+
 }
