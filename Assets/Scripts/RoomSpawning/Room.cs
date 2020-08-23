@@ -4,7 +4,9 @@ public class Room : MonoBehaviour {
 
     #region Properties
 
-    public byte RoomType { get; set; }
+    public string RoomType { get; set; }
+
+    public string RoomStuff { get; set; }
 
     #region Doors
 
@@ -26,23 +28,13 @@ public class Room : MonoBehaviour {
 
     #endregion
 
-    #region Class constructor
-
-    public static class TypeOfTheRoom {
-        readonly public static byte start = 0;
-        readonly public static byte regular = 1;
-        readonly public static byte finish = 2;
-    }
-
-    #endregion
-
     #region Methods
 
     #region Awake() method
 
     private void Awake() {
 
-        RoomType = TypeOfTheRoom.regular;
+        RoomType = "regular";
 
         #region Doors initialization
 
@@ -88,7 +80,7 @@ public class Room : MonoBehaviour {
 
     public bool isThereAnyEnemy() {
         Transform transform = GetComponent<Transform>();
-        return transform.GetChild(0).childCount != 0;
+        return transform.GetChild(2).childCount != 0;
     }
 
     public void makeAllDoorsUnvisited () {
