@@ -127,6 +127,72 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4333165458894757142}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &63950095 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5444461530799452065, guid: 8e8848c39e1340f4696ca4831dd40959,
+    type: 3}
+  m_PrefabInstance: {fileID: 2170964901280059883}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &312679863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 312679864}
+  m_Layer: 0
+  m_Name: Icons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &312679864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312679863}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -233.55911, y: 245.73137, z: -21.398438}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 63950095}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &576033569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 576033570}
+  m_Layer: 0
+  m_Name: MiniMap Elements
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &576033570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576033569}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 63950095}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &634175855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,6 +1145,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
         type: 3}
+      propertyPath: mapIconsPrefabs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
       propertyPath: amountOfRooms
       value: 21
       objectReference: {fileID: 0}
@@ -1384,6 +1455,42 @@ PrefabInstance:
       propertyPath: Block.Array.data[1]
       value: 
       objectReference: {fileID: 775998805986032206, guid: a9e57e6a0c8bb744f9d50d8ecd39e26d,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: b3985816ab79f7b4995003195fbe4690,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: ae5c6e1106232484f9449b00e1e44401,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: 8771f31501a584448b5cac04694cefef,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: 6173ce9b6bda40c4087250f6a6c3899a,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: 01e09c950c270cb4a85f2c0d1be4af63,
+        type: 3}
+    - target: {fileID: 2170964901922904323, guid: 8e8848c39e1340f4696ca4831dd40959,
+        type: 3}
+      propertyPath: mapIconsPrefabs.Array.data[5]
+      value: 
+      objectReference: {fileID: 8409529122090377504, guid: 3737065d07d2e8a4b9fd4400069a6ad5,
         type: 3}
     - target: {fileID: 2170964901922904332, guid: 8e8848c39e1340f4696ca4831dd40959,
         type: 3}
