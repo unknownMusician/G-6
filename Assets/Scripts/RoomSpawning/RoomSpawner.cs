@@ -5,6 +5,14 @@ public class RoomSpawner : MonoBehaviour {
 
     #region Properties
 
+    public List<GameObject> mapElementsPrefabs;
+
+    public List<GameObject> mapIconsPrefabs;
+
+    public int amountOfRooms;
+
+    private (int, int) finishRoomCoord;
+
     #region Matrixes
 
     public PlaceForRoom[,] roomDirectionsDataMatrix;
@@ -31,10 +39,12 @@ public class RoomSpawner : MonoBehaviour {
 
     private Dictionary<string, GameObject> mapElementsPrefabsDictionary;
     private Dictionary<string, GameObject[]> roomsPrefabsDictionary;
+    private Dictionary<string, GameObject> mapIconsPrefabsDictionary;
 
     #endregion
 
     #region Rooms prefabs arrays
+
     public GameObject[] T;
     public GameObject[] R;
     public GameObject[] B;
@@ -51,13 +61,8 @@ public class RoomSpawner : MonoBehaviour {
     public GameObject[] notL;
     public GameObject[] Base;
     public GameObject[] Block;
+
     #endregion
-
-    public List<GameObject> mapElementsPrefabs;
-
-    private (int, int) finishRoomCoord;
-
-    public int amountOfRooms;
 
     #endregion
 
@@ -76,12 +81,6 @@ public class RoomSpawner : MonoBehaviour {
         roomDirectionsDataMatrix = new PlaceForRoom[rows, columns];
         roomsGameObjectMatrix = new GameObject[rows, columns];
         miniMapMatrix = new GameObject[rows, columns];
-        
-        #endregion
-
-        #region Teleporting player to base room
-
-        MainData.PlayerObject.transform.position = getCoordinatesOfTheActiveRoom();
         
         #endregion
 
@@ -143,7 +142,20 @@ public class RoomSpawner : MonoBehaviour {
         roomsPrefabsDictionary.Add("2220", notL); // notL
         roomsPrefabsDictionary.Add("2222", Base); // Base
         roomsPrefabsDictionary.Add("0000", Block); // Block
-        
+
+        #endregion
+
+        #region mapIconsPrefabsDictionary initialization and filling
+
+        mapIconsPrefabsDictionary = new Dictionary<string, GameObject>();
+
+        mapIconsPrefabsDictionary.Add("start", mapIconsPrefabs[0]);
+        mapIconsPrefabsDictionary.Add("finish", mapIconsPrefabs[1]);
+        mapIconsPrefabsDictionary.Add("boss", mapIconsPrefabs[2]);
+        mapIconsPrefabsDictionary.Add("chest", mapIconsPrefabs[3]);
+        mapIconsPrefabsDictionary.Add("market", mapIconsPrefabs[4]);
+        mapIconsPrefabsDictionary.Add("no enemy", mapIconsPrefabs[5]);
+
         #endregion
 
         generateDungeon();
@@ -151,6 +163,14 @@ public class RoomSpawner : MonoBehaviour {
         spawnDungeon();
 
         spawnDungeonMap();
+
+        renderIconsOnMinimap();
+
+        #region Teleporting player to base room
+
+        MainData.PlayerObject.transform.position = roomsGameObjectMatrix[CurrentRow, CurrentColumn].transform.position;
+
+        #endregion
 
     }
 
@@ -455,7 +475,7 @@ public class RoomSpawner : MonoBehaviour {
                         miniMapMatrix[i, j] = Instantiate(mapElementsPrefabsDictionary[key],
                             new Vector2(j * 10 - 300, -i * 10 + 300),
                             Quaternion.identity,
-                            this.gameObject.transform.GetChild(1)
+                            this.gameObject.transform.GetChild(1).GetChild(1)
                             );
                     }
                 }
@@ -499,8 +519,13 @@ public class RoomSpawner : MonoBehaviour {
                 }
             }
         }
-        // Last added room = finish room
-        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomType = Room.TypeOfTheRoom.finish;
+        // Last added room = finish room, base room = start room
+        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomType = "finish";
+        roomsGameObjectMatrix[finishRoomCoord.Item1, finishRoomCoord.Item2].GetComponent<Room>().RoomStuff = "boss";
+
+        roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Room>().RoomType = "start";
+        roomsGameObjectMatrix[CurrentRow, CurrentColumn].GetComponent<Room>().RoomStuff = "market";
+
     }
 
     #endregion
@@ -541,11 +566,11 @@ public class RoomSpawner : MonoBehaviour {
     #region Overloads of isThereAnyEnemy()
 
     public bool isThereAnyEnemy(int row, int column) {
-        return roomsGameObjectMatrix[row, column].transform.GetChild(0).transform.childCount != 0;
+        return roomsGameObjectMatrix[row, column].transform.GetChild(2).transform.childCount != 0;
     }
 
     public bool isThereAnyEnemy(GameObject room) {
-        return room.transform.GetChild(0).transform.childCount != 0;
+        return room.transform.GetChild(2).transform.childCount != 0;
     }
 
     #endregion
@@ -647,6 +672,105 @@ public class RoomSpawner : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    public void renderIconsOnMinimap()  {
+        
+        for (int i = 0; i < rows; i++) {
+            
+            for (int j = 0; j < columns; j++) {
+
+                GameObject gameobjectOfTheRoom = roomsGameObjectMatrix[i, j];
+
+                if (gameobjectOfTheRoom != null) {
+
+                    #region Properties initialization
+
+                    GameObject gameobjectOfTheMiniMapElement = miniMapMatrix[i, j];
+
+                    float coordX = gameobjectOfTheMiniMapElement.transform.position.x;
+                    float coordY = gameobjectOfTheMiniMapElement.transform.position.y;
+                    float coordZ = gameobjectOfTheMiniMapElement.transform.position.z;
+
+                    Room roomComponentOfTheRoom = gameobjectOfTheRoom.GetComponent<Room>();
+
+                    List<string> roomIcons = new List<string>();
+
+                    #endregion
+
+                    #region Adding icons
+
+                    if (roomComponentOfTheRoom.RoomType != "regular") { 
+                        roomIcons.Add(roomComponentOfTheRoom.RoomType);
+                    }
+
+                    if (roomComponentOfTheRoom.RoomStuff != null) {
+                        roomIcons.Add(roomComponentOfTheRoom.RoomStuff);
+                    }
+
+                    if (!roomComponentOfTheRoom.isThereAnyEnemy()) {
+                        roomIcons.Add("no enemy");
+                    }
+
+                    roomIcons.Add("chest");
+
+                    #endregion
+
+                    #region Rendering icons
+
+                    if (roomIcons.Count == 0) {
+                        break;
+                    } else if (roomIcons.Count == 1) {
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[0]],
+                            new Vector3(coordX, coordY, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                    } else if (roomIcons.Count == 2) {
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[0]],
+                            new Vector3(coordX - 1.75f, coordY, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[1]],
+                            new Vector3(coordX + 1.75f, coordY, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                    } else if (roomIcons.Count == 3) {
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[0]],
+                            new Vector3(coordX - 1.75f, coordY + 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[1]],
+                            new Vector3(coordX + 1.75f, coordY + 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[2]],
+                            new Vector3(coordX, coordY - 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                    } else if (roomIcons.Count == 4) {
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[0]],
+                            new Vector3(coordX - 1.75f, coordY + 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[1]],
+                            new Vector3(coordX + 1.75f, coordY + 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[2]],
+                            new Vector3(coordX - 1.75f, coordY - 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                        Instantiate(mapIconsPrefabsDictionary[roomIcons[3]],
+                            new Vector3(coordX + 1.75f, coordY - 1.75f, coordZ),
+                            Quaternion.identity,
+                            this.transform.GetChild(1).GetChild(0));
+                    }
+
+                    #endregion
+
+                }
+            }
+        }
     }
 
     #endregion
