@@ -330,29 +330,8 @@
         {
             "name": "UI",
             "id": "7bdf531a-284e-468d-aa69-89e2bdec2119",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "a0a4d55f-27f4-48ef-8f06-d4df8f74c5e6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "a61ec04d-7897-44cd-9115-53b0f21650ce",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

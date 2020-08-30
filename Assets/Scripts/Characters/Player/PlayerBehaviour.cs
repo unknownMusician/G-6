@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerBehaviour : CharacterBase
 {
 
-    public InputMaster controls;
-
     public override float HP
     {
         get => _hp;
@@ -43,24 +41,23 @@ public class PlayerBehaviour : CharacterBase
         MainData.PlayerObject = this.gameObject;
 
         #region Controls
-        controls = new InputMaster();
 
         #region Weapon Controls
-        controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
-        controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
-        controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
-        controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
-        controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
-        controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
-        controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
-        controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
-        controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
-        controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
-        controls.Weapon.ChangeSlot.performed += ctx => {
+        MainData.Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
+        MainData.Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
+        MainData.Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
+        MainData.Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
+        MainData.Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
+        MainData.Controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
+        MainData.Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
+        MainData.Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
+        MainData.Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
+        MainData.Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
+        MainData.Controls.Weapon.ChangeSlot.performed += ctx => {
             if (!Pause.GameIsPaused)
                 _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
         };
-        controls.Weapon.Aim.performed += ctx => {
+        MainData.Controls.Weapon.Aim.performed += ctx => {
             if (!Pause.GameIsPaused)
                 Inventory.Aim(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
         };
@@ -69,11 +66,11 @@ public class PlayerBehaviour : CharacterBase
     }
     private void OnEnable()
     {
-        controls.Weapon.Enable();
+        MainData.Controls.Weapon.Enable();
     }
     private void OnDisable()
     {
-        controls.Weapon.Disable();
+        MainData.Controls.Weapon.Disable();
     }
     private new void Start()
     {
@@ -84,13 +81,13 @@ public class PlayerBehaviour : CharacterBase
 
         base.Start();
 
-        CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
-            new CardEffect.NestedProps(
-                CardEffect.EffectType.Fire,
-                1,
-                20,
-                1
-                ), this);
+        //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+        //    new CardEffect.NestedProps(
+        //        CardEffect.EffectType.Fire,
+        //        1,
+        //        20,
+        //        1
+        //        ), this);
     }
 
     protected new void Update()

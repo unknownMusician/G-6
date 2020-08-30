@@ -96,7 +96,14 @@ public class MainData
 
     #region Input
 
-    // public Controls Controls => PlayerBehaviour.Controls;
+    private static InputMaster controls;
+    public static InputMaster Controls {
+        get {
+            if (controls != null)
+                controls = new InputMaster();
+            return controls;
+        }
+    }
 
     #endregion
 }
