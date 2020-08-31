@@ -62,6 +62,14 @@ public class PlayerBehaviour : CharacterBase
                 Inventory.Aim(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
         };
         #endregion
+
+        #region Player
+
+        MainData.Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) Jump(); };
+        MainData.Controls.Player.MoveX.performed += ctx => { if(!Pause.GameIsPaused) MoveX(ctx.ReadValue<float>()); }
+
+        #endregion
+
         #endregion
     }
     private void OnEnable()
@@ -119,7 +127,7 @@ public class PlayerBehaviour : CharacterBase
         if (State == State.OnAir)
         {
 
-            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump"))) // To-Do: change to buttons and actions
+            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump"))) // ToDo: change to buttons and actions
             //    MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
 
         }
@@ -137,19 +145,6 @@ public class PlayerBehaviour : CharacterBase
             }
         }
     }
-
-    #region WeaponControl
-
-    protected override void WeaponControl()
-    {
-
-    }
-    protected override void WeaponFixedControl()
-    {
-
-    }
-
-    #endregion
 
     /// <summary>
     /// Some code to indicate checkers

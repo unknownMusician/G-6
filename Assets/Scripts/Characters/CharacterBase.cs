@@ -11,13 +11,15 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
-    [Space]
-    [SerializeField]
+    [SerializeField, Space]
     protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
-    [Space]
-    [Space]
+
+    [Space, Space] 
+
+    protected bool IsRunning;
+
     [SerializeField]
     protected bool CanFly;
 
@@ -39,10 +41,10 @@ public abstract class CharacterBase : MonoBehaviour
     [SerializeField]
     protected LayerMask ContactLayer;
 
-    [SerializeField] 
+    [SerializeField]
     protected float FatiguePerFrame;
 
-    [SerializeField] 
+    [SerializeField]
     protected float HorizontalBust;
 
     [SerializeField]
@@ -79,6 +81,8 @@ public abstract class CharacterBase : MonoBehaviour
     public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
     public Fraction Fraction { get; protected set; }
+    public Inventory Inventory { get; protected set; }
+
     #endregion
 
     #endregion
@@ -106,24 +110,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected SpriteRenderer sr;
 
-    #endregion  
-
-
-    #region Weapons&Inventory
-
-    #region Properties
-    protected Inventory Inventory => GetComponentInChildren<Inventory>();
     #endregion
-
-    #region Methods
-
-    protected abstract void WeaponControl();
-    protected abstract void WeaponFixedControl();
-
-    #endregion
-
-    #endregion
-
 
     #region Common Methods
     protected void TurnToRightSide(bool inverse = false)
@@ -132,62 +119,50 @@ public abstract class CharacterBase : MonoBehaviour
             sr.flipX = !inverse;
         else
             sr.flipX = inverse;
-
-        //if (Side == Side.Left)
-        //    transform.rotation = new Quaternion(transform.rotation.x, Mathf.PI, transform.rotation.y, transform.rotation.w);
-        //else
-        //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
     }
-    protected void MoveX(float dir, float jump, bool run = false)
+
+    protected void MoveX(float dir, bool run = true)
     {
+        run &= IsRunning;
         float horizontalSpeed = HorizontalSpeed;
         if (run && Math.Abs(dir) > 0)
         {
             SP -= FatiguePerFrame * Time.deltaTime;
             horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
         }
+        rb.velocity = new Vector2(horizontalSpeed * dir, rb.velocity.y);
+    }
+    protected void MoveY(float dir)
+    {
+        rb.velocity = new Vector2(0, dir * VerticalSpeed * (SP > 0 ? 1f : 0f));
+
+        if (Math.Abs(dir) > 0)
+            SP -= FatiguePerFrame * Time.deltaTime;
+    }
+    protected void Jump(float value = 1f)
+    {
+        float jumpForce = JumpForce * Mathf.Abs(value);
+
         switch (State)
         {
-            case State.OnGround:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
-                break;
-            //case State.Climb:
-            //    rb.velocity = new Vector2(dir * horizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
-            //    //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
-            //    break;
+            case State.Climb:
+                rb.AddForce(
+                    ClimbingBySide() == Side.Left
+                        ? new Vector2(HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f))
+                        : new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)),
+                    ForceMode2D.Impulse);
+                return;
+
             case State.Swim:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce / 4 : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+                jumpForce /= 4f;
                 break;
+
             case State.OnAir:
-                rb.velocity = new Vector2(dir * horizontalSpeed, rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-                break;
-            default:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+                jumpForce = 0;
                 break;
         }
-    }
-    protected void MoveY(float dir, bool jump)
-    {
-        float verticalSpeed = VerticalSpeed;
-        if (jump)
-        {
-            if (ClimbingBySide() == Side.Left) { }
-                //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
-                //rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse); // To-Do: change to buttons and actions
-                    else { }
-                        //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
-                        //rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse); // To-Do: change to buttons and actions
-            State = State.OnAir;
-        }
-        else 
-            rb.velocity = new Vector2(0, dir * verticalSpeed * (SP > 0 ? 1 : 0));
-        //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-        if(Math.Abs(dir) > 0)
-            SP -= FatiguePerFrame * Time.deltaTime ;
+
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -319,7 +294,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected void Say(string message)
     {
-        Debug.Log($"Hero sad: \"{message}\" ");
+        Debug.Log($"{name} said: \"{message}\" ");
     }
 
     #endregion
