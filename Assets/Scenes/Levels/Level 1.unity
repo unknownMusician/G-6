@@ -854,12 +854,12 @@ PrefabInstance:
     - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
         type: 3}
       propertyPath: bulletsPerShotAdder
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
         type: 3}
       propertyPath: shotRangeMultiplier
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}

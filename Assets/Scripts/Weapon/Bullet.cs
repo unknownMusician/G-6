@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour {
     private LayerMask magnetting;
 
     private GameObject aim;
-    private int piercingCount;
+    private int piercingCount = 0;
     private CardEffect.NestedProps effectProps;
 
     #endregion
@@ -53,7 +53,8 @@ public class Bullet : MonoBehaviour {
 
         this.damage = dmg;
         this.ricochet = ricochet;
-        this.piercing = piercing;
+        if (this.piercing = piercing)
+            piercingCount = 1;
         this.homing = homing;
         this.teleporting = teleporting;
         this.magnet = magnet;
@@ -67,7 +68,8 @@ public class Bullet : MonoBehaviour {
 
         this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
-        this.piercing = bulletProps.Piercing;
+        if (this.piercing = bulletProps.Piercing)
+            piercingCount = 1;
         this.homing = bulletProps.Homing;
         this.teleporting = bulletProps.Teleporting;
         this.magnet = bulletProps.Magnet;
@@ -124,12 +126,13 @@ public class Bullet : MonoBehaviour {
             }
             // Collide:
             if (piercingCount <= 0) {
-                if (!ricochet) {
-                    Destroy(this.gameObject);
-                } else {
+                if (ricochet) {
                     // jump
-                    var moveRotation = Quaternion.FromToRotation(rb.velocity, collider.gameObject.transform.position - transform.position);
-                    rb.velocity = -(moveRotation * (moveRotation * rb.velocity)).normalized * rb.velocity.magnitude;
+                    Vector3 closestPoint = collider.ClosestPoint(transform.position);
+                    var moveRotation = Quaternion.FromToRotation(rb.velocity, closestPoint - transform.position);
+                    rb.velocity = -(moveRotation * (moveRotation * rb.velocity));
+                } else {
+                    Destroy(this.gameObject);
                 }
             } else {
                 piercingCount--;
