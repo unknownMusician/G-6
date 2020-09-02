@@ -607,8 +607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9b534ae9dfc5b45a0a48b3acbc50bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocksOffset: {x: 5, y: 5}
-  blockSize: 1
+  roomObject: {fileID: 0}
+  terrainBlockSize: 1
   roomSize: {x: 30, y: 20}
   blocks:
   - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
