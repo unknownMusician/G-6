@@ -10,15 +10,31 @@ public class EnvironmentBuilder : MonoBehaviour {
     private GameObject roomObject;
 
     [SerializeField]
-    private float blockSize = 1;
+    private float blockSize;
 
     [SerializeField]
-    private Vector2 roomSize = new Vector2(5, 5);
+    private float objectSize;
+
+    [SerializeField]
+    private Vector2 roomSize;
+
+    public int currentLayer;
+    // 0 - background
+    // 1 - terrain
+    // 2 - forground
+    // 3 - objects
 
     private int currentTerrainBlockID = 0;
+    private int currentBackgroundBlockID = 0;
+    private int currentForgroundBlockID = 0;
+    private int currentObjectBlockID = 0;
+
     private GameObject cursorBlockSprite;
 
-    private Dictionary<Vector2, GameObject> terrainBlocksCoords = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> terrainBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> backgroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> forgroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> objectsBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
 
     #region UI
 
@@ -31,12 +47,12 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField]
     private GameObject barrierPrefab = null;
 
-    #endregion
-
     private Vector3 RoomTopRightCorner => new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0);
     private Vector3 RoomTopLeftCorner => new Vector3(0, roomSize.y * blockSize, 0);
     private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * blockSize, 0, 0);
     private Vector3 RoomBottomLeftCorner => Vector3.zero;
+
+    #endregion
 
     private Sprite currentBlockSprite =>
         (currentTerrainBlockID < blocks.Count) ? blocks[currentTerrainBlockID].GetComponent<SpriteRenderer>().sprite : null;
@@ -47,7 +63,7 @@ public class EnvironmentBuilder : MonoBehaviour {
         }
     }
 
-    void Start() {
+    private void Start() {
         ShowBuildBarrier();
         FillBlocksMenu();
         OnBlockMenuSelect(0);
@@ -64,12 +80,12 @@ public class EnvironmentBuilder : MonoBehaviour {
             if (currentTerrainBlockID != 0) {
 
                 // deleting previous
-                DeleteRoom(currentMouseGridPosition);
+                DeleteObject(currentMouseGridPosition);
 
                 // creating new
                 if ((currentMouseGridPosition.x <= roomSize.x) && (currentMouseGridPosition.y <= roomSize.y)) {
-                    
-                    terrainBlocksCoords.Add(currentMouseGridPosition,
+
+                    terrainBlocksCoordsDict.Add(currentMouseGridPosition,
 
                     Instantiate(blocks[currentTerrainBlockID],
                     currentMouseGridPosition,
@@ -83,7 +99,7 @@ public class EnvironmentBuilder : MonoBehaviour {
         }
 
         if (Input.GetMouseButton(1)) {
-            DeleteRoom(currentMouseGridPosition);
+            DeleteObject(currentMouseGridPosition);
         }
 
     }
@@ -100,11 +116,58 @@ public class EnvironmentBuilder : MonoBehaviour {
         cursorBlockSprite.transform.position = mouseGridPosition;
     }
 
-    private void DeleteRoom(Vector2 currentGridPosition) {
-        if (terrainBlocksCoords.ContainsKey(currentGridPosition)) {
-            Destroy(terrainBlocksCoords[currentGridPosition]);
-            terrainBlocksCoords.Remove(currentGridPosition);
+    private void DeleteObject(Vector2 currentGridPosition) {
+
+        Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
+
+        if (currentLayer == 0) {
+            objectsCoordsDict = backgroundBlocksCoordsDict;
+        } else if (currentLayer == 1) {
+            objectsCoordsDict = terrainBlocksCoordsDict;
+        } else if (currentLayer == 2) {
+            objectsCoordsDict = forgroundBlocksCoordsDict;
+        } else if (currentLayer == 3) {
+            objectsCoordsDict = objectsBlocksCoordsDict;
         }
+
+        if (objectsCoordsDict.ContainsKey(currentGridPosition)) {
+            Destroy(objectsCoordsDict[currentGridPosition]);
+            objectsCoordsDict.Remove(currentGridPosition);
+        }
+    }
+
+    private void PlaceObject(Vector2 currentGridPosition) {
+
+        Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
+        int currentObjectID = new int();
+        int orderInRoomObjectIerarchyOfParent = new int();
+
+        if (currentLayer == 0) {
+            objectsCoordsDict = backgroundBlocksCoordsDict;
+            currentObjectID = currentBackgroundBlockID;
+            orderInRoomObjectIerarchyOfParent = 0;
+        } else if (currentLayer == 1) {
+            objectsCoordsDict = terrainBlocksCoordsDict;
+            currentObjectID = currentTerrainBlockID;
+            orderInRoomObjectIerarchyOfParent = 4;
+        } else if (currentLayer == 2) {
+            objectsCoordsDict = forgroundBlocksCoordsDict;
+            currentObjectID = currentForgroundBlockID;
+            orderInRoomObjectIerarchyOfParent = 5;
+        } else if (currentLayer == 3) {
+            objectsCoordsDict = objectsBlocksCoordsDict;
+            currentObjectID = currentObjectBlockID;
+            orderInRoomObjectIerarchyOfParent = 6;
+        }
+
+        objectsCoordsDict.Add(currentGridPosition,
+
+        Instantiate(blocks[currentObjectID], 
+            currentGridPosition,
+            Quaternion.identity,
+            roomObject.transform.GetChild(4))
+        );
+
     }
 
     #region UI
@@ -144,4 +207,5 @@ public class EnvironmentBuilder : MonoBehaviour {
     }
 
     #endregion
+
 }
