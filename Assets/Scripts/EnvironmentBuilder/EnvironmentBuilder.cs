@@ -92,7 +92,7 @@ public class EnvironmentBuilder : MonoBehaviour {
         cursorBlockSprite = new GameObject("alphaSprite");
         var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
         sr.sprite = currentBlockSprite;
-        sr.color = new Color(1, 1, 1, 0.5f);
+        sr.color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
         cursorBlockSprite.transform.position = mouseGridPosition;
     }
 
