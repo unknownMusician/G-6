@@ -149,25 +149,25 @@ public class EnvironmentBuilder : MonoBehaviour {
     private void PlaceObject(Vector2 currentGridPosition) {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
-        int currentObjectID = new int();
-        int orderInRoomObjectIerarchyOfParent = new int();
+        int currentObjectID = 0;
+        GameObject parentInRoomGameObject = new GameObject();
 
         if (currentLayer == 0) {
             objectsCoordsDict = backgroundBlocksCoordsDict;
             currentObjectID = currentBackgroundBlockID;
-            orderInRoomObjectIerarchyOfParent = 0;
+            parentInRoomGameObject = roomObject.transform.GetChild(0).gameObject;
         } else if (currentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
             currentObjectID = currentTerrainBlockID;
-            orderInRoomObjectIerarchyOfParent = 4;
+            parentInRoomGameObject = roomObject.transform.GetChild(4).gameObject;
         } else if (currentLayer == 2) {
             objectsCoordsDict = forgroundBlocksCoordsDict;
             currentObjectID = currentForgroundBlockID;
-            orderInRoomObjectIerarchyOfParent = 5;
+            parentInRoomGameObject = roomObject.transform.GetChild(5).gameObject;
         } else if (currentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
             currentObjectID = currentObjectBlockID;
-            orderInRoomObjectIerarchyOfParent = 6;
+            parentInRoomGameObject = roomObject.transform.GetChild(6).gameObject;
         }
 
         objectsCoordsDict.Add(currentGridPosition,
