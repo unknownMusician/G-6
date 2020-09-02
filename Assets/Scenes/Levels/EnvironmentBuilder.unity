@@ -476,6 +476,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &803394751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 803394752}
+  m_Layer: 0
+  m_Name: Foreground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &803394752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803394751}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1708681514}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &948894698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,6 +580,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94bd35e81c096a744a6cbb3bfba5695b, type: 3}
+--- !u!1 &1027819738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1027819739}
+  m_Layer: 0
+  m_Name: Objects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1027819739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027819738}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1708681514}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1070478060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,6 +1267,8 @@ Transform:
   - {fileID: 23563578}
   - {fileID: 1926363119}
   - {fileID: 1070478061}
+  - {fileID: 803394752}
+  - {fileID: 1027819739}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1322,11 +1384,10 @@ MonoBehaviour:
   blockSize: 1
   objectSize: 0
   roomSize: {x: 30, y: 20}
-  blocks:
-  - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
-  - {fileID: 6409774947856742273, guid: ac6e08e906c0ab547bac398ad923393f, type: 3}
-  - {fileID: 6028631579560348591, guid: bc44b2f6337ba47438b7c0a8fe2db8e1, type: 3}
-  - {fileID: 4823272163663588577, guid: 79089d3d1c1102c49bf339488b97e5f9, type: 3}
+  terrainBlocks: []
+  backgroundBlocks: []
+  foregroungBlocks: []
+  objectsBlocks: []
   blocksMenu: {fileID: 1726480779}
   blockButtonPrefab: {fileID: 3928760094639526151, guid: b9e14e7cd8a688846b9d31e395172c1b,
     type: 3}
