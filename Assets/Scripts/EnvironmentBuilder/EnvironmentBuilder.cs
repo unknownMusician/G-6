@@ -13,6 +13,11 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField]
     private Vector2 roomSize = new Vector2(5, 5);
 
+    private Vector3 RoomTopRightCorner => Vector3.zero;
+    private Vector3 RoomTopLeftCorner => new Vector3(roomSize.x * blockSize, 0, 0);
+    private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0);
+    private Vector3 RoomBottomLeftCorner => new Vector3(0, roomSize.y * blockSize, 0);
+
     void Start() {
         
     }
@@ -22,9 +27,13 @@ public class EnvironmentBuilder : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
+        
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(Vector3.zero, new Vector3(roomSize.x * blockSize, 0, 0));
-        Gizmos.DrawLine(new Vector3(roomSize.x * blockSize, 0, 0), new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0));
-        Gizmos.DrawLine(new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0), new Vector3(0, roomSize.y * blockSize, 0));
+
+        Gizmos.DrawLine(RoomTopRightCorner, RoomTopLeftCorner);
+        Gizmos.DrawLine(RoomTopLeftCorner, RoomBottomRightCorner);
+        Gizmos.DrawLine(RoomBottomRightCorner, RoomBottomLeftCorner);
+        Gizmos.DrawLine(RoomBottomLeftCorner, RoomTopLeftCorner);
+    
     }
 }
