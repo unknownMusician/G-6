@@ -16,4 +16,8 @@ public class EnvironmentBuilder : MonoBehaviour {
     public void OnClick(int blockID) {
         
     }
+
+    private void OnDrawGizmos() {
+        
+    }
 }
