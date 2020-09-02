@@ -7,13 +7,18 @@ using UnityEngine.Events;
 public class EnvironmentBuilder : MonoBehaviour {
 
     [SerializeField]
-    private float blockSize = 2;
+    private GameObject roomObject;
+
+    [SerializeField]
+    private float terrainBlockSize = 2;
 
     [SerializeField]
     private Vector2 roomSize = new Vector2(5, 5);
 
-    private int currentBlockID = 0;
+    private int currentTerrainBlockID = 0;
     private GameObject cursorBlockSprite;
+
+    private Dictionary<Vector2, GameObject> terrainBlocksCoords = new Dictionary<Vector2, GameObject>();
 
     #region UI
 
@@ -28,17 +33,17 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     #endregion
 
-    private Vector3 RoomTopRightCorner => new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0);
-    private Vector3 RoomTopLeftCorner => new Vector3(0, roomSize.y * blockSize, 0);
-    private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * blockSize, 0, 0);
+    private Vector3 RoomTopRightCorner => new Vector3(roomSize.x * terrainBlockSize, roomSize.y * terrainBlockSize, 0);
+    private Vector3 RoomTopLeftCorner => new Vector3(0, roomSize.y * terrainBlockSize, 0);
+    private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * terrainBlockSize, 0, 0);
     private Vector3 RoomBottomLeftCorner => Vector3.zero;
 
     private Sprite currentBlockSprite =>
-        (currentBlockID < blocks.Count) ? blocks[currentBlockID].GetComponent<SpriteRenderer>().sprite : null;
+        (currentTerrainBlockID < blocks.Count) ? blocks[currentTerrainBlockID].GetComponent<SpriteRenderer>().sprite : null;
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            return new Vector2(Mathf.Round(mouse.x / blockSize) * blockSize, Mathf.Round(mouse.y / blockSize) * blockSize);
+            return new Vector2(Mathf.Round(mouse.x / terrainBlockSize) * terrainBlockSize, Mathf.Round(mouse.y / terrainBlockSize) * terrainBlockSize);
         }
     }
 
@@ -50,25 +55,52 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     private void Update() {
 
+        Vector2 currentMouseGridPosition = mouseGridPosition;
+
         cursorBlockSprite.transform.position = mouseGridPosition;
 
-        if (Input.GetMouseButtonDown(0)) {
-            // deleting previous
+        if (Input.GetMouseButton(0)) {
 
-            // creating new
+            if (currentTerrainBlockID != 0) {
+
+                // deleting previous
+                DeleteRoom(currentMouseGridPosition);
+
+                // creating new
+                if ((currentMouseGridPosition.x <= roomSize.x) && (currentMouseGridPosition.y <= roomSize.y)) {
+                    terrainBlocksCoords.Add(currentMouseGridPosition,
+                    Instantiate(blocks[currentTerrainBlockID],
+                    currentMouseGridPosition,
+                    Quaternion.identity,
+                    roomObject.transform.GetChild(4))
+                    );
+                }
+            }
+
+        }
+
+        if (Input.GetMouseButton(1)) {
+            DeleteRoom(currentMouseGridPosition);
         }
     }
 
-    public void OnBlockMenuSelect(int blockID) {
+    private void OnBlockMenuSelect(int blockID) {
 
-        currentBlockID = blockID;
-        Debug.Log("Click: " + currentBlockID);
+        currentTerrainBlockID = blockID;
+        Debug.Log("Click: " + currentTerrainBlockID);
 
         cursorBlockSprite = new GameObject("alphaSprite");
         var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
         sr.sprite = currentBlockSprite;
         sr.color = new Color(1, 1, 1, 0.5f);
         cursorBlockSprite.transform.position = mouseGridPosition;
+    }
+
+    private void DeleteRoom(Vector2 currentGridPosition) {
+        if (terrainBlocksCoords.ContainsKey(currentGridPosition)) {
+            Destroy(terrainBlocksCoords[currentGridPosition]);
+            terrainBlocksCoords.Remove(currentGridPosition);
+        }
     }
 
     #region UI
@@ -83,8 +115,8 @@ public class EnvironmentBuilder : MonoBehaviour {
         Gizmos.DrawLine(RoomBottomLeftCorner, RoomTopLeftCorner);
 
         Gizmos.color = Color.gray;
-        Gizmos.DrawLine(Vector2.up * blockSize, Vector2.one * blockSize);
-        Gizmos.DrawLine(Vector2.one * blockSize, Vector2.right * blockSize);
+        Gizmos.DrawLine(Vector2.up * terrainBlockSize, Vector2.one * terrainBlockSize);
+        Gizmos.DrawLine(Vector2.one * terrainBlockSize, Vector2.right * terrainBlockSize);
     }
 
     private void FillBlocksMenu() {
