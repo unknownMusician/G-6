@@ -20,20 +20,26 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     private int currentTerrainBlockID = 0;
     private int currentBackgroundBlockID = 0;
-    private int currentForgroundBlockID = 0;
+    private int currentForegroundBlockID = 0;
     private int currentObjectBlockID = 0;
 
     private GameObject cursorBlockSprite;
 
     private Dictionary<Vector2, GameObject> terrainBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
     private Dictionary<Vector2, GameObject> backgroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
-    private Dictionary<Vector2, GameObject> forgroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> foregroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
     private Dictionary<Vector2, GameObject> objectsBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
 
     #region UI
 
     [SerializeField, Space, Space]
-    private List<GameObject> blocks = new List<GameObject>();
+    private List<GameObject> terrainBlocks = new List<GameObject>();
+    [SerializeField, Space, Space]
+    private List<GameObject> backgroundBlocks = new List<GameObject>();
+    [SerializeField, Space, Space]
+    private List<GameObject> foregroungBlocks = new List<GameObject>();
+    [SerializeField, Space, Space]
+    private List<GameObject> objectsBlocks = new List<GameObject>();
     [SerializeField, Space, Space]
     private GameObject blocksMenu = null;
     [SerializeField]
@@ -51,7 +57,7 @@ public class EnvironmentBuilder : MonoBehaviour {
     #endregion
 
     private Sprite currentBlockSprite =>
-        (currentTerrainBlockID < blocks.Count) ? blocks[currentTerrainBlockID].GetComponent<SpriteRenderer>().sprite : null;
+        (currentTerrainBlockID < terrainBlocks.Count) ? terrainBlocks[currentTerrainBlockID].GetComponent<SpriteRenderer>().sprite : null;
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -96,15 +102,10 @@ public class EnvironmentBuilder : MonoBehaviour {
                 DeleteObject(currentMouseGridPosition);
 
                 // creating new
-                if ((currentMouseGridPosition.x <= roomSize.x) && (currentMouseGridPosition.y <= roomSize.y)) {
+                if ((currentMouseGridPosition.x <= roomSize.x) && (currentMouseGridPosition.y <= roomSize.y) && (currentMouseGridPosition.x >= 0) && (currentMouseGridPosition.y >= 0)) {
 
-                    terrainBlocksCoordsDict.Add(currentMouseGridPosition,
+                    PlaceObject(currentMouseGridPosition);
 
-                    Instantiate(blocks[currentTerrainBlockID],
-                    currentMouseGridPosition,
-                    Quaternion.identity,
-                    roomObject.transform.GetChild(4))
-                    );
                 }
             }
         }
@@ -133,8 +134,9 @@ public class EnvironmentBuilder : MonoBehaviour {
             objectsCoordsDict = backgroundBlocksCoordsDict;
         } else if (CurrentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
+
         } else if (CurrentLayer == 2) {
-            objectsCoordsDict = forgroundBlocksCoordsDict;
+            objectsCoordsDict = foregroundBlocksCoordsDict;
         } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
         }
@@ -149,32 +151,34 @@ public class EnvironmentBuilder : MonoBehaviour {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
         int currentObjectID = 0;
-        GameObject parentInRoomGameObject = new GameObject();
+        Transform parentInRoomGameObject = roomObject.transform;
+        List<GameObject> prefabsList = new List<GameObject>();
+
 
         if (CurrentLayer == 0) {
             objectsCoordsDict = backgroundBlocksCoordsDict;
             currentObjectID = currentBackgroundBlockID;
-            parentInRoomGameObject = roomObject.transform.GetChild(0).gameObject;
+            parentInRoomGameObject = roomObject.transform.GetChild(0);
         } else if (CurrentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
             currentObjectID = currentTerrainBlockID;
-            parentInRoomGameObject = roomObject.transform.GetChild(4).gameObject;
+            parentInRoomGameObject = roomObject.transform.GetChild(4);
         } else if (CurrentLayer == 2) {
-            objectsCoordsDict = forgroundBlocksCoordsDict;
-            currentObjectID = currentForgroundBlockID;
-            parentInRoomGameObject = roomObject.transform.GetChild(5).gameObject;
+            objectsCoordsDict = foregroundBlocksCoordsDict;
+            currentObjectID = currentForegroundBlockID;
+            parentInRoomGameObject = roomObject.transform.GetChild(5);
         } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
             currentObjectID = currentObjectBlockID;
-            parentInRoomGameObject = roomObject.transform.GetChild(6).gameObject;
+            parentInRoomGameObject = roomObject.transform.GetChild(6);
         }
 
         objectsCoordsDict.Add(currentGridPosition,
 
-        Instantiate(blocks[currentObjectID], 
+        Instantiate(prefabsList[currentObjectID], 
             currentGridPosition,
             Quaternion.identity,
-            roomObject.transform.GetChild(4))
+            parentInRoomGameObject)
         );
 
     }
@@ -199,11 +203,11 @@ public class EnvironmentBuilder : MonoBehaviour {
         for (int j = 0; ; j++) {
             for (int i = 0; i <= 3; i++) {
                 int currentId = j * 4 + i;
-                if (currentId >= blocks.Count)
+                if (currentId >= terrainBlocks.Count)
                     return;
                 var btn = Instantiate(blockButtonPrefab, blocksMenu.transform);
                 btn.transform.localPosition = new Vector2(-150 + i * 100, 490 - j * 100);
-                btn.GetComponent<Image>().sprite = blocks[currentId].GetComponent<SpriteRenderer>().sprite;
+                btn.GetComponent<Image>().sprite = terrainBlocks[currentId].GetComponent<SpriteRenderer>().sprite;
                 btn.GetComponent<Button>().onClick.AddListener(new UnityAction(() => OnBlockMenuSelect(currentId)));
             }
         }
