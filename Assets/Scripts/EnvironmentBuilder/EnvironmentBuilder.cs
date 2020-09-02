@@ -7,9 +7,6 @@ using UnityEngine.Events;
 public class EnvironmentBuilder : MonoBehaviour {
 
     [SerializeField]
-    private Vector2 blocksOffset = new Vector2(5, 5);
-    
-    [SerializeField]
     private float blockSize = 2;
 
     [SerializeField]
@@ -31,15 +28,13 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     #endregion
 
-    ////////////////////
-
     private Vector3 RoomTopRightCorner => new Vector3(roomSize.x * blockSize, roomSize.y * blockSize, 0);
-    private Vector3 RoomTopLeftCorner => new Vector3(0, roomSize.y * blockSize, 0); 
-    private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * blockSize, 0, 0); 
+    private Vector3 RoomTopLeftCorner => new Vector3(0, roomSize.y * blockSize, 0);
+    private Vector3 RoomBottomRightCorner => new Vector3(roomSize.x * blockSize, 0, 0);
     private Vector3 RoomBottomLeftCorner => Vector3.zero;
 
     private Sprite currentBlockSprite =>
-        (currentBlockID > 0 && currentBlockID < blocks.Count) ? blocks[currentBlockID].GetComponent<SpriteRenderer>().sprite : null;
+        (currentBlockID < blocks.Count) ? blocks[currentBlockID].GetComponent<SpriteRenderer>().sprite : null;
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -50,42 +45,36 @@ public class EnvironmentBuilder : MonoBehaviour {
     void Start() {
         ShowBuildBarrier();
         FillBlocksMenu();
+        OnBlockMenuSelect(0);
     }
 
     private void Update() {
-        if(currentBlockID > 0)
-            cursorBlockSprite.transform.position = mouseGridPosition;
+
+        cursorBlockSprite.transform.position = mouseGridPosition;
 
         if (Input.GetMouseButtonDown(0)) {
             // deleting previous
 
             // creating new
-
-
         }
     }
 
     public void OnBlockMenuSelect(int blockID) {
+
         currentBlockID = blockID;
         Debug.Log("Click: " + currentBlockID);
 
-        Destroy(cursorBlockSprite);
-        if (currentBlockID > 0) {
-            cursorBlockSprite = new GameObject("alphaSprite");
-            var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
-            sr.sprite = currentBlockSprite;
-            sr.color = new Color(1, 1, 1, 0.5f);
-            cursorBlockSprite.transform.position = mouseGridPosition;
-        } else {
-            Destroy(cursorBlockSprite);
-            cursorBlockSprite = null;
-        }
+        cursorBlockSprite = new GameObject("alphaSprite");
+        var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
+        sr.sprite = currentBlockSprite;
+        sr.color = new Color(1, 1, 1, 0.5f);
+        cursorBlockSprite.transform.position = mouseGridPosition;
     }
 
     #region UI
 
     private void OnDrawGizmos() {
-        
+
         Gizmos.color = Color.green;
 
         Gizmos.DrawLine(RoomTopLeftCorner, RoomTopRightCorner);
