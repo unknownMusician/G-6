@@ -1207,8 +1207,6 @@ Transform:
   - {fileID: 23563578}
   - {fileID: 1926363119}
   - {fileID: 1070478061}
-  - {fileID: 255409440}
-  - {fileID: 34876260}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1324,17 +1322,17 @@ MonoBehaviour:
   blockSize: 1
   objectSize: 0
   roomSize: {x: 30, y: 20}
-  currentLayer: 0
   blocks:
   - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
   - {fileID: 6409774947856742273, guid: ac6e08e906c0ab547bac398ad923393f, type: 3}
   - {fileID: 6028631579560348591, guid: bc44b2f6337ba47438b7c0a8fe2db8e1, type: 3}
   - {fileID: 4823272163663588577, guid: 79089d3d1c1102c49bf339488b97e5f9, type: 3}
-  blocksMenuCanvas: {fileID: 1726480779}
+  blocksMenu: {fileID: 1726480779}
   blockButtonPrefab: {fileID: 3928760094639526151, guid: b9e14e7cd8a688846b9d31e395172c1b,
     type: 3}
   barrierPrefab: {fileID: 5140786508854112489, guid: 717ec25085ea4864fb71ef2b3689bea3,
     type: 3}
+  layerMenu: {fileID: 1305727856}
 --- !u!4 &1886052540
 Transform:
   m_ObjectHideFlags: 0

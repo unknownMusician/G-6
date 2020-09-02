@@ -212,7 +212,8 @@ public class EnvironmentBuilder : MonoBehaviour {
     private void ShowBuildBarrier() {
         var barrier = Instantiate(barrierPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         barrier.transform.position = new Vector2((RoomTopRightCorner.x + RoomBottomLeftCorner.x) / 2, (RoomTopRightCorner.y + RoomBottomLeftCorner.y) / 2);
-        barrier.transform.GetChild(1).localScale = new Vector2(RoomTopRightCorner.x - RoomBottomLeftCorner.x, RoomTopRightCorner.y - RoomBottomLeftCorner.y);
+        barrier.transform.GetChild(1).localScale =
+            new Vector2(RoomTopRightCorner.x - RoomBottomLeftCorner.x + blockSize, RoomTopRightCorner.y - RoomBottomLeftCorner.y + blockSize);
     }
 
     #endregion
