@@ -16,7 +16,7 @@ public class EnvironmentBuilder : MonoBehaviour {
     private Vector2 roomSize = new Vector2(5, 5);
 
     private int currentBlockID = 0;
-    private GameObject alphaSprite;
+    private GameObject cursorBlockSprite;
 
     #region UI
 
@@ -54,7 +54,7 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     private void Update() {
         if(currentBlockID > 0)
-            alphaSprite.transform.position = mouseGridPosition;
+            cursorBlockSprite.transform.position = mouseGridPosition;
 
         if (Input.GetMouseButtonDown(0)) {
             // deleting previous
@@ -69,16 +69,16 @@ public class EnvironmentBuilder : MonoBehaviour {
         currentBlockID = blockID;
         Debug.Log("Click: " + currentBlockID);
 
-        Destroy(alphaSprite);
+        Destroy(cursorBlockSprite);
         if (currentBlockID > 0) {
-            alphaSprite = new GameObject("alphaSprite");
-            var sr = alphaSprite.AddComponent<SpriteRenderer>();
+            cursorBlockSprite = new GameObject("alphaSprite");
+            var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
             sr.sprite = currentBlockSprite;
             sr.color = new Color(1, 1, 1, 0.5f);
-            alphaSprite.transform.position = mouseGridPosition;
+            cursorBlockSprite.transform.position = mouseGridPosition;
         } else {
-            Destroy(alphaSprite);
-            alphaSprite = null;
+            Destroy(cursorBlockSprite);
+            cursorBlockSprite = null;
         }
     }
 
