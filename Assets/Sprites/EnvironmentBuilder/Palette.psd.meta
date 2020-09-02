@@ -11,6 +11,18 @@ TextureImporter:
   - first:
       213: 7166975424481177811
     second: Palette_2
+  - first:
+      213: 1605233916963403186
+    second: Palette_0
+  - first:
+      213: 3187402332658625122
+    second: Palette_1
+  - first:
+      213: 1673288254093941354
+    second: Palette_2
+  - first:
+      213: 6041615230875455218
+    second: Palette_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -121,8 +133,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 44be55dbc7ed4a8f0800000000000000
-      internalID: -530054228789040316
+      spriteID: 2b5330a1ebfe64610800000000000000
+      internalID: 1605233916963403186
       vertices: []
       indices: 
       edges: []
@@ -142,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d1009080ce2bcfa0800000000000000
-      internalID: -5779474292474379815
+      spriteID: 26a6e52b88deb3c20800000000000000
+      internalID: 3187402332658625122
       vertices: []
       indices: 
       edges: []
@@ -163,8 +175,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d0b7222d26367360800000000000000
-      internalID: 7166975424481177811
+      spriteID: a6a5a183dc6b83710800000000000000
+      internalID: 1673288254093941354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Palette_3
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 40
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fecbe9ea0128d350800000000000000
+      internalID: 6041615230875455218
       vertices: []
       indices: 
       edges: []
