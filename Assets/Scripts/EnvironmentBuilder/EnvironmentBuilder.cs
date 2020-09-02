@@ -18,12 +18,6 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField]
     private Vector2 roomSize;
 
-    public int currentLayer;
-    // 0 - background
-    // 1 - terrain
-    // 2 - forground
-    // 3 - objects
-
     private int currentTerrainBlockID = 0;
     private int currentBackgroundBlockID = 0;
     private int currentForgroundBlockID = 0;
@@ -64,7 +58,12 @@ public class EnvironmentBuilder : MonoBehaviour {
             return new Vector2(Mathf.Round(mouse.x / blockSize) * blockSize, Mathf.Round(mouse.y / blockSize) * blockSize);
         }
     }
+
     private int _cl;
+    // 0 - background
+    // 1 - terrain
+    // 2 - forground
+    // 3 - objects
     public int CurrentLayer {
         get => _cl;
         set {
@@ -130,13 +129,13 @@ public class EnvironmentBuilder : MonoBehaviour {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
 
-        if (currentLayer == 0) {
+        if (CurrentLayer == 0) {
             objectsCoordsDict = backgroundBlocksCoordsDict;
-        } else if (currentLayer == 1) {
+        } else if (CurrentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
-        } else if (currentLayer == 2) {
+        } else if (CurrentLayer == 2) {
             objectsCoordsDict = forgroundBlocksCoordsDict;
-        } else if (currentLayer == 3) {
+        } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
         }
 
@@ -152,19 +151,19 @@ public class EnvironmentBuilder : MonoBehaviour {
         int currentObjectID = 0;
         GameObject parentInRoomGameObject = new GameObject();
 
-        if (currentLayer == 0) {
+        if (CurrentLayer == 0) {
             objectsCoordsDict = backgroundBlocksCoordsDict;
             currentObjectID = currentBackgroundBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(0).gameObject;
-        } else if (currentLayer == 1) {
+        } else if (CurrentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
             currentObjectID = currentTerrainBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(4).gameObject;
-        } else if (currentLayer == 2) {
+        } else if (CurrentLayer == 2) {
             objectsCoordsDict = forgroundBlocksCoordsDict;
             currentObjectID = currentForgroundBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(5).gameObject;
-        } else if (currentLayer == 3) {
+        } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
             currentObjectID = currentObjectBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(6).gameObject;
