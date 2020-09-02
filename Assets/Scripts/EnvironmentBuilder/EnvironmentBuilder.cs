@@ -25,11 +25,13 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField, Space, Space]
     private List<GameObject> blocks = new List<GameObject>();
     [SerializeField, Space, Space]
-    private GameObject blocksMenuCanvas = null;
+    private GameObject blocksMenu = null;
     [SerializeField]
     private GameObject blockButtonPrefab = null;
     [SerializeField]
     private GameObject barrierPrefab = null;
+    [SerializeField]
+    private GameObject layerMenu = null;
 
     #endregion
 
@@ -46,18 +48,30 @@ public class EnvironmentBuilder : MonoBehaviour {
             return new Vector2(Mathf.Round(mouse.x / blockSize) * blockSize, Mathf.Round(mouse.y / blockSize) * blockSize);
         }
     }
+    private int _cl;
+    public int CurrentLayer {
+        get => _cl;
+        set {
+            _cl = value;
+            for (int i = 0; i < layerMenu.transform.childCount; i++) {
+                layerMenu.transform.GetChild(i).gameObject.GetComponent<Image>().color = new Color(0.8f, 0.8f, 0.8f);
+            }
+            layerMenu.transform.GetChild(_cl).gameObject.GetComponent<Image>().color = new Color(1, 1, 1);
+        }
+    }
 
     void Start() {
         ShowBuildBarrier();
         FillBlocksMenu();
+        CurrentLayer = 1;
         OnBlockMenuSelect(0);
     }
 
     private void Update() {
 
         Vector2 currentMouseGridPosition = mouseGridPosition;
-
-        cursorBlockSprite.transform.position = mouseGridPosition;
+        if (cursorBlockSprite != null)
+            cursorBlockSprite.transform.position = mouseGridPosition;
 
         if (Input.GetMouseButton(0)) {
 
@@ -68,7 +82,7 @@ public class EnvironmentBuilder : MonoBehaviour {
 
                 // creating new
                 if ((currentMouseGridPosition.x <= roomSize.x) && (currentMouseGridPosition.y <= roomSize.y)) {
-                    
+
                     terrainBlocksCoords.Add(currentMouseGridPosition,
 
                     Instantiate(blocks[currentTerrainBlockID],
@@ -76,22 +90,18 @@ public class EnvironmentBuilder : MonoBehaviour {
                     Quaternion.identity,
                     roomObject.transform.GetChild(4))
                     );
-
                 }
             }
-
         }
 
         if (Input.GetMouseButton(1)) {
             DeleteRoom(currentMouseGridPosition);
         }
-
     }
 
     private void OnBlockMenuSelect(int blockID) {
 
         currentTerrainBlockID = blockID;
-        Debug.Log("Click: " + currentTerrainBlockID);
 
         cursorBlockSprite = new GameObject("alphaSprite");
         var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
@@ -129,7 +139,7 @@ public class EnvironmentBuilder : MonoBehaviour {
                 int currentId = j * 4 + i;
                 if (currentId >= blocks.Count)
                     return;
-                var btn = Instantiate(blockButtonPrefab, blocksMenuCanvas.transform);
+                var btn = Instantiate(blockButtonPrefab, blocksMenu.transform);
                 btn.transform.localPosition = new Vector2(-150 + i * 100, 490 - j * 100);
                 btn.GetComponent<Image>().sprite = blocks[currentId].GetComponent<SpriteRenderer>().sprite;
                 btn.GetComponent<Button>().onClick.AddListener(new UnityAction(() => OnBlockMenuSelect(currentId)));
