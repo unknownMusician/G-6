@@ -18,9 +18,7 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField]
     private Vector2 roomSize;
 
-    private int currentTerrainBlockID = 0;
-    private int currentBackgroundBlockID = 0;
-    private int currentForegroundBlockID = 0;
+    private int currentBlockID = 0;
     private int currentObjectBlockID = 0;
 
     private GameObject cursorBlockSprite;
@@ -33,9 +31,9 @@ public class EnvironmentBuilder : MonoBehaviour {
     #region UI
 
     [SerializeField, Space, Space]
-    private List<GameObject> terrainBlocks = new List<GameObject>();
+    private List<GameObject> blocksPrefabs = new List<GameObject>();
     [SerializeField, Space, Space]
-    private List<GameObject> objectsBlocks = new List<GameObject>();
+    private List<GameObject> objectsPrefabs = new List<GameObject>();
 
     [SerializeField, Space, Space]
     private GameObject blocksMenu = null;
@@ -54,7 +52,7 @@ public class EnvironmentBuilder : MonoBehaviour {
     #endregion
 
     private Sprite currentBlockSprite =>
-        (currentTerrainBlockID < terrainBlocks.Count) ? terrainBlocks[currentTerrainBlockID].GetComponent<SpriteRenderer>().sprite : null;
+        (currentBlockID < blocksPrefabs.Count) ? blocksPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null;
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -93,7 +91,7 @@ public class EnvironmentBuilder : MonoBehaviour {
 
         if (Input.GetMouseButton(0)) {
 
-            if (currentTerrainBlockID != 0) {
+            if (currentBlockID != 0) {
 
                 // deleting previous
                 DeleteObject(currentMouseGridPosition);
@@ -114,7 +112,7 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     private void OnBlockMenuSelect(int blockID) {
 
-        currentTerrainBlockID = blockID;
+        currentBlockID = blockID;
 
         cursorBlockSprite = new GameObject("alphaSprite");
         var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
@@ -147,27 +145,24 @@ public class EnvironmentBuilder : MonoBehaviour {
     private void PlaceObject(Vector2 currentGridPosition) {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
-        int currentObjectID = 0;
+        int currentObjectID = currentBlockID;
         Transform parentInRoomGameObject = roomObject.transform;
-        List<GameObject> prefabsList = new List<GameObject>();
-
+        List<GameObject> prefabsList = blocksPrefabs;
 
         if (CurrentLayer == 0) {
             objectsCoordsDict = backgroundBlocksCoordsDict;
-            currentObjectID = currentBackgroundBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(0);
         } else if (CurrentLayer == 1) {
             objectsCoordsDict = terrainBlocksCoordsDict;
-            currentObjectID = currentTerrainBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(4);
         } else if (CurrentLayer == 2) {
             objectsCoordsDict = foregroundBlocksCoordsDict;
-            currentObjectID = currentForegroundBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(5);
         } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
             currentObjectID = currentObjectBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(6);
+            prefabsList = objectsPrefabs;
         }
 
         objectsCoordsDict.Add(currentGridPosition,
@@ -200,11 +195,11 @@ public class EnvironmentBuilder : MonoBehaviour {
         for (int j = 0; ; j++) {
             for (int i = 0; i <= 3; i++) {
                 int currentId = j * 4 + i;
-                if (currentId >= terrainBlocks.Count)
+                if (currentId >= blocksPrefabs.Count)
                     return;
                 var btn = Instantiate(blockButtonPrefab, blocksMenu.transform);
                 btn.transform.localPosition = new Vector2(-150 + i * 100, 490 - j * 100);
-                btn.GetComponent<Image>().sprite = terrainBlocks[currentId].GetComponent<SpriteRenderer>().sprite;
+                btn.GetComponent<Image>().sprite = blocksPrefabs[currentId].GetComponent<SpriteRenderer>().sprite;
                 btn.GetComponent<Button>().onClick.AddListener(new UnityAction(() => OnBlockMenuSelect(currentId)));
             }
         }

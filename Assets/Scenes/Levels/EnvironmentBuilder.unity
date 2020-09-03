@@ -1382,12 +1382,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomObject: {fileID: 1708681513}
   blockSize: 1
-  objectSize: 0
+  objectSize: 1
   roomSize: {x: 30, y: 20}
-  terrainBlocks: []
-  backgroundBlocks: []
-  foregroungBlocks: []
-  objectsBlocks: []
+  blocksPrefabs:
+  - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
+  - {fileID: 6409774947856742273, guid: ac6e08e906c0ab547bac398ad923393f, type: 3}
+  - {fileID: 6028631579560348591, guid: bc44b2f6337ba47438b7c0a8fe2db8e1, type: 3}
+  - {fileID: 4823272163663588577, guid: 79089d3d1c1102c49bf339488b97e5f9, type: 3}
+  objectsPrefabs:
+  - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
+  - {fileID: 4333165458918672411, guid: 94bd35e81c096a744a6cbb3bfba5695b, type: 3}
+  - {fileID: 10569077188774173, guid: 03080a673a73f2c4db0050998e935e1c, type: 3}
+  - {fileID: 2120146786893595960, guid: 7c9700b2b6c9dc04797689af97a4bc6d, type: 3}
   blocksMenu: {fileID: 1726480779}
   blockButtonPrefab: {fileID: 3928760094639526151, guid: b9e14e7cd8a688846b9d31e395172c1b,
     type: 3}
