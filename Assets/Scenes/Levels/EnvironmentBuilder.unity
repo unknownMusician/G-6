@@ -232,7 +232,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 192914721}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1886052539}
+        m_MethodName: set_CurrentLayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &192914721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,7 +1091,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1588522274}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1886052539}
+        m_MethodName: set_CurrentLayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1588522274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,7 +1220,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1628049203}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1886052539}
+        m_MethodName: set_CurrentLayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1628049203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,7 +1635,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2132897143}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1886052539}
+        m_MethodName: set_CurrentLayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2132897143
 MonoBehaviour:
   m_ObjectHideFlags: 0
