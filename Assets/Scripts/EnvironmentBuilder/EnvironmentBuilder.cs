@@ -19,7 +19,6 @@ public class EnvironmentBuilder : MonoBehaviour {
     private Vector2 roomSize;
 
     private int currentBlockID = 0;
-    private int currentObjectBlockID = 0;
 
     private GameObject cursorBlockSprite;
 
@@ -53,8 +52,9 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     #endregion
 
-    private Sprite currentBlockSprite =>
-        (currentBlockID < blocksPrefabs.Count) ? blocksPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null;
+    private Sprite currentPrefabSprite => (CurrentLayer < 3) ?
+                ((currentBlockID < blocksPrefabs.Count) ? blocksPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null) :
+                ((currentBlockID < objectsPrefabs.Count) ? objectsPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null);
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -71,16 +71,24 @@ public class EnvironmentBuilder : MonoBehaviour {
         get => _cl;
         set {
             _cl = value;
+            // LayerButtons
             for (int i = 0; i < layerMenu.transform.childCount; i++) {
                 layerMenu.transform.GetChild(i).gameObject.GetComponent<Image>().color = new Color(0.8f, 0.8f, 0.8f);
             }
             layerMenu.transform.GetChild(_cl).gameObject.GetComponent<Image>().color = new Color(1, 1, 1);
+            // PrefabMenus
+            bool prefab = _cl < 3; // true - blocks, false - objects
+            objectsMenu.SetActive(!prefab);
+            blocksMenu.SetActive(prefab);
+            // changing blockID
+            currentBlockID = 0;
         }
     }
 
     private void Start() {
         ShowBuildBarrier();
-        FillBlocksMenu();
+        FillMenu(blocksMenu, blocksPrefabs);
+        FillMenu(objectsMenu, objectsPrefabs);
         CurrentLayer = 1;
         OnBlockMenuSelect(0);
     }
@@ -121,7 +129,7 @@ public class EnvironmentBuilder : MonoBehaviour {
             cursorBlockSprite.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
             cursorBlockSprite.transform.position = mouseGridPosition;
         }
-        cursorBlockSprite.GetComponent<SpriteRenderer>().sprite = currentBlockSprite;
+        cursorBlockSprite.GetComponent<SpriteRenderer>().sprite = currentPrefabSprite;
     }
 
     private void DeleteObject(Vector2 currentGridPosition) {
@@ -148,7 +156,6 @@ public class EnvironmentBuilder : MonoBehaviour {
     private void PlaceObject(Vector2 currentGridPosition) {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
-        int currentObjectID = currentBlockID;
         Transform parentInRoomGameObject = roomObject.transform;
         List<GameObject> prefabsList = blocksPrefabs;
 
@@ -163,14 +170,13 @@ public class EnvironmentBuilder : MonoBehaviour {
             parentInRoomGameObject = roomObject.transform.GetChild(5);
         } else if (CurrentLayer == 3) {
             objectsCoordsDict = objectsBlocksCoordsDict;
-            currentObjectID = currentObjectBlockID;
             parentInRoomGameObject = roomObject.transform.GetChild(6);
             prefabsList = objectsPrefabs;
         }
 
         objectsCoordsDict.Add(currentGridPosition,
 
-        Instantiate(prefabsList[currentObjectID], 
+        Instantiate(prefabsList[currentBlockID],
             currentGridPosition,
             Quaternion.identity,
             parentInRoomGameObject)
@@ -194,15 +200,15 @@ public class EnvironmentBuilder : MonoBehaviour {
         Gizmos.DrawLine(Vector2.one * blockSize, Vector2.right * blockSize);
     }
 
-    private void FillBlocksMenu() {
+    private void FillMenu(GameObject menu, List<GameObject> prefabs) {
         for (int j = 0; ; j++) {
             for (int i = 0; i <= 3; i++) {
                 int currentId = j * 4 + i;
-                if (currentId >= blocksPrefabs.Count)
+                if (currentId >= prefabs.Count)
                     return;
-                var btn = Instantiate(blockButtonPrefab, blocksMenu.transform);
+                var btn = Instantiate(blockButtonPrefab, menu.transform);
                 btn.transform.localPosition = new Vector2(-150 + i * 100, 490 - j * 100);
-                btn.GetComponent<Image>().sprite = blocksPrefabs[currentId].GetComponent<SpriteRenderer>().sprite;
+                btn.GetComponent<Image>().sprite = prefabs[currentId].GetComponent<SpriteRenderer>().sprite;
                 btn.GetComponent<Button>().onClick.AddListener(new UnityAction(() => OnBlockMenuSelect(currentId)));
             }
         }
