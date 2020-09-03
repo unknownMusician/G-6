@@ -186,7 +186,7 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     }
 
-    private void SaveRoomObjectAsAsset() {
+    public void SaveRoomObjectAsAsset() {
         AssetDatabase.CreateAsset(roomObject, "Assets/Prefabs/EnvironmentBuilder/Rooms");
     }
 
