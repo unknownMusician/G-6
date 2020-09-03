@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -182,6 +183,10 @@ public class EnvironmentBuilder : MonoBehaviour {
             parentInRoomGameObject)
         );
 
+    }
+
+    private void SaveRoomObjectAsAsset() {
+        AssetDatabase.CreateAsset(roomObject, "Assets/Prefabs/EnvironmentBuilder/Rooms");
     }
 
     #region UI
