@@ -38,6 +38,8 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField, Space, Space]
     private GameObject blocksMenu = null;
     [SerializeField]
+    private GameObject objectsMenu = null;
+    [SerializeField]
     private GameObject blockButtonPrefab = null;
     [SerializeField]
     private GameObject barrierPrefab = null;
@@ -114,11 +116,12 @@ public class EnvironmentBuilder : MonoBehaviour {
 
         currentBlockID = blockID;
 
-        cursorBlockSprite = new GameObject("alphaSprite");
-        var sr = cursorBlockSprite.AddComponent<SpriteRenderer>();
-        sr.sprite = currentBlockSprite;
-        sr.color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
-        cursorBlockSprite.transform.position = mouseGridPosition;
+        if (cursorBlockSprite == null) {
+            cursorBlockSprite = new GameObject("alphaSprite");
+            cursorBlockSprite.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            cursorBlockSprite.transform.position = mouseGridPosition;
+        }
+        cursorBlockSprite.GetComponent<SpriteRenderer>().sprite = currentBlockSprite;
     }
 
     private void DeleteObject(Vector2 currentGridPosition) {
