@@ -35,11 +35,8 @@ public class EnvironmentBuilder : MonoBehaviour {
     [SerializeField, Space, Space]
     private List<GameObject> terrainBlocks = new List<GameObject>();
     [SerializeField, Space, Space]
-    private List<GameObject> backgroundBlocks = new List<GameObject>();
-    [SerializeField, Space, Space]
-    private List<GameObject> foregroungBlocks = new List<GameObject>();
-    [SerializeField, Space, Space]
     private List<GameObject> objectsBlocks = new List<GameObject>();
+
     [SerializeField, Space, Space]
     private GameObject blocksMenu = null;
     [SerializeField]
