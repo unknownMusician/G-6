@@ -1623,7 +1623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomObject: {fileID: 1708681513}
   blockSize: 1
-  objectSize: 1
+  objectSize: 0.5
   roomSize: {x: 30, y: 20}
   blocksPrefabs:
   - {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}
