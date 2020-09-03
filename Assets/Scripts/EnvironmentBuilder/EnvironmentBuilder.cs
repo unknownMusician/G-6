@@ -59,9 +59,10 @@ public class EnvironmentBuilder : MonoBehaviour {
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            return new Vector2(Mathf.Round(mouse.x / blockSize) * blockSize, Mathf.Round(mouse.y / blockSize) * blockSize);
+            return new Vector2(Mathf.Round(mouse.x / CurrentGridSize) * CurrentGridSize, Mathf.Round(mouse.y / CurrentGridSize) * CurrentGridSize);
         }
     }
+    private float CurrentGridSize => (CurrentLayer < 3) ? blockSize : objectSize;
 
     private int _cl;
     // 0 - background
