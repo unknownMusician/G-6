@@ -86,6 +86,7 @@ public class EnvironmentBuilder : MonoBehaviour {
     }
 
     private void Start() {
+        Time.timeScale = 0;
         ShowBuildBarrier();
         FillMenu(blocksMenu, blocksPrefabs);
         FillMenu(objectsMenu, objectsPrefabs);
