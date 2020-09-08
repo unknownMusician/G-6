@@ -256,7 +256,7 @@ public class Gun : Weapon {
                 ActualClipBullets--;
             }
             CanAttack = false;
-            Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
+            // Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
         }
     }
 
