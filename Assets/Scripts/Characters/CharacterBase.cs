@@ -20,6 +20,8 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected bool IsRunning;
 
+    protected bool IsSneaking;
+
     [SerializeField]
     protected bool CanFly;
 
@@ -130,18 +132,22 @@ public abstract class CharacterBase : MonoBehaviour
             SP -= FatiguePerFrame * Time.deltaTime;
             horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
         }
-        rb.velocity = new Vector2(horizontalSpeed * dir, rb.velocity.y);
+        rb.velocity = new Vector2(horizontalSpeed * dir, rb.velocity.y); 
+        //rb.AddForce(new Vector2(horizontalSpeed * dir, 0), ForceMode2D.Force);
     }
     protected void MoveY(float dir)
     {
+        if(State != State.Climb)
+            return;
+
         rb.velocity = new Vector2(0, dir * VerticalSpeed * (SP > 0 ? 1f : 0f));
 
         if (Math.Abs(dir) > 0)
             SP -= FatiguePerFrame * Time.deltaTime;
     }
-    protected void Jump(float value = 1f)
+    protected void Jump()
     {
-        float jumpForce = JumpForce * Mathf.Abs(value);
+        float jumpForce = JumpForce;
 
         switch (State)
         {
@@ -323,11 +329,9 @@ public abstract class CharacterBase : MonoBehaviour
         State = CheckState();
         TurnToRightSide();
         CheckGravityBeState();
-        WeaponControl();
     }
     protected void FixedUpdate()
     {
-        WeaponFixedControl();
         EffectsFixedControl();
         SPFixedControl();
     }

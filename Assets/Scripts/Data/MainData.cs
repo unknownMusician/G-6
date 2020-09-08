@@ -99,7 +99,7 @@ public class MainData
     private static InputMaster controls;
     public static InputMaster Controls {
         get {
-            if (controls != null)
+            if (controls == null)
                 controls = new InputMaster();
             return controls;
         }

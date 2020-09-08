@@ -32,14 +32,4 @@ public class Enemy : CharacterBase
     {
         base.FixedUpdate();
     }
-
-    protected override void WeaponControl()
-    {
-        
-    }
-
-    protected override void WeaponFixedControl()
-    {
-        
-    }
 }

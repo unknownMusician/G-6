@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -53,11 +54,13 @@ public class PlayerBehaviour : CharacterBase
         MainData.Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
         MainData.Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
         MainData.Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
-        MainData.Controls.Weapon.ChangeSlot.performed += ctx => {
+        MainData.Controls.Weapon.ChangeSlot.performed += ctx =>
+        {
             if (!Pause.GameIsPaused)
                 _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
         };
-        MainData.Controls.Weapon.Aim.performed += ctx => {
+        MainData.Controls.Weapon.Aim.performed += ctx =>
+        {
             if (!Pause.GameIsPaused)
                 Inventory.Aim(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
         };
@@ -66,7 +69,25 @@ public class PlayerBehaviour : CharacterBase
         #region Player
 
         MainData.Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) Jump(); };
-        MainData.Controls.Player.MoveX.performed += ctx => { if(!Pause.GameIsPaused) MoveX(ctx.ReadValue<float>()); }
+
+        MainData.Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) IsSneaking = true; };
+        MainData.Controls.Player.Stand.performed += ctx => { if (!Pause.GameIsPaused) IsSneaking = false; };
+
+        MainData.Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) IsRunning = true; };
+        MainData.Controls.Player.Go.performed += ctx => { if (!Pause.GameIsPaused) IsRunning = false; };
+
+        MainData.Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) TryInteract(); };
+
+        MainData.Controls.Player.MoveRight.performed += ctx => { if (!Pause.GameIsPaused) MoveX(1); };
+        MainData.Controls.Player.MoveLeft.performed += ctx => { if (!Pause.GameIsPaused) MoveX(-1); };
+
+        MainData.Controls.Player.MoveUp.performed += ctx => { if (!Pause.GameIsPaused) MoveY(1); };
+        MainData.Controls.Player.MoveDown.performed += ctx => { if (!Pause.GameIsPaused) MoveY(-1); };
+
+        MainData.Controls.Player.Stay.performed += ctx => { MoveY(0); MoveX(0); };
+
+        MainData.Controls.Player.Jump.performed += ctx => { Console.WriteLine("Jump"); };
+
 
         #endregion
 
@@ -75,10 +96,12 @@ public class PlayerBehaviour : CharacterBase
     private void OnEnable()
     {
         MainData.Controls.Weapon.Enable();
+        MainData.Controls.Player.Enable();
     }
     private void OnDisable()
     {
         MainData.Controls.Weapon.Disable();
+        MainData.Controls.Player.Disable();
     }
     private new void Start()
     {
