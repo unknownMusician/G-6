@@ -551,6 +551,9 @@ MonoBehaviour:
   FatiguePerFrame: 40
   HorizontalBust: 1.5
   SPRegenerationPerFrame: 10
+  _hpMax: 100
+  _spMax: 100
+  _opMax: 100
 --- !u!1 &5375603967128161197
 GameObject:
   m_ObjectHideFlags: 0

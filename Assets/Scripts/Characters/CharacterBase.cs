@@ -60,15 +60,19 @@ public abstract class CharacterBase : MonoBehaviour
     protected float _hp;
     protected float _sp;
     protected float _op;
+
+    [Space, Space]
+    [SerializeField] protected float _hpMax = 100;
+    [SerializeField] protected float _spMax = 100;
+    [SerializeField] protected float _opMax = 100;
     #endregion
 
     #region Properties
 
     #region MaxValues
-    public float MaxHP { get; protected set; }
-    public float MaxSP { get; protected set; }
-    public float MaxOP { get; protected set; }
-    // ? public float MaxMP { get; protected set; } // Mana Point
+    public float MaxHP { get => _hpMax; protected set => _hpMax = value; }
+    public float MaxSP { get => _hpMax; protected set => _spMax = value; }
+    public float MaxOP { get => _hpMax; protected set => _opMax = value; }
     #endregion
 
     #region CurrentValues
@@ -327,9 +331,11 @@ public abstract class CharacterBase : MonoBehaviour
     }
     protected void Update()
     {
-        State = CheckState();
-        TurnToRightSide();
-        CheckGravityBeState();
+        if (State != State.Dead) {
+            State = CheckState();
+            TurnToRightSide();
+            CheckGravityBeState();
+        }
     }
     protected void FixedUpdate()
     {

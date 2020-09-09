@@ -82,18 +82,10 @@ public class PlayerBehaviour : CharacterBase
 
         MainData.Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) TryInteract(); };
 
-        //MainData.Controls.Player.MoveRight.performed += ctx => { if (!Pause.GameIsPaused) MoveX(1); };
-        //MainData.Controls.Player.MoveLeft.performed += ctx => { if (!Pause.GameIsPaused) MoveX(-1); };
         MainData.Controls.Player.MoveHorizontal.performed += ctx => { if (!Pause.GameIsPaused) MoveX(ctx.ReadValue<float>()); };
-
-        //MainData.Controls.Player.MoveUp.performed += ctx => { if (!Pause.GameIsPaused) MoveY(1); };
-        //MainData.Controls.Player.MoveDown.performed += ctx => { if (!Pause.GameIsPaused) MoveY(-1); };
         MainData.Controls.Player.MoveVertical.performed += ctx => { if (!Pause.GameIsPaused) MoveY(ctx.ReadValue<float>()); };
 
         MainData.Controls.Player.Stay.performed += ctx => { MoveY(0); MoveX(0); };
-
-        MainData.Controls.Player.Jump.performed += ctx => { Console.WriteLine("Jump"); };
-
 
         #endregion
 
@@ -109,72 +101,18 @@ public class PlayerBehaviour : CharacterBase
         MainData.Controls.Weapon.Disable();
         MainData.Controls.Player.Disable();
     }
-    private new void Start()
-    {
-
-        MaxHP = 100f;
-        MaxSP = 100f;
-        MaxOP = 100f;
-
-        base.Start();
-        //CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
-        //    new CardEffect.NestedProps(
-        //        CardEffect.EffectType.Fire,
-        //        1,
-        //        20,
-        //        1
-        //        ), this);
-    }
-
-    protected new void Update()
-    {
-        if (State != State.Dead) // todo: почему проверка не в CharacterBase?
-        {
-            base.Update();
-
-            //if (Keyboard.current.eKey.wasPressedThisFrame /*Input.GetButtonDown("Interact")*/)
-            //{
-            //    if (TryInteract())
-            //    {
-            //        Say("Ok, I've interacted with something. What's next?");
-            //    }
-            //    else
-            //    {
-            //        Say("Hey, there is nothing to interact with!");
-            //    }
-            //}
-
-            //Control();
-        }
-    }
-
-    //protected void Control()
+    //private new void Start()
     //{
-    //    if (State == State.OnAir)
-    //    {
-
-    //        //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-    //        //    MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
-
-    //    }
-    //    else
-    //    {
-    //        if (State != State.Climb)
-    //        {
-    //            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-    //            //MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);
-    //        }
-    //        else
-    //        {
-    //            //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
-    //            //MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump"));
-    //        }
-    //    }
+    //    base.Start();
+    //    CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
+    //        new CardEffect.NestedProps(
+    //            CardEffect.EffectType.Fire,
+    //            1,
+    //            20,
+    //            1
+    //            ), this);
     //}
 
-    /// <summary>
-    /// Some code to indicate checkers
-    /// </summary>
     protected void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
