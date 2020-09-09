@@ -96,14 +96,8 @@ public class MainData
 
     #region Input
 
-    private static InputMaster controls;
-    public static InputMaster Controls {
-        get {
-            if (controls == null)
-                controls = new InputMaster();
-            return controls;
-        }
-    }
+    private static InputMaster controls = new InputMaster();
+    public static InputMaster Controls => controls;
 
     #endregion
 }

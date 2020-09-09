@@ -44,6 +44,7 @@ public class PlayerBehaviour : CharacterBase
         #region Controls
 
         #region Weapon Controls
+
         MainData.Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
         MainData.Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
         MainData.Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
@@ -59,11 +60,14 @@ public class PlayerBehaviour : CharacterBase
             if (!Pause.GameIsPaused)
                 _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
         };
-        MainData.Controls.Weapon.Aim.performed += ctx =>
-        {
-            if (!Pause.GameIsPaused)
-                Inventory.Aim(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+        MainData.Controls.Weapon.Aim.performed += ctx => {
+            if (!Pause.GameIsPaused) {
+                Vector3 mouse = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Inventory.Aim(mouse); // Weapon
+                Side = CheckSideLR(mouse); // Player
+            }
         };
+
         #endregion
 
         #region Player
@@ -78,11 +82,13 @@ public class PlayerBehaviour : CharacterBase
 
         MainData.Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) TryInteract(); };
 
-        MainData.Controls.Player.MoveRight.performed += ctx => { if (!Pause.GameIsPaused) MoveX(1); };
-        MainData.Controls.Player.MoveLeft.performed += ctx => { if (!Pause.GameIsPaused) MoveX(-1); };
+        //MainData.Controls.Player.MoveRight.performed += ctx => { if (!Pause.GameIsPaused) MoveX(1); };
+        //MainData.Controls.Player.MoveLeft.performed += ctx => { if (!Pause.GameIsPaused) MoveX(-1); };
+        MainData.Controls.Player.MoveHorizontal.performed += ctx => { if (!Pause.GameIsPaused) MoveX(ctx.ReadValue<float>()); };
 
-        MainData.Controls.Player.MoveUp.performed += ctx => { if (!Pause.GameIsPaused) MoveY(1); };
-        MainData.Controls.Player.MoveDown.performed += ctx => { if (!Pause.GameIsPaused) MoveY(-1); };
+        //MainData.Controls.Player.MoveUp.performed += ctx => { if (!Pause.GameIsPaused) MoveY(1); };
+        //MainData.Controls.Player.MoveDown.performed += ctx => { if (!Pause.GameIsPaused) MoveY(-1); };
+        MainData.Controls.Player.MoveVertical.performed += ctx => { if (!Pause.GameIsPaused) MoveY(ctx.ReadValue<float>()); };
 
         MainData.Controls.Player.Stay.performed += ctx => { MoveY(0); MoveX(0); };
 
@@ -122,51 +128,49 @@ public class PlayerBehaviour : CharacterBase
 
     protected new void Update()
     {
-        if (State != State.Dead)
+        if (State != State.Dead) // todo: почему проверка не в CharacterBase?
         {
             base.Update();
 
-            Side = CheckSideLR(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+            //if (Keyboard.current.eKey.wasPressedThisFrame /*Input.GetButtonDown("Interact")*/)
+            //{
+            //    if (TryInteract())
+            //    {
+            //        Say("Ok, I've interacted with something. What's next?");
+            //    }
+            //    else
+            //    {
+            //        Say("Hey, there is nothing to interact with!");
+            //    }
+            //}
 
-            if (Keyboard.current.eKey.wasPressedThisFrame /*Input.GetButtonDown("Interact")*/) // To-Do: change to buttons and actions
-            {
-                if (TryInteract())
-                {
-                    Say("Ok, I've interacted with something. What's next?");
-                }
-                else
-                {
-                    Say("Hey, there is nothing to interact with!");
-                }
-            }
-
-            Control();
+            //Control();
         }
     }
 
-    protected void Control()
-    {
-        if (State == State.OnAir)
-        {
+    //protected void Control()
+    //{
+    //    if (State == State.OnAir)
+    //    {
 
-            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump"))) // ToDo: change to buttons and actions
-            //    MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
+    //        //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
+    //        //    MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"));
 
-        }
-        else
-        {
-            if (State != State.Climb)
-            {
-                //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
-                //MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);  // To-Do: change to buttons and actions
-            }
-            else
-            {
-                //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
-                //MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump")); // To-Do: change to buttons and actions
-            }
-        }
-    }
+    //    }
+    //    else
+    //    {
+    //        if (State != State.Climb)
+    //        {
+    //            //if ((Input.GetButton("Horizontal") || Input.GetButtonDown("Jump")))
+    //            //MoveX(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Run") > 0);
+    //        }
+    //        else
+    //        {
+    //            //if ((Input.GetButton("Vertical") || Input.GetButtonDown("Jump")))
+    //            //MoveY(Input.GetAxisRaw("Vertical"), Input.GetButtonDown("Jump"));
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Some code to indicate checkers

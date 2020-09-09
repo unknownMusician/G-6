@@ -310,6 +310,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        Inventory = GetComponentInChildren<Inventory>();
 
         Checkers = new Dictionary<Side, List<Transform>>();
         Checkers.Add(Side.Down, GroundCheckers);
