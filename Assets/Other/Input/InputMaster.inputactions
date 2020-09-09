@@ -54,6 +54,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "RunChange",
+                    "type": "Value",
+                    "id": "769feebe-6081-4b74-b4ff-4e6d32e42bbb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "f1018985-9da2-431e-895b-6869be540d66",
@@ -161,17 +169,6 @@
                 },
                 {
                     "name": "",
-                    "id": "92b44a18-3cf3-448b-a817-512843aa63e6",
-                    "path": "<Gamepad>/leftStickPress",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Xbox Gamepad;PS4",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a4cbf3bd-fd35-445f-b28f-4e42f4cf88ec",
                     "path": "<Keyboard>/ctrl",
                     "interactions": "Press(behavior=1)",
@@ -188,17 +185,6 @@
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "NoRun",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3af1247e-7ced-4271-b920-e958f06962d9",
-                    "path": "<Gamepad>/leftStickPress",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Xbox Gamepad;PS4",
                     "action": "NoRun",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -464,6 +450,17 @@
                     "processors": "",
                     "groups": "Xbox Gamepad;PS4",
                     "action": "NoMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49d607cd-14c4-495f-9c07-1fe5428d7f30",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Gamepad;PS4",
+                    "action": "RunChange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

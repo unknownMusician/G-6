@@ -149,6 +149,7 @@ public class MainData : MonoBehaviour
 
         Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
         Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
+        Controls.Player.RunChange.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = !PlayerBehaviour.IsRunning; };
 
         Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.TryInteract(); };
 

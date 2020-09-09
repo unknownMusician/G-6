@@ -67,6 +67,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""RunChange"",
+                    ""type"": ""Value"",
+                    ""id"": ""769feebe-6081-4b74-b4ff-4e6d32e42bbb"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""f1018985-9da2-431e-895b-6869be540d66"",
@@ -174,17 +182,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""92b44a18-3cf3-448b-a817-512843aa63e6"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": ""Xbox Gamepad;PS4"",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a4cbf3bd-fd35-445f-b28f-4e42f4cf88ec"",
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": ""Press(behavior=1)"",
@@ -201,17 +198,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""NoRun"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3af1247e-7ced-4271-b920-e958f06962d9"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
-                    ""interactions"": ""Press(behavior=1)"",
-                    ""processors"": """",
-                    ""groups"": ""Xbox Gamepad;PS4"",
                     ""action"": ""NoRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -477,6 +463,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Xbox Gamepad;PS4"",
                     ""action"": ""NoMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""49d607cd-14c4-495f-9c07-1fe5428d7f30"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Gamepad;PS4"",
+                    ""action"": ""RunChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -998,6 +995,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_NoSneak = m_Player.FindAction("NoSneak", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_NoRun = m_Player.FindAction("NoRun", throwIfNotFound: true);
+        m_Player_RunChange = m_Player.FindAction("RunChange", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_NoMove = m_Player.FindAction("NoMove", throwIfNotFound: true);
         // Weapon
@@ -1074,6 +1072,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_NoSneak;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_NoRun;
+    private readonly InputAction m_Player_RunChange;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_NoMove;
     public struct PlayerActions
@@ -1086,6 +1085,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @NoSneak => m_Wrapper.m_Player_NoSneak;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @NoRun => m_Wrapper.m_Player_NoRun;
+        public InputAction @RunChange => m_Wrapper.m_Player_RunChange;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @NoMove => m_Wrapper.m_Player_NoMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1115,6 +1115,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @NoRun.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNoRun;
                 @NoRun.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNoRun;
                 @NoRun.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNoRun;
+                @RunChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunChange;
+                @RunChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunChange;
+                @RunChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRunChange;
                 @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
@@ -1143,6 +1146,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @NoRun.started += instance.OnNoRun;
                 @NoRun.performed += instance.OnNoRun;
                 @NoRun.canceled += instance.OnNoRun;
+                @RunChange.started += instance.OnRunChange;
+                @RunChange.performed += instance.OnRunChange;
+                @RunChange.canceled += instance.OnRunChange;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -1358,6 +1364,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnNoSneak(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnNoRun(InputAction.CallbackContext context);
+        void OnRunChange(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnNoMove(InputAction.CallbackContext context);
     }

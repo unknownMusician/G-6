@@ -19,12 +19,8 @@ public abstract class CharacterBase : MonoBehaviour
 
     [Space, Space]
 
-    public bool IsRunning;
-    public bool IsSneaking;
-    public bool IsMoving;
-
     [SerializeField]
-    protected bool CanFly;
+    protected bool CanFly; // todo: unused;
 
     [SerializeField]
     protected float JumpForce;
@@ -72,6 +68,14 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Properties
+
+    #region Input
+
+    public bool IsRunning { get; set; }
+    public bool IsSneaking { get; set; }
+    public bool IsMoving { get; set; }
+
+    #endregion
 
     #region MaxValues
     public float MaxHP { get => _hpMax; protected set => _hpMax = value; }
@@ -140,18 +144,25 @@ public abstract class CharacterBase : MonoBehaviour
     private Vector2 _goDir = Vector2.zero;
     private bool _goRun = true;
     private bool _goSneak = true;
-    private void Go() {
-        Vector2 finMove = Vector2.right * rb.velocity.x;
+    private void Go() // todo: something wrong - something in this function refuses to jump;
+    {
+        Vector2 finMove = rb.velocity;
         // X
-        if (State != State.Climb && _goDir.x != 0) {
+        if (State != State.Climb && _goDir.x != 0)
+        {
             _goRun &= IsRunning;
             _goSneak &= IsSneaking;
             float horizontalSpeed = HorizontalSpeed;
-            if (_goRun && Math.Abs(_goDir.x) > 0) {
+            // running
+            if (_goRun && Math.Abs(_goDir.x) > 0)
+            {
                 SP -= FatiguePerFrame * Time.deltaTime;
                 horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBoost : 1);
-            } else if (_goSneak && Math.Abs(_goDir.x) > 0)
+            }
+            // sneaking
+            else if (_goSneak && Math.Abs(_goDir.x) > 0)
                 horizontalSpeed *= HorizontalAntiBoost;
+
             finMove.x = horizontalSpeed * _goDir.x;
 
         }
@@ -161,8 +172,7 @@ public abstract class CharacterBase : MonoBehaviour
 
             if (_goDir.y != 0)
                 SP -= FatiguePerFrame * Time.deltaTime;
-        } else
-            finMove.y = rb.velocity.y;
+        }
 
         // fin
         rb.velocity = finMove;
@@ -181,7 +191,7 @@ public abstract class CharacterBase : MonoBehaviour
                 rb.AddForce(
                     ClimbingBySide() == Side.Left
                         ? new Vector2(HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f))
-                        : new Vector2(-HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x > 0 ? -0.5f : 0.5f)),
+                        : new Vector2(-HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f)),
                     ForceMode2D.Impulse);
                 return; // todo: исправить прыжки от стен;
 
@@ -190,7 +200,8 @@ public abstract class CharacterBase : MonoBehaviour
                 break;
 
             case State.OnAir:
-                jumpForce = 0;
+                if(!CanFly)
+                    return;
                 break;
         }
 
@@ -357,9 +368,6 @@ public abstract class CharacterBase : MonoBehaviour
             State = CheckState();
             TurnToRightSide();
             CheckGravityBeState();
-
-            if (State == State.Climb)
-                rb.velocity += Vector2.left * rb.mass * rb.gravityScale * 100;
         }
     }
     protected void FixedUpdate()
