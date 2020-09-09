@@ -20,41 +20,13 @@ public class GameUI : MonoBehaviour
 
 
     //private bool p = true;
-
-    void Update()
+    private void Awake()
     {
-        if (Keyboard.current.iKey.wasPressedThisFrame/*Input.GetButtonDown("Setting")*/ && !weaponSettings.activeInHierarchy) // To-Do: change to buttons and actions
-        {
-            if (Pause.GameIsPaused)
-            {
-                menu.SetActive(false);
-                Pause.GameIsPaused = false;
-            }
-            else
-            {
-                Pause.GameIsPaused = true;
-                menu.SetActive(true);
-            }
-
-        }
-        if (Keyboard.current.iKey.wasPressedThisFrame/*Input.GetButtonDown("WeaponSettings")*/&& !MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().getRoomComponentOfTheActiveRoom().isThereAnyEnemy() && !menu.activeInHierarchy) // To-Do: change to buttons and actions
-        {
-            if (Pause.GameIsPaused)
-            {
-                Pause.GameIsPaused = false;
-                weaponSettings.SetActive(false);
-            }
-            else
-            {
-                Pause.GameIsPaused = true;
-                weaponSettings.SetActive(true);
-            }
-        }
+        MainData.GameUI = this;
     }
 
     public void LoadSetting()
     {
-
         setting.SetActive(true);
         menu.SetActive(false);
     }

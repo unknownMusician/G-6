@@ -95,25 +95,20 @@ public class MainData : MonoBehaviour
 
     #endregion
 
+    #region UI
+
+    public static GameUI GameUI { get; set; }
+
+    #endregion
+
     #region Input
 
     private static InputMaster _controls;
     public static InputMaster Controls => _controls;
 
-    #endregion
+    private void SetControlsActions() {
 
-    #region Mono
-
-    private void Awake() {
-        _controls = new InputMaster();
-    }
-    private void OnEnable() {
-        Controls.Weapon.Enable();
-        Controls.Player.Enable();
-
-        #region Controls
-
-        #region Weapon Controls
+        #region Weapon
 
         Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
         Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
@@ -158,12 +153,36 @@ public class MainData : MonoBehaviour
 
         #endregion
 
+        #region UI
+
+        Controls.UI.Menu.performed += ctx => {
+            Pause.GameIsPaused = !Pause.GameIsPaused;
+            GameUI.menu.SetActive(Pause.GameIsPaused);
+        };
+
+        Controls.UI.WeaponSettings.performed += ctx => {
+            Pause.GameIsPaused = !Pause.GameIsPaused;
+            GameUI.weaponSettings.SetActive(Pause.GameIsPaused);
+        };
+
         #endregion
 
     }
+
+    #endregion
+
+    #region Mono
+
+    private void Awake() {
+        _controls = new InputMaster();
+    }
+    private void OnEnable() {
+        Controls.Enable();
+
+        SetControlsActions();
+    }
     private void OnDisable() {
-        Controls.Weapon.Disable();
-        Controls.Player.Disable();
+        Controls.Disable();
     }
 
     #endregion

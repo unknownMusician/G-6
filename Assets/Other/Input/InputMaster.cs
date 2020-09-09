@@ -849,8 +849,48 @@ public class @InputMaster : IInputActionCollection, IDisposable
         {
             ""name"": ""UI"",
             ""id"": ""7bdf531a-284e-468d-aa69-89e2bdec2119"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""8db5dbb2-9729-444a-9da2-a5fa67532883"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""WeaponSettings"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b095397-5c03-4d76-ac40-130fd1809491"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c0e9f17a-c3db-40d8-a1fa-e3c7dac3c0b9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac764ceb-ef03-43d8-a69e-8567b1eb0765"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponSettings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -925,6 +965,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Weapon_Aim = m_Weapon.FindAction("Aim", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Menu = m_UI.FindAction("Menu", throwIfNotFound: true);
+        m_UI_WeaponSettings = m_UI.FindAction("WeaponSettings", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1224,10 +1266,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_Menu;
+    private readonly InputAction m_UI_WeaponSettings;
     public struct UIActions
     {
         private @InputMaster m_Wrapper;
         public UIActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Menu => m_Wrapper.m_UI_Menu;
+        public InputAction @WeaponSettings => m_Wrapper.m_UI_WeaponSettings;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1237,10 +1283,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
+                @Menu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMenu;
+                @WeaponSettings.started -= m_Wrapper.m_UIActionsCallbackInterface.OnWeaponSettings;
+                @WeaponSettings.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnWeaponSettings;
+                @WeaponSettings.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnWeaponSettings;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
+                @WeaponSettings.started += instance.OnWeaponSettings;
+                @WeaponSettings.performed += instance.OnWeaponSettings;
+                @WeaponSettings.canceled += instance.OnWeaponSettings;
             }
         }
     }
@@ -1305,5 +1363,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     }
     public interface IUIActions
     {
+        void OnMenu(InputAction.CallbackContext context);
+        void OnWeaponSettings(InputAction.CallbackContext context);
     }
 }

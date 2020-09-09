@@ -836,8 +836,48 @@
         {
             "name": "UI",
             "id": "7bdf531a-284e-468d-aa69-89e2bdec2119",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "8db5dbb2-9729-444a-9da2-a5fa67532883",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "WeaponSettings",
+                    "type": "Button",
+                    "id": "7b095397-5c03-4d76-ac40-130fd1809491",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c0e9f17a-c3db-40d8-a1fa-e3c7dac3c0b9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac764ceb-ef03-43d8-a69e-8567b1eb0765",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "WeaponSettings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
