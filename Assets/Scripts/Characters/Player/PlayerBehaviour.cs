@@ -39,12 +39,11 @@ public class PlayerBehaviour : CharacterBase
     private void Awake()
     {
         // Setting Player to MainData
-        MainData.PlayerObject = this.gameObject;
+        MainData.PlayerObject = gameObject;
     }
 
     //private new void Start()
     //{
-    //    base.Start();
     //    CurrentEffects[CardEffect.EffectType.Fire] = new EffectControl(
     //        new CardEffect.NestedProps(
     //            CardEffect.EffectType.Fire,
@@ -53,6 +52,13 @@ public class PlayerBehaviour : CharacterBase
     //            1
     //            ), this);
     //}
+
+    private new void Update() 
+    {
+        base.Update();
+        if (IsMoving)
+            Move(MainData.Controls.Player.Move.ReadValue<Vector2>());
+    }
 
     protected void OnDrawGizmos()
     {

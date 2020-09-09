@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class CharacterBase : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public abstract class CharacterBase : MonoBehaviour
     [Space, Space]
 
     public bool IsRunning;
-
     public bool IsSneaking;
+    public bool IsMoving;
 
     [SerializeField]
     protected bool CanFly;
@@ -47,7 +48,10 @@ public abstract class CharacterBase : MonoBehaviour
     protected float FatiguePerFrame;
 
     [SerializeField]
-    protected float HorizontalBust;
+    protected float HorizontalBoost;
+
+    [SerializeField]
+    protected float HorizontalAntiBoost;
 
     [SerializeField]
     protected float SPRegenerationPerFrame;
@@ -127,27 +131,45 @@ public abstract class CharacterBase : MonoBehaviour
             sr.flipX = inverse;
     }
 
-    public void MoveX(float dir, bool run = true)
+    public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        run &= IsRunning;
-        float horizontalSpeed = HorizontalSpeed;
-        if (run && Math.Abs(dir) > 0)
-        {
-            SP -= FatiguePerFrame * Time.deltaTime;
-            horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
-        }
-        rb.velocity = new Vector2(horizontalSpeed * dir, rb.velocity.y); 
-        //rb.AddForce(new Vector2(horizontalSpeed * dir, 0), ForceMode2D.Force);
+        _goDir = dir;
+        _goRun = run;
+        _goSneak = sneak;
     }
-    public void MoveY(float dir)
-    {
-        if(State != State.Climb)
-            return;
+    private Vector2 _goDir = Vector2.zero;
+    private bool _goRun = true;
+    private bool _goSneak = true;
+    private void Go() {
+        Vector2 finMove = Vector2.right * rb.velocity.x;
+        // X
+        if (State != State.Climb && _goDir.x != 0) {
+            _goRun &= IsRunning;
+            _goSneak &= IsSneaking;
+            float horizontalSpeed = HorizontalSpeed;
+            if (_goRun && Math.Abs(_goDir.x) > 0) {
+                SP -= FatiguePerFrame * Time.deltaTime;
+                horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBoost : 1);
+            } else if (_goSneak && Math.Abs(_goDir.x) > 0)
+                horizontalSpeed *= HorizontalAntiBoost;
+            finMove.x = horizontalSpeed * _goDir.x;
 
-        rb.velocity = new Vector2(0, dir * VerticalSpeed * (SP > 0 ? 1f : 0f));
+        }
+        // Y
+        if (State == State.Climb) {
+            finMove.y = _goDir.y * VerticalSpeed * (SP > 0 ? 1f : 0f);
 
-        if (Math.Abs(dir) > 0)
-            SP -= FatiguePerFrame * Time.deltaTime;
+            if (_goDir.y != 0)
+                SP -= FatiguePerFrame * Time.deltaTime;
+        } else
+            finMove.y = rb.velocity.y;
+
+        // fin
+        rb.velocity = finMove;
+        //revert
+        _goDir = Vector2.zero;
+        _goRun = true;
+        _goSneak = true;
     }
     public void Jump()
     {
@@ -158,10 +180,10 @@ public abstract class CharacterBase : MonoBehaviour
             case State.Climb:
                 rb.AddForce(
                     ClimbingBySide() == Side.Left
-                        ? new Vector2(HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f))
-                        : new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)),
+                        ? new Vector2(HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f))
+                        : new Vector2(-HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x > 0 ? -0.5f : 0.5f)),
                     ForceMode2D.Impulse);
-                return;
+                return; // todo: исправить прыжки от стен;
 
             case State.Swim:
                 jumpForce /= 4f;
@@ -198,9 +220,9 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    public Side CheckSideLR(Vector3 triger)
+    public Side CheckSideLR(Vector3 worldTriger)
     {
-        if (triger.x > transform.position.x)
+        if (worldTriger.x > transform.position.x)
             return Side.Right;
         return Side.Left;
     }
@@ -310,7 +332,7 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region MonoBehaviour Implemented
-    protected void Start()
+    protected void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
@@ -331,16 +353,21 @@ public abstract class CharacterBase : MonoBehaviour
     }
     protected void Update()
     {
-        if (State != State.Dead) {
+        if (!Pause.GameIsPaused && State != State.Dead) {
             State = CheckState();
             TurnToRightSide();
             CheckGravityBeState();
+
+            if (State == State.Climb)
+                rb.velocity += Vector2.left * rb.mass * rb.gravityScale * 100;
         }
     }
     protected void FixedUpdate()
     {
         EffectsFixedControl();
         SPFixedControl();
+
+        Go();
     }
     #endregion
 

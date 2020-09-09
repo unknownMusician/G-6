@@ -10,14 +10,14 @@ public class MainData : MonoBehaviour
 {
     #region Main GameObjects
 
-    private static GameObject player;
+    private static GameObject _player;
 
     public static GameObject PlayerObject
     {
-        get => player;
+        get => _player;
         set
         {
-            player = value;
+            _player = value;
             ActionPlayerChange?.Invoke();
         }
     }
@@ -103,8 +103,7 @@ public class MainData : MonoBehaviour
 
     #region Input
 
-    private static InputMaster _controls;
-    public static InputMaster Controls => _controls;
+    public static InputMaster Controls { get; private set; }
 
     private void SetControlsActions() {
 
@@ -124,11 +123,18 @@ public class MainData : MonoBehaviour
             if (!Pause.GameIsPaused)
                 _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
         };
-        Controls.Weapon.Aim.performed += ctx => {
+        Controls.Weapon.AimMouse.performed += ctx => {
             if (!Pause.GameIsPaused) {
-                Vector3 mouse = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                Inventory.Aim(mouse); // Weapon
-                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(mouse); // Player
+                Vector3 worldCursor = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Inventory.Aim(worldCursor - PlayerObject.transform.position); // Weapon
+                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(worldCursor); // Player
+            }
+        };
+        Controls.Weapon.AimStick.performed += ctx => {
+            if (!Pause.GameIsPaused) {
+                Vector3 localCursor = ctx.ReadValue<Vector2>();
+                Inventory.Aim(localCursor); // Weapon
+                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(PlayerObject.transform.position + localCursor); // Player
             }
         };
 
@@ -139,17 +145,15 @@ public class MainData : MonoBehaviour
         Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.Jump(); };
 
         Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = true; };
-        Controls.Player.Stand.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = false; };
+        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = false; };
 
         Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
-        Controls.Player.Go.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
+        Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
 
         Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.TryInteract(); };
 
-        Controls.Player.MoveHorizontal.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.MoveX(ctx.ReadValue<float>()); };
-        Controls.Player.MoveVertical.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.MoveY(ctx.ReadValue<float>()); };
-
-        Controls.Player.Stay.performed += ctx => { PlayerBehaviour.MoveY(0); PlayerBehaviour.MoveX(0); };
+        Controls.Player.Move.performed += ctx => { PlayerBehaviour.IsMoving = true; };
+        Controls.Player.NoMove.performed += ctx => { PlayerBehaviour.IsMoving = false; };
 
         #endregion
 
@@ -174,12 +178,11 @@ public class MainData : MonoBehaviour
     #region Mono
 
     private void Awake() {
-        _controls = new InputMaster();
+        Controls = new InputMaster();
+        SetControlsActions();
     }
     private void OnEnable() {
         Controls.Enable();
-
-        SetControlsActions();
     }
     private void OnDisable() {
         Controls.Disable();

@@ -540,6 +540,9 @@ MonoBehaviour:
   - {fileID: 1901374522697826295}
   - {fileID: 1245556496924350042}
   EnvironmentChecker: {fileID: 3929323170341243086}
+  IsRunning: 0
+  IsSneaking: 0
+  IsMoving: 0
   CanFly: 0
   JumpForce: 25
   VerticalSpeed: 10
@@ -550,7 +553,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   FatiguePerFrame: 40
-  HorizontalBust: 1.5
+  HorizontalBoost: 1.5
+  HorizontalAntiBoost: 0.5
   SPRegenerationPerFrame: 10
   _hpMax: 100
   _spMax: 100

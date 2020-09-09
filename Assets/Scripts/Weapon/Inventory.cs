@@ -178,13 +178,12 @@ public class Inventory : MonoBehaviour {
 
     #region Aim
 
-    public void Aim(Vector3 worldPoint) {
-        Vector2 distance = worldPoint - this.transform.position;
-        float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
+    public void Aim(Vector3 localPoint) {
+        float angle = Mathf.Rad2Deg * Mathf.Atan2(localPoint.y, localPoint.x);
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         //
-        transform.localScale = new Vector3(1, Mathf.Sign(worldPoint.x - transform.position.x), 1);
+        transform.localScale = new Vector3(1, Mathf.Sign(localPoint.x), 1);
     }
 
     #endregion
