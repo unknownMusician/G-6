@@ -8,18 +8,22 @@ using UnityEngine.Events;
 public class EnvironmentBuilder : MonoBehaviour {
 
     [SerializeField]
-    private GameObject roomObject;
+    private GameObject roomObject = null;
 
     [SerializeField]
-    private float blockSize;
+    private float blockSize = 1;
 
     [SerializeField]
-    private float objectSize;
+    private float objectSize = 0.5f;
 
     [SerializeField]
-    private Vector2 roomSize;
+    private Vector2 roomSize = Vector2.one * 10;
 
     private int currentBlockID = 0;
+
+    private List<GameObject> blocksPrefabs;
+    private List<GameObject> objectsPrefabs;
+    private List<GameObject> specialsPrefabs;
 
     private GameObject cursorBlockSprite;
 
@@ -27,18 +31,17 @@ public class EnvironmentBuilder : MonoBehaviour {
     private Dictionary<Vector2, GameObject> backgroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
     private Dictionary<Vector2, GameObject> foregroundBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
     private Dictionary<Vector2, GameObject> objectsBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
+    private Dictionary<Vector2, GameObject> specialsBlocksCoordsDict = new Dictionary<Vector2, GameObject>();
 
     #region UI
-
-    [SerializeField, Space, Space]
-    private List<GameObject> blocksPrefabs = new List<GameObject>();
-    [SerializeField, Space, Space]
-    private List<GameObject> objectsPrefabs = new List<GameObject>();
 
     [SerializeField, Space, Space]
     private GameObject blocksMenu = null;
     [SerializeField]
     private GameObject objectsMenu = null;
+    [SerializeField]
+    private GameObject specialsMenu = null;
+    [Space, Space]
     [SerializeField]
     private GameObject blockButtonPrefab = null;
     [SerializeField]
@@ -53,23 +56,31 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     #endregion
 
-    private Sprite currentPrefabSprite => (CurrentLayer < 3) ?
-                ((currentBlockID < blocksPrefabs.Count) ? blocksPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null) :
-                ((currentBlockID < objectsPrefabs.Count) ? objectsPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite : null);
+    private Sprite currentPrefabSprite {
+        get {
+            switch (CurrentLayer) {
+                case Layer.Objects:
+                    return objectsPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite;
+                case Layer.Special:
+                    return specialsPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite;
+                default:
+                    return blocksPrefabs[currentBlockID].GetComponent<SpriteRenderer>().sprite;
+            }
+        }
+    }
     private Vector2 mouseGridPosition {
         get {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             return new Vector2(Mathf.Round(mouse.x / CurrentGridSize) * CurrentGridSize, Mathf.Round(mouse.y / CurrentGridSize) * CurrentGridSize);
         }
     }
-    private float CurrentGridSize => (CurrentLayer < 3) ? blockSize : objectSize;
+    private float CurrentGridSize => (CurrentLayer == Layer.Objects) ? objectSize : blockSize;
 
-    private int _cl;
-    // 0 - background
-    // 1 - terrain
-    // 2 - forground
-    // 3 - objects
-    public int CurrentLayer {
+    public void SetLayer(int layer) {
+        CurrentLayer = (Layer)layer;
+    }
+    private Layer _cl;
+    public Layer CurrentLayer {
         get => _cl;
         set {
             _cl = value;
@@ -77,22 +88,34 @@ public class EnvironmentBuilder : MonoBehaviour {
             for (int i = 0; i < layerMenu.transform.childCount; i++) {
                 layerMenu.transform.GetChild(i).gameObject.GetComponent<Image>().color = new Color(0.8f, 0.8f, 0.8f);
             }
-            layerMenu.transform.GetChild(_cl).gameObject.GetComponent<Image>().color = new Color(1, 1, 1);
+            layerMenu.transform.GetChild((int)_cl).gameObject.GetComponent<Image>().color = new Color(1, 1, 1);
             // PrefabMenus
-            bool prefab = _cl < 3; // true - blocks, false - objects
-            objectsMenu.SetActive(!prefab);
-            blocksMenu.SetActive(prefab);
-            // changing blockID
-            currentBlockID = 0;
+            objectsMenu.SetActive(false);
+            specialsMenu.SetActive(false);
+            blocksMenu.SetActive(false);
+            switch (_cl) {
+                case Layer.Objects:
+                    objectsMenu.SetActive(true);
+                    break;
+                case Layer.Special:
+                    specialsMenu.SetActive(true);
+                    break;
+                default:
+                    blocksMenu.SetActive(true);
+                    break;
+            }
+            currentBlockID = 0; // changing blockID
         }
     }
 
     private void Start() {
         Time.timeScale = 0;
+        LoadAssets();
         ShowBuildBarrier();
         FillMenu(blocksMenu, blocksPrefabs);
         FillMenu(objectsMenu, objectsPrefabs);
-        CurrentLayer = 1;
+        FillMenu(specialsMenu, specialsPrefabs);
+        CurrentLayer = Layer.Terrain;
         OnBlockMenuSelect(0);
     }
 
@@ -139,15 +162,22 @@ public class EnvironmentBuilder : MonoBehaviour {
 
         Dictionary<Vector2, GameObject> objectsCoordsDict = new Dictionary<Vector2, GameObject>();
 
-        if (CurrentLayer == 0) {
-            objectsCoordsDict = backgroundBlocksCoordsDict;
-        } else if (CurrentLayer == 1) {
-            objectsCoordsDict = terrainBlocksCoordsDict;
-
-        } else if (CurrentLayer == 2) {
-            objectsCoordsDict = foregroundBlocksCoordsDict;
-        } else if (CurrentLayer == 3) {
-            objectsCoordsDict = objectsBlocksCoordsDict;
+        switch (CurrentLayer) {
+            case Layer.Background:
+                objectsCoordsDict = backgroundBlocksCoordsDict;
+                break;
+            case Layer.Terrain:
+                objectsCoordsDict = terrainBlocksCoordsDict;
+                break;
+            case Layer.Forground:
+                objectsCoordsDict = foregroundBlocksCoordsDict;
+                break;
+            case Layer.Objects:
+                objectsCoordsDict = objectsBlocksCoordsDict;
+                break;
+            case Layer.Special:
+                objectsCoordsDict = specialsBlocksCoordsDict;
+                break;
         }
 
         if (objectsCoordsDict.ContainsKey(currentGridPosition)) {
@@ -162,19 +192,29 @@ public class EnvironmentBuilder : MonoBehaviour {
         Transform parentInRoomGameObject = roomObject.transform;
         List<GameObject> prefabsList = blocksPrefabs;
 
-        if (CurrentLayer == 0) {
-            objectsCoordsDict = backgroundBlocksCoordsDict;
-            parentInRoomGameObject = roomObject.transform.GetChild(0);
-        } else if (CurrentLayer == 1) {
-            objectsCoordsDict = terrainBlocksCoordsDict;
-            parentInRoomGameObject = roomObject.transform.GetChild(4);
-        } else if (CurrentLayer == 2) {
-            objectsCoordsDict = foregroundBlocksCoordsDict;
-            parentInRoomGameObject = roomObject.transform.GetChild(5);
-        } else if (CurrentLayer == 3) {
-            objectsCoordsDict = objectsBlocksCoordsDict;
-            parentInRoomGameObject = roomObject.transform.GetChild(6);
-            prefabsList = objectsPrefabs;
+        switch (CurrentLayer) {
+            case Layer.Background:
+                objectsCoordsDict = backgroundBlocksCoordsDict;
+                parentInRoomGameObject = roomObject.transform.GetChild(0);
+                break;
+            case Layer.Terrain:
+                objectsCoordsDict = terrainBlocksCoordsDict;
+                parentInRoomGameObject = roomObject.transform.GetChild(4);
+                break;
+            case Layer.Forground:
+                objectsCoordsDict = foregroundBlocksCoordsDict;
+                parentInRoomGameObject = roomObject.transform.GetChild(5);
+                break;
+            case Layer.Objects:
+                objectsCoordsDict = objectsBlocksCoordsDict;
+                parentInRoomGameObject = roomObject.transform.GetChild(6);
+                prefabsList = objectsPrefabs;
+                break;
+            case Layer.Special:
+                objectsCoordsDict = specialsBlocksCoordsDict;
+                parentInRoomGameObject = roomObject.transform.GetChild(7);
+                prefabsList = specialsPrefabs;
+                break;
         }
 
         objectsCoordsDict.Add(currentGridPosition,
@@ -189,6 +229,19 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     public void SaveRoomObjectAsAsset() {
         PrefabUtility.SaveAsPrefabAsset(roomObject, "Assets/Prefabs/EnvironmentBuilder/Rooms/Room_1.prefab");
+    }
+
+    public void LoadAssets() {
+        var blankBlock = Resources.Load<GameObject>("EnvironmentBuilder/BlockBases/000_BlockDefault");
+
+        blocksPrefabs = new List<GameObject> { blankBlock };
+        blocksPrefabs.AddRange(Resources.LoadAll<GameObject>("EnvironmentBuilder/Blocks"));
+
+        objectsPrefabs = new List<GameObject> { blankBlock };
+        objectsPrefabs.AddRange(Resources.LoadAll<GameObject>("EnvironmentBuilder/Objects"));
+
+        specialsPrefabs = new List<GameObject> { blankBlock };
+        specialsPrefabs.AddRange(Resources.LoadAll<GameObject>("EnvironmentBuilder/Specials"));
     }
 
     #region UI
@@ -230,4 +283,11 @@ public class EnvironmentBuilder : MonoBehaviour {
 
     #endregion
 
+    public enum Layer {
+        Background = 0, 
+        Terrain = 1,
+        Forground = 2,
+        Objects = 3,
+        Special = 4
+    }
 }
