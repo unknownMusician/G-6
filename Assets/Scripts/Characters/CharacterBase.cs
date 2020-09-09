@@ -16,11 +16,11 @@ public abstract class CharacterBase : MonoBehaviour
 
     #region Fields
 
-    [Space, Space] 
+    [Space, Space]
 
-    protected bool IsRunning;
+    public bool IsRunning;
 
-    protected bool IsSneaking;
+    public bool IsSneaking;
 
     [SerializeField]
     protected bool CanFly;
@@ -82,7 +82,7 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Other Public Props
-    public Side Side { get; protected set; }
+    public Side Side { get; set; }
     public short Level { get; protected set; }
     public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
@@ -127,7 +127,7 @@ public abstract class CharacterBase : MonoBehaviour
             sr.flipX = inverse;
     }
 
-    protected void MoveX(float dir, bool run = true)
+    public void MoveX(float dir, bool run = true)
     {
         run &= IsRunning;
         float horizontalSpeed = HorizontalSpeed;
@@ -139,7 +139,7 @@ public abstract class CharacterBase : MonoBehaviour
         rb.velocity = new Vector2(horizontalSpeed * dir, rb.velocity.y); 
         //rb.AddForce(new Vector2(horizontalSpeed * dir, 0), ForceMode2D.Force);
     }
-    protected void MoveY(float dir)
+    public void MoveY(float dir)
     {
         if(State != State.Climb)
             return;
@@ -149,7 +149,7 @@ public abstract class CharacterBase : MonoBehaviour
         if (Math.Abs(dir) > 0)
             SP -= FatiguePerFrame * Time.deltaTime;
     }
-    protected void Jump()
+    public void Jump()
     {
         float jumpForce = JumpForce;
 
@@ -198,7 +198,7 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    protected Side CheckSideLR(Vector3 triger)
+    public Side CheckSideLR(Vector3 triger)
     {
         if (triger.x > transform.position.x)
             return Side.Right;
@@ -236,7 +236,7 @@ public abstract class CharacterBase : MonoBehaviour
     }
 
 
-    protected bool TryInteract()
+    public bool TryInteract()
     {
         //try
         //{

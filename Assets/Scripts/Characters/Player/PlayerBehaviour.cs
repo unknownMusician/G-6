@@ -40,67 +40,8 @@ public class PlayerBehaviour : CharacterBase
     {
         // Setting Player to MainData
         MainData.PlayerObject = this.gameObject;
-
-        #region Controls
-
-        #region Weapon Controls
-
-        MainData.Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
-        MainData.Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
-        MainData.Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
-        MainData.Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
-        MainData.Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
-        MainData.Controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
-        MainData.Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
-        MainData.Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
-        MainData.Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
-        MainData.Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
-        MainData.Controls.Weapon.ChangeSlot.performed += ctx =>
-        {
-            if (!Pause.GameIsPaused)
-                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
-        };
-        MainData.Controls.Weapon.Aim.performed += ctx => {
-            if (!Pause.GameIsPaused) {
-                Vector3 mouse = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                Inventory.Aim(mouse); // Weapon
-                Side = CheckSideLR(mouse); // Player
-            }
-        };
-
-        #endregion
-
-        #region Player
-
-        MainData.Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) Jump(); };
-
-        MainData.Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) IsSneaking = true; };
-        MainData.Controls.Player.Stand.performed += ctx => { if (!Pause.GameIsPaused) IsSneaking = false; };
-
-        MainData.Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) IsRunning = true; };
-        MainData.Controls.Player.Go.performed += ctx => { if (!Pause.GameIsPaused) IsRunning = false; };
-
-        MainData.Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) TryInteract(); };
-
-        MainData.Controls.Player.MoveHorizontal.performed += ctx => { if (!Pause.GameIsPaused) MoveX(ctx.ReadValue<float>()); };
-        MainData.Controls.Player.MoveVertical.performed += ctx => { if (!Pause.GameIsPaused) MoveY(ctx.ReadValue<float>()); };
-
-        MainData.Controls.Player.Stay.performed += ctx => { MoveY(0); MoveX(0); };
-
-        #endregion
-
-        #endregion
     }
-    private void OnEnable()
-    {
-        MainData.Controls.Weapon.Enable();
-        MainData.Controls.Player.Enable();
-    }
-    private void OnDisable()
-    {
-        MainData.Controls.Weapon.Disable();
-        MainData.Controls.Player.Disable();
-    }
+
     //private new void Start()
     //{
     //    base.Start();

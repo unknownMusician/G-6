@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class MainData
+public class MainData : MonoBehaviour
 {
     #region Main GameObjects
 
@@ -62,7 +63,7 @@ public class MainData
 
     #region Inventory & Guns
 
-    public static Inventory Inventory => PlayerObject?.GetComponentInChildren<Inventory>();
+    public static Inventory Inventory => PlayerBehaviour.Inventory;
     public static Weapon ActiveWeapon => Inventory?.Weapon;
 
     public static Action ActionInventoryCardsChange;
@@ -96,8 +97,74 @@ public class MainData
 
     #region Input
 
-    private static InputMaster controls = new InputMaster();
-    public static InputMaster Controls => controls;
+    private static InputMaster _controls;
+    public static InputMaster Controls => _controls;
+
+    #endregion
+
+    #region Mono
+
+    private void Awake() {
+        _controls = new InputMaster();
+    }
+    private void OnEnable() {
+        Controls.Weapon.Enable();
+        Controls.Player.Enable();
+
+        #region Controls
+
+        #region Weapon Controls
+
+        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
+        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
+        Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
+        Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
+        Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
+        Controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
+        Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
+        Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
+        Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
+        Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
+        Controls.Weapon.ChangeSlot.performed += ctx => {
+            if (!Pause.GameIsPaused)
+                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
+        };
+        Controls.Weapon.Aim.performed += ctx => {
+            if (!Pause.GameIsPaused) {
+                Vector3 mouse = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Inventory.Aim(mouse); // Weapon
+                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(mouse); // Player
+            }
+        };
+
+        #endregion
+
+        #region Player
+
+        Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.Jump(); };
+
+        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = true; };
+        Controls.Player.Stand.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = false; };
+
+        Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
+        Controls.Player.Go.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
+
+        Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.TryInteract(); };
+
+        Controls.Player.MoveHorizontal.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.MoveX(ctx.ReadValue<float>()); };
+        Controls.Player.MoveVertical.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.MoveY(ctx.ReadValue<float>()); };
+
+        Controls.Player.Stay.performed += ctx => { PlayerBehaviour.MoveY(0); PlayerBehaviour.MoveX(0); };
+
+        #endregion
+
+        #endregion
+
+    }
+    private void OnDisable() {
+        Controls.Weapon.Disable();
+        Controls.Player.Disable();
+    }
 
     #endregion
 }
