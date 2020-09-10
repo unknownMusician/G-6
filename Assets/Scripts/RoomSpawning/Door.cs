@@ -2,7 +2,7 @@
 
 public class Door : MonoBehaviour {
 
-    #region Properties
+    #region Variables
 
     private RoomSpawner roomSpawner;
 
@@ -38,9 +38,9 @@ public class Door : MonoBehaviour {
 
     void Start() {
 
-        roomSpawner = MainData.RoomSpawnerObject.GetComponent<RoomSpawner>();
-        miniMapMatrix = roomSpawner.getMiniMapMatrix();
-        roomMatrix = roomSpawner.getRoomsMatrix();
+        roomSpawner = MainData.RoomSpawnerObject?.GetComponent<RoomSpawner>();
+        miniMapMatrix = roomSpawner?.getMiniMapMatrix();
+        roomMatrix = roomSpawner?.getRoomsMatrix();
         Visited = false;
     
     }
@@ -48,9 +48,13 @@ public class Door : MonoBehaviour {
     #endregion
 
     void OnTriggerEnter2D(Collider2D other) {
-        if ((other.name == "Player") & (Visited == false)) {
-            roomSpawner.goToNextRoom(other.transform, direction);
-            Visited = true;
+        if (roomSpawner != null) {
+            if ((other.name == "Player") & (Visited == false)) {
+                roomSpawner.goToNextRoom(other.transform, direction);
+                Visited = true;
+            }
+        } else {
+            // todo: it is for when you use EnvironmentBuilder;
         }
     }
 
