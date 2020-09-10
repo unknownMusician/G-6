@@ -25,13 +25,13 @@ public class Door : MonoBehaviour {
     #region Awake() and Start() methods
 
     void Awake() {
-        if (this.name == "TopDoor") {
+        if (this.name[0] == 'T') {
             direction = 0;
-        } else if (this.name == "RightDoor") {
+        } else if (this.name[0] == 'R') {
             direction = 1;
-        } else if (this.name == "BottomDoor") {
+        } else if (this.name[0] == 'B') {
             direction = 2;
-        } else if (this.name == "LeftDoor") {
+        } else if (this.name[0] == 'L') {
             direction = 3;
         }
     }
