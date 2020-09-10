@@ -23,6 +23,12 @@ TextureImporter:
   - first:
       213: 6041615230875455218
     second: Palette_3
+  - first:
+      213: -2752713359424059500
+    second: Palette_3
+  - first:
+      213: 6252563936671804791
+    second: Palette_4
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -196,8 +202,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2fecbe9ea0128d350800000000000000
-      internalID: 6041615230875455218
+      spriteID: 4978e0bb8c56cc9d0800000000000000
+      internalID: -2752713359424059500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Palette_4
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 40
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77dadbcd5c195c650800000000000000
+      internalID: 6252563936671804791
       vertices: []
       indices: 
       edges: []
