@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -19,41 +20,13 @@ public class GameUI : MonoBehaviour
 
 
     //private bool p = true;
-
-    void Update()
+    private void Awake()
     {
-        if (Input.GetButtonDown("Setting") && !weaponSettings.activeInHierarchy)
-        {
-            if (Pause.GameIsPaused)
-            {
-                menu.SetActive(false);
-                Pause.GameIsPaused = false;
-            }
-            else
-            {
-                Pause.GameIsPaused = true;
-                menu.SetActive(true);
-            }
-
-        }
-        if (Input.GetButtonDown("WeaponSettings")&&!MainData.RoomSpawnerObject.GetComponent<RoomSpawner>().getRoomComponentOfTheActiveRoom().isThereAnyEnemy() && !menu.activeInHierarchy)
-        {
-            if (Pause.GameIsPaused)
-            {
-                Pause.GameIsPaused = false;
-                weaponSettings.SetActive(false);
-            }
-            else
-            {
-                Pause.GameIsPaused = true;
-                weaponSettings.SetActive(true);
-            }
-        }
+        MainData.GameUI = this;
     }
 
     public void LoadSetting()
     {
-
         setting.SetActive(true);
         menu.SetActive(false);
     }

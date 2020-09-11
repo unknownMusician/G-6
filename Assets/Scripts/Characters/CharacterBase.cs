@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class CharacterBase : MonoBehaviour
 {
@@ -11,12 +12,15 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
-    [SerializeField]
+    [SerializeField, Space]
     protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
+
+    [Space, Space]
+
     [SerializeField]
-    protected bool CanFly;
+    protected bool CanFly; // todo: unused;
 
     [SerializeField]
     protected float JumpForce;
@@ -36,11 +40,14 @@ public abstract class CharacterBase : MonoBehaviour
     [SerializeField]
     protected LayerMask ContactLayer;
 
-    [SerializeField] 
+    [SerializeField]
     protected float FatiguePerFrame;
 
-    [SerializeField] 
-    protected float HorizontalBust;
+    [SerializeField]
+    protected float HorizontalBoost;
+
+    [SerializeField]
+    protected float HorizontalAntiBoost;
 
     [SerializeField]
     protected float SPRegenerationPerFrame;
@@ -53,15 +60,27 @@ public abstract class CharacterBase : MonoBehaviour
     protected float _hp;
     protected float _sp;
     protected float _op;
+
+    [Space, Space]
+    [SerializeField] protected float _hpMax = 100;
+    [SerializeField] protected float _spMax = 100;
+    [SerializeField] protected float _opMax = 100;
     #endregion
 
     #region Properties
 
+    #region Input
+
+    public bool IsRunning { get; set; }
+    public bool IsSneaking { get; set; }
+    public bool IsMoving { get; set; }
+
+    #endregion
+
     #region MaxValues
-    public float MaxHP { get; protected set; }
-    public float MaxSP { get; protected set; }
-    public float MaxOP { get; protected set; }
-    // ? public float MaxMP { get; protected set; } // Mana Point
+    public float MaxHP { get => _hpMax; protected set => _hpMax = value; }
+    public float MaxSP { get => _hpMax; protected set => _spMax = value; }
+    public float MaxOP { get => _hpMax; protected set => _opMax = value; }
     #endregion
 
     #region CurrentValues
@@ -71,11 +90,13 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Other Public Props
-    public Side Side { get; protected set; }
+    public Side Side { get; set; }
     public short Level { get; protected set; }
     public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
     public Fraction Fraction { get; protected set; }
+    public Inventory Inventory { get; protected set; }
+
     #endregion
 
     #endregion
@@ -103,25 +124,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected SpriteRenderer sr;
 
-    #endregion  
-
-
-    #region Guns&Inventory
-
-    #region Fields
-    [SerializeField]
-    protected Inventory Inventory;
     #endregion
-
-    #region Methods
-
-    protected abstract void WeaponControl();
-    protected abstract void WeaponFixedControl();
-
-    #endregion
-
-    #endregion
-
 
     #region Common Methods
     protected void TurnToRightSide(bool inverse = false)
@@ -130,62 +133,79 @@ public abstract class CharacterBase : MonoBehaviour
             sr.flipX = !inverse;
         else
             sr.flipX = inverse;
-
-        //if (Side == Side.Left)
-        //    transform.rotation = new Quaternion(transform.rotation.x, Mathf.PI, transform.rotation.y, transform.rotation.w);
-        //else
-        //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
     }
-    protected void MoveX(float dir, float jump, bool run = false)
+
+    public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        float horizontalSpeed = HorizontalSpeed;
-        if (run && Math.Abs(dir) > 0)
+        _goDir = dir;
+        _goRun = run;
+        _goSneak = sneak;
+    }
+    private Vector2 _goDir = Vector2.zero;
+    private bool _goRun = true;
+    private bool _goSneak = true;
+    private void Go() // todo: something wrong - something in this function refuses to jump;
+    {
+        Vector2 finMove = rb.velocity;
+        // X
+        if (State != State.Climb && _goDir.x != 0)
         {
-            SP -= FatiguePerFrame * Time.deltaTime;
-            horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
+            _goRun &= IsRunning;
+            _goSneak &= IsSneaking;
+            float horizontalSpeed = HorizontalSpeed;
+            // running
+            if (_goRun && Math.Abs(_goDir.x) > 0)
+            {
+                SP -= FatiguePerFrame * Time.deltaTime;
+                horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBoost : 1);
+            }
+            // sneaking
+            else if (_goSneak && Math.Abs(_goDir.x) > 0)
+                horizontalSpeed *= HorizontalAntiBoost;
+
+            finMove.x = horizontalSpeed * _goDir.x;
+
         }
+        // Y
+        if (State == State.Climb) {
+            finMove.y = _goDir.y * VerticalSpeed * (SP > 0 ? 1f : 0f);
+
+            if (_goDir.y != 0)
+                SP -= FatiguePerFrame * Time.deltaTime;
+        }
+
+        // fin
+        rb.velocity = finMove;
+        //revert
+        _goDir = Vector2.zero;
+        _goRun = true;
+        _goSneak = true;
+    }
+    public void Jump()
+    {
+        float jumpForce = JumpForce;
+
         switch (State)
         {
-            case State.OnGround:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
-                break;
-            //case State.Climb:
-            //    rb.velocity = new Vector2(dir * horizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
-            //    //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
-            //    break;
+            case State.Climb:
+                rb.AddForce(
+                    ClimbingBySide() == Side.Left
+                        ? new Vector2(HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f))
+                        : new Vector2(-HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f)),
+                    ForceMode2D.Impulse);
+                return; // todo: исправить прыжки от стен;
+
             case State.Swim:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce / 4 : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+                jumpForce /= 4f;
                 break;
+
             case State.OnAir:
-                rb.velocity = new Vector2(dir * horizontalSpeed, rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-                break;
-            default:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+                if(!CanFly)
+                    return;
                 break;
         }
-    }
-    protected void MoveY(float dir, bool jump)
-    {
-        float verticalSpeed = VerticalSpeed;
-        if (jump)
-        {
-            if (ClimbingBySide() == Side.Left)
-                //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
-            else
-                //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
-            State = State.OnAir;
-        }
-        else 
-            rb.velocity = new Vector2(0, dir * verticalSpeed * (SP > 0 ? 1 : 0));
-        //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-        if(Math.Abs(dir) > 0)
-            SP -= FatiguePerFrame * Time.deltaTime ;
+
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -211,9 +231,9 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    protected Side CheckSideLR(Vector3 triger)
+    public Side CheckSideLR(Vector3 worldTriger)
     {
-        if (triger.x > transform.position.x)
+        if (worldTriger.x > transform.position.x)
             return Side.Right;
         return Side.Left;
     }
@@ -249,7 +269,7 @@ public abstract class CharacterBase : MonoBehaviour
     }
 
 
-    protected bool TryInteract()
+    public bool TryInteract()
     {
         //try
         //{
@@ -317,16 +337,17 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected void Say(string message)
     {
-        Debug.Log($"Hero sad: \"{message}\" ");
+        Debug.Log($"{name} said: \"{message}\" ");
     }
 
     #endregion
 
     #region MonoBehaviour Implemented
-    protected void Start()
+    protected void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        Inventory = GetComponentInChildren<Inventory>();
 
         Checkers = new Dictionary<Side, List<Transform>>();
         Checkers.Add(Side.Down, GroundCheckers);
@@ -343,16 +364,18 @@ public abstract class CharacterBase : MonoBehaviour
     }
     protected void Update()
     {
-        State = CheckState();
-        TurnToRightSide();
-        CheckGravityBeState();
-        WeaponControl();
+        if (!Pause.GameIsPaused && State != State.Dead) {
+            State = CheckState();
+            TurnToRightSide();
+            CheckGravityBeState();
+        }
     }
     protected void FixedUpdate()
     {
-        WeaponFixedControl();
         EffectsFixedControl();
         SPFixedControl();
+
+        Go();
     }
     #endregion
 
@@ -362,7 +385,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now: hh:mm:ss t z}. Now I have {HP} HP");
+        Say($"Ouch, I've taken {damage} damage. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }
