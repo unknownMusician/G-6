@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 8563389799928808152}
   - component: {fileID: 4333165458918672391}
   - component: {fileID: 7715449821927201659}
+  - component: {fileID: 6333081899865427879}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -441,7 +442,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7362661061344524757, guid: 236e9d2269b671a44adafbcce6d2f8d5,
     type: 3}
-  m_Color: {r: 0.4431373, g: 0.4431373, b: 0.4431373, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -539,6 +540,9 @@ MonoBehaviour:
   - {fileID: 1901374522697826295}
   - {fileID: 1245556496924350042}
   EnvironmentChecker: {fileID: 3929323170341243086}
+  IsRunning: 0
+  IsSneaking: 0
+  IsMoving: 0
   CanFly: 0
   JumpForce: 25
   VerticalSpeed: 10
@@ -549,9 +553,24 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   FatiguePerFrame: 40
-  HorizontalBust: 1.5
+  HorizontalBoost: 1.5
+  HorizontalAntiBoost: 0.5
   SPRegenerationPerFrame: 10
-  Inventory: {fileID: 2847807284984056052}
+  _hpMax: 100
+  _spMax: 100
+  _opMax: 100
+--- !u!114 &6333081899865427879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4333165458918672411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b084ecb5d55d674fa0a7a149268ef63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5375603967128161197
 GameObject:
   m_ObjectHideFlags: 0

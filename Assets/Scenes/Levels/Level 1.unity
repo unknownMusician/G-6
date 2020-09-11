@@ -765,6 +765,8 @@ MonoBehaviour:
   LeftSideCheckers: []
   RightSideCheckers: []
   EnvironmentChecker: {fileID: 0}
+  IsRunning: 0
+  IsSneaking: 0
   CanFly: 0
   JumpForce: 0
   VerticalSpeed: 0
@@ -777,7 +779,9 @@ MonoBehaviour:
   FatiguePerFrame: 0
   HorizontalBust: 0
   SPRegenerationPerFrame: 0
-  Inventory: {fileID: 0}
+  _hpMax: 0
+  _spMax: 0
+  _opMax: 0
   player: {fileID: 29168910}
 --- !u!1001 &2076726413
 PrefabInstance:
