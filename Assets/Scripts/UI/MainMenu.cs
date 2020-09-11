@@ -32,6 +32,10 @@ public class MainMenu : MonoBehaviour
         Setting.prap = true;
     }
 
+    public void EnvironmentBuilderPressed()
+    {
+        SceneManager.LoadScene("EnvironmentBuilder");
+    }
 
     void Start()
     {
