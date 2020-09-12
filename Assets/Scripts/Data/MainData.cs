@@ -109,8 +109,8 @@ public class MainData : MonoBehaviour
 
         #region Weapon
 
-        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistPress(); };
-        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistRelease(); };
+        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistStart(); };
+        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistEnd(); };
         Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
         Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
         Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
@@ -125,16 +125,14 @@ public class MainData : MonoBehaviour
         };
         Controls.Weapon.AimMouse.performed += ctx => {
             if (!Pause.GameIsPaused) {
-                Vector3 worldCursor = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                Inventory.Aim(worldCursor - PlayerObject.transform.position); // Weapon
-                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(worldCursor); // Player
+                Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Screen); // Weapon
+                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(ctx.ReadValue<Vector2>(), true); // Player
             }
         };
         Controls.Weapon.AimStick.performed += ctx => {
             if (!Pause.GameIsPaused) {
-                Vector3 localCursor = ctx.ReadValue<Vector2>();
-                Inventory.Aim(localCursor); // Weapon
-                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(PlayerObject.transform.position + localCursor); // Player
+                Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Local); // Weapon
+                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(PlayerObject.transform.position + (Vector3)ctx.ReadValue<Vector2>()); // Player
             }
         };
 

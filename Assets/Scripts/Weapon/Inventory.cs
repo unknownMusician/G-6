@@ -75,6 +75,8 @@ public class Inventory : MonoBehaviour {
         }
     }
 
+    private GameObject Character => transform.parent?.gameObject;
+
     #endregion
 
     #region Public Variables
@@ -141,13 +143,13 @@ public class Inventory : MonoBehaviour {
 
     #region WorkingWithWeapon Methods
 
-    public void AttackWithWeaponOrFistPress() {
+    public void AttackWithWeaponOrFistStart() {
         if (Weapon != null)
             Weapon.AttackPress();
         else
             fistFight.Attack();
     }
-    public void AttackWithWeaponOrFistRelease() {
+    public void AttackWithWeaponOrFistEnd() {
         if (Weapon != null)
             Weapon.AttackRelease();
     }
@@ -178,13 +180,23 @@ public class Inventory : MonoBehaviour {
 
     #region Aim
 
-    public void Aim(Vector3 localPoint) {
+    public void Aim(Vector3 point, CoordsType type) {
+        var localPoint = point;
+
+        if (type == CoordsType.World) {
+            localPoint -= Character.transform.position;
+        } else if (type == CoordsType.Screen) {
+            localPoint = Camera.main.ScreenToWorldPoint(point) - Character.transform.position;
+        }
+
         float angle = Mathf.Rad2Deg * Mathf.Atan2(localPoint.y, localPoint.x);
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         //
         transform.localScale = new Vector3(1, Mathf.Sign(localPoint.x), 1);
     }
+
+    public enum CoordsType { Local, World, Screen }
 
     #endregion
 
