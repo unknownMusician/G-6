@@ -49,7 +49,7 @@ public class Gun : Weapon {
 
     protected override bool CanAttack {
         get => canAttack;
-        set { if (!(canAttack = value)) SetReliefTimer(1 / ActualCardGenProps.FireRateMultiplier); }
+        set { if (!(canAttack = value)) StartCoroutine(ReliefTimer(1 / ActualCardGenProps.FireRateMultiplier)); }
     }
     protected bool IsLoaded => ActualClipBullets > 0;
     private Vector3 WorldFirePoint => transform.position + transform.rotation * localFirePoint;

@@ -127,6 +127,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 986189566}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &174852388 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2059539404188868992, guid: 5d3ec369f00c83b499748ff02c250dac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2724078882371134119}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &575359752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -709,6 +715,80 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1019234748}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1978893556
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 174852388}
+    m_Modifications:
+    - target: {fileID: 2810880178507504479, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_Name
+      value: CardGunGen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218312505315928455, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: fireRateMultiplier
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
 --- !u!1001 &2724078882371134119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -716,6 +796,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2059539404188868994, guid: 5d3ec369f00c83b499748ff02c250dac,
+        type: 3}
+      propertyPath: pocketActualBullets
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 3530081432952830180, guid: 5d3ec369f00c83b499748ff02c250dac,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -778,8 +863,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041197318934784740, guid: 5d3ec369f00c83b499748ff02c250dac,
         type: 3}
-      propertyPath: canSeeLayerMask.m_Bits
-      value: 33280
+      propertyPath: antiBullsEye
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d3ec369f00c83b499748ff02c250dac, type: 3}

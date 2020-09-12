@@ -90,7 +90,6 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Other Public Props
-    public Side Side { get; set; }
     public short Level { get; protected set; }
     public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
@@ -127,17 +126,10 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Common Methods
-    protected void TurnToRightSide(bool inverse = false)
-    {
-        if (Side == Side.Left)
-            sr.flipX = !inverse;
-        else
-            sr.flipX = inverse;
-    }
 
     public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        _goDir = dir.normalized;
+        _goDir = MainData.SquareNormalized(dir);
         _goRun = run;
         _goSneak = sneak;
     }
@@ -231,18 +223,12 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    public Side CheckSideLR(Vector3 triger, bool screenCoords = false)
+    public void CheckSideLR(Vector3 localTriger, bool inverse = false)
     {
-        var worldTriger = triger;
-
-        if (screenCoords == true)
-        {
-            worldTriger = Camera.main.ScreenToWorldPoint(worldTriger);
-        }
-
-        if (worldTriger.x > transform.position.x)
-            return Side.Right;
-        return Side.Left;
+        if (localTriger.x > 0)
+            sr.flipX = inverse;
+        else
+            sr.flipX = !inverse;
     }
     protected float CheckGravityBeState()
     {
@@ -373,7 +359,6 @@ public abstract class CharacterBase : MonoBehaviour
     {
         if (!Pause.GameIsPaused && State != State.Dead) {
             State = CheckState();
-            TurnToRightSide();
             CheckGravityBeState();
         }
     }

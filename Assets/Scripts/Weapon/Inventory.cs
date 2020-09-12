@@ -194,6 +194,11 @@ public class Inventory : MonoBehaviour {
 
         //
         transform.localScale = new Vector3(1, Mathf.Sign(localPoint.x), 1);
+
+        // Turning the owner
+        var cb = GetComponentInParent<CharacterBase>();
+        if (cb != null)
+            cb.CheckSideLR(localPoint);
     }
 
     public enum CoordsType { Local, World, Screen }

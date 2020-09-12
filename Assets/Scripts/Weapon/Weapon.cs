@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Timers;
 using System;
+using System.Collections;
 
 public abstract class Weapon : BaseEnvironment {
 
@@ -88,11 +89,9 @@ public abstract class Weapon : BaseEnvironment {
 
     #region Service Methods
 
-    protected void SetReliefTimer(float time) {
-        reliefTimer = new Timer(time * 1000);
-        reliefTimer.Elapsed += (sender, e) => { CanAttack = true; };
-        reliefTimer.AutoReset = false;
-        reliefTimer.Enabled = true;
+    protected IEnumerator ReliefTimer(float time) {
+        yield return new WaitForSeconds(time);
+        CanAttack = true;
     }
     protected void EnablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D

@@ -483,9 +483,12 @@ MonoBehaviour:
     m_Bits: 512
   canSeeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 33280
   minDistanceToEnemy: 3
   maxDistanceToEnemy: 7
+  timeToSpot: 4
+  timeToCalm: 10
+  lookAroundSpeed: 180
 --- !u!1 &3530081433183963389
 GameObject:
   m_ObjectHideFlags: 0
