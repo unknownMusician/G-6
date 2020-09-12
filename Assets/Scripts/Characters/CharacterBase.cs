@@ -137,7 +137,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        _goDir = dir;
+        _goDir = dir.normalized;
         _goRun = run;
         _goSneak = sneak;
     }
@@ -231,8 +231,15 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    public Side CheckSideLR(Vector3 worldTriger)
+    public Side CheckSideLR(Vector3 triger, bool screenCoords = false)
     {
+        var worldTriger = triger;
+
+        if (screenCoords == true)
+        {
+            worldTriger = Camera.main.ScreenToWorldPoint(worldTriger);
+        }
+
         if (worldTriger.x > transform.position.x)
             return Side.Right;
         return Side.Left;
