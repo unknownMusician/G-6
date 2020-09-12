@@ -24,6 +24,9 @@ public class Enemy : CharacterBase {
                 case AIState.Calm:
                     OnCalmStateEnd();
                     break;
+                case AIState.Wondering:
+                    OnWonderingStateEnd();
+                    break;
             }
         }
     }
@@ -79,9 +82,9 @@ public class Enemy : CharacterBase {
             case AIState.Aggressive:
                 AggressiveStateUpdate();
                 break;
-                //case AIState.Wondering:
-                //    // searching for the enemy
-                //    break;
+            case AIState.Wondering:
+                WonderingStateUpdate();
+                break;
         }
         //Debug.Log("State: " + CurrentAIState);
         //Debug.Log("enemy: " + enemy);
@@ -128,6 +131,8 @@ public class Enemy : CharacterBase {
 
     #region State
 
+    #region Calm
+
     protected void CalmStateUpdate() {
         // stand & walk
         Move(Vector2.zero);
@@ -136,6 +141,9 @@ public class Enemy : CharacterBase {
     protected void OnCalmStateEnd() {
         // todo
     }
+
+    #endregion
+    #region Aggressive
 
     protected void AggressiveStateUpdate() {
         // Look at the Enemy
@@ -154,6 +162,9 @@ public class Enemy : CharacterBase {
 
         // Attack the Enemy
         Inventory.AttackWithWeaponOrFistStart();
+
+        // Remember Enemy position
+        enemyLastSeen = enemy.transform.position;
     }
 
     protected void OnAggressiveStateEnd() {
@@ -162,6 +173,23 @@ public class Enemy : CharacterBase {
 
         Inventory.ReloadGun();
     }
+
+    #endregion
+    #region Wondering
+
+    protected void WonderingStateUpdate() {
+        // searching for the enemy
+        if ((enemyLastSeen - (Vector2)transform.position).magnitude > 1)
+            Move(enemyLastSeen);
+    }
+
+    protected void OnWonderingStateEnd() {
+
+    }
+
+    #endregion
+
+    #region Common
 
     protected void CommonStatePreUpdate() {
 
@@ -174,13 +202,19 @@ public class Enemy : CharacterBase {
             Inventory.ReloadGun();
     }
 
+    #endregion
+
     /////////////////////////
+
+    #region Enum (AIState)
 
     protected enum AIState {
         Calm,
         Aggressive,
-        //Wondering
+        Wondering
     }
+
+    #endregion
 
     #endregion
 
