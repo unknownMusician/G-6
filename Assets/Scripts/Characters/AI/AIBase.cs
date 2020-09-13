@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AIBehaviour : CharacterBase {
+public abstract class AIBase : CharacterBase {
 
     #region Properties
 
-    private AIState CurrentAIState {
+    protected AIState CurrentAIState {
         get => _currentAIState;
         set {
             var lastState = _currentAIState;
@@ -33,6 +33,9 @@ public class AIBehaviour : CharacterBase {
                     OnLookAroundStateEnd();
                     break;
             }
+
+            OnStateChanged();
+
             //all starts
             switch (_currentAIState) {
                 case AIState.Aggressive:
@@ -54,53 +57,69 @@ public class AIBehaviour : CharacterBase {
         }
     }
 
-    private GameObject Enemy { get => _enemy; set => _enemy = value; }
+    protected GameObject Enemy { get; set; }
 
-    private Vector2 LocalLookPos {
-        get => _localLookPos;
-        set {
-            _localLookPos = value;
-            //Inventory.Aim(_localLookPos, Inventory.CoordsType.Local);
-        }
-    }
-    private Vector2 WorldLookPos => (Vector2)transform.position + LocalLookPos;
-    private Vector2 EnemyPos => Enemy.transform.position;
-    private Vector2 EnemyLocalPos => EnemyPos - (Vector2)transform.position;
-    private Vector2 EnemyLastSeen { get; set; } = Vector2.zero;
+    protected Vector2 LocalLookPos { get; set; } = Vector2.right;
+    protected Vector2 WorldLookPos => (Vector2)transform.position + LocalLookPos;
+    protected Vector2 EnemyPos => Enemy.transform.position;
+    protected Vector2 EnemyLocalPos => EnemyPos - (Vector2)transform.position;
+    protected Vector2 EnemyLastSeen { get; set; } = Vector2.zero;
+    protected Vector2 LastPosition { get; set; } = Vector2.zero;
+    protected Vector2 WantedMoveDir { get; set; } = Vector2.zero;
 
-    private float DistanceToEnemy => EnemyLocalPos.magnitude;
-    private float SpotScale { get => _spotScale; set => _spotScale = value > 1 ? 1 : (value < 0 ? 0 : value); }
+    protected float DistanceToEnemy => EnemyLocalPos.magnitude;
+    protected float SpotScale { get => _spotScale; set => _spotScale = value > 1 ? 1 : (value < 0 ? 0 : value); }
 
-    private int BulletsClip => (Inventory.Weapon is Gun gun) ? gun.ActualClipBullets : 0;
-    private int BulletsPocket => (Inventory.Weapon is Gun gun) ? gun.ActualPocketBullets : 0;
+    protected int BulletsClip => (Inventory.Weapon is Gun gun) ? gun.ActualClipBullets : 0;
+    protected int BulletsPocket => (Inventory.Weapon is Gun gun) ? gun.ActualPocketBullets : 0;
 
-    private Coroutine AntiBullsEyeCoroutine { get; set; } = null;
+    protected RaycastHit2D SensorRightRaw => Physics2D.Raycast(transform.position, Vector2.right, viewDistance, canSeeLayerMask);
+    protected RaycastHit2D SensorLeftRaw => Physics2D.Raycast(transform.position, Vector2.left, viewDistance, canSeeLayerMask);
+    protected RaycastHit2D SensorBottomRaw => Physics2D.Raycast(transform.position, Vector2.down, viewDistance, canSeeLayerMask);
+    protected float SensorRightDist => SensorRightRaw.distance == 0 ? viewDistance : SensorRightRaw.distance;
+    protected float SensorLeftDist => SensorLeftRaw.distance == 0 ? viewDistance : SensorLeftRaw.distance;
+    protected float SensorBottomDist => SensorBottomRaw.distance == 0 ? viewDistance : SensorBottomRaw.distance;
+
+    protected Coroutine AntiBullsEyeCoroutine { get; set; } = null;
 
     #endregion
     #region _fields (For Properties)
-    private AIState _currentAIState = AIState.Calm;
-    private float _spotScale = 0;
-    private GameObject _enemy = null;
-    private Vector2 _localLookPos = Vector2.right;
+    protected AIState _currentAIState = AIState.Null;
+    protected float _spotScale = 0;
     #endregion
 
     #region Inspector Fields
 
-    [Space, Space, Space]
+    [Header("Physical")]
+    [Header("------------------------- AI --------------------------"), Space, Space]
+    [Tooltip("The max distance, where the AI can spot the enemy (in meters)")]
+    [SerializeField] protected float viewDistance = 10;
+    [Tooltip("The Field of view (in degrees)")]
+    [SerializeField] protected float fieldOfView = 120;
+    [Tooltip("What the AI defines as an enemy and attacks")]
+    [SerializeField] protected LayerMask enemyLayerMask = 0;
+    [Tooltip("What the AI can see (what could potentialy be an obstacle to see the Enemy)")]
+    [SerializeField] protected LayerMask canSeeLayerMask = 0;
 
-    [SerializeField] private float viewDistance = 5;
-    [SerializeField] private float fieldOfView = 50; // (in degrees)
-    [SerializeField] private LayerMask enemyLayerMask = 0;
-    [SerializeField] private LayerMask canSeeLayerMask = 0;
-    [Space]
-    [SerializeField] private float minDistanceToEnemy = 2;
-    [SerializeField] private float maxDistanceToEnemy = 4;
-    [SerializeField] private float timeToSpot = 5; // (in seconds)
-    [SerializeField] private float timeToCalm = 5; // (in seconds)
-    [SerializeField] private float lookAroundSpeed = 5; // (in Geg/Sec)
-    [SerializeField] private float antiBullsEye = 5; // (in degrees)
+    [Header("Brain")]
+    [Tooltip("The distance to the target, where the AI starts to move closer (in meters)")]
+    [SerializeField] protected float minDistanceToEnemy = 4;
+    [Tooltip("The distance to the target, where the AI starts to move farther (in meters)")]
+    [SerializeField] protected float maxDistanceToEnemy = 7;
+    [Tooltip("Time needed to spot the enemy (in seconds)")]
+    [SerializeField] protected float timeToSpot = 5;
+    [Tooltip("Time needed to forget about the enemy (in seconds)")]
+    [SerializeField] protected float timeToCalm = 10;
+    [Tooltip("How fast does the AI looks around (in degrees/sec)")]
+    [SerializeField] protected float lookAroundSpeed = 180;
+    [Tooltip("How far bullets deviate from the target (in degrees)")]
+    [SerializeField] protected float antiBullsEye = 13;
 
     #endregion
+
+    private void Awake() {
+        CurrentAIState = AIState.Calm;
+    }
 
     protected new void Update() {
         base.Update();
@@ -162,166 +181,38 @@ public class AIBehaviour : CharacterBase {
         return false;
     }
 
-    /* Scheme
-         __Calm__
-            ↓
-        Suspicious ← ← ← \
-        ↓     ↓          ↑
-        ↓   Aggressive   ↑
-        ↓      ↓         ↑
-        LostTarget → → → ↑
-        ↓      ↓         ↑
-        ↓   LookAround → /
-        ↓      ↓
-        __Calm__
-     */
-    private void CheckAIState() {
-        switch (CurrentAIState) {
-            case AIState.Calm:
-                if (Enemy != null)
-                    CurrentAIState = AIState.Suspicious;
-                break;
-            case AIState.Suspicious:
-                if (Enemy == null)
-                    CurrentAIState = AIState.LostTarget;
-                else if (SpotScale == 1)
-                    CurrentAIState = AIState.Aggressive;
-                break;
-            case AIState.Aggressive:
-                if (Enemy == null)
-                    CurrentAIState = AIState.LostTarget;
-                break;
-            case AIState.LostTarget:
-                if (Enemy != null)
-                    CurrentAIState = AIState.Suspicious;
-                else if ((Mathf.Abs(EnemyLastSeen.x - transform.position.x)) <= 1)
-                    CurrentAIState = AIState.LookAround;
-                else if (SpotScale == 0)
-                    CurrentAIState = AIState.Calm;
-                break;
-            case AIState.LookAround:
-                if (Enemy != null)
-                    CurrentAIState = AIState.Suspicious;
-                else if (SpotScale == 0)
-                    CurrentAIState = AIState.Calm;
-                break;
-        }
-    }
+    protected abstract void CheckAIState();
 
     #endregion
 
     #region State
 
-    #region Calm
+    // Calm
+    protected virtual void OnCalmStateStart() { }
+    protected virtual void CalmStateUpdate() { }
+    protected virtual void OnCalmStateEnd() { }
 
-    protected void OnCalmStateStart() { /* todo */ }
+    // Suspicious
+    protected virtual void OnSuspiciousStateStart() { }
+    protected virtual void SuspiciousStateUpdate() { }
+    protected virtual void OnSuspiciousStateEnd() { }
 
-    protected void CalmStateUpdate() {
-        LocalLookPos = Vector2.right;
-        // stand & walk
-        Move(Vector2.zero);
-    }
+    // Aggressive
+    protected virtual void OnAggressiveStateStart() { }
+    protected virtual void AggressiveStateUpdate() { }
+    protected virtual void OnAggressiveStateEnd() { }
 
-    protected void OnCalmStateEnd() { /* todo */ }
+    // LostTarget
+    protected virtual void OnLostTargetStateStart() { }
+    protected virtual void LostTargetStateUpdate() { }
+    protected virtual void OnLostTargetStateEnd() { }
 
-    #endregion
-    #region Suspicious
+    // LookAround
+    protected virtual void OnLookAroundStateStart() { }
+    protected virtual void LookAroundStateUpdate() { }
+    protected virtual void OnLookAroundStateEnd() { }
 
-    protected void OnSuspiciousStateStart() { /* todo */ }
-
-    protected void SuspiciousStateUpdate() {
-        // Higher the spot scale with time
-        SpotScale += (1 / timeToSpot) * viewDistance / DistanceToEnemy * Time.deltaTime;
-
-        // Look at the Enemy
-        LocalLookPos = EnemyLocalPos;
-
-        // Move slowly to the enemy
-        IsSneaking = true;
-        Move(EnemyLocalPos);
-    }
-
-    protected void OnSuspiciousStateEnd() {
-        // Stop moving slowly to the enemy
-        IsSneaking = false;
-        Move(Vector2.zero);
-    }
-
-    #endregion
-    #region Aggressive
-
-    protected void OnAggressiveStateStart() {
-        // start "shoot-spreading"
-        AntiBullsEyeCoroutine = StartCoroutine(AntiBullsEye());
-    }
-
-    protected void AggressiveStateUpdate() {
-        // Look at the Enemy
-        LocalLookPos = EnemyLocalPos;
-
-        // Move to or from the enemy
-        if (DistanceToEnemy > maxDistanceToEnemy)
-            Move(EnemyLocalPos);
-        else if (DistanceToEnemy < minDistanceToEnemy)
-            Move(-EnemyLocalPos);
-        else
-            Move(Vector2.zero);
-
-        // Attack the Enemy
-        Inventory.AttackWithWeaponOrFistStart();
-    }
-
-    protected void OnAggressiveStateEnd() {
-        // DON'T Attack the Enemy
-        Inventory.AttackWithWeaponOrFistEnd();
-
-        Inventory.ReloadGun();
-        // stop "shoot-spreading"
-        StopCoroutine(AntiBullsEyeCoroutine);
-    }
-
-    #endregion
-    #region LostTarget
-
-    protected void OnLostTargetStateStart() { /* todo */ }
-
-    protected void LostTargetStateUpdate() {
-        // Look at the position, where an enemy can be
-        LocalLookPos = EnemyLastSeen - (Vector2)transform.position;
-
-        // Moving to the position, where an enemy can be
-        Move(LocalLookPos);
-
-        // Lower the spot scale with time
-        SpotScale -= (1 / timeToCalm) * Time.deltaTime;
-    }
-
-    protected void OnLostTargetStateEnd() {
-        // Stop moving to the position, where an enemy can be
-        Move(Vector2.zero);
-    }
-
-    #endregion
-    #region LookAround
-
-    protected void OnLookAroundStateStart() { /* todo */ }
-
-    protected void LookAroundStateUpdate() {
-        // searching for the enemy
-        LocalLookPos = Quaternion.Euler(0, 0, lookAroundSpeed * Time.deltaTime) * LocalLookPos;
-
-        // Lower the spot scale with time
-        SpotScale -= (1 / timeToCalm) * Time.deltaTime;
-    }
-
-    protected void OnLookAroundStateEnd() {
-        // todo
-    }
-
-    #endregion
-
-    #region Common
-
+    // Common
     protected void CommonStatePreUpdate() {
         if (Enemy != null)
             EnemyLastSeen = Enemy.transform.position;
@@ -329,15 +220,14 @@ public class AIBehaviour : CharacterBase {
             CheckForEnemy();
         CheckAIState();
     }
-
-    protected void CommonStatePostUpdate() {
-        if (BulletsClip == 0)
-            Inventory.ReloadGun();
+    protected virtual void CommonStatePostUpdate() {
+        Move(WantedMoveDir);
+        WantedMoveDir = Vector2.zero;
     }
+    protected virtual void OnStateChanged() { }
 
-    #endregion
-
-    protected enum AIState {
+    public enum AIState {
+        Null,
         Calm,
         Aggressive,
         Suspicious,
@@ -347,7 +237,7 @@ public class AIBehaviour : CharacterBase {
 
     #endregion
 
-    IEnumerator AntiBullsEye() {
+    protected IEnumerator AntiBullsEye() {
         float lastValue = 0;
         while (true) {
             float neededValue = antiBullsEye * Random.Range(-0.5f, 0.5f);
@@ -360,7 +250,8 @@ public class AIBehaviour : CharacterBase {
         }
     }
 
-    private void OnDrawGizmos() {
+    protected new void OnDrawGizmos() {
+        base.OnDrawGizmos();
         Color moodColor = new Color(1, 1 - SpotScale, 1 - SpotScale);
 
         // LookPos
@@ -374,14 +265,18 @@ public class AIBehaviour : CharacterBase {
 
         // LastSeenEnemyPos
         if (Enemy == null) {
-            Gizmos.color = Color.red;
             //Gizmos.DrawSphere(EnemyLastSeen, 0.5f);
             Gizmos.DrawWireCube(EnemyLastSeen, new Vector3(1.2f, 1.8f, 0));
         }
 
-        Gizmos.color = moodColor;
         // View obstacle
         Gizmos.DrawSphere(Physics2D.Raycast(transform.position, LocalLookPos, viewDistance, canSeeLayerMask).point, 0.3f);
+
+        // Sensors
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * SensorRightDist);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.left * SensorLeftDist);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * SensorBottomDist);
 
         // AntiBullsEye
         Gizmos.color = Color.yellow;

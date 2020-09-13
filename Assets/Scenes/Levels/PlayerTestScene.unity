@@ -203,12 +203,12 @@ PrefabInstance:
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1206.7
+      value: 1193.75
       objectReference: {fileID: 0}
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1262.9
+      value: -1262.85
       objectReference: {fileID: 0}
     - target: {fileID: 5628862589975309998, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
@@ -561,12 +561,12 @@ PrefabInstance:
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1206.7
+      value: 1193.75
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1263.9
+      value: -1263.85
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
@@ -787,6 +787,11 @@ PrefabInstance:
       propertyPath: fireRateMultiplier
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5930130232060295257, guid: 5f07736839f308c4fab5c530840c7875,
+        type: 3}
+      propertyPath: bulletsPerShotAdder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f07736839f308c4fab5c530840c7875, type: 3}
 --- !u!1001 &2724078882371134119
@@ -804,12 +809,12 @@ PrefabInstance:
     - target: {fileID: 3530081432952830180, guid: 5d3ec369f00c83b499748ff02c250dac,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1213.49
+      value: 1206.42
       objectReference: {fileID: 0}
     - target: {fileID: 3530081432952830180, guid: 5d3ec369f00c83b499748ff02c250dac,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1264.77
+      value: -1263.94
       objectReference: {fileID: 0}
     - target: {fileID: 3530081432952830180, guid: 5d3ec369f00c83b499748ff02c250dac,
         type: 3}
@@ -860,11 +865,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AI1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8041197318934784740, guid: 5d3ec369f00c83b499748ff02c250dac,
-        type: 3}
-      propertyPath: antiBullsEye
-      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d3ec369f00c83b499748ff02c250dac, type: 3}

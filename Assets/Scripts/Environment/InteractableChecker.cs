@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnvironmentChecker : MonoBehaviour
+public class InteractableChecker : MonoBehaviour
 {
-    protected List<BaseEnvironment> environments;
+    protected List<InteractableBase> environments;
 
-    public BaseEnvironment ClosestEnvironment
+    public InteractableBase ClosestEnvironment
     {
         get
         {
@@ -23,21 +23,21 @@ public class EnvironmentChecker : MonoBehaviour
 
     void Start()
     {
-        environments = new List<BaseEnvironment>();
+        environments = new List<InteractableBase>();
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject collisionObject = collision.gameObject;
-        if (collisionObject.GetComponent<BaseEnvironment>() != null)
+        if (collisionObject.GetComponent<InteractableBase>() != null)
         {
-            environments.Add(collisionObject.GetComponent<BaseEnvironment>());
+            environments.Add(collisionObject.GetComponent<InteractableBase>());
             Debug.DrawLine(this.transform.position, collisionObject.transform.position);
         }
     }
     protected void OnTriggerExit2D(Collider2D collision)
     {
         GameObject collisionObject = collision.gameObject;
-        environments.Remove(collisionObject.GetComponent<BaseEnvironment>());
+        environments.Remove(collisionObject.GetComponent<InteractableBase>());
     }
 }

@@ -4,7 +4,7 @@ using System.Timers;
 using System;
 using System.Collections;
 
-public abstract class Weapon : BaseEnvironment {
+public abstract class Weapon : InteractableBase {
 
     const string TAG = "Weapon: ";
 

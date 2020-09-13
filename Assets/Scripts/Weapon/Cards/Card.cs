@@ -12,7 +12,7 @@ public abstract class Card : MonoBehaviour {
     public abstract Dictionary<Sprite, string> Modules { get; }
 
     public abstract CardType Type { get; }
-    public int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => cardTypeForYaric;
+    public abstract int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire { get; }
 
     #endregion
 
@@ -20,8 +20,6 @@ public abstract class Card : MonoBehaviour {
 
     [SerializeField]
     protected Sprite spriteUI;
-    [SerializeField]
-    protected int cardTypeForYaric;
 
     #endregion
 

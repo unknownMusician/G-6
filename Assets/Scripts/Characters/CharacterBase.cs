@@ -4,56 +4,34 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class CharacterBase : MonoBehaviour
+[RequireComponent(typeof(InteractableChecker))]
+public abstract class CharacterBase : InteractableBase
 {
-    [SerializeField]
-    protected List<Transform> GroundCheckers;
-    [SerializeField]
-    protected List<Transform> LeftSideCheckers;
-    [SerializeField]
-    protected List<Transform> RightSideCheckers;
-    [SerializeField, Space]
-    protected EnvironmentChecker EnvironmentChecker;
-
     #region Fields
-
-    [Space, Space]
-
+    [Header("Checkers")]
+    [Header("-------------------- CharacterBase --------------------")]
     [SerializeField]
-    protected bool CanFly; // todo: unused;
-
+    protected List<Vector2> GroundCheckers;
     [SerializeField]
-    protected float JumpForce;
-
+    protected List<Vector2> LeftSideCheckers;
     [SerializeField]
-    protected float VerticalSpeed;
+    protected List<Vector2> RightSideCheckers;
 
-    [SerializeField]
-    protected float HorizontalSpeed;
+    [Header("Values")]
+    [SerializeField] protected bool CanFly = false;
+    [SerializeField] protected float JumpForce = 25;
+    [SerializeField] protected float VerticalSpeed = 10;
+    [SerializeField] protected float HorizontalSpeed = 15;
+    [SerializeField] protected float InteractionRadius = 30;
+    [SerializeField] protected float ClimbingSpeed = 10;
+    [SerializeField] protected LayerMask ContactLayer = 0;
+    [SerializeField] protected float FatiguePerFrame = 40;
+    [SerializeField] protected float HorizontalBoost = 1.5f;
+    [SerializeField] protected float HorizontalAntiBoost = 0.5f;
+    [SerializeField] protected float SPRegenerationPerFrame = 10;
 
-    [SerializeField]
-    protected float InteractionRadius;
-
-    [SerializeField]
-    protected float ClimbingSpeed;
-
-    [SerializeField]
-    protected LayerMask ContactLayer;
-
-    [SerializeField]
-    protected float FatiguePerFrame;
-
-    [SerializeField]
-    protected float HorizontalBoost;
-
-    [SerializeField]
-    protected float HorizontalAntiBoost;
-
-    [SerializeField]
-    protected float SPRegenerationPerFrame;
-
-
-    protected Dictionary<Side, List<Transform>> Checkers;
+    protected Dictionary<Side, List<Vector2>> Checkers;
+    protected InteractableChecker InteractableChecker;
 
     public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
 
@@ -61,7 +39,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected float _sp;
     protected float _op;
 
-    [Space, Space]
+    [Header("MaxValues")]
     [SerializeField] protected float _hpMax = 100;
     [SerializeField] protected float _spMax = 100;
     [SerializeField] protected float _opMax = 100;
@@ -72,7 +50,7 @@ public abstract class CharacterBase : MonoBehaviour
     #region Input
 
     public bool IsRunning { get; set; }
-    public bool IsSneaking { get; set; }
+    public bool IsCrouching { get; set; }
     public bool IsMoving { get; set; }
 
     #endregion
@@ -102,7 +80,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     #region Environment
 
-    protected BaseEnvironment InteractableObject => EnvironmentChecker.ClosestEnvironment;
+    protected InteractableBase InteractableObject => InteractableChecker.ClosestEnvironment;
 
     protected float DistanceToInteractableObject
     {
@@ -143,7 +121,7 @@ public abstract class CharacterBase : MonoBehaviour
         if (State != State.Climb && _goDir.x != 0)
         {
             _goRun &= IsRunning;
-            _goSneak &= IsSneaking;
+            _goSneak &= IsCrouching;
             float horizontalSpeed = HorizontalSpeed;
             // running
             if (_goRun && Math.Abs(_goDir.x) > 0)
@@ -176,14 +154,14 @@ public abstract class CharacterBase : MonoBehaviour
     public void Jump()
     {
         float jumpForce = JumpForce;
-
+        //Debug.Log("Jump1");
         switch (State)
         {
             case State.Climb:
                 rb.AddForce(
                     ClimbingBySide() == Side.Left
-                        ? new Vector2(HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f))
-                        : new Vector2(-HorizontalSpeed, JumpForce * (MainData.Controls.Player.Move.ReadValue<Vector2>().x < 0 ? -0.5f : 0.5f)),
+                        ? new Vector2(HorizontalSpeed, jumpForce * (_goDir.x < 0 ? -0.5f : 0.5f))
+                        : new Vector2(-HorizontalSpeed, jumpForce * (_goDir.x < 0 ? -0.5f : 0.5f)),
                     ForceMode2D.Impulse);
                 return; // todo: исправить прыжки от стен;
 
@@ -203,7 +181,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected bool isOnLayer(string layer, Side side)
     {
         foreach (var checker in Checkers[side])
-            if (Physics2D.Linecast(transform.position, checker.position, 1 << LayerMask.NameToLayer(layer)))
+            if (Physics2D.Linecast(transform.position, (Vector2)transform.position + checker, 1 << LayerMask.NameToLayer(layer)))
                 return true;
         return false;
     }
@@ -279,7 +257,7 @@ public abstract class CharacterBase : MonoBehaviour
 
         try
         {
-            List<BaseEnvironment> allEnvironment = GameObject.FindObjectsOfType<BaseEnvironment>()
+            List<InteractableBase> allEnvironment = GameObject.FindObjectsOfType<InteractableBase>()
                 .OrderBy(p => (this.transform.position - p.transform.position).sqrMagnitude)
                 .ToList();
 
@@ -330,7 +308,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected void Say(string message)
     {
-        Debug.Log($"{name} said: \"{message}\" ");
+        //Debug.Log($"{name} said: \"{message}\" ");
     }
 
     #endregion
@@ -341,11 +319,13 @@ public abstract class CharacterBase : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         Inventory = GetComponentInChildren<Inventory>();
+        InteractableChecker = GetComponent<InteractableChecker>();
 
-        Checkers = new Dictionary<Side, List<Transform>>();
-        Checkers.Add(Side.Down, GroundCheckers);
-        Checkers.Add(Side.Left, LeftSideCheckers);
-        Checkers.Add(Side.Right, RightSideCheckers);
+        Checkers = new Dictionary<Side, List<Vector2>> {
+            { Side.Down, GroundCheckers },
+            { Side.Left, LeftSideCheckers },
+            { Side.Right, RightSideCheckers }
+        };
 
         CurrentEffects = new Dictionary<CardEffect.EffectType, EffectControl>();
 
@@ -358,8 +338,8 @@ public abstract class CharacterBase : MonoBehaviour
     protected void Update()
     {
         if (!Pause.GameIsPaused && State != State.Dead) {
-            State = CheckState();
             CheckGravityBeState();
+            State = CheckState();
         }
     }
     protected void FixedUpdate()
@@ -406,4 +386,18 @@ public abstract class CharacterBase : MonoBehaviour
     }
     #endregion
 
+    protected void OnDrawGizmos() {
+        Gizmos.color = Color.grey;
+        foreach (var v in GroundCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+        Gizmos.color = Color.green;
+        foreach (var v in RightSideCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+        Gizmos.color = Color.yellow;
+        foreach (var v in LeftSideCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+    }
 }

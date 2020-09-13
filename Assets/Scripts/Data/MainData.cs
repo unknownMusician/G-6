@@ -140,8 +140,8 @@ public class MainData : MonoBehaviour
 
         Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.Jump(); };
 
-        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = true; };
-        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = false; };
+        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = true; };
+        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = false; };
 
         Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
         Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
