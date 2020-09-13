@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
@@ -13,6 +11,8 @@ public abstract class CharacterBase : MonoBehaviour
     protected List<Transform> LeftSideCheckers;
     [SerializeField]
     protected List<Transform> RightSideCheckers;
+    [SerializeField]
+    protected EnvironmentChecker EnvironmentChecker;
 
     #region Fields
     [SerializeField]
@@ -22,7 +22,13 @@ public abstract class CharacterBase : MonoBehaviour
     protected float JumpForce;
 
     [SerializeField]
+    protected float VerticalSpeed;
+
+    [SerializeField]
     protected float HorizontalSpeed;
+
+    [SerializeField]
+    protected float InteractionRadius;
 
     [SerializeField]
     protected float ClimbingSpeed;
@@ -30,11 +36,23 @@ public abstract class CharacterBase : MonoBehaviour
     [SerializeField]
     protected LayerMask ContactLayer;
 
-    [SerializeField]
-    protected Dictionary<Side, List<Transform>> Checkers;
+    [SerializeField] 
+    protected float FatiguePerFrame;
+
+    [SerializeField] 
+    protected float HorizontalBust;
 
     [SerializeField]
+    protected float SPRegenerationPerFrame;
+
+
+    protected Dictionary<Side, List<Transform>> Checkers;
+
     public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
+
+    protected float _hp;
+    protected float _sp;
+    protected float _op;
     #endregion
 
     #region Properties
@@ -47,9 +65,9 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region CurrentValues
-    public float HP { get; protected set; }
-    public float SP { get; protected set; }
-    public float OP { get; protected set; }
+    public virtual float HP { get => _hp; protected set => _hp = value > MaxHP ? MaxHP : (value < 0 ? 0 : value); }
+    public virtual float SP { get => _sp; protected set => _sp = value > MaxSP ? MaxSP : (value < 0 ? 0 : value); }
+    public virtual float OP { get => _op; protected set => _op = value > MaxSP ? MaxSP : (value < 0 ? 0 : value); }
     #endregion
 
     #region Other Public Props
@@ -64,7 +82,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     #region Environment
 
-    protected BaseEnvironment InteractableObject;
+    protected BaseEnvironment InteractableObject => EnvironmentChecker.ClosestEnvironment;
 
     protected float DistanceToInteractableObject
     {
@@ -118,45 +136,56 @@ public abstract class CharacterBase : MonoBehaviour
         //else
         //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
     }
-    protected void MoveX(float dir, bool jump)
+    protected void MoveX(float dir, float jump, bool run = false)
     {
+        float horizontalSpeed = HorizontalSpeed;
+        if (run && Math.Abs(dir) > 0)
+        {
+            SP -= FatiguePerFrame * Time.deltaTime;
+            horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
+        }
         switch (State)
         {
             case State.OnGround:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
                 //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
                 break;
-            case State.Climb:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
-                break;
+            //case State.Climb:
+            //    rb.velocity = new Vector2(dir * horizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+            //    //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+            //    break;
             case State.Swim:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce / 4 : rb.velocity.y);
                 //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
                 break;
             case State.OnAir:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, rb.velocity.y);
                 //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
                 break;
             default:
-                rb.velocity = new Vector2(dir * HorizontalSpeed, jump ? JumpForce : rb.velocity.y);
+                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
                 //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
                 break;
         }
     }
     protected void MoveY(float dir, bool jump)
     {
+        float verticalSpeed = VerticalSpeed;
         if (jump)
         {
             if (ClimbingBySide() == Side.Left)
-                rb.AddForce(new Vector2(JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+                //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
+                rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
             else
-                rb.AddForce(new Vector2(-JumpForce / 2f, JumpForce), ForceMode2D.Impulse);
+                //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
+                rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
             State = State.OnAir;
-            return;
         }
-        rb.velocity = new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed);
+        else 
+            rb.velocity = new Vector2(0, dir * verticalSpeed * (SP > 0 ? 1 : 0));
         //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+        if(Math.Abs(dir) > 0)
+            SP -= FatiguePerFrame * Time.deltaTime ;
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -219,19 +248,44 @@ public abstract class CharacterBase : MonoBehaviour
         return Side.Up;
     }
 
+
     protected bool TryInteract()
     {
+        //try
+        //{
+        //    if (InteractableObject == null)
+        //        return false;
+        //    InteractableObject.Interact();
+        //    return true;
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logger.LogW(ex, "Problems with interraction in CharacterBase script");
+        //}
+        //return false;
+
         try
         {
-            if (InteractableObject == null)
-                return false;
-            InteractableObject.Interact();
-            return true;
+            List<BaseEnvironment> allEnvironment = GameObject.FindObjectsOfType<BaseEnvironment>()
+                .OrderBy(p => (this.transform.position - p.transform.position).sqrMagnitude)
+                .ToList();
+
+            if (allEnvironment.Count != 0)
+            {
+                if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
+                {
+                    allEnvironment[0].Interact(this.gameObject);
+                    Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
+                    return true;
+                }
+            }
+
         }
         catch (Exception ex)
         {
-            Logger.LogW(ex, "Problems with interraction in CharacterBase script");
+            Logger.LogW(ex, "Problems with interaction in CharacterBase script");
         }
+
         return false;
     }
 
@@ -239,10 +293,19 @@ public abstract class CharacterBase : MonoBehaviour
     {
         foreach (CardEffect.EffectType effect in Enum.GetValues(typeof(CardEffect.EffectType)).Cast<CardEffect.EffectType>())
         {
-            if(CurrentEffects.ContainsKey(effect))
+            if (CurrentEffects.ContainsKey(effect))
                 CurrentEffects[effect].Act(Time.deltaTime);
         }
     }
+    protected void SPFixedControl()
+    {
+        if (this.State == State.OnGround)
+        {
+            float sp = SP + SPRegenerationPerFrame * Time.deltaTime;
+            SP = sp > MaxSP ? MaxSP : sp;
+        }
+    }
+
     protected void Die()
     {
         State = State.Dead;
@@ -272,6 +335,10 @@ public abstract class CharacterBase : MonoBehaviour
 
         CurrentEffects = new Dictionary<CardEffect.EffectType, EffectControl>();
 
+        HP = MaxHP;
+        SP = MaxSP;
+        OP = MaxOP;
+
         State = CheckState();
     }
     protected void Update()
@@ -285,19 +352,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         WeaponFixedControl();
         EffectsFixedControl();
-    }
-    protected void OnCollisionEnter2D(Collision2D collision)
-    {
-         GameObject collisionObject = collision.gameObject;
-        if (collisionObject.GetComponent<BaseEnvironment>() != null)
-            if (collisionObject.gameObject.transform.position.magnitude < DistanceToInteractableObject)
-                InteractableObject = collisionObject.GetComponent<BaseEnvironment>();
-    }
-    protected void OnCollisionExit2D(Collision2D collision)
-    {
-        GameObject collisionObject = collision.gameObject;
-        if (collisionObject.GetComponent<BaseEnvironment>() == InteractableObject)
-            InteractableObject = null;
+        SPFixedControl();
     }
     #endregion
 
@@ -307,7 +362,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now : hh:mm:ss t z}. Now I have {HP} HP");
+        Say($"Ouch, I've taken {damage} damage at {DateTime.Now: hh:mm:ss t z}. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }
@@ -316,7 +371,8 @@ public abstract class CharacterBase : MonoBehaviour
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
     }
-    public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop) {
+    public void TakeDamage(Vector2 damageVector, CardEffect.NestedProps prop)
+    {
         rb.AddForce(damageVector / 10f, ForceMode2D.Impulse);
         TakeDamage(damageVector.magnitude);
         TakeEffect(prop);

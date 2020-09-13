@@ -1,15 +1,26 @@
-﻿using UnityEngine;
+﻿public class PlaceForRoom {
 
-public class PlaceForRoom {
+    #region Properties
+
+    public byte AmountOfDoors { get; set; }
+
+    #region Doors
 
     private short topDoor;
     private short rightDoor;
     private short bottomDoor;
     private short leftDoor;
 
-    public byte AmountOfDoors { get; set; }
+    #endregion
+
+    #endregion
+
+    #region Class constructor
 
     public PlaceForRoom(short topDoor, short rightDoor, short bottomDoor, short leftDoor) {
+
+        #region Calculating amount of doors
+
         AmountOfDoors = 0;
 
         if (topDoor == 1) {
@@ -21,16 +32,29 @@ public class PlaceForRoom {
         } else if (leftDoor == 1) {
             AmountOfDoors += 1;
         }
-        
+
+        #endregion
+
+        #region Doors initialization
+
         this.topDoor = topDoor;
         this.rightDoor = rightDoor;
         this.bottomDoor = bottomDoor;
         this.leftDoor = leftDoor;
+
+        #endregion
+
     }
 
     public PlaceForRoom() {
         AmountOfDoors = 0;
     }
+
+    #endregion
+
+    #region Methods
+
+    #region Set() methods of doors properties 
 
     public void setTop(short door) {
         if (topDoor == 1) {
@@ -60,7 +84,10 @@ public class PlaceForRoom {
         this.leftDoor = door;
     }
 
+    #endregion
+
     public short[] getDoorParams() {
+
         short[] doors = new short[4];
         doors[0] = topDoor;
         doors[1] = rightDoor;
@@ -71,6 +98,7 @@ public class PlaceForRoom {
     }
 
     public bool anyEqualToOne () {
+
         short[] doors = new short[4];
         doors[0] = topDoor;
         doors[1] = rightDoor;
@@ -84,4 +112,7 @@ public class PlaceForRoom {
         }
         return false;
     }
+
+    #endregion
+
 }

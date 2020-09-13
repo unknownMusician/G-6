@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : EncyclopediaObject {
+public class Bullet : MonoBehaviour {
 
     const string TAG = "Bullet: ";
+
+    #region Properties
+
+    public EncyclopediaObject EncyclopediaObject => gameObject.GetComponent<EncyclopediaObject>();
+
+    #endregion
 
     #region Public Variables
 
@@ -27,7 +33,7 @@ public class Bullet : EncyclopediaObject {
     private LayerMask magnetting;
 
     private GameObject aim;
-    private int piercingCount;
+    private int piercingCount = 0;
     private CardEffect.NestedProps effectProps;
 
     #endregion
@@ -47,7 +53,8 @@ public class Bullet : EncyclopediaObject {
 
         this.damage = dmg;
         this.ricochet = ricochet;
-        this.piercing = piercing;
+        if (this.piercing = piercing)
+            piercingCount = 1;
         this.homing = homing;
         this.teleporting = teleporting;
         this.magnet = magnet;
@@ -61,7 +68,8 @@ public class Bullet : EncyclopediaObject {
 
         this.damage = dmg;
         this.ricochet = bulletProps.Ricochet;
-        this.piercing = bulletProps.Piercing;
+        if (this.piercing = bulletProps.Piercing)
+            piercingCount = 1;
         this.homing = bulletProps.Homing;
         this.teleporting = bulletProps.Teleporting;
         this.magnet = bulletProps.Magnet;
@@ -106,48 +114,29 @@ public class Bullet : EncyclopediaObject {
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        var cb = collision.gameObject.GetComponent<CharacterBase>();
-        if (cb != null) {
-            if (effectProps != null)
-                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
-            else
-                cb.TakeDamage(rb.velocity.normalized * damage);
-            Destroy(this.gameObject);
-            return;
-        }
-        if (!ricochet) {
-            Destroy(this.gameObject);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collider) {
-        // To-Do
-        // Damage:
-        var cb = collider.gameObject.GetComponent<CharacterBase>();
-        if (cb != null) {
-            if (effectProps != null)
-                cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
-            else
-                cb.TakeDamage(rb.velocity.normalized * damage);
-        }
-        // Collide:
-        if (piercingCount <= 0) {
-            if (!ricochet) {
-                Destroy(this.gameObject);
-            } else {
-                // jump
-                var moveRotation = Quaternion.FromToRotation(rb.velocity, collider.gameObject.transform.position - transform.position);
-                rb.velocity = -(moveRotation * (moveRotation * rb.velocity)).normalized * rb.velocity.magnitude;
+        if (!collider.isTrigger) {
+            // Damage:
+            var cb = collider.gameObject.GetComponent<CharacterBase>();
+            if (cb != null) {
+                if (effectProps != null)
+                    cb.TakeDamage(rb.velocity.normalized * damage, effectProps);
+                else
+                    cb.TakeDamage(rb.velocity.normalized * damage);
             }
-        } else {
-            piercingCount--;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collider) {
-        if (piercingCount <= 0) {
-            this.gameObject.GetComponent<CircleCollider2D>().isTrigger = false;
+            // Collide:
+            if (piercingCount <= 0) {
+                if (ricochet) {
+                    // jump
+                    Vector3 closestPoint = collider.ClosestPoint(transform.position);
+                    var moveRotation = Quaternion.FromToRotation(rb.velocity, closestPoint - transform.position);
+                    rb.velocity = -(moveRotation * (moveRotation * rb.velocity));
+                } else {
+                    Destroy(this.gameObject);
+                }
+            } else {
+                piercingCount--;
+            }
         }
     }
 
