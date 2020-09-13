@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -13,7 +14,7 @@ namespace Assets.Scripts.UI.SaveLoad
     public class BaseSaveLoad<TData> where TData : class
     {
         protected string Path;
-        protected TData Data;
+        public TData Data;
 
         public BaseSaveLoad(string name)
         {
@@ -24,13 +25,12 @@ namespace Assets.Scripts.UI.SaveLoad
         {
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(TData));
-
-                using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
+                BinaryFormatter bf = new BinaryFormatter();
+                using (FileStream file = File.Create(Path))
                 {
-                    formatter.Serialize(fs, (TData)this.Data);
-                }
-
+                    bf.Serialize(file, this.Data);
+                    file.Close();
+                } 
             }
             catch (Exception ex)
             {
@@ -42,13 +42,14 @@ namespace Assets.Scripts.UI.SaveLoad
         {
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(TData));
 
-                using (FileStream fs = new FileStream(Path, FileMode.Open))
+                BinaryFormatter bf = new BinaryFormatter();
+                using (FileStream file = File.OpenRead(Path))
                 {
-                    this.Data = (TData)formatter.Deserialize(fs);
+                    this.Data = (TData)bf.Deserialize(file);
+                    file.Close();
                 }
-
+                
             }
             catch (Exception ex)
             {
