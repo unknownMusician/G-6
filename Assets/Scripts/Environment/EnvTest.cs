@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvTest : BaseEnvironment
+public class EnvTest : InteractableBase
 {
-    public override void Interact(GameObject whoInterracted)
+    public override bool Interact(GameObject whoInterracted)
     {
         Debug.Log("He intered? oh my!");
+        return true;
     }
 }

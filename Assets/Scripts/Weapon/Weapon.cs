@@ -2,8 +2,9 @@
 using UnityEngine;
 using System.Timers;
 using System;
+using System.Collections;
 
-public abstract class Weapon : BaseEnvironment {
+public abstract class Weapon : InteractableBase {
 
     const string TAG = "Weapon: ";
 
@@ -88,11 +89,9 @@ public abstract class Weapon : BaseEnvironment {
 
     #region Service Methods
 
-    protected void SetReliefTimer(float time) {
-        reliefTimer = new Timer(time * 1000);
-        reliefTimer.Elapsed += (sender, e) => { CanAttack = true; };
-        reliefTimer.AutoReset = false;
-        reliefTimer.Enabled = true;
+    protected IEnumerator ReliefTimer(float time) {
+        yield return new WaitForSeconds(time);
+        CanAttack = true;
     }
     protected void EnablePhysics() {
         rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
@@ -157,7 +156,7 @@ public abstract class Weapon : BaseEnvironment {
 
     #region Environment (Interaction)
 
-    public override void Interact(GameObject whoInterracted) {
+    public override bool Interact(GameObject whoInterracted) {
         // To-Do
         var cb = whoInterracted?.GetComponent<CharacterBase>();
         if (cb != null && cb.transform != transform.parent.parent) {
@@ -170,7 +169,9 @@ public abstract class Weapon : BaseEnvironment {
             friend = null;
             WeaponState = State.Main;
             Debug.Log(TAG + "Picked");
+            return true;
         }
+        return false;
     }
 
     #endregion

@@ -126,13 +126,11 @@ public class MainData : MonoBehaviour
         Controls.Weapon.AimMouse.performed += ctx => {
             if (!Pause.GameIsPaused) {
                 Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Screen); // Weapon
-                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(ctx.ReadValue<Vector2>(), true); // Player
             }
         };
         Controls.Weapon.AimStick.performed += ctx => {
             if (!Pause.GameIsPaused) {
                 Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Local); // Weapon
-                PlayerBehaviour.Side = PlayerBehaviour.CheckSideLR(PlayerObject.transform.position + (Vector3)ctx.ReadValue<Vector2>()); // Player
             }
         };
 
@@ -142,8 +140,8 @@ public class MainData : MonoBehaviour
 
         Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.Jump(); };
 
-        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = true; };
-        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsSneaking = false; };
+        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = true; };
+        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = false; };
 
         Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
         Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
@@ -170,6 +168,12 @@ public class MainData : MonoBehaviour
 
         #endregion
 
+    }
+
+    public static Vector2 SquareNormalized(Vector2 v) {
+        float x = (v.x == 0) ? 0 : Mathf.Sign(v.x);
+        float y = (v.y == 0) ? 0 : Mathf.Sign(v.y);
+        return new Vector2(x, y);
     }
 
     #endregion

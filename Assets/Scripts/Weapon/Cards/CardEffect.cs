@@ -10,6 +10,7 @@ public class CardEffect : Card {
 
     public NestedProps Props => new NestedProps(effect, duration, interval, damage);
     public override CardType Type => CardType.CardEffect;
+    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 3;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();

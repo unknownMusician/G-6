@@ -36,6 +36,10 @@ public class PlayerBehaviour : CharacterBase
         }
     }
 
+    public override bool Interact(GameObject whoInterracted) {
+        throw new NotImplementedException(); // todo
+    }
+
     private void Awake()
     {
         // Setting Player to MainData
@@ -59,26 +63,4 @@ public class PlayerBehaviour : CharacterBase
         if (IsMoving)
             Move(MainData.Controls.Player.Move.ReadValue<Vector2>());
     }
-
-    protected void OnDrawGizmos()
-    {
-        Gizmos.color = Color.grey;
-        foreach (Transform tr in GroundCheckers)
-        {
-            Gizmos.DrawSphere(tr.position, 0.1f);
-        }
-        Gizmos.color = Color.green;
-        foreach (Transform tr in RightSideCheckers)
-        {
-            Gizmos.DrawSphere(tr.position, 0.1f);
-        }
-        Gizmos.color = Color.yellow;
-        foreach (Transform tr in LeftSideCheckers)
-        {
-            Gizmos.DrawSphere(tr.position, 0.1f);
-        }
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(EnvironmentChecker.transform.position, 0.1f);
-    }
-
 }

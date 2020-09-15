@@ -10,6 +10,7 @@ public class CardGunFly : Card {
 
     public NestedProps Props => new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
     public override CardType Type => CardType.CardGunFly;
+    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 2;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();

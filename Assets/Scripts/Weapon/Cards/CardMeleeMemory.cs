@@ -10,6 +10,7 @@ public class CardMeleeMemory : Card {
 
     public NestedProps Props { get { return new NestedProps(memory); } }
     public override CardType Type => CardType.CardMeleeMemory;
+    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 2;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
