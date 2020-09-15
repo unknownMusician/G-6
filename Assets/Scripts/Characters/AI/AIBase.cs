@@ -32,6 +32,9 @@ public abstract class AIBase : CharacterBase {
                 case AIState.LookAround:
                     OnLookAroundStateEnd();
                     break;
+                case AIState.Busy:
+                    OnBusyStateEnd();
+                    break;
             }
 
             OnStateChanged();
@@ -53,6 +56,9 @@ public abstract class AIBase : CharacterBase {
                 case AIState.LookAround:
                     OnLookAroundStateStart();
                     break;
+                case AIState.Busy:
+                    OnBusyStateStart();
+                    break;
             }
         }
     }
@@ -60,7 +66,7 @@ public abstract class AIBase : CharacterBase {
     protected GameObject Enemy { get; set; }
 
     protected Vector2 LocalLookPos { get; set; } = Vector2.right;
-    protected Vector2 WorldLookPos => (Vector2)transform.position + LocalLookPos;
+    protected Vector2 WorldLookPos { get => (Vector2)transform.position + LocalLookPos; set => LocalLookPos = value - (Vector2)transform.position; }
     protected Vector2 EnemyPos => Enemy.transform.position;
     protected Vector2 EnemyLocalPos => EnemyPos - (Vector2)transform.position;
     protected Vector2 EnemyLastSeen { get; set; } = Vector2.zero;
@@ -142,6 +148,9 @@ public abstract class AIBase : CharacterBase {
             case AIState.LookAround:
                 LookAroundStateUpdate();
                 break;
+            case AIState.Busy:
+                BusyStateUpdate();
+                break;
         }
         //Debug.Log("State: " + CurrentAIState);
         //Debug.Log("SpotScale: " + SpotScale);
@@ -212,6 +221,11 @@ public abstract class AIBase : CharacterBase {
     protected virtual void LookAroundStateUpdate() { }
     protected virtual void OnLookAroundStateEnd() { }
 
+    // Busy
+    protected virtual void OnBusyStateStart() { }
+    protected virtual void BusyStateUpdate() { }
+    protected virtual void OnBusyStateEnd() { }
+
     // Common
     protected void CommonStatePreUpdate() {
         if (Enemy != null)
@@ -232,7 +246,8 @@ public abstract class AIBase : CharacterBase {
         Aggressive,
         Suspicious,
         LostTarget,
-        LookAround
+        LookAround,
+        Busy
     }
 
     #endregion

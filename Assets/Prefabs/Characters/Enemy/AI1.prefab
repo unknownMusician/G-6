@@ -308,6 +308,8 @@ MonoBehaviour:
   timeToCalm: 10
   lookAroundSpeed: 180
   antiBullsEye: 13
+  speakDistance: 2
+  talkTime: 10
 --- !u!114 &3310485373469617724
 MonoBehaviour:
   m_ObjectHideFlags: 0

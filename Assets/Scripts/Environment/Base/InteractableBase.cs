@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class InteractableBase : MonoBehaviour
 {
-    public abstract void Interact(GameObject whoInterracted);
+    public abstract bool Interact(GameObject whoInterracted);
 }

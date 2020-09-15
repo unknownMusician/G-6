@@ -156,7 +156,7 @@ public abstract class Weapon : InteractableBase {
 
     #region Environment (Interaction)
 
-    public override void Interact(GameObject whoInterracted) {
+    public override bool Interact(GameObject whoInterracted) {
         // To-Do
         var cb = whoInterracted?.GetComponent<CharacterBase>();
         if (cb != null && cb.transform != transform.parent.parent) {
@@ -169,7 +169,9 @@ public abstract class Weapon : InteractableBase {
             friend = null;
             WeaponState = State.Main;
             Debug.Log(TAG + "Picked");
+            return true;
         }
+        return false;
     }
 
     #endregion

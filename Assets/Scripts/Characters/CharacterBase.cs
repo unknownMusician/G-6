@@ -265,9 +265,9 @@ public abstract class CharacterBase : InteractableBase
             {
                 if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
                 {
-                    allEnvironment[0].Interact(this.gameObject);
+                    bool result = allEnvironment[0].Interact(this.gameObject);
                     Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
-                    return true;
+                    return result;
                 }
             }
 

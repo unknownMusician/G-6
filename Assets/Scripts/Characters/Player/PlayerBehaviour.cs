@@ -36,7 +36,7 @@ public class PlayerBehaviour : CharacterBase
         }
     }
 
-    public override void Interact(GameObject whoInterracted) {
+    public override bool Interact(GameObject whoInterracted) {
         throw new NotImplementedException(); // todo
     }
 
