@@ -4,65 +4,74 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Assets.Scripts.UI.SaveLoad;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SaveAndLoadGame : MonoBehaviour
+namespace Assets.Scripts.UI.SaveLoad
 {
-    private static string path = DataSetDateTime.Local.ToString();
-
-    public static SaveLoad SaveLoad;
-    public static void SaveGame(string name)
+    public class SaveAndLoadGame : MonoBehaviour
     {
-        SaveLoad.Data = new SaveLoadData()
+        private readonly string Path = System.DateTime.Now.Day + System.DateTime.Now.Millisecond.ToString();
+
+        public static SaveLoad SaveLoad;
+
+
+        public InputField inputFieldSave;
+
+
+
+        public void SaveGame()
         {
-            //inventory = MainData.Inventory,
-            player = MainData.Player,
-            //playerBehaviour = MainData.PlayerBehaviour,
-            //playerPosition = MainData.PlayerPosition,
-            coins = MainData.PlayerCoins,
-            level = MainData.Level,
-            maxXp = MainData.PlayerMaxXP,
-            xp = MainData.PlayerXP,
-        };
 
-        SaveLoad = new SaveLoad(name + DataSetDateTime.Local.ToString() + ".sl");
-        SaveLoad.Serialize();
+
+            Debug.Log("Gmae was Saved");
+            SaveLoad = new SaveLoad(inputFieldSave.text + Path + ".dat");
+            SaveLoadData data = new SaveLoadData()
+            {
+                //inventory = MainData.Inventory,
+                //playerObject = MainData.PlayerObject,
+                //playerBehaviour = MainData.PlayerBehaviour,
+                //playerPosition = MainData.PlayerPosition,
+                coins = MainData.PlayerCoins,
+                level = MainData.Level,
+            };
+
+            SaveLoad.Serialize(data);
+            Debug.Log("Gmae was Saved");
+        }
+        public void LoadGame()
+        {
+            SaveLoadData data = SaveLoad.Deserialize();
+            Debug.Log("Pressed Load");
+            //MainData.Inventory = SaveLoad.Data.inventory;
+            if (data != null)
+            {
+                //MainData.PlayerObject = data.playerObject;
+                // MainData.PlayerBehaviour = SaveLoad.Data.playerBehaviour;
+                // MainData.PlayerPosition = SaveLoad.Data.playerPosition;
+                MainData.PlayerCoins = data.coins;
+                MainData.Level = data.level;
+                Debug.Log("Gmae was Loaded");
+            }
+        }
     }
-    public static void LoadGame(string name)
+
+    public class SaveLoad : BaseSaveLoad
     {
-        SaveLoad = new SaveLoad(name);
-        SaveLoad.Deserialize();
-        
-        //MainData.Inventory = SaveLoad.Data.inventory;
-        MainData.Player = SaveLoad.Data.player;
-       // MainData.PlayerBehaviour = SaveLoad.Data.playerBehaviour;
-       // MainData.PlayerPosition = SaveLoad.Data.playerPosition;
-        MainData.PlayerCoins = SaveLoad.Data.coins;
-        MainData.Level = SaveLoad.Data.level;
-        MainData.PlayerXP = SaveLoad.Data.xp;
-        MainData.PlayerMaxXP = SaveLoad.Data.maxXp;
+        public SaveLoad(string path) : base(path)
+        {
 
+        }
     }
-}
 
-public class SaveLoad : BaseSaveLoad<SaveLoadData>
-{
-    public SaveLoad(string path) : base(path)
+    [Serializable]
+    public class SaveLoadData
     {
-
+        //public GameObject playerObject;
+        //public PlayerBehaviour playerBehaviour;
+        //public Vector3 playerPosition;
+        public int coins;
+        //public Inventory inventory;
+        public int level;
     }
-}
-
-[Serializable]
-public class SaveLoadData
-{
-    public GameObject player;
-    //public PlayerBehaviour playerBehaviour;
-    //public Vector3 playerPosition;
-    public int coins;
-    public float xp;
-    public float maxXp;
-    //public Inventory inventory;
-    public int level;
 }

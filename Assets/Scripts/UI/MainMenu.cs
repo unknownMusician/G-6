@@ -13,12 +13,14 @@ public class MainMenu : MonoBehaviour
     public AudioMixer audioGameObject;
     public GameObject gameUIGameObject;
     public GameObject weaponSettingsGameObject;
+    public GameObject saveLoadGame;
     public void PlayPressed()
     {
         DontDestroyOnLoad(settingGameObject);
         DontDestroyOnLoad(audioGameObject);
         DontDestroyOnLoad(gameUIGameObject);
         DontDestroyOnLoad(weaponSettingsGameObject);
+        DontDestroyOnLoad(saveLoadGame);
 
         gameUIGameObject.SetActive(true);
 

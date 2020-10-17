@@ -2,63 +2,82 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.SaveLoad
 {
 
-    public class BaseSaveLoad<TData> where TData : class
+    public class BaseSaveLoad
     {
         protected string Path;
-        public TData Data;
 
         public BaseSaveLoad(string name)
         {
-            Path = System.IO.Path.Combine(Application.streamingAssetsPath, name);
+            Path = Application.streamingAssetsPath + "/Savings/" + name;
+            if (!Directory.Exists(Application.streamingAssetsPath + "/Savings/"))
+                Directory.CreateDirectory(Application.streamingAssetsPath + "/Savings/");
         }
 
-        public void Serialize()
+        public void Serialize(SaveLoadData data)
         {
-            try
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                using (FileStream file = File.Create(Path))
+            Debug.Log(Path);
+           // try
+           // {
+                if (data != null)
                 {
-                    bf.Serialize(file, this.Data);
-                    file.Close();
-                } 
-            }
-            catch (Exception ex)
-            {
-                Logger.LogW(ex, $"Error with putting data in {typeof(TData)} save");
-            }
+                    Stream stream = File.Open(Path, FileMode.Create);
+                    BinaryFormatter bformatter = new BinaryFormatter();
+                    bformatter.Serialize(stream, data);
+                    stream.Close();
+
+                }
+                else
+                {
+                    Debug.Log("Data is null");
+                }
+           // }
+           // catch (Exception ex)
+          //  {
+
+             //   Debug.Log($"Error with putting data in  save");
+            ///    Logger.LogW(ex, $"Error with putting data in  save");
+
+           // }
 
         }
-        public void Deserialize()
+
+        [CanBeNull]
+        public SaveLoadData Deserialize()
         {
+            SaveLoadData data = null;
             try
             {
+                Debug.Log(" Load Patch " + Path);
 
                 BinaryFormatter bf = new BinaryFormatter();
                 using (FileStream file = File.OpenRead(Path))
                 {
-                    this.Data = (TData)bf.Deserialize(file);
+                    data = (SaveLoadData)bf.Deserialize(file);
                     file.Close();
                 }
-                
+
             }
             catch (Exception ex)
             {
-                Logger.LogW(ex, $"Error with getting data in {typeof(TData)} load");
+                Debug.Log($"Error with getting data in load");
+                Logger.LogW(ex, $"Error with getting data in load");
             }
 
+            return data;
         }
 
 
     }
-
 }
