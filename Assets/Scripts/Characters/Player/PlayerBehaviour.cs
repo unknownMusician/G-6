@@ -36,10 +36,6 @@ public class PlayerBehaviour : CharacterBase
         }
     }
 
-    public override bool Interact(GameObject whoInterracted) {
-        throw new NotImplementedException(); // todo
-    }
-
     private void Awake()
     {
         // Setting Player to MainData
@@ -61,6 +57,26 @@ public class PlayerBehaviour : CharacterBase
     {
         base.Update();
         if (IsMoving)
-            Move(MainData.Controls.Player.Move.ReadValue<Vector2>());
+            Move(MainData.Controls.Player.Move.ReadValue<Vector2>()); // todo: remove from Update()
     }
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public Inventory.Serialization inventory;
+
+        private Serialization(PlayerBehaviour player) {
+            inventory = Inventory.Serialization.Real2Serializable(player.Inventory);
+        }
+
+        public static Serialization Real2Serializable(PlayerBehaviour player) { return new Serialization(player); }
+
+        public static void Serializable2Real(Serialization serialization, PlayerBehaviour player) {
+            Inventory.Serialization.Serializable2Real(serialization.inventory, player.Inventory);
+        }
+    }
+
+    #endregion
 }

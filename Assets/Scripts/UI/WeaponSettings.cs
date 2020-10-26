@@ -104,10 +104,10 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.Inventory.Cards != null)
+        if (MainData.Inventory.Cards.List != null)
         {
 
-            foreach (Card card in MainData.Inventory.Cards)
+            foreach (Card card in MainData.Inventory.Cards.List)
             {
                 GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
                 instanse.transform.SetParent(CardContent, false);

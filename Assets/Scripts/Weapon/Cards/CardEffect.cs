@@ -9,9 +9,7 @@ public class CardEffect : Card {
     #region Properties
 
     public NestedProps Props => new NestedProps(effect, duration, interval, damage);
-    public override CardType Type => CardType.CardEffect;
-    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 3;
-    public override Dictionary<Sprite, string> Modules {
+     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
             // To-Do: localization
@@ -93,6 +91,35 @@ public class CardEffect : Card {
         Poison = 2,
         Stunn = 3,
         Vampire = 4
+    }
+
+    #endregion
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public int effect;
+        public float duration;
+        public float interval;
+        public float damage;
+
+        private Serialization(CardEffect card) {
+            effect = (int)card.effect;
+            duration = card.duration;
+            interval = card.interval;
+            damage = card.damage;
+        }
+
+        public static Serialization Real2Serializable(CardEffect card) { return new Serialization(card); }
+
+        public static void Serializable2Real(Serialization serialization, CardEffect card) {
+            card.effect = (EffectType)serialization.effect;
+            card.duration = serialization.duration;
+            card.interval = serialization.interval;
+            card.damage = serialization.damage;
+        }
     }
 
     #endregion

@@ -133,12 +133,12 @@ public class AIBehaviour : AIBase {
             WantedMoveDir = -EnemyLocalPos;
 
         // Attack the Enemy
-        Inventory.AttackWithWeaponOrFistStart();
+        Inventory.AttackStart();
     }
 
     protected override void OnAggressiveStateEnd() {
         // DON'T Attack the Enemy
-        Inventory.AttackWithWeaponOrFistEnd();
+        Inventory.AttackEnd();
 
         Inventory.ReloadGun();
         // stop "shoot-spreading"
@@ -346,10 +346,6 @@ public class AIBehaviour : AIBase {
     #endregion
 
     #region Interaction
-    public override bool Interact(GameObject whoInteracted) {
-        Debug.Log("ye");
-        return true;
-    }
     public bool InteractWithAI(AIBehaviour otherAI) {
         if (CurrentAIState != AIState.Calm || CoroutineTalkToOther != null || CoroutineDoNotTalk != null)
             return false;

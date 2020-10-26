@@ -128,7 +128,7 @@ public class Gun : Weapon {
         GameObject blt = Instantiate(bullet, WorldFirePoint, transform.rotation);
         Destroy(blt, bulletLifeTime * ActualCardGenProps.ShotRangeMultiplier);
         blt.GetComponent<Bullet>().SetParams(standardDamage, ActualCardFlyProps);
-        Vector3 characterVelocity = transform.parent.parent.GetComponent<Rigidbody2D>().velocity;
+        Vector3 characterVelocity = Character.GetComponent<Rigidbody2D>().velocity;
         blt.GetComponent<Rigidbody2D>().velocity = characterVelocity + Quaternion.Euler(
                 transform.rotation.eulerAngles.x,
                 transform.rotation.eulerAngles.y,
@@ -140,11 +140,12 @@ public class Gun : Weapon {
 
     #region Overrided Methods
 
-    private void Start() {
+    protected new void Start() {
+        base.Start();
         InstallCardsFromChildren();
     }
     public override void Attack() {
-        if (state == State.Alt) {
+        if (_weaponState == State.Alt) {
             Hit();
         } else {
             Shoot();
@@ -171,7 +172,6 @@ public class Gun : Weapon {
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
             if (answer) {
                 MainData.Inventory.Cards.Add(card);
-                MainData.Inventory.Cards = MainData.Inventory.Cards;
             }
             return answer;
         }
@@ -189,7 +189,6 @@ public class Gun : Weapon {
             cardGen.gameObject.transform.SetParent(transform);
             CardGen = cardGen;
             MainData.Inventory.Cards.Remove(cardGen);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -202,7 +201,6 @@ public class Gun : Weapon {
             cardFly.gameObject.transform.SetParent(transform);
             this.CardFly = cardFly;
             MainData.Inventory.Cards.Remove(cardFly);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -215,7 +213,6 @@ public class Gun : Weapon {
             cardEff.gameObject.transform.SetParent(transform);
             this.CardEff = cardEff;
             MainData.Inventory.Cards.Remove(cardEff);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -246,7 +243,7 @@ public class Gun : Weapon {
 
     private void Hit() {
         // To-Do
-        animator.SetTrigger("hit");
+        Animator.SetTrigger("hit");
     }
     private void Shoot() {
         if (CanAttack && IsLoaded) {
@@ -257,6 +254,53 @@ public class Gun : Weapon {
             }
             CanAttack = false;
             // Debug.Log(TAG + "Bullets: " + ActualClipBullets + "/" + ActualPocketBullets);
+        }
+    }
+
+    #endregion
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public int actualPocketBullets;
+        public int actualClipBullets;
+
+        public CardGunGen.Serialization cardGen;
+        public CardGunFly.Serialization cardFly;
+        public CardEffect.Serialization cardEff;
+
+        public Serialization(Gun gun) {
+            this.actualPocketBullets = gun.ActualPocketBullets;
+            this.actualClipBullets = gun.ActualClipBullets;
+            this.cardGen = gun.CardGen == null ? null : CardGunGen.Serialization.Real2Serializable(gun.CardGen);
+            this.cardFly = gun.CardFly == null ? null : CardGunFly.Serialization.Real2Serializable(gun.CardFly);
+            this.cardEff = gun.CardEff == null ? null : CardEffect.Serialization.Real2Serializable(gun.CardEff);
+        }
+
+        public static Serialization Real2Serializable(Gun gun) { return new Serialization(gun); }
+
+        public static void Serializable2Real(Serialization serialization, Gun gun) {
+            gun.ActualPocketBullets = serialization.actualPocketBullets;
+            gun.ActualClipBullets = serialization.actualClipBullets;
+
+            if(serialization.cardGen != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardGunGen.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardGunGen>();
+                CardGunGen.Serialization.Serializable2Real(serialization.cardGen, card);
+                gun.InstallCard(card);
+            } else if(serialization.cardFly != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardGunFly.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardGunFly>();
+                CardGunFly.Serialization.Serializable2Real(serialization.cardFly, card);
+                gun.InstallCard(card);
+            } else if(serialization.cardEff != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardEffect.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardEffect>();
+                CardEffect.Serialization.Serializable2Real(serialization.cardEff, card);
+                gun.InstallCard(card);
+            }
         }
     }
 

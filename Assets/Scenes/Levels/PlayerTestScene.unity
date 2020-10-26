@@ -193,6 +193,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI2
       objectReference: {fileID: 0}
+    - target: {fileID: 3530081432952830183, guid: 5d3ec369f00c83b499748ff02c250dac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d3ec369f00c83b499748ff02c250dac, type: 3}
 --- !u!4 &89552146 stripped
@@ -282,12 +287,12 @@ PrefabInstance:
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1186.59
+      value: 1198.59
       objectReference: {fileID: 0}
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1249.22
+      value: -1264.24
       objectReference: {fileID: 0}
     - target: {fileID: 5628862589975309998, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
@@ -730,12 +735,12 @@ PrefabInstance:
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1186.59
+      value: 1198.59
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1251.22
+      value: -1266.24
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
@@ -1034,6 +1039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AI1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3530081432952830183, guid: 5d3ec369f00c83b499748ff02c250dac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d3ec369f00c83b499748ff02c250dac, type: 3}

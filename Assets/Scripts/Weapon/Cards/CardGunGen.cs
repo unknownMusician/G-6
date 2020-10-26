@@ -9,8 +9,6 @@ public class CardGunGen : Card {
     #region Properties
 
     public NestedProps Props => new NestedProps(fireRateMultiplier, bulletsPerShotAdder, shotRangeMultiplier);
-    public override CardType Type => CardType.CardGunGen;
-    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 1;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
@@ -40,7 +38,7 @@ public class CardGunGen : Card {
 
     [Space]
     [SerializeField]
-    protected List<Sprite> moduleSprites;
+    protected List<Sprite> moduleSprites; // todo automatize
 
     #endregion
 
@@ -84,4 +82,30 @@ public class CardGunGen : Card {
 
         #endregion
     }
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public float fireRateMultiplier;
+        public int bulletsPerShotAdder;
+        public float shotRangeMultiplier;
+
+        private Serialization(CardGunGen card) {
+            fireRateMultiplier = card.fireRateMultiplier;
+            bulletsPerShotAdder = card.bulletsPerShotAdder;
+            shotRangeMultiplier = card.shotRangeMultiplier;
+        }
+
+        public static Serialization Real2Serializable(CardGunGen card) { return new Serialization(card); }
+
+        public static void Serializable2Real(Serialization serialization, CardGunGen card) {
+            card.fireRateMultiplier = serialization.fireRateMultiplier;
+            card.bulletsPerShotAdder = serialization.bulletsPerShotAdder;
+            card.shotRangeMultiplier = serialization.shotRangeMultiplier;
+        }
+    }
+
+    #endregion
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(InteractableChecker))]
-public abstract class CharacterBase : InteractableBase
+public abstract class CharacterBase : MonoBehaviour
 {
     #region Fields
     [Header("Checkers")]
@@ -31,7 +31,6 @@ public abstract class CharacterBase : InteractableBase
     [SerializeField] protected float SPRegenerationPerFrame = 10;
 
     protected Dictionary<Side, List<Vector2>> Checkers;
-    protected InteractableChecker InteractableChecker;
 
     public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
 
@@ -101,56 +100,50 @@ public abstract class CharacterBase : InteractableBase
 
     protected SpriteRenderer sr;
 
+    protected InteractableChecker InteractableChecker;
+
     #endregion
 
     #region Common Methods
 
     public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        _goDir = MainData.SquareNormalized(dir);
-        _goRun = run;
-        _goSneak = sneak;
-    }
-    private Vector2 _goDir = Vector2.zero;
-    private bool _goRun = true;
-    private bool _goSneak = true;
-    private void Go() // todo: something wrong - something in this function refuses to jump;
-    {
+        dir = MainData.SquareNormalized(dir);
         Vector2 finMove = rb.velocity;
         // X
-        if (State != State.Climb && _goDir.x != 0)
+        if (State != State.Climb && dir.x != 0)
         {
-            _goRun &= IsRunning;
-            _goSneak &= IsCrouching;
+            run &= IsRunning;
+            sneak &= IsCrouching;
             float horizontalSpeed = HorizontalSpeed;
             // running
-            if (_goRun && Math.Abs(_goDir.x) > 0)
+            if (run && Math.Abs(dir.x) > 0)
             {
                 SP -= FatiguePerFrame * Time.deltaTime;
                 horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBoost : 1);
             }
             // sneaking
-            else if (_goSneak && Math.Abs(_goDir.x) > 0)
+            else if (sneak && Math.Abs(dir.x) > 0)
                 horizontalSpeed *= HorizontalAntiBoost;
 
-            finMove.x = horizontalSpeed * _goDir.x;
+            finMove.x = horizontalSpeed * dir.x;
 
         }
         // Y
-        if (State == State.Climb) {
-            finMove.y = _goDir.y * VerticalSpeed * (SP > 0 ? 1f : 0f);
+        if (State == State.Climb && !_jumped)
+        {
+            finMove.y = dir.y * VerticalSpeed * (SP > 0 ? 1f : 0f);
 
-            if (_goDir.y != 0)
-                SP -= FatiguePerFrame * Time.deltaTime;
+            if (dir.y != 0) { SP -= FatiguePerFrame * Time.deltaTime; }
         }
 
         // fin
         rb.velocity = finMove;
+
         //revert
-        _goDir = Vector2.zero;
-        _goRun = true;
-        _goSneak = true;
+        _jumped = false;
     }
+    private bool _jumped = false;
     public void Jump()
     {
         float jumpForce = JumpForce;
@@ -159,9 +152,7 @@ public abstract class CharacterBase : InteractableBase
         {
             case State.Climb:
                 rb.AddForce(
-                    ClimbingBySide() == Side.Left
-                        ? new Vector2(HorizontalSpeed, jumpForce * (_goDir.x < 0 ? -0.5f : 0.5f))
-                        : new Vector2(-HorizontalSpeed, jumpForce * (_goDir.x < 0 ? -0.5f : 0.5f)),
+                    new Vector2((ClimbingBySide() == Side.Left ? 1 : -1) * HorizontalSpeed, jumpForce * 0.5f),
                     ForceMode2D.Impulse);
                 return; // todo: исправить прыжки от стен;
 
@@ -170,12 +161,12 @@ public abstract class CharacterBase : InteractableBase
                 break;
 
             case State.OnAir:
-                if(!CanFly)
-                    return;
+                if (!CanFly) { return; }
                 break;
         }
 
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        _jumped = true;
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -255,27 +246,31 @@ public abstract class CharacterBase : InteractableBase
         //}
         //return false;
 
-        try
-        {
+        //try
+        //{
             List<InteractableBase> allEnvironment = GameObject.FindObjectsOfType<InteractableBase>()
                 .OrderBy(p => (this.transform.position - p.transform.position).sqrMagnitude)
                 .ToList();
 
-            if (allEnvironment.Count != 0)
-            {
-                if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
-                {
-                    bool result = allEnvironment[0].Interact(this.gameObject);
-                    Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
-                    return result;
+        if (allEnvironment.Count != 0)
+        {
+            for (int i = 0; i < allEnvironment.Count; i++) {
+                if ((this.transform.position - allEnvironment[i].transform.position).sqrMagnitude < InteractionRadius) {
+                    bool result = allEnvironment[i].Interact(this.gameObject);
+                    if(result)
+                    {
+                        Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
+                        return true;
+                    }
                 }
             }
+        }
 
-        }
-        catch (Exception ex)
-        {
-            Logger.LogW(ex, "Problems with interaction in CharacterBase script");
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logger.LogW(ex, "Problems with interaction in CharacterBase script");
+        //}
 
         return false;
     }
@@ -296,7 +291,20 @@ public abstract class CharacterBase : InteractableBase
             SP = sp > MaxSP ? MaxSP : sp;
         }
     }
-
+    protected void Gravity() {
+        if (CheckState() == State.Climb) {
+            switch (ClimbingBySide()) {
+                case Side.Left:
+                    rb.AddForce(Vector2.left * rb.gravityScale);
+                    return;
+                case Side.Right:
+                    rb.AddForce(Vector2.right * rb.gravityScale);
+                    return;
+            }
+        }
+        rb.AddForce(Vector2.down * rb.gravityScale);
+        // todo
+    }
     protected void Die()
     {
         State = State.Dead;
@@ -347,7 +355,8 @@ public abstract class CharacterBase : InteractableBase
         EffectsFixedControl();
         SPFixedControl();
 
-        Go();
+        // todo
+        Gravity();
     }
     #endregion
 

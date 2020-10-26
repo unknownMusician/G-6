@@ -9,8 +9,6 @@ public class CardGunFly : Card {
     #region Properties
 
     public NestedProps Props => new NestedProps(ricochet, piercing, homing, teleporting, magnet, enemy.value, magnetting.value);
-    public override CardType Type => CardType.CardGunFly;
-    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 2;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
@@ -96,11 +94,13 @@ public class CardGunFly : Card {
             this.Magnet = magnet;
             this.Enemy = enemy;
             this.Magnetting = magnetting;
-        } public NestedProps(bool ricochet, bool piercing, bool teleporting) {
+        }
+        public NestedProps(bool ricochet, bool piercing, bool teleporting) {
             this.Ricochet = ricochet;
             this.Piercing = piercing;
             this.Teleporting = teleporting;
-        } public NestedProps() { }
+        }
+        public NestedProps() { }
 
         #endregion
 
@@ -112,4 +112,42 @@ public class CardGunFly : Card {
 
         #endregion
     }
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public int enemy;
+        public int magnetting;
+        public bool ricochet;
+        public bool piercing;
+        public bool homing;
+        public bool teleporting;
+        public bool magnet;
+
+        private Serialization(CardGunFly card) {
+            enemy = card.enemy.value;
+            magnetting = card.magnetting.value;
+            ricochet = card.ricochet;
+            piercing = card.piercing;
+            homing = card.homing;
+            teleporting = card.teleporting;
+            magnet = card.magnet;
+        }
+
+        public static Serialization Real2Serializable(CardGunFly card) { return new Serialization(card); }
+
+        public static void Serializable2Real(Serialization serialization, CardGunFly card) {
+            card.enemy =  1 << serialization.enemy; // todo: check layermask
+            card.magnetting = 1 << serialization.magnetting; // todo: check layermask
+            card.ricochet = serialization.ricochet;
+            card.piercing = serialization.piercing;
+            card.homing = serialization.homing;
+            card.teleporting = serialization.teleporting;
+            card.magnet = serialization.magnet;
+        }
+    }
+
+    #endregion
 }

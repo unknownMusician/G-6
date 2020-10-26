@@ -35,26 +35,20 @@ public class Melee : Weapon {
 
     [Space]
     [Space]
-    [SerializeField]
-    private Vector3 localHitCentrePoint = Vector3.right;
-    [SerializeField]
-    private float hitAreaRadius = 1f;
+    [SerializeField] private Vector3 localHitCentrePoint = Vector3.right;
+    [SerializeField] private float hitAreaRadius = 1f;
 
     [Space]
     [Space]
-    [SerializeField]
-    private float standardDamage = 10f;
+    [SerializeField] private float standardDamage = 10f;
 
     [Space]
     [Space]
-    [SerializeField]
-    private CardMeleeShape cardShape;
+    [SerializeField] private CardMeleeShape cardShape;
     [Space]
-    [SerializeField]
-    private CardMeleeMemory cardMemory;
+    [SerializeField] private CardMeleeMemory cardMemory;
     [Space]
-    [SerializeField]
-    private CardEffect cardEff;
+    [SerializeField] private CardEffect cardEff;
 
     #endregion
 
@@ -88,11 +82,12 @@ public class Melee : Weapon {
 
     #region Overrided Methods
 
-    private void Start() {
+    private new void Start() {
+        base.Start();
         InstallCardsFromChildren();
     }
     public override void Attack() {
-        if (state == State.Alt) {
+        if (_weaponState == State.Alt) {
             Shield();
         } else {
             Hit();
@@ -119,7 +114,6 @@ public class Melee : Weapon {
                 Debug.Log(TAG + "ERROR IN CARDS TYPE WHEN REMOVING CARD");
             if (answer) {
                 MainData.Inventory.Cards.Add(card);
-                MainData.Inventory.Cards = MainData.Inventory.Cards;
             }
             return answer;
         }
@@ -136,7 +130,6 @@ public class Melee : Weapon {
             PrepareCardforInstall(cardShape);
             this.CardShape = cardShape;
             MainData.Inventory.Cards.Remove(cardShape);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -148,7 +141,6 @@ public class Melee : Weapon {
             PrepareCardforInstall(cardMemory);
             this.CardMemory = cardMemory;
             MainData.Inventory.Cards.Remove(cardMemory);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -160,7 +152,6 @@ public class Melee : Weapon {
             PrepareCardforInstall(cardEff);
             this.CardEff = cardEff;
             MainData.Inventory.Cards.Remove(cardEff);
-            MainData.Inventory.Cards = MainData.Inventory.Cards;
             OnInstallCardAction?.Invoke();
             return true;
         }
@@ -183,7 +174,7 @@ public class Melee : Weapon {
             //
             int actualHits = (from col in cols
                               group col by col.gameObject into gameObj
-                              where !gameObj.Key.Equals(this.transform.parent.parent.gameObject)
+                              where !gameObj.Key.Equals(this.Character.gameObject)
                               group gameObj.Key by gameObj.Key.GetComponent<CharacterBase>() into charBase
                               where charBase.Key != null
                               let hitPoint = charBase.Key.gameObject.transform.position
@@ -195,6 +186,45 @@ public class Melee : Weapon {
                         .Count();
             CanAttack = false;
             Debug.Log(TAG + "Hit (" + actualHits + " target" + ((actualHits == 1) ? "" : "s") + ")");
+        }
+    }
+
+    #endregion
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public CardMeleeShape.Serialization cardShape;
+        public CardMeleeMemory.Serialization cardMemory;
+        public CardEffect.Serialization cardEff;
+
+        public Serialization(Melee melee) {
+            this.cardShape = melee.CardShape == null ? null : CardMeleeShape.Serialization.Real2Serializable(melee.CardShape);
+            this.cardMemory = melee.CardMemory == null ? null : CardMeleeMemory.Serialization.Real2Serializable(melee.CardMemory);
+            this.cardEff = melee.CardEff == null ? null : CardEffect.Serialization.Real2Serializable(melee.CardEff);
+        }
+
+        public static Serialization Real2Serializable(Melee melee) { return new Serialization(melee); }
+
+        public static void Serializable2Real(Serialization serialization, Melee melee) {
+            if (serialization.cardShape != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardMeleeShape.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardMeleeShape>();
+                CardMeleeShape.Serialization.Serializable2Real(serialization.cardShape, card);
+                melee.InstallCard(card);
+            } else if (serialization.cardMemory != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardMeleeMemory.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardMeleeMemory>();
+                CardMeleeMemory.Serialization.Serializable2Real(serialization.cardMemory, card);
+                melee.InstallCard(card);
+            } else if (serialization.cardEff != null) {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardEffect.prefab");
+                var card = Instantiate(cardPrefab).GetComponent<CardEffect>();
+                CardEffect.Serialization.Serializable2Real(serialization.cardEff, card);
+                melee.InstallCard(card);
+            }
         }
     }
 

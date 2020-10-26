@@ -6,45 +6,54 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class MainData : MonoBehaviour
-{
+public class MainData : MonoBehaviour {
     #region Main GameObjects
 
-    private static GameObject _player;
+    private static GameObject _playerObject;
 
-    public static GameObject PlayerObject
-    {
-        get => _player;
-        set
-        {
-            _player = value;
+    public static GameObject PlayerObject {
+        get => _playerObject;
+        set {
+            _playerObject = value;
             ActionPlayerChange?.Invoke();
         }
     }
-    /// <summary>
-    /// Calls only on the start of each scene;
-    /// </summary>
-    public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionSPChange + ActionOPChange;
+    /// <summary> Calls only on the start of each scene </summary>
+    public static Action ActionPlayerChange = 
+        ActionPlayerCoinsChange + 
+        ActionPlayerPositionChange + 
+        ActionHPChange + ActionSPChange + 
+        ActionOPChange + 
+        (() => { PlayerBehaviour = PlayerObject.GetComponent<PlayerBehaviour>(); });
 
-    public static GameObject RoomSpawnerObject { get; set; }
+    private static GameObject _roomSpawnerObject;
+    public static GameObject RoomSpawnerObject {
+        get => _roomSpawnerObject;
+        set {
+            _roomSpawnerObject = value;
+            ActionRoomSpawnerChange?.Invoke();
+        }
+    }
+    public static Action ActionRoomSpawnerChange = 
+        (() => { RoomSpawner = RoomSpawnerObject.GetComponent<RoomSpawner>(); });
 
     #endregion
 
     #region Player
 
-    public static PlayerBehaviour PlayerBehaviour => PlayerObject?.GetComponent<PlayerBehaviour>();
+    public static PlayerBehaviour PlayerBehaviour { get; private set; }
 
     //
 
     public static Action ActionPlayerPositionChange;
     public static Vector3 PlayerPosition { get => PlayerObject.transform.position; }
 
-    private static int coins = 5;
+    private static int _playerCoins = 5;
     public static Action ActionPlayerCoinsChange;
     public static int PlayerCoins {
-        get => coins;
+        get => _playerCoins;
         set {
-            coins = value;
+            _playerCoins = value;
             ActionPlayerCoinsChange?.Invoke();
         }
     }
@@ -76,7 +85,7 @@ public class MainData : MonoBehaviour
 
     #region RoomSpawner
 
-    public static RoomSpawner RoomSpawner => RoomSpawnerObject.GetComponent<RoomSpawner>();
+    public static RoomSpawner RoomSpawner { get; private set; }
 
     #endregion
 
@@ -109,8 +118,8 @@ public class MainData : MonoBehaviour
 
         #region Weapon
 
-        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistStart(); };
-        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackWithWeaponOrFistEnd(); };
+        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackStart(); };
+        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackEnd(); };
         Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
         Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
         Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };

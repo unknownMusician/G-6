@@ -9,8 +9,6 @@ public class CardMeleeShape : Card {
     #region Properties
 
     public NestedProps Props { get { return new NestedProps(attackSpeedMultiplier, attackRangeMultiplier, attackDamageMultiplier); } }
-    public override CardType Type => CardType.CardMeleeShape;
-    public override int CardTypeForYaricSoHeCanCalmDownAndMakeSomeUIWithoutAnyAssAcheOrSoHeCanKeepEachChairHeSitsOnByPreventingItFromFUCKINGfire => 1;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
@@ -84,4 +82,30 @@ public class CardMeleeShape : Card {
 
         #endregion
     }
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public float attackSpeedMultiplier;
+        public float attackRangeMultiplier;
+        public float attackDamageMultiplier;
+
+        private Serialization(CardMeleeShape card) {
+            attackSpeedMultiplier = card.attackSpeedMultiplier;
+            attackRangeMultiplier = card.attackRangeMultiplier;
+            attackDamageMultiplier = card.attackDamageMultiplier;
+        }
+
+        public static Serialization Real2Serializable(CardMeleeShape card) { return new Serialization(card); }
+
+        public static void Serializable2Real(Serialization serialization, CardMeleeShape card) {
+            card.attackSpeedMultiplier = serialization.attackSpeedMultiplier;
+            card.attackRangeMultiplier = serialization.attackRangeMultiplier;
+            card.attackDamageMultiplier = serialization.attackDamageMultiplier;
+        }
+    }
+
+    #endregion
 }
