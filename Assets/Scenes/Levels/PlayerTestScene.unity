@@ -287,12 +287,12 @@ PrefabInstance:
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1198.59
+      value: 1199
       objectReference: {fileID: 0}
     - target: {fileID: 4469071730402152871, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1264.24
+      value: -1264
       objectReference: {fileID: 0}
     - target: {fileID: 5628862589975309998, guid: 0906697cca54b294ba7c76e45ac1d761,
         type: 3}
@@ -732,15 +732,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4333165458918672388, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4333165458918672388, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4333165458918672388, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: m_Mass
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4333165458918672391, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1198.59
+      value: 1199
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1266.24
+      value: -1266
       objectReference: {fileID: 0}
     - target: {fileID: 4333165458918672408, guid: 94bd35e81c096a744a6cbb3bfba5695b,
         type: 3}
@@ -791,6 +811,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715449821927201659, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: HorizontalAcceleration
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715449821927201659, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: Acceleration.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715449821927201659, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: Acceleration.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715449821927201659, guid: 94bd35e81c096a744a6cbb3bfba5695b,
+        type: 3}
+      propertyPath: HorizontalAirBoost
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94bd35e81c096a744a6cbb3bfba5695b, type: 3}

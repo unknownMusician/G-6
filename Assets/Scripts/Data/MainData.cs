@@ -73,7 +73,7 @@ public class MainData : MonoBehaviour {
     #region Inventory & Guns
 
     public static Inventory Inventory => PlayerBehaviour.Inventory;
-    public static Weapon ActiveWeapon => Inventory?.Weapon;
+    public static Weapon ActiveWeapon => Inventory?.Weapons.Weapon;
 
     public static Action ActionInventoryCardsChange;
     public static Action ActionInventoryWeaponsChange;
@@ -124,13 +124,13 @@ public class MainData : MonoBehaviour {
         Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
         Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
         Controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
-        Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FIRST; };
-        Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.SECOND; };
-        Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.THIRD; };
-        Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ActiveSlot = Inventory.Slots.FOURTH; };
+        Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.FIRST; };
+        Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.SECOND; };
+        Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.THIRD; };
+        Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.FOURTH; };
         Controls.Weapon.ChangeSlot.performed += ctx => {
             if (!Pause.GameIsPaused)
-                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.ActiveSlot-- : Inventory.ActiveSlot++;
+                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.Weapons.ActiveSlot-- : Inventory.Weapons.ActiveSlot++;
         };
         Controls.Weapon.AimMouse.performed += ctx => {
             if (!Pause.GameIsPaused) {
@@ -158,8 +158,8 @@ public class MainData : MonoBehaviour {
 
         Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.TryInteract(); };
 
-        Controls.Player.Move.performed += ctx => { PlayerBehaviour.IsMoving = true; };
-        Controls.Player.NoMove.performed += ctx => { PlayerBehaviour.IsMoving = false; };
+        Controls.Player.Move.performed += ctx => { PlayerBehaviour.Move(true); };
+        Controls.Player.NoMove.performed += ctx => { PlayerBehaviour.Move(false); };
 
         #endregion
 
@@ -201,4 +201,8 @@ public class MainData : MonoBehaviour {
     }
 
     #endregion
+
+    public static class Constants {
+        public static readonly float gravityScale = 9.8f;
+    }
 }

@@ -19,16 +19,19 @@ public abstract class CharacterBase : MonoBehaviour
 
     [Header("Values")]
     [SerializeField] protected bool CanFly = false;
-    [SerializeField] protected float JumpForce = 25;
-    [SerializeField] protected float VerticalSpeed = 10;
-    [SerializeField] protected float HorizontalSpeed = 15;
+    [SerializeField] protected Vector2 JumpForce = new Vector2(120, 200);
+    [SerializeField] protected Vector2 Speed = new Vector2(15, 15);
+    [SerializeField] [Range(0, .3f)] protected float AccelerationTime = 0.05f;
     [SerializeField] protected float InteractionRadius = 30;
     [SerializeField] protected float ClimbingSpeed = 10;
     [SerializeField] protected LayerMask ContactLayer = 0;
-    [SerializeField] protected float FatiguePerFrame = 40;
-    [SerializeField] protected float HorizontalBoost = 1.5f;
-    [SerializeField] protected float HorizontalAntiBoost = 0.5f;
-    [SerializeField] protected float SPRegenerationPerFrame = 10;
+    [SerializeField] protected float SpPerFrameDecrease = 40;
+    [SerializeField] protected float SpPerFrameIncrease = 10;
+    [SerializeField] protected float HorizontalRunBoost = 1.5f;
+    [SerializeField] protected float HorizontalSneakBoost = 0.5f;
+
+    protected float GravityMultiplier = 1f;
+    protected Vector2 _currAccel = Vector2.zero;
 
     protected Dictionary<Side, List<Vector2>> Checkers;
 
@@ -102,6 +105,8 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected InteractableChecker InteractableChecker;
 
+    protected Collider2D crouchDisabledCollider; // todo: crouching Physics & anim
+
     #endregion
 
     #region Common Methods
@@ -109,55 +114,48 @@ public abstract class CharacterBase : MonoBehaviour
     public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
         dir = MainData.SquareNormalized(dir);
-        Vector2 finMove = rb.velocity;
+        Vector2 finSpeed = new Vector2(0, rb.velocity.y);
+        float deltaSP = SpPerFrameDecrease * Time.deltaTime;
         // X
-        if (State != State.Climb && dir.x != 0)
+        if (State != State.Climb && dir.x != 0) 
         {
             run &= IsRunning;
             sneak &= IsCrouching;
-            float horizontalSpeed = HorizontalSpeed;
+            float horizontalSpeed = Speed.x;
             // running
-            if (run && Math.Abs(dir.x) > 0)
-            {
-                SP -= FatiguePerFrame * Time.deltaTime;
-                horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBoost : 1);
+            if (run) {
+                SP -= deltaSP;
+                horizontalSpeed *= (SP > deltaSP ? HorizontalRunBoost : 1);
             }
             // sneaking
-            else if (sneak && Math.Abs(dir.x) > 0)
-                horizontalSpeed *= HorizontalAntiBoost;
-
-            finMove.x = horizontalSpeed * dir.x;
-
+            else if (sneak) { horizontalSpeed *= HorizontalSneakBoost; }
+            // fin X
+            finSpeed.x = horizontalSpeed * dir.x;
         }
         // Y
-        if (State == State.Climb && !_jumped)
+        if (State == State.Climb && dir.y != 0)
         {
-            finMove.y = dir.y * VerticalSpeed * (SP > 0 ? 1f : 0f);
-
-            if (dir.y != 0) { SP -= FatiguePerFrame * Time.deltaTime; }
+            // if climbing down
+            if (dir.y > 0) { SP -= deltaSP; }
+            // fin Y
+            if (SP > deltaSP || dir.y < 0) { finSpeed.y = dir.y * Speed.y; }
         }
 
         // fin
-        rb.velocity = finMove;
-
-        //revert
-        _jumped = false;
+        rb.velocity = Vector2.SmoothDamp(rb.velocity, finSpeed, ref _currAccel, AccelerationTime);
     }
-    private bool _jumped = false;
     public void Jump()
     {
-        float jumpForce = JumpForce;
-        //Debug.Log("Jump1");
         switch (State)
         {
             case State.Climb:
                 rb.AddForce(
-                    new Vector2((ClimbingBySide() == Side.Left ? 1 : -1) * HorizontalSpeed, jumpForce * 0.5f),
+                    new Vector2((ClimbingBySide() == Side.Left ? 1 : -1) * JumpForce.x, JumpForce.y * 0.5f),
                     ForceMode2D.Impulse);
-                return; // todo: исправить прыжки от стен;
+                return;
 
             case State.Swim:
-                jumpForce /= 4f;
+                JumpForce /= 4f;
                 break;
 
             case State.OnAir:
@@ -165,8 +163,7 @@ public abstract class CharacterBase : MonoBehaviour
                 break;
         }
 
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        _jumped = true;
+        rb.AddForce(new Vector2(0, JumpForce.y), ForceMode2D.Impulse);
     }
 
     protected bool isOnLayer(string layer, Side side)
@@ -204,22 +201,22 @@ public abstract class CharacterBase : MonoBehaviour
         switch (State)
         {
             case State.OnGround:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
             case State.Climb:
-                rb.gravityScale = 0f;
+                GravityMultiplier = 1f;
                 break;
             case State.Swim:
-                rb.gravityScale = 4.9f;
+                GravityMultiplier = 0.5f;
                 break;
             case State.OnAir:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
             default:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
         }
-        return rb.gravityScale;
+        return MainData.Constants.gravityScale * GravityMultiplier;
     }
     protected Side ClimbingBySide()
     {
@@ -287,22 +284,23 @@ public abstract class CharacterBase : MonoBehaviour
     {
         if (this.State == State.OnGround)
         {
-            float sp = SP + SPRegenerationPerFrame * Time.deltaTime;
+            float sp = SP + SpPerFrameIncrease * Time.deltaTime;
             SP = sp > MaxSP ? MaxSP : sp;
         }
     }
     protected void Gravity() {
+        float gravityScale = MainData.Constants.gravityScale * GravityMultiplier * rb.mass * 10;
         if (CheckState() == State.Climb) {
             switch (ClimbingBySide()) {
                 case Side.Left:
-                    rb.AddForce(Vector2.left * rb.gravityScale);
+                    rb.AddForce(Vector2.left * gravityScale, ForceMode2D.Force);
                     return;
                 case Side.Right:
-                    rb.AddForce(Vector2.right * rb.gravityScale);
+                    rb.AddForce(Vector2.right * gravityScale, ForceMode2D.Force);
                     return;
             }
         }
-        rb.AddForce(Vector2.down * rb.gravityScale);
+        rb.AddForce(Vector2.down * gravityScale, ForceMode2D.Force);
         // todo
     }
     protected void Die()

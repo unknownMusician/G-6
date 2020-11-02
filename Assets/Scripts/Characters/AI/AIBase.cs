@@ -76,8 +76,8 @@ public abstract class AIBase : CharacterBase {
     protected float DistanceToEnemy => EnemyLocalPos.magnitude;
     protected float SpotScale { get => _spotScale; set => _spotScale = value > 1 ? 1 : (value < 0 ? 0 : value); }
 
-    protected int BulletsClip => (Inventory.Weapon is Gun gun) ? gun.ActualClipBullets : 0;
-    protected int BulletsPocket => (Inventory.Weapon is Gun gun) ? gun.ActualPocketBullets : 0;
+    protected int BulletsClip => (Inventory.Weapons.Weapon is Gun gun) ? gun.ActualClipBullets : 0;
+    protected int BulletsPocket => (Inventory.Weapons.Weapon is Gun gun) ? gun.ActualPocketBullets : 0;
 
     protected RaycastHit2D SensorRightRaw => Physics2D.Raycast(transform.position, Vector2.right, viewDistance, canSeeLayerMask);
     protected RaycastHit2D SensorLeftRaw => Physics2D.Raycast(transform.position, Vector2.left, viewDistance, canSeeLayerMask);
@@ -152,9 +152,6 @@ public abstract class AIBase : CharacterBase {
                 BusyStateUpdate();
                 break;
         }
-        //Debug.Log("State: " + CurrentAIState);
-        //Debug.Log("SpotScale: " + SpotScale);
-        //Debug.Log("enemy: " + Enemy);
 
         CommonStatePostUpdate();
     }

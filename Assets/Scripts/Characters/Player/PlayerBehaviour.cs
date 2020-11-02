@@ -36,6 +36,8 @@ public class PlayerBehaviour : CharacterBase
         }
     }
 
+    private Coroutine MovingCoroutine = null;
+
     private void Awake()
     {
         // Setting Player to MainData
@@ -53,20 +55,34 @@ public class PlayerBehaviour : CharacterBase
     //            ), this);
     //}
 
-    private new void Update() 
-    {
-        base.Update();
-        if (IsMoving)
-            Move(MainData.Controls.Player.Move.ReadValue<Vector2>()); // todo: remove from Update()
+    public void Move(bool isMoving) {
+        if (isMoving) {
+            if (MovingCoroutine == null) {
+                MovingCoroutine = StartCoroutine(Moving());
+            } else {
+                throw new Exception("You want to start moving, but you are already moving");
+            }
+        } else {
+            if (MovingCoroutine != null) {
+                StopCoroutine(MovingCoroutine);
+                MovingCoroutine = null;
+            } else {
+                throw new Exception("You want to stop moving, but there is nothing to stop");
+            }
+        }
     }
 
-    #region Serialization
+    private IEnumerator Moving() {
+        while (true) {
+            yield return new WaitForFixedUpdate();
+            Move(MainData.Controls.Player.Move.ReadValue<Vector2>());
+        }
+    }
 
-    [System.Serializable]
-    public class Serialization {
+    [System.Serializable] public class Serialization {
 
         public Inventory.Serialization inventory;
-
+        
         private Serialization(PlayerBehaviour player) {
             inventory = Inventory.Serialization.Real2Serializable(player.Inventory);
         }
@@ -77,6 +93,4 @@ public class PlayerBehaviour : CharacterBase
             Inventory.Serialization.Serializable2Real(serialization.inventory, player.Inventory);
         }
     }
-
-    #endregion
 }

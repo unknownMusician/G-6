@@ -6,101 +6,43 @@ public class Inventory : MonoBehaviour {
 
     const string TAG = "Inventory: ";
 
-    #region Card Inventory
+    #region Inventories
 
     public CardsInventory Cards { get; protected set; }
-
-    protected Transform InventoryCardsMenu => transform.GetChild(1);
-
-    #endregion
-
-    #region Weapon Inventory Properties
-
-    public Weapon Weapon {
-        get => WeaponSlots[_activeSlot];
-        protected set {
-            // To-Do: check if they are same;
-            WeaponSlots[_activeSlot] = value;
-            MainData.ActionInventoryWeaponsChange?.Invoke();
-        }
-    }
-    public List<Weapon> AllWeapons {
-        get {
-            var list = new List<Weapon>();
-            foreach (var weapon in WeaponSlots) {
-                if (weapon != null) {
-                    list.Add(weapon);
-                }
-            }
-            return list;
-        }
-    }
-
-    protected int _activeSlot = 0;
-    public int ActiveSlot {
-        get => _activeSlot;
-        set {
-            int fValue = value;
-            while (fValue < 0)
-                fValue += inventorySize;
-            fValue %= inventorySize;
-
-            //if (fValue == _activeSlot)
-            //return;
-            WeaponSlots[_activeSlot]?.gameObject.SetActive(false);
-            WeaponSlots[fValue]?.gameObject.SetActive(true);
-            _activeSlot = fValue;
-
-            MainData.ActionInventoryActiveSlotChange?.Invoke();
-        }
-    }
-
-    protected Transform InventoryWeaponsMenu => transform.GetChild(0);
+    public WeaponsInventory Weapons { get; protected set; }
 
     #endregion
     protected GameObject Character => transform.parent?.gameObject;
     protected FistFight FistFight { get; set; } = null;
-    protected Weapon[] WeaponSlots { get; set; } = new Weapon[4];
 
     #region Inspector Variables
-
-    [SerializeField] protected int inventorySize = 2;
-    [SerializeField] protected float throwStrenght = 25;
-    [SerializeField] protected float secondsToMaxThrow = 1;
 
     #endregion
 
     protected void Awake() {
         Cards = new CardsInventory(this);
+        Weapons = new WeaponsInventory(this);
         FistFight = GetComponent<FistFight>();
     }
     protected void Start() {
-        CheckChildrenForWeapons();
-        CheckChildrenForCards();
-        DisableWeaponsExceptFirst();
+        Weapons.CheckChildrenForWeapons();
+        Cards.CheckChildrenForCards();
+        Weapons.DisableWeaponsExceptFirst();
     }
 
     #region Character (→ Weapon) Methods
 
     public void AttackStart() {
-        if (Weapon != null)
-            Weapon.AttackPress();
+        if (Weapons.Weapon != null)
+            Weapons.Weapon.AttackPress();
         else
             FistFight.Attack();
     }
-    public void AttackEnd() => Weapon?.AttackRelease();
-    public void ThrowPress() => _tmpWhenThrowButtonPressed = Time.time;
-    protected float _tmpWhenThrowButtonPressed;
-    public void ThrowRelease() {
-        float deltaTime = Time.time - _tmpWhenThrowButtonPressed;
-        float strenght = throwStrenght * (
-            (deltaTime < secondsToMaxThrow) ? ((deltaTime) / secondsToMaxThrow) : 1f);
-        Weapon?.transform.SetParent(null);
-        Weapon?.Throw(Character, transform.rotation * Vector2.right * strenght);
-        Weapon = null;
-    }
-    public void ReloadGun() { if (Weapon is Gun gun) gun?.Reload(); }
-    public void ChangeWeaponState() => Weapon?.ChangeState();
+    public void AttackEnd() => Weapons.Weapon?.AttackRelease();
+    public void ThrowPress() => Weapons.ThrowPress();
+    public void ThrowRelease() => Weapons.ThrowRelease();
+    public void ReloadGun() => Weapons.ReloadGun();
+    public void ChangeWeaponState() => Weapons.ChangeWeaponState();
     public void Aim(Vector3 point, CoordsType type) {
         var localPoint = point;
 
@@ -121,69 +63,12 @@ public class Inventory : MonoBehaviour {
         if (cb != null)
             cb.CheckSideLR(localPoint);
     }
-    public bool PickUp(Weapon weapon) {
-        int newIndex = GetFirstFreeSlotIndex();
-        if (newIndex == -1)
-            return false;
-        // new parent
-        weapon.transform.SetParent(InventoryWeaponsMenu);
-        weapon.PrepareToPostPickUp();
-
-        // install Weapon
-        WeaponSlots[newIndex] = weapon;
-        if (newIndex != ActiveSlot)
-            WeaponSlots[newIndex].gameObject.SetActive(false);
-
-        return true; // todo
-    }
-    public bool PickUp(Card card) {
-        Cards.Add(card);
-        return true; // todo: remove
-    }
+    public bool PickUp(Weapon weapon) => Weapons.Add(weapon);
+    public bool PickUp(Card card) => Cards.Add(card);
 
     #endregion
 
     #region Service Methods
-
-    protected void CheckChildrenForWeapons() {
-        WeaponSlots = new Weapon[4];
-        for (int i = 0; i < InventoryWeaponsMenu.childCount; i++) {
-            int newIndex = GetFirstFreeSlotIndex();
-            if (newIndex == -1)
-                break;
-            Weapon weapon = InventoryWeaponsMenu.GetChild(i).gameObject.GetComponent<Weapon>();
-            if (weapon != null) {
-                WeaponSlots[newIndex] = weapon;
-                ActiveSlot = newIndex;
-                MainData.ActionInventoryWeaponsChange?.Invoke();
-            }
-        }
-        ActiveSlot = 0;
-    }
-    protected void CheckChildrenForCards() {
-        for (int i = 0; i < InventoryCardsMenu.childCount; i++) {
-            Card card = InventoryCardsMenu.GetChild(i).gameObject.GetComponent<Card>();
-            if (card != null) {
-                Cards.Add(card);
-                card.transform.position = this.transform.position;
-            }
-        }
-    }
-
-    protected int GetFirstFreeSlotIndex() {
-        for (int i = 0; i < inventorySize; i++) {
-            if (WeaponSlots[i] == null) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    protected void DisableWeaponsExceptFirst() {
-        for (int i = 1; i < InventoryWeaponsMenu.childCount; i++) {
-            InventoryWeaponsMenu.GetChild(i)?.gameObject.SetActive(false);
-        }
-    }
 
     #endregion
 
@@ -196,22 +81,26 @@ public class Inventory : MonoBehaviour {
         readonly public static int FOURTH = 3;
     }
     public enum CoordsType { Local, World, Screen }
-    public class CardsInventory {
+    [System.Serializable] public class CardsInventory {
+        // Values
+        protected Inventory inv = null;
+        protected Transform InventoryCardsMenu => inv.transform.GetChild(1);
 
-        protected Transform cardsMenu;
         public CardsInventory(Inventory inventory) {
-            this.cardsMenu = inventory.InventoryCardsMenu;
+            this.inv = inventory;
         }
 
-        public void Add(Card item) {
-            item.transform.SetParent(cardsMenu);
+        // List methods
+        public bool Add(Card item) {
+            item.transform.SetParent(InventoryCardsMenu);
             MainData.ActionInventoryCardsChange?.Invoke();
+            return true; // todo
         }
         public Card Remove(Card item) {
             Card removed = null;
-            int size = cardsMenu.childCount;
+            int size = InventoryCardsMenu.childCount;
             for (int i = 0; i < size; i++) {
-                if (cardsMenu.GetChild(i).GetComponent<Card>() == item) {
+                if (InventoryCardsMenu.GetChild(i).GetComponent<Card>() == item) {
                     (removed = item).transform.SetParent(null);
                     break;
                 }
@@ -223,11 +112,147 @@ public class Inventory : MonoBehaviour {
             get {
                 List<Card> cards = new List<Card>();
                 for (int i = 0; i < cards.Count; i++)
-                    cards.Add(cardsMenu.GetChild(i).GetComponent<Card>());
+                    cards.Add(InventoryCardsMenu.GetChild(i).GetComponent<Card>());
                 return new List<Card>(cards);
             }
         }
-        public Card Get(int index) => cardsMenu.GetChild(index).GetComponent<Card>();
+        public Card Get(int index) => InventoryCardsMenu.GetChild(index).GetComponent<Card>();
+        
+        // Service methods
+        public void CheckChildrenForCards() {
+            for (int i = 0; i < InventoryCardsMenu.childCount; i++) {
+                Card card = InventoryCardsMenu.GetChild(i).gameObject.GetComponent<Card>();
+                if (card != null) {
+                    Add(card);
+                    card.transform.position = inv.transform.position;
+                }
+            }
+        }
+    }
+    [System.Serializable] public class WeaponsInventory {
+
+        // Inspector values
+        [SerializeField] protected int inventorySize = 2;
+        [SerializeField] protected float throwStrenght = 25;
+        [SerializeField] protected float secondsToMaxThrow = 1;
+
+        #region Values
+
+        protected Inventory inv = null;
+        protected Transform InventoryWeaponsMenu => inv.transform.GetChild(0);
+        protected Weapon[] WeaponSlots { get; set; } = new Weapon[4];
+
+        public Weapon Weapon {
+            get => WeaponSlots[ActiveSlot];
+            set {
+                // To-Do: check if they are same;
+                WeaponSlots[ActiveSlot] = value;
+                MainData.ActionInventoryWeaponsChange?.Invoke();
+            }
+        }
+        public List<Weapon> AllWeapons {
+            get {
+                var list = new List<Weapon>();
+                foreach (var weapon in WeaponSlots) {
+                    if (weapon != null) {
+                        list.Add(weapon);
+                    }
+                }
+                return list;
+            }
+        }
+
+        protected int _activeSlot = 0;
+        public int ActiveSlot {
+            get => _activeSlot;
+            set {
+                int fValue = value;
+                while (fValue < 0)
+                    fValue += inventorySize;
+                fValue %= inventorySize;
+
+                //if (fValue == _activeSlot)
+                //return;
+                WeaponSlots[_activeSlot]?.gameObject.SetActive(false);
+                WeaponSlots[fValue]?.gameObject.SetActive(true);
+                _activeSlot = fValue;
+
+                MainData.ActionInventoryActiveSlotChange?.Invoke();
+            }
+        }
+        #endregion
+
+        public WeaponsInventory(Inventory inventory) {
+            this.inv = inventory;
+        }
+
+        // List Methods
+        public bool Add(Weapon weapon) {
+            int newIndex = GetFirstFreeSlotIndex();
+            if (newIndex == -1)
+                return false;
+            // new parent
+            weapon.transform.SetParent(InventoryWeaponsMenu);
+            weapon.PrepareToPostPickUp();
+
+            // install Weapon
+            WeaponSlots[newIndex] = weapon;
+            if (newIndex != ActiveSlot)
+                WeaponSlots[newIndex].gameObject.SetActive(false);
+
+            return true; // todo
+        }
+
+        #region Acting methods
+
+        public void ThrowPress() => _tmpWhenThrowButtonPressed = Time.time;
+        protected float _tmpWhenThrowButtonPressed;
+        public void ThrowRelease() {
+            float deltaTime = Time.time - _tmpWhenThrowButtonPressed;
+            float strenght = throwStrenght * (
+                (deltaTime < secondsToMaxThrow) ? ((deltaTime) / secondsToMaxThrow) : 1f);
+            Weapon?.transform.SetParent(null);
+            Weapon?.Throw(inv.Character, inv.transform.rotation * Vector2.right * strenght);
+            Weapon = null;
+        }
+        public void ReloadGun() { if (Weapon is Gun gun) gun?.Reload(); }
+        public void ChangeWeaponState() => Weapon?.ChangeState();
+        #endregion
+
+        #region Service Methods
+
+        public void CheckChildrenForWeapons() {
+            WeaponSlots = new Weapon[4];
+            for (int i = 0; i < InventoryWeaponsMenu.childCount; i++) {
+                int newIndex = GetFirstFreeSlotIndex();
+                if (newIndex == -1)
+                    break;
+                Weapon weapon = InventoryWeaponsMenu.GetChild(i).gameObject.GetComponent<Weapon>();
+                if (weapon != null) {
+                    WeaponSlots[newIndex] = weapon;
+                    ActiveSlot = newIndex;
+                    MainData.ActionInventoryWeaponsChange?.Invoke();
+                }
+            }
+            ActiveSlot = 0;
+        }
+
+        public int GetFirstFreeSlotIndex() {
+            for (int i = 0; i < inventorySize; i++) {
+                if (WeaponSlots[i] == null) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public void DisableWeaponsExceptFirst() {
+            for (int i = 1; i < InventoryWeaponsMenu.childCount; i++) {
+                InventoryWeaponsMenu.GetChild(i)?.gameObject.SetActive(false);
+            }
+        }
+        #endregion
+        // todo
     }
 
     #endregion
@@ -272,7 +297,7 @@ public class Inventory : MonoBehaviour {
             cardsMemory = cardsMemoryList.ToArray();
             cardsEffect = cardsEffectList.ToArray();
 
-            foreach (var weapon in inv.AllWeapons) {
+            foreach (var weapon in inv.Weapons.AllWeapons) {
                 if (weapon is Gun gun)
                     gunsList.Add(Gun.Serialization.Real2Serializable(gun));
                 else if (weapon is Melee melee)
@@ -289,7 +314,7 @@ public class Inventory : MonoBehaviour {
 
             // cards
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Cards/CardGunGen.prefab");
-            foreach(var card in serialization.cardsGen) {
+            foreach (var card in serialization.cardsGen) {
                 var cardObjectComponent = Instantiate(cardPrefab).GetComponent<CardGunGen>();
                 CardGunGen.Serialization.Serializable2Real(card, cardObjectComponent);
                 inv.Cards.Add(cardObjectComponent);
