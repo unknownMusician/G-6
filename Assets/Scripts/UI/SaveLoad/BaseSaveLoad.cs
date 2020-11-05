@@ -69,10 +69,9 @@ namespace Assets.Scripts.UI.SaveLoad
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.Log($"Error with getting data in load");
-                Logger.LogW(ex, $"Error with getting data in load");
+                Debug.LogWarning($"Error with getting data in load");
             }
 
             return data;

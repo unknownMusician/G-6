@@ -26,9 +26,9 @@ public class BaseConfig<TData> where TData : class
             }
 
         }
-        catch (Exception ex)
+        catch
         {
-            Logger.LogW(ex, $"Error with getting data in {typeof(TData)} config");
+            Debug.LogWarning($"Error with getting data in {typeof(TData)} config");
         }
 
     }

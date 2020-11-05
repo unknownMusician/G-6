@@ -33,6 +33,7 @@ namespace Assets.Scripts.UI.SaveLoad
         }
         public void LoadGame()
         {
+            // todo: make "Load Button" inactive when saveGame file is missing;
             SaveLoadData data = SaveLoad.Deserialize();
             Debug.Log("Pressed Load");
             //MainData.Inventory = SaveLoad.Data.inventory;
