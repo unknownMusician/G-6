@@ -11,33 +11,25 @@ namespace Assets.Scripts.UI.SaveLoad
 {
     public class SaveAndLoadGame : MonoBehaviour
     {
+        //название файла
         private readonly string Path = System.DateTime.Now.Day + System.DateTime.Now.Millisecond.ToString();
 
         public static SaveLoad SaveLoad;
-
-
-        public InputField inputFieldSave;
-
-
 
         public void SaveGame()
         {
 
 
-            Debug.Log("Gmae was Saved");
-            SaveLoad = new SaveLoad(inputFieldSave.text + Path + ".dat");
+            Debug.Log("Game was Saved");
+            SaveLoad = new SaveLoad( /*//TODO название фала для сохранения*/Path + ".dat");
             SaveLoadData data = new SaveLoadData()
             {
-                //inventory = MainData.Inventory,
-                //playerObject = MainData.PlayerObject,
-                //playerBehaviour = MainData.PlayerBehaviour,
-                //playerPosition = MainData.PlayerPosition,
-                coins = MainData.PlayerCoins,
-                level = MainData.Level,
+                Level = MainData.Level,
+                PlayerData = PlayerBehaviour.Serialization.Real2Serializable(MainData.PlayerBehaviour)
             };
 
             SaveLoad.Serialize(data);
-            Debug.Log("Gmae was Saved");
+            Debug.Log("Game was Saved");
         }
         public void LoadGame()
         {
@@ -46,12 +38,10 @@ namespace Assets.Scripts.UI.SaveLoad
             //MainData.Inventory = SaveLoad.Data.inventory;
             if (data != null)
             {
-                //MainData.PlayerObject = data.playerObject;
-                // MainData.PlayerBehaviour = SaveLoad.Data.playerBehaviour;
-                // MainData.PlayerPosition = SaveLoad.Data.playerPosition;
-                MainData.PlayerCoins = data.coins;
-                MainData.Level = data.level;
-                Debug.Log("Gmae was Loaded");
+                MainData.Level = data.Level;
+                PlayerBehaviour.Serialization.Serializable2Real(data.PlayerData, MainData.PlayerBehaviour);
+                Debug.Log("Game was Loaded");
+                //TODO выгрузка сохранений
             }
         }
     }
@@ -67,11 +57,7 @@ namespace Assets.Scripts.UI.SaveLoad
     [Serializable]
     public class SaveLoadData
     {
-        //public GameObject playerObject;
-        //public PlayerBehaviour playerBehaviour;
-        //public Vector3 playerPosition;
-        public int coins;
-        //public Inventory inventory;
-        public int level;
+        public int Level { get; set; }
+        public PlayerBehaviour.Serialization PlayerData { get; set; }
     }
 }
