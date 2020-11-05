@@ -2,8 +2,9 @@
 using UnityEngine;
 using System.Timers;
 using System;
+using System.Collections;
 
-public abstract class Weapon : BaseEnvironment {
+public abstract class Weapon : InteractableBase {
 
     const string TAG = "Weapon: ";
 
@@ -15,24 +16,48 @@ public abstract class Weapon : BaseEnvironment {
     #region Properties
 
     public EncyclopediaObject EncyclopediaObject => gameObject.GetComponent<EncyclopediaObject>();
-    protected abstract bool CanAttack { get; set; }
+    protected Weapon.State _weaponState;
     protected virtual Weapon.State WeaponState {
-        get => state;
+        get => _weaponState;
         set {
-            state = value;
-            Debug.Log(TAG + "Changed state: " + WeaponState);
+            _weaponState = value;
             switch (WeaponState) {
                 case State.Main:
+                    friend = Character;
                     this.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                    animator.SetBool("secondState", false);
+                    Animator.SetBool("secondState", false);
+                    WeaponCollider.enabled = false;
                     break;
                 case State.Alt:
+                    friend = Character;
                     this.transform.localRotation = Quaternion.Euler(0, 0, -90);
-                    animator.SetBool("secondState", true);
+                    Animator.SetBool("secondState", true);
+                    WeaponCollider.enabled = false;
+                    break;
+                case State.Throwed:
+                    WeaponCollider.enabled = true;
+                    transform.SetParent(null); // unparented weapon
+
+                    EnablePhysics();
+                    transform.rotation = Quaternion.identity;
+                    transform.localScale = Vector3.one;
+                    // todo
+                    break;
+                case State.Levitating:
+                    WeaponCollider.enabled = true;
+                    DisablePhysics();
+                    transform.SetParent(Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).transform);
+                    // todo
                     break;
             }
         }
     }
+    protected abstract bool CanAttack { get; set; }
+    protected GameObject Character => transform.parent?.parent?.parent?.gameObject;
+    protected Rigidbody2D Rigidbody { get; set; } = null;
+    protected SpriteRenderer SpriteRenderer { get; set; } = null;
+    protected Animator Animator { get; set; } = null;
+    protected Collider2D WeaponCollider { get; set; } = null;
 
     // UI 
     public abstract Card CardSlot1 { get; }
@@ -44,15 +69,7 @@ public abstract class Weapon : BaseEnvironment {
     #region Public Variables
 
     [SerializeField]
-    protected GameObject weaponHolder = null;
-    [SerializeField]
-    protected Rigidbody2D rigidBody = null;
-    [SerializeField]
-    protected SpriteRenderer spriteRenderer = null;
-    [SerializeField]
-    protected Animator animator = null;
-    [SerializeField]
-    protected Collider2D weaponCollider = null;
+    protected GameObject weaponHolder = null; // todo automatize
 
     [SerializeField]
     protected float throwHitDamage = 10;
@@ -61,18 +78,22 @@ public abstract class Weapon : BaseEnvironment {
 
     #region Private Variables
 
-    protected GameObject friend;
+    protected GameObject friend = null;
 
-    protected Timer timer;
-
-    protected Weapon.State state;
     protected bool canAttack = true;
+    protected bool attackButtonHold = false;
 
     #endregion
 
     #region Abstract Methods
 
     public abstract void Attack();
+    public void AttackPress() {
+        attackButtonHold = true;
+    }
+    public void AttackRelease() {
+        attackButtonHold = false;
+    }
     protected abstract void InstallCardsFromChildren();
     public abstract bool InstallUnknownCard(Card card);
     public abstract bool UninstallUnknownCard(Card card);
@@ -81,35 +102,41 @@ public abstract class Weapon : BaseEnvironment {
 
     #region Service Methods
 
-    protected void SetReliefTimer(float time) {
-        // Create a timer with a two second interval.
-        timer = new System.Timers.Timer(time * 1000);
-        // Hook up the Elapsed event for the timer.
-        timer.Elapsed += (sender, e) => { CanAttack = true; };
-        timer.AutoReset = false;
-        timer.Enabled = true;
+    protected IEnumerator ReliefTimer(float time) {
+        yield return new WaitForSeconds(time);
+        CanAttack = true;
     }
-    protected void EnablePhysics() {
-        rigidBody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
-        weaponCollider.enabled = true; // enabled Collider2D
+    public void EnablePhysics() {
+        Rigidbody.bodyType = RigidbodyType2D.Dynamic; // "enabled" Rigidbody2D
     }
-    protected void DisablePhysics() {
-        rigidBody.bodyType = RigidbodyType2D.Kinematic; // "disabled" Rigidbody2D
-        weaponCollider.enabled = false; // disabled Collider2D
-        rigidBody.velocity = Vector2.zero;
-        rigidBody.angularVelocity = 0;
-        this.transform.rotation = Quaternion.identity;
+    public void DisablePhysics() {
+        Rigidbody.bodyType = RigidbodyType2D.Kinematic; // "disabled" Rigidbody2D
+        Rigidbody.velocity = Vector2.zero;
+        Rigidbody.angularVelocity = 0;
+        transform.localRotation = Quaternion.identity;
     }
 
     #endregion
 
     #region Overrided Methods
 
+    protected void Awake() {
+        Rigidbody = GetComponent<Rigidbody2D>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        Animator = GetComponent<Animator>();
+        WeaponCollider = GetComponent<CircleCollider2D>();
+    }
+
+    protected void Start() {
+        WeaponState = (transform.parent != null) ? State.Main : State.Throwed;
+    }
+
+    protected void Update() { if (attackButtonHold) Attack(); }
+
     protected void OnTriggerEnter2D(Collider2D collider) {
-        if (state == State.Throwed && !collider.gameObject.Equals(friend)) {
-            collider.gameObject.GetComponent<CharacterBase>()?.TakeDamage(rigidBody.velocity.normalized * throwHitDamage);
-            DisablePhysics();
-            Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
+        if (_weaponState == State.Throwed && collider.gameObject != friend) {
+            collider.gameObject.GetComponent<CharacterBase>()?.TakeDamage(Rigidbody.velocity.normalized * throwHitDamage);
+            WeaponState = State.Levitating;
         }
     }
 
@@ -119,58 +146,39 @@ public abstract class Weapon : BaseEnvironment {
 
     public void ChangeState() => WeaponState = (WeaponState == State.Alt) ? State.Main : State.Alt;
 
-    // To-Do
-    //private void Drop() {
-    //    WeaponState = State.Throwed;
-
-    //    this.gameObject.transform.parent = null; // unparented weapon
-    //    Instantiate(weaponHolder, this.gameObject.transform.position, Quaternion.identity).GetComponent<WeaponHolder>().SetChild(this.transform);
-    //    Debug.Log(TAG + "Dropped weapon");
-    //}
-
     public void Throw(GameObject whoThrowed, Vector2 direction) {
         WeaponState = State.Throwed;
         friend = whoThrowed;
+        Rigidbody.velocity += direction; // "throwed" the weapon
+        Rigidbody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
+    }
 
-        gameObject.transform.parent = null; // unparented weapon
-
-        EnablePhysics();
-        transform.rotation = Quaternion.identity;
+    public void PrepareToPostPickUp() {
+        // transform set
+        transform.localPosition = new Vector3(0.2f, 0.2f);
         transform.localScale = Vector3.one;
-        rigidBody.velocity += direction; // "throwed" the weapon
-        rigidBody.AddTorque(-Mathf.Sign(direction.x) * direction.magnitude * 150f);
-        Debug.Log(rigidBody.angularVelocity);
+        // rigidbody set
+        DisablePhysics();
+        WeaponState = State.Main;
     }
 
     #endregion
 
-    #region Environment (Interaction)
-
-    public override void Interact(GameObject whoInterracted) {
+    public override bool Interact(GameObject whoInterracted) {
         // To-Do
-        var cb = whoInterracted?.GetComponent<CharacterBase>();
-        if (cb != null){
-            rigidBody.velocity = Vector2.zero;
-            rigidBody.angularVelocity = 0f;
-            transform.rotation = Quaternion.identity;
-            transform.localScale = Vector3.one;
-            DisablePhysics();
-            gameObject.transform.parent = whoInterracted.GetComponentInChildren<Inventory>().transform;
-            friend = null;
-            WeaponState = State.Main;
-            Debug.Log(TAG + "Picked");
+        if (WeaponState == State.Levitating || WeaponState == State.Throwed) {
+            var cb = whoInterracted?.GetComponent<CharacterBase>();
+            if (cb != null && cb.transform != Character) {
+                return cb.Inventory.PickUp(this);
+            }
         }
+        return false;
     }
-
-    #endregion
-
-    #region Inner Structures
 
     public enum State {
         Main,
         Alt,
-        Throwed
+        Throwed,
+        Levitating
     }
-
-    #endregion
 }

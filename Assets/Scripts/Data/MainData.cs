@@ -4,46 +4,56 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class MainData
-{
+public class MainData : MonoBehaviour {
     #region Main GameObjects
 
-    private static GameObject player;
+    private static GameObject _playerObject;
 
-    public static GameObject PlayerObject
-    {
-        get => player;
-        set
-        {
-            player = value;
+    public static GameObject PlayerObject {
+        get => _playerObject;
+        set {
+            _playerObject = value;
             ActionPlayerChange?.Invoke();
         }
     }
-    /// <summary>
-    /// Calls only on the start of each scene;
-    /// </summary>
-    public static Action ActionPlayerChange = ActionPlayerCoinsChange + ActionPlayerPositionChange + ActionHPChange + ActionSPChange + ActionOPChange;
+    /// <summary> Calls only on the start of each scene </summary>
+    public static Action ActionPlayerChange = 
+        ActionPlayerCoinsChange + 
+        ActionPlayerPositionChange + 
+        ActionHPChange + ActionSPChange + 
+        ActionOPChange + 
+        (() => { PlayerBehaviour = PlayerObject.GetComponent<PlayerBehaviour>(); });
 
-    public static GameObject RoomSpawnerObject { get; set; }
+    private static GameObject _roomSpawnerObject;
+    public static GameObject RoomSpawnerObject {
+        get => _roomSpawnerObject;
+        set {
+            _roomSpawnerObject = value;
+            ActionRoomSpawnerChange?.Invoke();
+        }
+    }
+    public static Action ActionRoomSpawnerChange = 
+        (() => { RoomSpawner = RoomSpawnerObject.GetComponent<RoomSpawner>(); });
 
     #endregion
 
     #region Player
 
-    public static PlayerBehaviour PlayerBehaviour => PlayerObject?.GetComponent<PlayerBehaviour>();
+    public static PlayerBehaviour PlayerBehaviour { get; private set; }
 
     //
 
     public static Action ActionPlayerPositionChange;
     public static Vector3 PlayerPosition { get => PlayerObject.transform.position; }
 
-    private static int coins = 5;
+    private static int _playerCoins = 5;
     public static Action ActionPlayerCoinsChange;
     public static int PlayerCoins {
-        get => coins;
+        get => _playerCoins;
         set {
-            coins = value;
+            _playerCoins = value;
             ActionPlayerCoinsChange?.Invoke();
         }
     }
@@ -62,8 +72,8 @@ public class MainData
 
     #region Inventory & Guns
 
-    public static Inventory Inventory => PlayerObject?.GetComponentInChildren<Inventory>();
-    public static Weapon ActiveWeapon => Inventory?.Weapon;
+    public static Inventory Inventory => PlayerBehaviour.Inventory;
+    public static Weapon ActiveWeapon => Inventory?.Weapons.Weapon;
 
     public static Action ActionInventoryCardsChange;
     public static Action ActionInventoryWeaponsChange;
@@ -75,7 +85,7 @@ public class MainData
 
     #region RoomSpawner
 
-    public RoomSpawner RoomSpawner => RoomSpawnerObject.GetComponent<RoomSpawner>();
+    public static RoomSpawner RoomSpawner { get; private set; }
 
     #endregion
 
@@ -93,4 +103,106 @@ public class MainData
     }
 
     #endregion
+
+    #region UI
+
+    public static GameUI GameUI { get; set; }
+
+    #endregion
+
+    #region Input
+
+    public static InputMaster Controls { get; private set; }
+
+    private void SetControlsActions() {
+
+        #region Weapon
+
+        Controls.Weapon.AttackPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackStart(); };
+        Controls.Weapon.AttackRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.AttackEnd(); };
+        Controls.Weapon.ChangeWeaponState.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ChangeWeaponState(); };
+        Controls.Weapon.Reload.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ReloadGun(); };
+        Controls.Weapon.ThrowPress.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowPress(); };
+        Controls.Weapon.ThrowRelease.performed += ctx => { if (!Pause.GameIsPaused) Inventory.ThrowRelease(); };
+        Controls.Weapon.Slot1.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.FIRST; };
+        Controls.Weapon.Slot2.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.SECOND; };
+        Controls.Weapon.Slot3.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.THIRD; };
+        Controls.Weapon.Slot4.performed += ctx => { if (!Pause.GameIsPaused) Inventory.Weapons.ActiveSlot = Inventory.Slots.FOURTH; };
+        Controls.Weapon.ChangeSlot.performed += ctx => {
+            if (!Pause.GameIsPaused)
+                _ = Mouse.current.scroll.ReadValue().y < 0 ? Inventory.Weapons.ActiveSlot-- : Inventory.Weapons.ActiveSlot++;
+        };
+        Controls.Weapon.AimMouse.performed += ctx => {
+            if (!Pause.GameIsPaused) {
+                Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Screen); // Weapon
+            }
+        };
+        Controls.Weapon.AimStick.performed += ctx => {
+            if (!Pause.GameIsPaused) {
+                Inventory.Aim(ctx.ReadValue<Vector2>(), Inventory.CoordsType.Local); // Weapon
+            }
+        };
+
+        #endregion
+
+        #region Player
+
+        Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.Jump(); };
+
+        Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = true; };
+        Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsCrouching = false; };
+
+        Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = true; };
+        Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = false; };
+        Controls.Player.RunChange.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.IsRunning = !PlayerBehaviour.IsRunning; };
+
+        Controls.Player.Interact.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour.TryInteract(); };
+
+        Controls.Player.Move.performed += ctx => { PlayerBehaviour.Move(true); };
+        Controls.Player.NoMove.performed += ctx => { PlayerBehaviour.Move(false); };
+
+        #endregion
+
+        #region UI
+
+        Controls.UI.Menu.performed += ctx => {
+            Pause.GameIsPaused = !Pause.GameIsPaused;
+            GameUI.menu.SetActive(Pause.GameIsPaused);
+        };
+
+        Controls.UI.WeaponSettings.performed += ctx => {
+            Pause.GameIsPaused = !Pause.GameIsPaused;
+            GameUI.weaponSettings.SetActive(Pause.GameIsPaused);
+        };
+
+        #endregion
+
+    }
+
+    public static Vector2 SquareNormalized(Vector2 v) {
+        float x = (v.x == 0) ? 0 : Mathf.Sign(v.x);
+        float y = (v.y == 0) ? 0 : Mathf.Sign(v.y);
+        return new Vector2(x, y);
+    }
+
+    #endregion
+
+    #region Mono
+
+    private void Awake() {
+        Controls = new InputMaster();
+        SetControlsActions();
+    }
+    private void OnEnable() {
+        Controls.Enable();
+    }
+    private void OnDisable() {
+        Controls.Disable();
+    }
+
+    #endregion
+
+    public static class Constants {
+        public static readonly float gravityScale = 9.8f;
+    }
 }

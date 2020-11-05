@@ -69,10 +69,10 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.Inventory.AllWeapons != null)
+        if (MainData.Inventory.Weapons.AllWeapons != null)
         {
             //(ScrollView)WeaponsScrollView.Clear();
-            foreach (Weapon weapon in MainData.Inventory.AllWeapons)
+            foreach (Weapon weapon in MainData.Inventory.Weapons.AllWeapons)
             {
                 GameObject instance = GameObject.Instantiate(WeaponButtonPrefab.gameObject) as GameObject;
                 instance.transform.SetParent(WeaponContent, false);
@@ -88,7 +88,7 @@ public class WeaponSettings : MonoBehaviour
         WeaponMainImage.sprite = activewepon.GetComponentInChildren<SpriteRenderer>().sprite;
         WeaponName.text = activewepon.EncyclopediaObject.eName;
         WeaponDescription.text = activewepon.EncyclopediaObject.eDescription;
-        MainData.Inventory.ActiveSlot = MainData.Inventory.AllWeapons.IndexOf(activewepon);
+        MainData.Inventory.Weapons.ActiveSlot = MainData.Inventory.Weapons.AllWeapons.IndexOf(activewepon);
         MainData.ActionInventoryActiveSlotChange();
 
         SetActiveCardsOnUI();
@@ -104,10 +104,10 @@ public class WeaponSettings : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        if (MainData.Inventory.Cards != null)
+        if (MainData.Inventory.Cards.List != null)
         {
 
-            foreach (Card card in MainData.Inventory.Cards)
+            foreach (Card card in MainData.Inventory.Cards.List)
             {
                 GameObject instanse = GameObject.Instantiate(CardPrefab.gameObject) as GameObject;
                 instanse.transform.SetParent(CardContent, false);

@@ -9,7 +9,6 @@ public class CardMeleeMemory : Card {
     #region Properties
 
     public NestedProps Props { get { return new NestedProps(memory); } }
-    public override CardType Type => CardType.CardMeleeMemory;
     public override Dictionary<Sprite, string> Modules {
         get {
             var dict = new Dictionary<Sprite, string>();
@@ -77,6 +76,26 @@ public class CardMeleeMemory : Card {
         DesertMemory = 2,
         ThisTimeMemory = 3,
         AlienMemory = 4,
+    }
+
+    #endregion
+
+    #region Serialization
+
+    [System.Serializable]
+    public class Serialization {
+
+        public int memory;
+
+        private Serialization(CardMeleeMemory card) {
+            memory = (int)card.memory;
+        }
+
+        public static Serialization Real2Serializable(CardMeleeMemory card) { return new Serialization(card); }
+
+        public static void Serializable2Real(Serialization serialization, CardMeleeMemory card) {
+            card.memory = (MemoryType)serialization.memory;
+        }
     }
 
     #endregion

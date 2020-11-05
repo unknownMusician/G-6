@@ -2,66 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(InteractableChecker))]
 public abstract class CharacterBase : MonoBehaviour
 {
-    [SerializeField]
-    protected List<Transform> GroundCheckers;
-    [SerializeField]
-    protected List<Transform> LeftSideCheckers;
-    [SerializeField]
-    protected List<Transform> RightSideCheckers;
-    [SerializeField]
-    protected EnvironmentChecker EnvironmentChecker;
-
     #region Fields
+    [Header("Checkers")]
+    [Header("-------------------- CharacterBase --------------------")]
     [SerializeField]
-    protected bool CanFly;
-
+    protected List<Vector2> GroundCheckers;
     [SerializeField]
-    protected float JumpForce;
-
+    protected List<Vector2> LeftSideCheckers;
     [SerializeField]
-    protected float VerticalSpeed;
+    protected List<Vector2> RightSideCheckers;
 
-    [SerializeField]
-    protected float HorizontalSpeed;
+    [Header("Values")]
+    [SerializeField] protected bool CanFly = false;
+    [SerializeField] protected Vector2 JumpForce = new Vector2(120, 200);
+    [SerializeField] protected Vector2 Speed = new Vector2(15, 15);
+    [SerializeField] [Range(0, .3f)] protected float AccelerationTime = 0.05f;
+    [SerializeField] protected float InteractionRadius = 30;
+    [SerializeField] protected float ClimbingSpeed = 10;
+    [SerializeField] protected LayerMask ContactLayer = 0;
+    [SerializeField] protected float SpPerFrameDecrease = 40;
+    [SerializeField] protected float SpPerFrameIncrease = 10;
+    [SerializeField] protected float HorizontalRunBoost = 1.5f;
+    [SerializeField] protected float HorizontalSneakBoost = 0.5f;
 
-    [SerializeField]
-    protected float InteractionRadius;
+    protected float GravityMultiplier = 1f;
+    protected Vector2 _currAccel = Vector2.zero;
 
-    [SerializeField]
-    protected float ClimbingSpeed;
-
-    [SerializeField]
-    protected LayerMask ContactLayer;
-
-    [SerializeField] 
-    protected float FatiguePerFrame;
-
-    [SerializeField] 
-    protected float HorizontalBust;
-
-    [SerializeField]
-    protected float SPRegenerationPerFrame;
-
-
-    protected Dictionary<Side, List<Transform>> Checkers;
+    protected Dictionary<Side, List<Vector2>> Checkers;
 
     public Dictionary<CardEffect.EffectType, EffectControl> CurrentEffects;
 
     protected float _hp;
     protected float _sp;
     protected float _op;
+
+    [Header("MaxValues")]
+    [SerializeField] protected float _hpMax = 100;
+    [SerializeField] protected float _spMax = 100;
+    [SerializeField] protected float _opMax = 100;
     #endregion
 
     #region Properties
 
+    #region Input
+
+    public bool IsRunning { get; set; }
+    public bool IsCrouching { get; set; }
+    public bool IsMoving { get; set; }
+
+    #endregion
+
     #region MaxValues
-    public float MaxHP { get; protected set; }
-    public float MaxSP { get; protected set; }
-    public float MaxOP { get; protected set; }
-    // ? public float MaxMP { get; protected set; } // Mana Point
+    public float MaxHP { get => _hpMax; protected set => _hpMax = value; }
+    public float MaxSP { get => _hpMax; protected set => _spMax = value; }
+    public float MaxOP { get => _hpMax; protected set => _opMax = value; }
     #endregion
 
     #region CurrentValues
@@ -71,18 +70,19 @@ public abstract class CharacterBase : MonoBehaviour
     #endregion
 
     #region Other Public Props
-    public Side Side { get; protected set; }
     public short Level { get; protected set; }
     public State State { get; protected set; }
     public Bonuses Bonuses { get; protected set; }
     public Fraction Fraction { get; protected set; }
+    public Inventory Inventory { get; protected set; }
+
     #endregion
 
     #endregion
 
     #region Environment
 
-    protected BaseEnvironment InteractableObject => EnvironmentChecker.ClosestEnvironment;
+    protected InteractableBase InteractableObject => InteractableChecker.ClosestEnvironment;
 
     protected float DistanceToInteractableObject
     {
@@ -103,95 +103,73 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected SpriteRenderer sr;
 
-    #endregion  
+    protected InteractableChecker InteractableChecker;
 
-
-    #region Guns&Inventory
-
-    #region Fields
-    [SerializeField]
-    protected Inventory Inventory;
-    #endregion
-
-    #region Methods
-
-    protected abstract void WeaponControl();
-    protected abstract void WeaponFixedControl();
+    protected Collider2D crouchDisabledCollider; // todo: crouching Physics & anim
 
     #endregion
-
-    #endregion
-
 
     #region Common Methods
-    protected void TurnToRightSide(bool inverse = false)
-    {
-        if (Side == Side.Left)
-            sr.flipX = !inverse;
-        else
-            sr.flipX = inverse;
 
-        //if (Side == Side.Left)
-        //    transform.rotation = new Quaternion(transform.rotation.x, Mathf.PI, transform.rotation.y, transform.rotation.w);
-        //else
-        //    transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.y, transform.rotation.w);
-    }
-    protected void MoveX(float dir, float jump, bool run = false)
+    public void Move(Vector2 dir, bool run = true, bool sneak = true)
     {
-        float horizontalSpeed = HorizontalSpeed;
-        if (run && Math.Abs(dir) > 0)
+        dir = MainData.SquareNormalized(dir);
+        Vector2 finSpeed = new Vector2(0, rb.velocity.y);
+        float deltaSP = SpPerFrameDecrease * Time.deltaTime;
+        // X
+        if (State != State.Climb && dir.x != 0) 
         {
-            SP -= FatiguePerFrame * Time.deltaTime;
-            horizontalSpeed *= (Math.Abs(SP) > SPRegenerationPerFrame * Time.deltaTime * 2 ? HorizontalBust : 1);
+            run &= IsRunning;
+            sneak &= IsCrouching;
+            float horizontalSpeed = Speed.x;
+            // running
+            if (run) {
+                SP -= deltaSP;
+                horizontalSpeed *= (SP > deltaSP ? HorizontalRunBoost : 1);
+            }
+            // sneaking
+            else if (sneak) { horizontalSpeed *= HorizontalSneakBoost; }
+            // fin X
+            finSpeed.x = horizontalSpeed * dir.x;
         }
+        // Y
+        if (State == State.Climb && dir.y != 0)
+        {
+            // if climbing down
+            if (dir.y > 0) { SP -= deltaSP; }
+            // fin Y
+            if (SP > deltaSP || dir.y < 0) { finSpeed.y = dir.y * Speed.y; }
+        }
+
+        // fin
+        rb.velocity = Vector2.SmoothDamp(rb.velocity, finSpeed, ref _currAccel, AccelerationTime);
+    }
+    public void Jump()
+    {
         switch (State)
         {
-            case State.OnGround:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce : 0), ForceMode2D.Impulse);
-                break;
-            //case State.Climb:
-            //    rb.velocity = new Vector2(dir * horizontalSpeed, jump ? JumpForce / 4 : rb.velocity.y);
-            //    //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
-            //    break;
+            case State.Climb:
+                rb.AddForce(
+                    new Vector2((ClimbingBySide() == Side.Left ? 1 : -1) * JumpForce.x, JumpForce.y * 0.5f),
+                    ForceMode2D.Impulse);
+                return;
+
             case State.Swim:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce / 4 : rb.velocity.y);
-                //rb.AddForce(new Vector2(dir * HorizontalSpeed, jump ? JumpForce / 4 : 0), ForceMode2D.Impulse);
+                JumpForce /= 4f;
                 break;
+
             case State.OnAir:
-                rb.velocity = new Vector2(dir * horizontalSpeed, rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-                break;
-            default:
-                rb.velocity = new Vector2(dir * horizontalSpeed, Math.Abs(jump) > 0 ? jump * JumpForce : rb.velocity.y);
-                //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
+                if (!CanFly) { return; }
                 break;
         }
-    }
-    protected void MoveY(float dir, bool jump)
-    {
-        float verticalSpeed = VerticalSpeed;
-        if (jump)
-        {
-            if (ClimbingBySide() == Side.Left)
-                //rb.velocity = new Vector2(JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(HorizontalSpeed , JumpForce * (Input.GetAxisRaw("Horizontal") < 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
-            else
-                //rb.velocity = new Vector2(-JumpForce / 2f, JumpForce);
-                rb.AddForce(new Vector2(-HorizontalSpeed, JumpForce * (Input.GetAxisRaw("Horizontal") > 0 ? -0.5f : 0.5f)), ForceMode2D.Impulse);
-            State = State.OnAir;
-        }
-        else 
-            rb.velocity = new Vector2(0, dir * verticalSpeed * (SP > 0 ? 1 : 0));
-        //rb.AddForce(new Vector2(0, dir == 0 ? 0 : dir * ClimbingSpeed), ForceMode2D.Impulse);
-        if(Math.Abs(dir) > 0)
-            SP -= FatiguePerFrame * Time.deltaTime ;
+
+        rb.AddForce(new Vector2(0, JumpForce.y), ForceMode2D.Impulse);
     }
 
     protected bool isOnLayer(string layer, Side side)
     {
         foreach (var checker in Checkers[side])
-            if (Physics2D.Linecast(transform.position, checker.position, 1 << LayerMask.NameToLayer(layer)))
+            if (Physics2D.Linecast(transform.position, (Vector2)transform.position + checker, 1 << LayerMask.NameToLayer(layer)))
                 return true;
         return false;
     }
@@ -211,33 +189,34 @@ public abstract class CharacterBase : MonoBehaviour
 
         return State.OnAir;
     }
-    protected Side CheckSideLR(Vector3 triger)
+    public void CheckSideLR(Vector3 localTriger, bool inverse = false)
     {
-        if (triger.x > transform.position.x)
-            return Side.Right;
-        return Side.Left;
+        if (localTriger.x > 0)
+            sr.flipX = inverse;
+        else
+            sr.flipX = !inverse;
     }
     protected float CheckGravityBeState()
     {
         switch (State)
         {
             case State.OnGround:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
             case State.Climb:
-                rb.gravityScale = 0f;
+                GravityMultiplier = 1f;
                 break;
             case State.Swim:
-                rb.gravityScale = 4.9f;
+                GravityMultiplier = 0.5f;
                 break;
             case State.OnAir:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
             default:
-                rb.gravityScale = 9.8f;
+                GravityMultiplier = 1f;
                 break;
         }
-        return rb.gravityScale;
+        return MainData.Constants.gravityScale * GravityMultiplier;
     }
     protected Side ClimbingBySide()
     {
@@ -249,7 +228,7 @@ public abstract class CharacterBase : MonoBehaviour
     }
 
 
-    protected bool TryInteract()
+    public bool TryInteract()
     {
         //try
         //{
@@ -264,27 +243,31 @@ public abstract class CharacterBase : MonoBehaviour
         //}
         //return false;
 
-        try
-        {
-            List<BaseEnvironment> allEnvironment = GameObject.FindObjectsOfType<BaseEnvironment>()
+        //try
+        //{
+            List<InteractableBase> allEnvironment = GameObject.FindObjectsOfType<InteractableBase>()
                 .OrderBy(p => (this.transform.position - p.transform.position).sqrMagnitude)
                 .ToList();
 
-            if (allEnvironment.Count != 0)
-            {
-                if ((this.transform.position - allEnvironment[0].transform.position).sqrMagnitude < InteractionRadius)
-                {
-                    allEnvironment[0].Interact(this.gameObject);
-                    Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
-                    return true;
+        if (allEnvironment.Count != 0)
+        {
+            for (int i = 0; i < allEnvironment.Count; i++) {
+                if ((this.transform.position - allEnvironment[i].transform.position).sqrMagnitude < InteractionRadius) {
+                    bool result = allEnvironment[i].Interact(this.gameObject);
+                    if(result)
+                    {
+                        Debug.DrawLine(this.transform.position, allEnvironment[0].transform.position);
+                        return true;
+                    }
                 }
             }
+        }
 
-        }
-        catch (Exception ex)
-        {
-            Logger.LogW(ex, "Problems with interaction in CharacterBase script");
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logger.LogW(ex, "Problems with interaction in CharacterBase script");
+        //}
 
         return false;
     }
@@ -301,11 +284,25 @@ public abstract class CharacterBase : MonoBehaviour
     {
         if (this.State == State.OnGround)
         {
-            float sp = SP + SPRegenerationPerFrame * Time.deltaTime;
+            float sp = SP + SpPerFrameIncrease * Time.deltaTime;
             SP = sp > MaxSP ? MaxSP : sp;
         }
     }
-
+    protected void Gravity() {
+        float gravityScale = MainData.Constants.gravityScale * GravityMultiplier * rb.mass * 10;
+        if (CheckState() == State.Climb) {
+            switch (ClimbingBySide()) {
+                case Side.Left:
+                    rb.AddForce(Vector2.left * gravityScale, ForceMode2D.Force);
+                    return;
+                case Side.Right:
+                    rb.AddForce(Vector2.right * gravityScale, ForceMode2D.Force);
+                    return;
+            }
+        }
+        rb.AddForce(Vector2.down * gravityScale, ForceMode2D.Force);
+        // todo
+    }
     protected void Die()
     {
         State = State.Dead;
@@ -317,21 +314,24 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected void Say(string message)
     {
-        Debug.Log($"Hero sad: \"{message}\" ");
+        //Debug.Log($"{name} said: \"{message}\" ");
     }
 
     #endregion
 
     #region MonoBehaviour Implemented
-    protected void Start()
+    protected void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        Inventory = GetComponentInChildren<Inventory>();
+        InteractableChecker = GetComponent<InteractableChecker>();
 
-        Checkers = new Dictionary<Side, List<Transform>>();
-        Checkers.Add(Side.Down, GroundCheckers);
-        Checkers.Add(Side.Left, LeftSideCheckers);
-        Checkers.Add(Side.Right, RightSideCheckers);
+        Checkers = new Dictionary<Side, List<Vector2>> {
+            { Side.Down, GroundCheckers },
+            { Side.Left, LeftSideCheckers },
+            { Side.Right, RightSideCheckers }
+        };
 
         CurrentEffects = new Dictionary<CardEffect.EffectType, EffectControl>();
 
@@ -343,16 +343,18 @@ public abstract class CharacterBase : MonoBehaviour
     }
     protected void Update()
     {
-        State = CheckState();
-        TurnToRightSide();
-        CheckGravityBeState();
-        WeaponControl();
+        if (!Pause.GameIsPaused && State != State.Dead) {
+            CheckGravityBeState();
+            State = CheckState();
+        }
     }
     protected void FixedUpdate()
     {
-        WeaponFixedControl();
         EffectsFixedControl();
         SPFixedControl();
+
+        // todo
+        Gravity();
     }
     #endregion
 
@@ -362,7 +364,7 @@ public abstract class CharacterBase : MonoBehaviour
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        Say($"Ouch, I've taken {damage} damage at {DateTime.Now: hh:mm:ss t z}. Now I have {HP} HP");
+        Say($"Ouch, I've taken {damage} damage. Now I have {HP} HP");
         if (HP <= 0)
             Die();
     }
@@ -391,4 +393,18 @@ public abstract class CharacterBase : MonoBehaviour
     }
     #endregion
 
+    protected void OnDrawGizmos() {
+        Gizmos.color = Color.grey;
+        foreach (var v in GroundCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+        Gizmos.color = Color.green;
+        foreach (var v in RightSideCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+        Gizmos.color = Color.yellow;
+        foreach (var v in LeftSideCheckers) {
+            Gizmos.DrawSphere((Vector2)transform.position + v, 0.1f);
+        }
+    }
 }
