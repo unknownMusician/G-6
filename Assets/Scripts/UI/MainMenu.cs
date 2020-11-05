@@ -8,27 +8,23 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject settingGameObject;
+    public GameObject settingGameObject; // todo
     public GameObject thisGameObject;
     public AudioMixer audioGameObject;
     public GameObject gameUIGameObject;
     public GameObject weaponSettingsGameObject;
-    public GameObject saveLoadGame;
-    public void PlayPressed()
-    {
+    public void PlayPressed() {
         DontDestroyOnLoad(settingGameObject);
         DontDestroyOnLoad(audioGameObject);
         DontDestroyOnLoad(gameUIGameObject);
         DontDestroyOnLoad(weaponSettingsGameObject);
-        DontDestroyOnLoad(saveLoadGame);
 
         gameUIGameObject.SetActive(true);
 
         SceneManager.LoadScene("Level 1");
     }
 
-    public void LoadSetting()
-    {
+    public void LoadSetting() {
         thisGameObject.SetActive(false);
         settingGameObject.SetActive(true);
         Setting.prap = true;
