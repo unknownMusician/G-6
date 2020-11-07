@@ -1,51 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
+﻿using G6.Data;
+using G6.Data.SaveLoad;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
-
-public class MainMenu : MonoBehaviour
-{
-    public GameObject settingGameObject; // todo
-    public GameObject thisGameObject;
-    public AudioMixer audioGameObject;
-    public GameObject gameUIGameObject;
-    public GameObject weaponSettingsGameObject;
-    public void PlayPressed() {
-        DontDestroyOnLoad(settingGameObject);
-        DontDestroyOnLoad(audioGameObject);
-        DontDestroyOnLoad(gameUIGameObject);
-        DontDestroyOnLoad(weaponSettingsGameObject);
-
-        gameUIGameObject.SetActive(true);
-
-        SceneManager.LoadScene("Level 1");
-    }
-
-    public void LoadSetting() {
-        thisGameObject.SetActive(false);
-        settingGameObject.SetActive(true);
-        Setting.prap = true;
-    }
-
-
-    void Start()
+namespace G6.UI {
+    public class MainMenu : MonoBehaviour
     {
-        audioGameObject.SetFloat("masterVolume", -25);
-    }
-    public void ExitPressed()
-    {
-        Application.Quit();
-    }
-    //public void LoadSetting()
-    //{
-    //    settinGameObject.active = true;
-    //}
+        public static MainMenu instance;
+        protected void Awake() => instance = this;
+        protected void OnDestroy() => instance = null;
 
-    public void LoadGame()
-    {
+        public AudioMixer audioGameObject;
 
+        public void PlayPressed() => LevelManager.LoadLevel(LevelManager.Level.Level1);
+        public void LoadPressed() => SaveAndLoadGame.LoadGame();
+        public void BuilderPressed() => LevelManager.LoadEnvironmentBuilder();
+        public void ExitPressed() => Application.Quit();
+
+        public void LoadSetting() {
+            gameObject.SetActive(false);
+            Setting.instance.gameObject.SetActive(true);
+            Setting.prap = true;
+        }
+
+
+        void Start()
+        {
+            audioGameObject.SetFloat("masterVolume", -25); // todo Make AudioManager
+        }
     }
 }

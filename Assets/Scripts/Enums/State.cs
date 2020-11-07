@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum State
-{
-    OnGround,
-    Climb,
-    Swim,
-    OnAir,
-    Dead
+﻿namespace G6.Enums {
+    public enum State {
+        OnGround,
+        Climb,
+        Swim,
+        OnAir,
+        Dead
+    }
 }

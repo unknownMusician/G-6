@@ -1,97 +1,100 @@
-﻿using System.Collections;
+﻿using G6.Weapons.Cards;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectControl
-{
-    protected CharacterBase character;
-
-    protected float damage;
-    protected float duration;
-    protected float interval;
-
-    protected float currentInterval;
-    protected float currentDuration;
-    protected CardEffect.EffectType type;
-
-    public float Damage
+namespace G6.Characters.Info {
+    public class EffectControl
     {
-        get => damage;
-        set
+        protected CharacterBase character;
+
+        protected float damage;
+        protected float duration;
+        protected float interval;
+
+        protected float currentInterval;
+        protected float currentDuration;
+        protected CardEffect.EffectType type;
+
+        public float Damage
         {
-            if (value > damage)
-                damage = value;
-        }
-    }
-    public float Duration
-    {
-        get => duration;
-        set
-        {
-            if (value > duration)
+            get => damage;
+            set
             {
-                duration = value;
+                if (value > damage)
+                    damage = value;
             }
-            currentDuration = 0;
         }
-    }
-    public float Interval
-    {
-        get => interval;
-        set
+        public float Duration
         {
-            if (value < interval)
-                interval = value;
+            get => duration;
+            set
+            {
+                if (value > duration)
+                {
+                    duration = value;
+                }
+                currentDuration = 0;
+            }
         }
-    }
-
-    public EffectControl(CardEffect.EffectType type, float damage, float duration, float interval, CharacterBase character)
-    {
-        this.type = type;
-        this.damage = damage;
-        this.duration = duration;
-        this.interval = interval;
-        this.character = character;
-
-        this.currentInterval = 0;
-        this.currentDuration = 0;
-    }
-    public EffectControl(CardEffect.NestedProps props, CharacterBase character)
-    {
-        this.type = props.Effect;
-        this.damage = props.DMG;
-        this.duration = props.Duration;
-        this.interval = props.Interval;
-        this.character = character;
-
-        this.currentInterval = 0;
-        this.currentDuration = 0;
-    }
-
-    public void Act(float deltaTime)
-    {
-        currentInterval += deltaTime;
-        currentDuration += deltaTime;
-
-        if (currentInterval >= interval)
+        public float Interval
         {
-            currentInterval -= interval;
-            character.TakeDamage(damage);
+            get => interval;
+            set
+            {
+                if (value < interval)
+                    interval = value;
+            }
         }
 
-        if (currentDuration >= duration)
+        public EffectControl(CardEffect.EffectType type, float damage, float duration, float interval, CharacterBase character)
         {
-            character.CurrentEffects.Remove(type);
-        }
-    }
+            this.type = type;
+            this.damage = damage;
+            this.duration = duration;
+            this.interval = interval;
+            this.character = character;
 
-    public void ChangeParams(CardEffect.NestedProps props)
-    {
-        if (type == props.Effect)
+            this.currentInterval = 0;
+            this.currentDuration = 0;
+        }
+        public EffectControl(CardEffect.NestedProps props, CharacterBase character)
         {
-            Damage = props.DMG;
-            Duration = props.Duration;
-            Interval = props.Interval;
+            this.type = props.Effect;
+            this.damage = props.DMG;
+            this.duration = props.Duration;
+            this.interval = props.Interval;
+            this.character = character;
+
+            this.currentInterval = 0;
+            this.currentDuration = 0;
+        }
+
+        public void Act(float deltaTime)
+        {
+            currentInterval += deltaTime;
+            currentDuration += deltaTime;
+
+            if (currentInterval >= interval)
+            {
+                currentInterval -= interval;
+                character.TakeDamage(damage);
+            }
+
+            if (currentDuration >= duration)
+            {
+                character.CurrentEffects.Remove(type);
+            }
+        }
+
+        public void ChangeParams(CardEffect.NestedProps props)
+        {
+            if (type == props.Effect)
+            {
+                Damage = props.DMG;
+                Duration = props.Duration;
+                Interval = props.Interval;
+            }
         }
     }
 }
