@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-namespace G6.UI {
+namespace G6.UI
+{
     public class Setting : MonoBehaviour
     {
         public static Setting instance;
@@ -25,7 +26,7 @@ namespace G6.UI {
         }
         public void OnDestroy() => instance = null;
 
-        public void Exit()
+        public void ExitMainMenu()
         {
             gameObject.SetActive(false);
             if (prap)
@@ -33,8 +34,15 @@ namespace G6.UI {
                 MainMenu.instance.gameObject.SetActive(true);
                 prap = false;
             }
-            Pause.GameIsPaused = false;
         }
+
+        public void ExitMenu()
+        {
+            gameObject.SetActive(false);
+            Menu.instance.gameObject.SetActive(true);
+            prap = false;
+        }
+
 
         public void AudioVolume(float sliderValue)
         {
