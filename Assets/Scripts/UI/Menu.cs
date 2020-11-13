@@ -23,6 +23,8 @@ namespace G6.UI {
         }
         public void LoadSetting()
         {
+            Setting.instance.gameObject.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 }
