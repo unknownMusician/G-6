@@ -126,7 +126,11 @@ namespace G6.Environment {
             MainData.EnvironmentBuilderObject = this.gameObject;
         }
 
-        private void Update() {
+        private void Awake() => MainData.EnvironmentBuilder = this;
+
+        private void OnDisable() => MainData.EnvironmentBuilder = null;
+
+        private void Update() { // todo: change
 
             if (cursorBlockSprite != null)
                 cursorBlockSprite.transform.position = mouseGridPosition;

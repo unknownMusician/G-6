@@ -33,7 +33,7 @@ namespace G6.Data {
 
         #region Player
 
-        public static PlayerBehaviour _playerBehaviour;
+        private static PlayerBehaviour _playerBehaviour;
         public static PlayerBehaviour PlayerBehaviour {
             get => _playerBehaviour;
             private set {
@@ -104,7 +104,7 @@ namespace G6.Data {
 
         #region EnvironmentBuilder
 
-        public static EnvironmentBuilder _environmentBuilder { get; set; }
+        private static EnvironmentBuilder _environmentBuilder { get; set; }
         public static EnvironmentBuilder EnvironmentBuilder {
             get => _environmentBuilder;
             set {
@@ -200,13 +200,13 @@ namespace G6.Data {
 
             #region EnvironmentBuilder
 
-            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => EnvironmentBuilder.DoWePlaceBlocks = true;
+            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWePlaceBlocks = true; };
 
-            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => EnvironmentBuilder.DoWePlaceBlocks = false;
+            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWePlaceBlocks = false; };
 
-            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => EnvironmentBuilder.DoWeDeleteBlocks = true;
+            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWeDeleteBlocks = true; };
 
-            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => EnvironmentBuilder.DoWeDeleteBlocks = false;
+            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWeDeleteBlocks = false; };
 
             #endregion
 
