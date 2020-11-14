@@ -931,6 +931,90 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "EnvironmentBuilder",
+            "id": "61504643-8eb5-43ed-b457-9ebb7bf5172f",
+            "actions": [
+                {
+                    "name": "PlaceObject",
+                    "type": "Button",
+                    "id": "84ce3089-e322-4e89-9c26-5e367060f7d4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "NoPlaceObject",
+                    "type": "Button",
+                    "id": "ea0d4c30-ca2d-4cad-923e-eda2edf61151",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DeleteObject",
+                    "type": "Button",
+                    "id": "685276f5-2a16-44c6-b650-81815338c5ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "NoDeleteObject",
+                    "type": "Button",
+                    "id": "4c477f48-429f-47f2-91eb-5ae9aa9ef428",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d57a5d11-2185-49af-9406-7dddeb1d64b8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c11ab2ff-002b-4162-809f-be86663ac297",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ebf94c9-db32-439c-905d-b067a9436c9e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NoPlaceObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63e56a91-d1eb-412f-9f0f-6abb122838c7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NoDeleteObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

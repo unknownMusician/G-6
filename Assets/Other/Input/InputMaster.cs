@@ -944,6 +944,90 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""EnvironmentBuilder"",
+            ""id"": ""61504643-8eb5-43ed-b457-9ebb7bf5172f"",
+            ""actions"": [
+                {
+                    ""name"": ""PlaceObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""84ce3089-e322-4e89-9c26-5e367060f7d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""NoPlaceObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea0d4c30-ca2d-4cad-923e-eda2edf61151"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""DeleteObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""685276f5-2a16-44c6-b650-81815338c5ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""NoDeleteObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c477f48-429f-47f2-91eb-5ae9aa9ef428"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d57a5d11-2185-49af-9406-7dddeb1d64b8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c11ab2ff-002b-4162-809f-be86663ac297"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ebf94c9-db32-439c-905d-b067a9436c9e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NoPlaceObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63e56a91-d1eb-412f-9f0f-6abb122838c7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NoDeleteObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1017,6 +1101,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Menu = m_UI.FindAction("Menu", throwIfNotFound: true);
         m_UI_WeaponSettings = m_UI.FindAction("WeaponSettings", throwIfNotFound: true);
+        // EnvironmentBuilder
+        m_EnvironmentBuilder = asset.FindActionMap("EnvironmentBuilder", throwIfNotFound: true);
+        m_EnvironmentBuilder_PlaceObject = m_EnvironmentBuilder.FindAction("PlaceObject", throwIfNotFound: true);
+        m_EnvironmentBuilder_NoPlaceObject = m_EnvironmentBuilder.FindAction("NoPlaceObject", throwIfNotFound: true);
+        m_EnvironmentBuilder_DeleteObject = m_EnvironmentBuilder.FindAction("DeleteObject", throwIfNotFound: true);
+        m_EnvironmentBuilder_NoDeleteObject = m_EnvironmentBuilder.FindAction("NoDeleteObject", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1329,6 +1419,63 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // EnvironmentBuilder
+    private readonly InputActionMap m_EnvironmentBuilder;
+    private IEnvironmentBuilderActions m_EnvironmentBuilderActionsCallbackInterface;
+    private readonly InputAction m_EnvironmentBuilder_PlaceObject;
+    private readonly InputAction m_EnvironmentBuilder_NoPlaceObject;
+    private readonly InputAction m_EnvironmentBuilder_DeleteObject;
+    private readonly InputAction m_EnvironmentBuilder_NoDeleteObject;
+    public struct EnvironmentBuilderActions
+    {
+        private @InputMaster m_Wrapper;
+        public EnvironmentBuilderActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlaceObject => m_Wrapper.m_EnvironmentBuilder_PlaceObject;
+        public InputAction @NoPlaceObject => m_Wrapper.m_EnvironmentBuilder_NoPlaceObject;
+        public InputAction @DeleteObject => m_Wrapper.m_EnvironmentBuilder_DeleteObject;
+        public InputAction @NoDeleteObject => m_Wrapper.m_EnvironmentBuilder_NoDeleteObject;
+        public InputActionMap Get() { return m_Wrapper.m_EnvironmentBuilder; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EnvironmentBuilderActions set) { return set.Get(); }
+        public void SetCallbacks(IEnvironmentBuilderActions instance)
+        {
+            if (m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface != null)
+            {
+                @PlaceObject.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnPlaceObject;
+                @PlaceObject.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnPlaceObject;
+                @PlaceObject.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnPlaceObject;
+                @NoPlaceObject.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoPlaceObject;
+                @NoPlaceObject.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoPlaceObject;
+                @NoPlaceObject.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoPlaceObject;
+                @DeleteObject.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnDeleteObject;
+                @DeleteObject.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnDeleteObject;
+                @DeleteObject.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnDeleteObject;
+                @NoDeleteObject.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
+                @NoDeleteObject.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
+                @NoDeleteObject.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
+            }
+            m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PlaceObject.started += instance.OnPlaceObject;
+                @PlaceObject.performed += instance.OnPlaceObject;
+                @PlaceObject.canceled += instance.OnPlaceObject;
+                @NoPlaceObject.started += instance.OnNoPlaceObject;
+                @NoPlaceObject.performed += instance.OnNoPlaceObject;
+                @NoPlaceObject.canceled += instance.OnNoPlaceObject;
+                @DeleteObject.started += instance.OnDeleteObject;
+                @DeleteObject.performed += instance.OnDeleteObject;
+                @DeleteObject.canceled += instance.OnDeleteObject;
+                @NoDeleteObject.started += instance.OnNoDeleteObject;
+                @NoDeleteObject.performed += instance.OnNoDeleteObject;
+                @NoDeleteObject.canceled += instance.OnNoDeleteObject;
+            }
+        }
+    }
+    public EnvironmentBuilderActions @EnvironmentBuilder => new EnvironmentBuilderActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -1388,5 +1535,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
     {
         void OnMenu(InputAction.CallbackContext context);
         void OnWeaponSettings(InputAction.CallbackContext context);
+    }
+    public interface IEnvironmentBuilderActions
+    {
+        void OnPlaceObject(InputAction.CallbackContext context);
+        void OnNoPlaceObject(InputAction.CallbackContext context);
+        void OnDeleteObject(InputAction.CallbackContext context);
+        void OnNoDeleteObject(InputAction.CallbackContext context);
     }
 }

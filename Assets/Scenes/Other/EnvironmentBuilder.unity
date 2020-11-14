@@ -1986,11 +1986,6 @@ MonoBehaviour:
   blockSize: 1
   objectSize: 0.5
   roomSize: {x: 30, y: 20}
-  currentBlockID: 0
-  blocksPrefabs: []
-  objectsPrefabs: []
-  specialsPrefabs: []
-  cursorBlockSprite: {fileID: 0}
   blocksMenu: {fileID: 1726480779}
   objectsMenu: {fileID: 1889270700}
   specialsMenu: {fileID: 1782349217}
@@ -1999,7 +1994,6 @@ MonoBehaviour:
   barrierPrefab: {fileID: 5140786508854112489, guid: 717ec25085ea4864fb71ef2b3689bea3,
     type: 3}
   layerMenu: {fileID: 1305727856}
-  _cl: 0
 --- !u!4 &1886052540
 Transform:
   m_ObjectHideFlags: 0
