@@ -1,45 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using G6.Characters;
+using G6.Data;
+using G6.Environment.Interactables.Base;
+using G6.RoomSpawning;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using G6.Data;
+using UnityEngine.UI;
+using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 
 /// todo:
 /// - Gamepad input
 ///     - Placing/Deleting
 ///     - Read position
 ///     - UI & Menu
-/// - Layers placing object *
-/// - Saving multiple rooms
+/// - Layers placing object +
+/// - Saving multiple rooms + (sort of)
 ///     - Connect to RoomSpawner
 /// - Ability to PlayTest
 ///     - Choose where to start playtest
 /// - Doors restrictions
 
 namespace G6.Environment {
-    [ExecuteAlways]
     public sealed class EnvironmentBuilder : MonoBehaviour {
 
         public static EnvironmentBuilder instance { get; private set; }
 
-        [SerializeField] private UI ui;
-        [SerializeField] private RoomCreator roomCreator;
-        [SerializeField] private Selected selected;
-        [SerializeField] private Common common;
+        [SerializeField] private UI ui = default;
+        [SerializeField] private RoomCreator roomCreator = default;
+        [SerializeField] private Selected selected = default;
+        [SerializeField] private Common common = default;
 
-        private GameObject cursorBlockSprite { get; set; }
-        private Vector2 MouseGridPosition {
-            get {
-                Vector2 mouse = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                return new Vector2(Mathf.Round(mouse.x / selected.GridSize) * selected.GridSize, Mathf.Round(mouse.y / selected.GridSize) * selected.GridSize);
-            }
-        }
-        public void SetLayer(UserLayer layer) => selected.UserLayer = layer;
-        public bool DoWePlaceBlocks { get; set; } = false;
-        public bool DoWeDeleteBlocks { get; set; } = false;
+        private GameObject cursor { get; set; }
+        private Vector2 MouseGridPosition => NormalizeByGrid(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()), selected.GridSize);
+        private Vector2 NormalizeByGrid(Vector2 worldPos, float gridSize)
+            => new Vector2(Mathf.Round(worldPos.x / gridSize) * gridSize, Mathf.Round(worldPos.y / gridSize) * gridSize);
+        public void SetLayer(int layer) => selected.UserLayer = (UserLayer)layer;
+        #region Input & Coroutines
 
         private Coroutine coroutine;
         public void DeleteStart() {
@@ -69,28 +67,11 @@ namespace G6.Environment {
                 coroutine = null;
             }
         }
-
-        public void Awake() {
-            instance = this;
-            common.Start(this);
-            selected.Start(this);
-            ui.Start(this);
-            roomCreator.Start(this);
-            MainData.EnvironmentBuilderObject = this.gameObject;
-        }
-        private void Start() {
-            Time.timeScale = 0;
-            SelectItem(0);
-        }
-        private void OnDestroy() {
-            MainData.EnvironmentBuilderObject = null;
-            instance = null;
-        }
-        private IEnumerator Placing() { // todo: interolate
+        private IEnumerator Placing() { // todo: interpolate
             while (true) {
 
                 // deleting previous
-                DeleteObject(MouseGridPosition);
+                roomCreator.DeleteItem(MouseGridPosition);
 
                 // creating new
                 if ((MouseGridPosition.x <= common.RoomSize.x) &&
@@ -104,36 +85,45 @@ namespace G6.Environment {
                 yield return null;
             }
         }
-        private IEnumerator Deleting() { // todo: interolate
+        private IEnumerator Deleting() { // todo: interpolate
             while (true) {
-                DeleteObject(MouseGridPosition);
+                roomCreator.DeleteItem(MouseGridPosition);
                 yield return null;
             }
         }
-        private void Update() { // todo: change
-            cursorBlockSprite.transform.position = MouseGridPosition;
+        #endregion
+
+        #region Mono
+        public void Awake() {
+            // Singleton
+            instance = this;
+            // Creating cursor
+            cursor = new GameObject("alphaSprite");
+            cursor.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            // Inner classes
+            common.Start(this);
+            selected.Start(this);
+            ui.Start(this);
+            roomCreator.Start(this);
+            // MainData
+            MainData.EnvironmentBuilderObject = this.gameObject;
         }
+        private void Start() {
+            Time.timeScale = 0;
+            SelectItem(0);
+        }
+        private void OnDestroy() {
+            MainData.EnvironmentBuilderObject = null;
+            instance = null;
+        }
+        private void Update() {
+            cursor.transform.position = MouseGridPosition;
+        }
+        #endregion
 
         private void SelectItem(int itemID) {
-
             selected.ItemID = itemID;
-
-            if (cursorBlockSprite == null) {
-                cursorBlockSprite = new GameObject("alphaSprite");
-                cursorBlockSprite.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
-                cursorBlockSprite.transform.position = MouseGridPosition;
-            }
-            cursorBlockSprite.GetComponent<SpriteRenderer>().sprite = selected.PrefabSprite;
-        }
-
-        private void DeleteObject(Vector2 gridPosition) {
-
-            var selectedDict = selected.ItemsCoordsDict;
-
-            if (selectedDict.ContainsKey(gridPosition)) {
-                Destroy(selectedDict[gridPosition]);
-                selectedDict.Remove(gridPosition);
-            }
+            cursor.GetComponent<SpriteRenderer>().sprite = selected.PrefabSprite;
         }
 
         public void SaveRoomObjectAsAsset() => roomCreator.SaveRoom();
@@ -228,6 +218,7 @@ namespace G6.Environment {
                 }
             }
             public void OnDrawGizmos() {
+                if (e == null) { return; }
                 Gizmos.color = Color.green;
 
                 Gizmos.DrawLine(RoomTopLeftCorner, RoomTopRightCorner);
@@ -249,30 +240,36 @@ namespace G6.Environment {
             public Transform Room { get; private set; } = default;
 
             public Transform Background { get; private set; } = default;
-            public Transform Doors { get; private set; } = default;
-            public Transform Enemies { get; private set; } = default;
-            public Transform SpawnPoints { get; private set; } = default;
             public Transform Walls { get; private set; } = default;
             public Transform Foreground { get; private set; } = default;
+            public Transform Doors { get; private set; } = default;
+            public Transform Enemies { get; private set; } = default;
             public Transform Objects { get; private set; } = default;
             public Transform Specials { get; private set; } = default;
+
+            public Transform SpawnPoints { get; private set; } = default;
 
             private void CreateRoom() {
                 // New Room
                 Room = new GameObject("Room").transform;
                 // New RoomParts
                 (Background = new GameObject("Background").transform).SetParent(Room);
-                (Doors = new GameObject("Doors").transform).SetParent(Room);
-                (Enemies = new GameObject("Enemies").transform).SetParent(Room);
-                (SpawnPoints = new GameObject("SpawnPoints").transform).SetParent(Room);
                 (Walls = new GameObject("Walls").transform).SetParent(Room);
                 (Foreground = new GameObject("Foreground").transform).SetParent(Room);
+                (Doors = new GameObject("Doors").transform).SetParent(Room);
+                (Enemies = new GameObject("Enemies").transform).SetParent(Room);
                 (Objects = new GameObject("Objects").transform).SetParent(Room);
                 (Specials = new GameObject("Specials").transform).SetParent(Room);
+                (SpawnPoints = new GameObject("SpawnPoints").transform).SetParent(Room);
             }
 
-            public void SaveRoom() {
-                PrefabUtility.SaveAsPrefabAsset(Room.gameObject, "Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_1.prefab");
+            public void SaveRoom() { // add different folders for different types of rooms
+                for (int i = 1; i < 100; i++) { // todo: restriction of 98 files
+                    if (!System.IO.File.Exists($"Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_{i}.prefab")) {
+                        PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_{i}.prefab");
+                        break;
+                    }
+                }
             }
 
             public void PlaceItem(Vector2 gridPosition) {
@@ -280,13 +277,73 @@ namespace G6.Environment {
                 GameObject clone = PrefabUtility.InstantiatePrefab(e.selected.Prefab) as GameObject;
 
                 clone.transform.position = gridPosition;
-                SetCorrectParent(clone.transform);
+                SetCorrectParentAndLayer(clone.transform);
 
-                e.selected.ItemsCoordsDict.Add(gridPosition, clone);
+                e.selected.Grid.Add(gridPosition, clone);
+                CheckNeighbours(gridPosition, e.selected.GridSize, e.selected.Grid);
             }
 
-            private void SetCorrectParent(Transform child) { // todo
+            public void DeleteItem(Vector2 gridPosition) {
 
+                var selectedDict = e.selected.Grid;
+
+                if (selectedDict.ContainsKey(gridPosition)) {
+                    Destroy(selectedDict[gridPosition]);
+                    selectedDict.Remove(gridPosition);
+                }
+            }
+
+            private void CheckNeighbours(Vector2 gridPosition, float gridSize, Dictionary<Vector2, GameObject> grid) {
+                var obj = grid[gridPosition];
+                // 3x3 matrix-donut
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
+                        if (i == 0 && j == 0) { continue; }
+                        var localNormNeighbourPos = new Vector2(i, j);
+                        var neighbourPos = e.NormalizeByGrid(gridPosition + localNormNeighbourPos * gridSize, gridSize);
+
+                        if (!grid.ContainsKey(neighbourPos)) { continue; }
+                        CheckNeighbour(grid[neighbourPos], obj, -localNormNeighbourPos);
+                    }
+                }
+
+            }
+
+            private void CheckNeighbour(GameObject neighbourObj, GameObject changedBlock, Vector2 changedNormalizedDirection) {
+                // todo: change Sprite to look more natural;
+            }
+
+            private void SetCorrectParentAndLayer(Transform child) {
+                var childObj = child.gameObject;
+                var sr = childObj.GetComponent<SpriteRenderer>();
+
+                if (childObj.GetComponent<Block>() != null) {
+                    switch (e.selected.UserLayer) {
+                        case UserLayer.Background:
+                            child.SetParent(Background);
+                            sr.sortingLayerName = "Background";
+                            break;
+                        case UserLayer.Foreground:
+                            child.SetParent(Foreground);
+                            sr.sortingLayerName = "Foreground";
+                            break;
+                        default: // (case UserLayer.Ground:)
+                            child.SetParent(Walls);
+                            sr.sortingLayerName = "Ground";
+                            break;
+                    }
+                } else if (childObj.GetComponent<Door>() != null) {
+                    child.SetParent(Doors);
+                    sr.sortingLayerName = "UI";
+                } else if (childObj.GetComponent<CharacterBase>() != null) {
+                    child.SetParent(Enemies);
+                } else if (childObj.GetComponent<InteractableBase>() != null) {
+                    child.SetParent(Objects);
+                } else {
+                    child.SetParent(Specials);
+                    sr.sortingLayerName = "UI";
+                }
+                // todo
             }
         }
         [System.Serializable]
@@ -312,11 +369,11 @@ namespace G6.Environment {
             public GameObject[] ObjectsPrefabs { get; private set; }
             public GameObject[] SpecialsPrefabs { get; private set; }
 
-            public Dictionary<Vector2, GameObject> GroundBlocksCoordsDict { get; private set; } = new Dictionary<Vector2, GameObject>();
-            public Dictionary<Vector2, GameObject> BackgroundBlocksCoordsDict { get; private set; } = new Dictionary<Vector2, GameObject>();
-            public Dictionary<Vector2, GameObject> ForegroundBlocksCoordsDict { get; private set; } = new Dictionary<Vector2, GameObject>();
-            public Dictionary<Vector2, GameObject> ObjectsItemsCoordsDict { get; private set; } = new Dictionary<Vector2, GameObject>();
-            public Dictionary<Vector2, GameObject> SpecialsItemsCoordsDict { get; private set; } = new Dictionary<Vector2, GameObject>();
+            public Dictionary<Vector2, GameObject> GroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+            public Dictionary<Vector2, GameObject> BackgroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+            public Dictionary<Vector2, GameObject> ForegroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+            public Dictionary<Vector2, GameObject> ObjectsGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+            public Dictionary<Vector2, GameObject> SpecialsGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
 
             private void LoadAssets() {
                 string path = "Prefabs/EnvironmentBuilder/Items/";
@@ -351,12 +408,20 @@ namespace G6.Environment {
             }
             #endregion
 
-            public int ItemID { get; set; } = 0;
+            private int _itemID = 0;
+            public int ItemID {
+                get => _itemID;
+                set {
+                    _itemID = value;
+                    Prefab = ItemGroup[ItemID];
+                    PrefabSprite = Prefab.GetComponent<SpriteRenderer>().sprite;
+                }
+            }
 
-            public Dictionary<Vector2, GameObject> ItemsCoordsDict { get; private set; }
+            public Dictionary<Vector2, GameObject> Grid { get; private set; }
             public GameObject[] ItemGroup { get; private set; }
-            public GameObject Prefab => ItemGroup[ItemID];
-            public Sprite PrefabSprite => Prefab.GetComponent<SpriteRenderer>().sprite;
+            public GameObject Prefab { get; private set; }
+            public Sprite PrefabSprite { get; private set; }
 
             public float GridSize { get; private set; }
 
@@ -369,27 +434,27 @@ namespace G6.Environment {
 
                     switch (UserLayer) {
                         case UserLayer.Background:
-                            ItemsCoordsDict = common.BackgroundBlocksCoordsDict;
+                            Grid = common.BackgroundGrid;
                             ItemGroup = common.BlocksPrefabs;
                             GridSize = common.BlockSize;
                             break;
                         case UserLayer.Foreground:
-                            ItemsCoordsDict = common.ForegroundBlocksCoordsDict;
+                            Grid = common.ForegroundGrid;
                             ItemGroup = common.BlocksPrefabs;
                             GridSize = common.BlockSize;
                             break;
                         case UserLayer.Objects:
-                            ItemsCoordsDict = common.ObjectsItemsCoordsDict;
+                            Grid = common.ObjectsGrid;
                             ItemGroup = common.ObjectsPrefabs;
                             GridSize = common.ObjectSize;
                             break;
                         case UserLayer.Specials:
-                            ItemsCoordsDict = common.SpecialsItemsCoordsDict;
+                            Grid = common.SpecialsGrid;
                             ItemGroup = common.SpecialsPrefabs;
                             GridSize = common.BlockSize;
                             break;
                         default: // (case UserLayer.Ground:)
-                            ItemsCoordsDict = common.GroundBlocksCoordsDict;
+                            Grid = common.GroundGrid;
                             ItemGroup = common.BlocksPrefabs;
                             GridSize = common.BlockSize;
                             break;
@@ -398,7 +463,6 @@ namespace G6.Environment {
                     ItemID = 0; // changing blockID
                 }
             }
-
         }
     }
 }

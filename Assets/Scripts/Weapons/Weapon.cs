@@ -131,6 +131,11 @@ namespace G6.Weapons {
         }
 
         protected void Start() {
+            StartCoroutine(WaitForFixedStart());
+        }
+
+        protected IEnumerator WaitForFixedStart() {
+            yield return new WaitForFixedUpdate();
             WeaponState = (GetComponentInParent<CharacterBase>() != null) ? State.Main : State.Throwed;
         }
 
