@@ -39,6 +39,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6252563936671804791, guid: e2809c55ecdf6974c8241a971232f96e,
         type: 3}
+    - target: {fileID: 1353596611931844674, guid: f08045b9ae814ba40a452ee4c2ec1fb3,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353596611931844674, guid: f08045b9ae814ba40a452ee4c2ec1fb3,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6339490227626454485, guid: f08045b9ae814ba40a452ee4c2ec1fb3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,7 +107,7 @@ PrefabInstance:
     - target: {fileID: 8064809956981465416, guid: f08045b9ae814ba40a452ee4c2ec1fb3,
         type: 3}
       propertyPath: m_Name
-      value: 002_Rope
+      value: 005_Rope
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f08045b9ae814ba40a452ee4c2ec1fb3, type: 3}

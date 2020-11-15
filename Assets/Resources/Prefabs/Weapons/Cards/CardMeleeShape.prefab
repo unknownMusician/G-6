@@ -69,9 +69,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 152
+  m_SortingLayerID: 1292514651
+  m_SortingLayer: 4
+  m_SortingOrder: 0
   m_Sprite: {fileID: 6220208007999549204, guid: 507f8927a27b47e498c01c2880b1b7b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -96,16 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1872771ba79dec848bdf4bc87180f30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: CardMeleeShape
-  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: 4529934356437328063, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
-  cardTypeForYaric: 1
   attackSpeedMultiplier: 1
   attackRangeMultiplier: 1
   attackDamageMultiplier: 1
@@ -125,10 +117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cf20c6e14a28147b8f89307004eca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
-  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  eName: EncyclopediaObject
+  eDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.

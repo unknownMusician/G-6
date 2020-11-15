@@ -69,9 +69,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 152
+  m_SortingLayerID: 1292514651
+  m_SortingLayer: 4
+  m_SortingOrder: 0
   m_Sprite: {fileID: -2613411450045547498, guid: 507f8927a27b47e498c01c2880b1b7b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -96,16 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b06b997608d9f6458b91bc34d4935fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: CardMeleeMemory
-  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   spriteUI: {fileID: -1948612999104292835, guid: ea9eeb19348abe747a8a0e0f96e08876,
     type: 3}
-  cardTypeForYaric: 2
   memory: 0
   moduleSprites:
   - {fileID: -6940130241805462365, guid: b798b46da739da64e884e04e8ca84422, type: 3}
@@ -125,10 +117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cf20c6e14a28147b8f89307004eca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encyclopediaName: EncyclopediaObject
-  encyclopediaDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  eName: EncyclopediaObject
+  eDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.

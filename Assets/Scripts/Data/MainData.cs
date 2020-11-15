@@ -200,13 +200,13 @@ namespace G6.Data {
 
             #region EnvironmentBuilder
 
-            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWePlaceBlocks = true; };
+            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.PlaceStart(); };
 
-            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWePlaceBlocks = false; };
+            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.PlaceStop(); };
 
-            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWeDeleteBlocks = true; };
+            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStart(); };
 
-            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DoWeDeleteBlocks = false; };
+            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStart(); };
 
             #endregion
 

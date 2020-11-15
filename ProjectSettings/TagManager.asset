@@ -43,9 +43,30 @@ TagManager:
   - name: Background
     uniqueID: 1224708249
     locked: 0
-  - name: Player
-    uniqueID: 2397123943
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Characters
+    uniqueID: 2397123943
+    locked: 0
+  - name: Bullets
+    uniqueID: 1513838349
+    locked: 0
+  - name: Weapons
+    uniqueID: 1521463307
+    locked: 0
+  - name: Cards
+    uniqueID: 1292514651
+    locked: 0
+  - name: Water
+    uniqueID: 787610201
+    locked: 0
+  - name: Foreground
+    uniqueID: 2265635991
+    locked: 0
+  - name: NearCamera
+    uniqueID: 3662013225
+    locked: 0
+  - name: UI
+    uniqueID: 3296739937
     locked: 0
