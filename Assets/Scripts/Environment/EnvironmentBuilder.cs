@@ -20,7 +20,7 @@ using System.Collections;
 /// - Doors restrictions
 
 namespace G6.Environment {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public sealed class EnvironmentBuilder : MonoBehaviour {
 
         public static EnvironmentBuilder instance { get; private set; }
