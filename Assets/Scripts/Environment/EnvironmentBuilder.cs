@@ -128,7 +128,7 @@ namespace G6.Environment {
 
         private void Awake() => MainData.EnvironmentBuilder = this;
 
-        private void OnDisable() => MainData.EnvironmentBuilder = null;
+        private void OnDestroy() => MainData.EnvironmentBuilder = null;
 
         private void Update() { // todo: change
 

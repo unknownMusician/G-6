@@ -228,12 +228,8 @@ namespace G6.Data {
                 SetControlsActions();
             }
         }
-        private void OnEnable() {
-            Controls.Enable();
-        }
-        private void OnDisable() {
-            Controls.Disable();
-        }
+        private void OnEnable() =>  Controls.Enable();
+        private void OnDisable() => Controls.Disable();
 
         #endregion
 
