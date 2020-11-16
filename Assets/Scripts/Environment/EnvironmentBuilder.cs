@@ -298,7 +298,7 @@ namespace G6.Environment {
                 Specials = Room.GetChild(6);
                 SpawnPoints = Room.GetChild(7);
                 // Delete saveFile
-                e.roomCreator.DeleteRoomTmp();
+                DeleteRoomTmp();
 
                 return true;
                 // todo
@@ -306,7 +306,10 @@ namespace G6.Environment {
 
             public void DeleteRoomTmp() {
                 string path = $"{pathAssets}Room_tmp.prefab";
-                if (System.IO.File.Exists(path)) { System.IO.File.Delete(path); }
+                if (System.IO.File.Exists(path)) {
+                    System.IO.File.Delete(path);
+                    System.IO.File.Delete($"{path}.meta");
+                }
             }
 
             public void PlaceItem(Vector2 gridPosition) {
