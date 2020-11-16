@@ -1,4 +1,5 @@
 ﻿using G6.Characters.Player;
+using G6.Enums;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +11,9 @@ namespace G6.Data {
         }
         public static class UI {
             // todo
+        }
+        public static class EnvironmentBuilder {
+            public static Side WhereToStart { get; set; } = default;
         }
     }
 }

@@ -41,7 +41,7 @@ namespace G6.RoomSpawning {
 
         void Start() {
 
-            roomSpawner = MainData.RoomSpawnerObject.GetComponent<RoomSpawner>();
+            roomSpawner = MainData.RoomSpawner;
             miniMapMatrix = roomSpawner.getMiniMapMatrix();
             roomMatrix = roomSpawner.getRoomsMatrix();
             Visited = false;

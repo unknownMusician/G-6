@@ -18,7 +18,7 @@ using System.Collections.Generic;
 /// - Layers placing object +
 /// - Saving multiple rooms + (sort of)
 ///     - Connect to RoomSpawner
-/// - Ability to PlayTest
+/// - Ability to PlayTest +
 ///     - Choose where to start playtest
 /// - Doors restrictions
 
@@ -31,6 +31,7 @@ namespace G6.Environment {
         [SerializeField] private RoomCreator roomCreator = default;
         [SerializeField] private Selected selected = default;
         [SerializeField] private Common common = default;
+        [SerializeField] private PlayTest playTest = default;
 
         private GameObject cursor { get; set; }
         private Vector2 MouseGridPosition => NormalizeByGrid(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()), selected.GridSize);
@@ -105,11 +106,11 @@ namespace G6.Environment {
             selected.Start(this);
             ui.Start(this);
             roomCreator.Start(this);
+            playTest.Start(this);
             // MainData
             MainData.EnvironmentBuilderObject = this.gameObject;
         }
         private void Start() {
-            Time.timeScale = 0;
             SelectItem(0);
         }
         private void OnDestroy() {
@@ -126,7 +127,8 @@ namespace G6.Environment {
             cursor.GetComponent<SpriteRenderer>().sprite = selected.PrefabSprite;
         }
 
-        public void SaveRoomObjectAsAsset() => roomCreator.SaveRoom();
+        public void SaveBtn() => roomCreator.SaveRoom();
+        public void PlayTestBtn() => playTest.Play();
 
         private void OnDrawGizmos() {
             ui.OnDrawGizmos();
@@ -234,7 +236,7 @@ namespace G6.Environment {
             private EnvironmentBuilder e;
             public void Start(EnvironmentBuilder e) {
                 this.e = e;
-                CreateRoom();
+                if (!LoadRoomTmp()) { CreateRoom(); }
             }
             #endregion
             public Transform Room { get; private set; } = default;
@@ -246,8 +248,10 @@ namespace G6.Environment {
             public Transform Enemies { get; private set; } = default;
             public Transform Objects { get; private set; } = default;
             public Transform Specials { get; private set; } = default;
-
             public Transform SpawnPoints { get; private set; } = default;
+
+            public const string pathAssets = "Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/";
+            public const string pathResources = "Prefabs/EnvironmentBuilder/Rooms/";
 
             private void CreateRoom() {
                 // New Room
@@ -265,11 +269,44 @@ namespace G6.Environment {
 
             public void SaveRoom() { // add different folders for different types of rooms
                 for (int i = 1; i < 100; i++) { // todo: restriction of 98 files
-                    if (!System.IO.File.Exists($"Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_{i}.prefab")) {
-                        PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_{i}.prefab");
+                    if (!System.IO.File.Exists($"{pathAssets}Room_{i}.prefab")) {
+                        PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}Room_{i}.prefab");
                         break;
                     }
                 }
+            }
+
+            public void SaveRoomTmp() {
+                PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}Room_tmp.prefab");
+                // todo
+            }
+
+            public bool LoadRoomTmp() {
+                if (!System.IO.File.Exists($"{pathAssets}Room_tmp.prefab")) { return false; }
+                var roomPrefab = Resources.Load<GameObject>($"{pathResources}Room_tmp");
+                var roomObj = Instantiate(roomPrefab, Vector2.zero, Quaternion.identity);
+                roomObj.name = "Room";
+                // Load Room
+                Room = roomObj.transform;
+                // Load RoomParts
+                Background = Room.GetChild(0);
+                Walls = Room.GetChild(1);
+                Foreground = Room.GetChild(2);
+                Doors = Room.GetChild(3);
+                Enemies = Room.GetChild(4);
+                Objects = Room.GetChild(5);
+                Specials = Room.GetChild(6);
+                SpawnPoints = Room.GetChild(7);
+                // Delete saveFile
+                e.roomCreator.DeleteRoomTmp();
+
+                return true;
+                // todo
+            }
+
+            public void DeleteRoomTmp() {
+                string path = $"{pathAssets}Room_tmp.prefab";
+                if (System.IO.File.Exists(path)) { System.IO.File.Delete(path); }
             }
 
             public void PlaceItem(Vector2 gridPosition) {
@@ -463,6 +500,24 @@ namespace G6.Environment {
                     ItemID = 0; // changing blockID
                 }
             }
+        }
+        [System.Serializable]
+        public sealed class PlayTest {
+            #region Start & e
+
+            private EnvironmentBuilder e;
+            public void Start(EnvironmentBuilder e) {
+                this.e = e;
+                Time.timeScale = 0;
+            }
+            #endregion
+
+            public void Play() {
+                e.roomCreator.SaveRoomTmp();
+                LevelManager.LoadPlayTest();
+                // todo
+            }
+
         }
     }
 }

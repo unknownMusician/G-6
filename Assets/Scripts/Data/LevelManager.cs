@@ -14,6 +14,10 @@ namespace G6.Data {
             SceneManager.LoadScene("EnvironmentBuilder");
             // todo
         }
+        public static void LoadPlayTest() {
+            SceneManager.LoadScene("PlayTest");
+            // todo
+        }
         public static void LoadMenu() {
             SceneManager.LoadScene("MainMenu");
             // todo
