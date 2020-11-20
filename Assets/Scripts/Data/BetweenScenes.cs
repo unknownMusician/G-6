@@ -13,7 +13,7 @@ namespace G6.Data {
             // todo
         }
         public static class EnvironmentBuilder {
-            public static Side WhereToStart { get; set; } = default;
+            public static Side WhereToStart { get; set; } = Side.Left;
         }
     }
 }

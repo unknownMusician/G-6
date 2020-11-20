@@ -9,10 +9,10 @@ namespace G6.RoomSpawning {
 
         private RoomSpawner roomSpawner;
 
-        private GameObject[,] roomMatrix;
-        private GameObject[,] miniMapMatrix;
+        private GameObject[,] roomMatrix => MainData.RoomSpawner.getRoomsMatrix(); // todo: remove
+        private GameObject[,] miniMapMatrix => MainData.RoomSpawner.getMiniMapMatrix(); // todo: remove
 
-        public bool Visited { get; set; }
+        public bool Visited { get; set; } = false;
 
         private int direction;
         // direction - responsible for direction in which door is being directed
@@ -28,32 +28,27 @@ namespace G6.RoomSpawning {
         #region Awake() and Start() methods
 
         void Awake() {
-            if (this.name == "TopDoor") {
+            if (name == "TopDoor") {
                 direction = 0;
-            } else if (this.name == "RightDoor") {
+            } else if (name == "RightDoor") {
                 direction = 1;
-            } else if (this.name == "BottomDoor") {
+            } else if (name == "BottomDoor") {
                 direction = 2;
-            } else if (this.name == "LeftDoor") {
+            } else if (name == "LeftDoor") {
                 direction = 3;
             }
-        }
-
-        void Start() {
-
-            roomSpawner = MainData.RoomSpawner;
-            miniMapMatrix = roomSpawner.getMiniMapMatrix();
-            roomMatrix = roomSpawner.getRoomsMatrix();
-            Visited = false;
-
         }
 
         #endregion
 
         void OnTriggerEnter2D(Collider2D other) {
-            if ((other.name == "Player") & (Visited == false)) {
-                roomSpawner.goToNextRoom(other.transform, direction);
-                Visited = true;
+            if ((other.name == "Player") && (Visited == false)) {
+                if (MainData.RoomSpawner != null) {
+                    MainData.RoomSpawner.GoToNextRoom(other.transform, direction);
+                    Visited = true;
+                } else {
+                    LevelManager.LoadEnvironmentBuilder();
+                }
             }
         }
 

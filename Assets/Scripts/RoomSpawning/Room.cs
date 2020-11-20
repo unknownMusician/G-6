@@ -20,10 +20,10 @@ namespace G6.RoomSpawning {
 
         #region Spawnpoints
 
-        public GameObject TopSpawnpoint { get; set; }
-        public GameObject RightSpawnpoint { get; set; }
-        public GameObject BottomSpawnpoint { get; set; }
-        public GameObject LeftSpawnpoint { get; set; }
+        public Transform TopSpawnpoint { get; set; }
+        public Transform RightSpawnpoint { get; set; }
+        public Transform BottomSpawnpoint { get; set; }
+        public Transform LeftSpawnpoint { get; set; }
 
         #endregion
 
@@ -33,9 +33,10 @@ namespace G6.RoomSpawning {
 
         #region Awake() method
 
-        private void Awake() {
+        private void OnEnable() {
 
             RoomType = "regular";
+            print("1");
 
             #region Doors initialization
 
@@ -63,13 +64,13 @@ namespace G6.RoomSpawning {
             for (int i = 0; i < amountOfSpawnpoints; i++) {
                 GameObject spawnpoint = spawnpointsCollectionObject.GetChild(i).gameObject;
                 if (spawnpoint.name == "TopSpawnpoint") {
-                    TopSpawnpoint = spawnpoint;
+                    TopSpawnpoint = spawnpoint.transform;
                 } else if (spawnpoint.name == "RightSpawnpoint") {
-                    RightSpawnpoint = spawnpoint;
+                    RightSpawnpoint = spawnpoint.transform;
                 } else if (spawnpoint.name == "BottomSpawnpoint") {
-                    BottomSpawnpoint = spawnpoint;
+                    BottomSpawnpoint = spawnpoint.transform;
                 } else if (spawnpoint.name == "LeftSpawnpoint") {
-                    LeftSpawnpoint = spawnpoint;
+                    LeftSpawnpoint = spawnpoint.transform;
                 }
             }
 

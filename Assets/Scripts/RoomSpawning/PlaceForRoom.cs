@@ -1,120 +1,45 @@
-﻿namespace G6.RoomSpawning {
+﻿using UnityEngine;
+
+namespace G6.RoomSpawning {
     public class PlaceForRoom {
+        public bool? topDoor = null;
+        public bool? rightDoor = null;
+        public bool? bottomDoor = null;
+        public bool? leftDoor = null;
 
-        #region Properties
+        public byte DoorsAmount => (byte)(0 + (topDoor == true ? 1 : 0) + (rightDoor == true ? 1 : 0) + (bottomDoor == true ? 1 : 0) + (leftDoor == true ? 1 : 0));
 
-        public byte AmountOfDoors { get; set; }
-
-        #region Doors
-
-        private short topDoor;
-        private short rightDoor;
-        private short bottomDoor;
-        private short leftDoor;
-
-        #endregion
-
-        #endregion
-
-        #region Class constructor
-
-        public PlaceForRoom(short topDoor, short rightDoor, short bottomDoor, short leftDoor) {
-
-            #region Calculating amount of doors
-
-            AmountOfDoors = 0;
-
-            if (topDoor == 1) {
-                AmountOfDoors += 1;
-            } else if (rightDoor == 1) {
-                AmountOfDoors += 1;
-            } else if (bottomDoor == 1) {
-                AmountOfDoors += 1;
-            } else if (leftDoor == 1) {
-                AmountOfDoors += 1;
+        public (bool? topDoor, bool? rightDoor, bool? bottomDoor, bool? leftDoor) DoorParams {
+            get => (topDoor, rightDoor, bottomDoor, leftDoor);
+            set {
+                topDoor = value.topDoor;
+                rightDoor = value.rightDoor;
+                bottomDoor = value.bottomDoor;
+                leftDoor = value.leftDoor;
             }
+        }
 
-            #endregion
+        public bool AtLeastOneDoor => topDoor == true || rightDoor == true || bottomDoor == true || leftDoor == true;
 
-            #region Doors initialization
-
+        public PlaceForRoom(bool topDoor, bool rightDoor, bool bottomDoor, bool leftDoor) {
             this.topDoor = topDoor;
             this.rightDoor = rightDoor;
             this.bottomDoor = bottomDoor;
             this.leftDoor = leftDoor;
-
-            #endregion
-
         }
 
-        public PlaceForRoom() {
-            AmountOfDoors = 0;
+        public PlaceForRoom(bool? all) => topDoor = rightDoor = bottomDoor = leftDoor = all;
+
+        public PlaceForRoom() => new PlaceForRoom(null);
+
+        public override string ToString() {
+            return (topDoor == true ? "2" : "0") + (rightDoor == true ? "2" : "0") + (bottomDoor == true ? "2" : "0") + (leftDoor == true ? "2" : "0");
         }
 
-        #endregion
-
-        #region Methods
-
-        #region Set() methods of doors properties 
-
-        public void setTop(short door) {
-            if (topDoor == 1) {
-                AmountOfDoors += 1;
-            }
-            this.topDoor = door;
-        }
-
-        public void setRight(short door) {
-            if (rightDoor == 1) {
-                AmountOfDoors += 1;
-            }
-            this.rightDoor = door;
-        }
-
-        public void setBottom(short door) {
-            if (bottomDoor == 1) {
-                AmountOfDoors += 1;
-            }
-            this.bottomDoor = door;
-        }
-
-        public void setLeft(short door) {
-            if (leftDoor == 1) {
-                AmountOfDoors += 1;
-            }
-            this.leftDoor = door;
-        }
-
-        #endregion
-
-        public short[] getDoorParams() {
-
-            short[] doors = new short[4];
-            doors[0] = topDoor;
-            doors[1] = rightDoor;
-            doors[2] = bottomDoor;
-            doors[3] = leftDoor;
-
-            return doors;
-        }
-
-        public bool anyEqualToOne() {
-
-            short[] doors = new short[4];
-            doors[0] = topDoor;
-            doors[1] = rightDoor;
-            doors[2] = bottomDoor;
-            doors[3] = leftDoor;
-
-            for (int i = 0; i < 4; i++) {
-                if (doors[i] == 1) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        #endregion
-
+        public static class PlaceForDoor {
+            public static bool? True => true;
+            public static bool? False => false;
+            public static bool? Unknown => null;
+        } // todo: remove
     }
 }

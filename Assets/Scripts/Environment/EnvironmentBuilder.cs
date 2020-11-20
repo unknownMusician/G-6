@@ -9,18 +9,26 @@ using UnityEngine.UI;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using G6.UI;
 
+/// done:
+/// - Layers placing object +
+/// - Ability to PlayTest +
+///     - Choose where to start playtest +
+/// 
 /// todo:
+/// - Saving multiple rooms + (with name +)
+///     - Read doors and SpawnPoint position +
+///     - Spawnpoint restrictions +
+///     - Connect to RoomSpawner
+///         - Sort rooms by type
+/// 
+/// - Load Grid info from Room
+///     
 /// - Gamepad input
 ///     - Placing/Deleting
 ///     - Read position
 ///     - UI & Menu
-/// - Layers placing object +
-/// - Saving multiple rooms + (sort of)
-///     - Connect to RoomSpawner
-/// - Ability to PlayTest +
-///     - Choose where to start playtest
-/// - Doors restrictions
 
 namespace G6.Environment {
     public sealed class EnvironmentBuilder : MonoBehaviour {
@@ -32,12 +40,14 @@ namespace G6.Environment {
         [SerializeField] private Selected selected = default;
         [SerializeField] private Common common = default;
         [SerializeField] private PlayTest playTest = default;
+        [SerializeField] private Shortcuts shortcuts = default;
 
         private GameObject cursor { get; set; }
         private Vector2 MouseGridPosition => NormalizeByGrid(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()), selected.GridSize);
         private Vector2 NormalizeByGrid(Vector2 worldPos, float gridSize)
             => new Vector2(Mathf.Round(worldPos.x / gridSize) * gridSize, Mathf.Round(worldPos.y / gridSize) * gridSize);
         public void SetLayer(int layer) => selected.UserLayer = (UserLayer)layer;
+
         #region Input & Coroutines
 
         private Coroutine coroutine;
@@ -70,9 +80,6 @@ namespace G6.Environment {
         }
         private IEnumerator Placing() { // todo: interpolate
             while (true) {
-
-                // deleting previous
-                roomCreator.DeleteItem(MouseGridPosition);
 
                 // creating new
                 if ((MouseGridPosition.x <= common.RoomSize.x) &&
@@ -107,6 +114,7 @@ namespace G6.Environment {
             ui.Start(this);
             roomCreator.Start(this);
             playTest.Start(this);
+            shortcuts.Start(this);
             // MainData
             MainData.EnvironmentBuilderObject = this.gameObject;
         }
@@ -122,13 +130,10 @@ namespace G6.Environment {
         }
         #endregion
 
-        private void SelectItem(int itemID) {
-            selected.ItemID = itemID;
-            cursor.GetComponent<SpriteRenderer>().sprite = selected.PrefabSprite;
-        }
-
+        private void SelectItem(int itemID) => selected.ItemID = itemID;
         public void SaveBtn() => roomCreator.SaveRoom();
         public void PlayTestBtn() => playTest.Play();
+        public void PlayTestDirectionBtn(int dir) => playTest.PlayTestStartDir = dir;
 
         private void OnDrawGizmos() {
             ui.OnDrawGizmos();
@@ -167,10 +172,16 @@ namespace G6.Environment {
             private GameObject specialsMenu = null;
             [SerializeField]
             private GameObject layerMenu = null;
-
+            [SerializeField]
+            private Dropdown sideChooseDropdown = null;
+            [SerializeField]
+            private InputField fileNameInput = null;
 
             private GameObject blockButtonPrefab = default;
             private GameObject barrierPrefab = default;
+
+            public Enums.Side PlayTestSide => (Enums.Side)sideChooseDropdown.value;
+            public string SaveFileName => fileNameInput.text;
 
             private Vector3 RoomTopRightCorner => new Vector3(e.common.RoomSize.x * e.common.BlockSize, e.common.RoomSize.y * e.common.BlockSize, 0);
             private Vector3 RoomTopLeftCorner => new Vector3(0, e.common.RoomSize.y * e.common.BlockSize, 0);
@@ -258,29 +269,40 @@ namespace G6.Environment {
                 Room = new GameObject("Room").transform;
                 // New RoomParts
                 (Background = new GameObject("Background").transform).SetParent(Room);
-                (Walls = new GameObject("Walls").transform).SetParent(Room);
-                (Foreground = new GameObject("Foreground").transform).SetParent(Room);
                 (Doors = new GameObject("Doors").transform).SetParent(Room);
                 (Enemies = new GameObject("Enemies").transform).SetParent(Room);
+                (SpawnPoints = new GameObject("SpawnPoints").transform).SetParent(Room);
+                (Walls = new GameObject("Walls").transform).SetParent(Room);
+                (Foreground = new GameObject("Foreground").transform).SetParent(Room);
                 (Objects = new GameObject("Objects").transform).SetParent(Room);
                 (Specials = new GameObject("Specials").transform).SetParent(Room);
-                (SpawnPoints = new GameObject("SpawnPoints").transform).SetParent(Room);
             }
-
             public void SaveRoom() { // add different folders for different types of rooms
-                for (int i = 1; i < 100; i++) { // todo: restriction of 98 files
-                    if (!System.IO.File.Exists($"{pathAssets}Room_{i}.prefab")) {
-                        PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}Room_{i}.prefab");
-                        break;
+                if (Room.gameObject.GetComponent<Room>() == null) {
+                    Room.gameObject.AddComponent<Room>();
+                }
+                string fileName = e.ui.SaveFileName;
+                if (fileName == "" || fileName == "Room_tmp") {
+                    for (int i = 1; i < 100; i++) { // todo: restriction of 98 files
+                        if (!System.IO.File.Exists($"{pathAssets}Room_{i}.prefab")) {
+                            PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}Room_{i}.prefab");
+                            return;
+                        }
+                    }
+                } else {
+                    if (!System.IO.File.Exists($"{pathAssets}{fileName}.prefab")) {
+                        PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}{fileName}.prefab");
+                        return;
                     }
                 }
             }
-
             public void SaveRoomTmp() {
+                if (Room.gameObject.GetComponent<Room>() == null) {
+                    Room.gameObject.AddComponent<Room>();
+                }
                 PrefabUtility.SaveAsPrefabAsset(Room.gameObject, $"{pathAssets}Room_tmp.prefab");
                 // todo
             }
-
             public bool LoadRoomTmp() {
                 if (!System.IO.File.Exists($"{pathAssets}Room_tmp.prefab")) { return false; }
                 var roomPrefab = Resources.Load<GameObject>($"{pathResources}Room_tmp");
@@ -290,20 +312,23 @@ namespace G6.Environment {
                 Room = roomObj.transform;
                 // Load RoomParts
                 Background = Room.GetChild(0);
-                Walls = Room.GetChild(1);
-                Foreground = Room.GetChild(2);
                 Doors = Room.GetChild(3);
                 Enemies = Room.GetChild(4);
+                SpawnPoints = Room.GetChild(7);
+                Walls = Room.GetChild(1);
+                Foreground = Room.GetChild(2);
                 Objects = Room.GetChild(5);
                 Specials = Room.GetChild(6);
-                SpawnPoints = Room.GetChild(7);
                 // Delete saveFile
                 DeleteRoomTmp();
+
+                if (Room.gameObject.GetComponent<Room>() != null) {
+                    Destroy(Room.gameObject.GetComponent<Room>());
+                }
 
                 return true;
                 // todo
             }
-
             public void DeleteRoomTmp() {
                 string path = $"{pathAssets}Room_tmp.prefab";
                 if (System.IO.File.Exists(path)) {
@@ -317,12 +342,17 @@ namespace G6.Environment {
                 GameObject clone = PrefabUtility.InstantiatePrefab(e.selected.Prefab) as GameObject;
 
                 clone.transform.position = gridPosition;
-                SetCorrectParentAndLayer(clone.transform);
+                if (!CheckAndSetItemProperties(clone.transform)) {
+                    Destroy(clone);
+                    return;
+                }
+
+                // deleting previous
+                DeleteItem(gridPosition);
 
                 e.selected.Grid.Add(gridPosition, clone);
                 CheckNeighbours(gridPosition, e.selected.GridSize, e.selected.Grid);
             }
-
             public void DeleteItem(Vector2 gridPosition) {
 
                 var selectedDict = e.selected.Grid;
@@ -348,41 +378,52 @@ namespace G6.Environment {
                 }
 
             }
-
             private void CheckNeighbour(GameObject neighbourObj, GameObject changedBlock, Vector2 changedNormalizedDirection) {
                 // todo: change Sprite to look more natural;
             }
+            private bool CheckAndSetItemProperties(Transform item) {
+                var itemObj = item.gameObject;
+                var sr = itemObj.GetComponent<SpriteRenderer>();
 
-            private void SetCorrectParentAndLayer(Transform child) {
-                var childObj = child.gameObject;
-                var sr = childObj.GetComponent<SpriteRenderer>();
-
-                if (childObj.GetComponent<Block>() != null) {
+                if (itemObj.GetComponent<Block>() != null) {
+                    Behaviour componentTmp;
                     switch (e.selected.UserLayer) {
                         case UserLayer.Background:
-                            child.SetParent(Background);
+                            item.SetParent(Background);
                             sr.sortingLayerName = "Background";
+                            if ((componentTmp = item.GetComponent<Collider2D>()) != null) { Destroy(componentTmp); }
                             break;
                         case UserLayer.Foreground:
-                            child.SetParent(Foreground);
+                            item.SetParent(Foreground);
                             sr.sortingLayerName = "Foreground";
+                            if ((componentTmp = item.GetComponent<Collider2D>()) != null) { Destroy(componentTmp); }
                             break;
                         default: // (case UserLayer.Ground:)
-                            child.SetParent(Walls);
+                            item.SetParent(Walls);
                             sr.sortingLayerName = "Ground";
                             break;
                     }
-                } else if (childObj.GetComponent<Door>() != null) {
-                    child.SetParent(Doors);
-                    sr.sortingLayerName = "UI";
-                } else if (childObj.GetComponent<CharacterBase>() != null) {
-                    child.SetParent(Enemies);
-                } else if (childObj.GetComponent<InteractableBase>() != null) {
-                    child.SetParent(Objects);
+                } else if (itemObj.GetComponent<CharacterBase>() != null) {
+                    item.SetParent(Enemies);
+                } else if (itemObj.GetComponent<InteractableBase>() != null) {
+                    item.SetParent(Objects);
+                } else if (e.selected.UserLayer == UserLayer.Specials) {
+                    string itemName = itemObj.name;
+                    if (itemObj.GetComponent<Door>() != null) {
+                        item.SetParent(Doors);
+                    } else if (itemName == "BottomSpawnpoint" ||
+                         itemName == "LeftSpawnpoint" ||
+                         itemName == "RightSpawnpoint" ||
+                         itemName == "TopSpawnpoint"
+                         ) {
+                        if (SpawnPoints.Find(itemName) != null) { return false; }
+                        item.SetParent(SpawnPoints);
+                    }
                 } else {
-                    child.SetParent(Specials);
+                    item.SetParent(Room);
                     sr.sortingLayerName = "UI";
                 }
+                return true;
                 // todo
             }
         }
@@ -455,6 +496,7 @@ namespace G6.Environment {
                     _itemID = value;
                     Prefab = ItemGroup[ItemID];
                     PrefabSprite = Prefab.GetComponent<SpriteRenderer>().sprite;
+                    e.cursor.GetComponent<SpriteRenderer>().sprite = PrefabSprite;
                 }
             }
 
@@ -511,16 +553,46 @@ namespace G6.Environment {
             private EnvironmentBuilder e;
             public void Start(EnvironmentBuilder e) {
                 this.e = e;
-                Time.timeScale = 0;
+                Pause.GameIsPaused = true;
             }
             #endregion
 
+            public int PlayTestStartDir { get; set; } = default;
+
             public void Play() {
                 e.roomCreator.SaveRoomTmp();
+                BetweenScenes.EnvironmentBuilder.WhereToStart = e.ui.PlayTestSide;
                 LevelManager.LoadPlayTest();
                 // todo
             }
 
+        }
+        [System.Serializable]
+        public sealed class Shortcuts {
+            #region Start & e
+
+            private EnvironmentBuilder e;
+            public void Start(EnvironmentBuilder e) {
+                this.e = e;
+            }
+            #endregion
+
+            public List<Dictionary<Vector2, GameObject>> moments { get; private set; } = new List<Dictionary<Vector2, GameObject>>();
+
+            public void Undo() {
+                moments.RemoveAt(moments.Count - 1);
+                var currState = moments[moments.Count - 1];
+                // todo: change values
+                // e.common.GroundGrid
+            }
+
+            private sealed class StatesMoment {
+                public Dictionary<Vector2, GameObject> GroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+                public Dictionary<Vector2, GameObject> BackgroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+                public Dictionary<Vector2, GameObject> ForegroundGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+                public Dictionary<Vector2, GameObject> ObjectsGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+                public Dictionary<Vector2, GameObject> SpecialsGrid { get; private set; } = new Dictionary<Vector2, GameObject>();
+            }
         }
     }
 }

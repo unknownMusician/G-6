@@ -1,10 +1,12 @@
 ﻿using G6.Data;
-using System.Collections;
-using System.Collections.Generic;
+using G6.RoomSpawning;
 using UnityEngine;
 
 namespace G6.Environment {
     public sealed class PlayTest : MonoBehaviour {
+
+        private Room Room { get; set; }
+
         private void Awake() {
             if (!System.IO.File.Exists("Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_tmp.prefab")) {
                 print("Error in file"); // todo
@@ -17,18 +19,33 @@ namespace G6.Environment {
                 LevelManager.LoadEnvironmentBuilder();
                 return;
             }
-            Instantiate(roomObj, Vector2.zero, Quaternion.identity);
+            Room = Instantiate(roomObj, Vector2.zero, Quaternion.identity).GetComponent<Room>();
         }
 
         private void Start() {
             var side = BetweenScenes.EnvironmentBuilder.WhereToStart;
+            print("2" + side); // todo
+            print(Room.BottomSpawnpoint); // todo
+            print(Room.LeftSpawnpoint); // todo
+            print(Room.RightSpawnpoint); // todo
+            print(Room.TopSpawnpoint); // todo
+
             var playerTransform = MainData.PlayerBehaviour.transform;
-            switch (side) {
+            switch (side) { // todo: check spawnPoints
+                case Enums.Side.Down:
+                    playerTransform.position = Room.BottomSpawnpoint.position;
+                    break;
+                case Enums.Side.Left:
+                    playerTransform.position = Room.LeftSpawnpoint.position;
+                    break;
+                case Enums.Side.Right:
+                    playerTransform.position = Room.RightSpawnpoint.position;
+                    break;
                 default: // case Enums.Side.Up:
-                    playerTransform.position = new Vector2(15, 20); // todo
+                    playerTransform.position = Room.TopSpawnpoint.position;
                     break;
             }
-            Time.timeScale = 1;
+            UI.Pause.GameIsPaused = false;
         }
 
         public void ReturnToBuilder() => LevelManager.LoadEnvironmentBuilder();

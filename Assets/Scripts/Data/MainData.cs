@@ -206,7 +206,7 @@ namespace G6.Data {
 
             Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStart(); };
 
-            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStart(); };
+            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStop(); };
 
             #endregion
 
