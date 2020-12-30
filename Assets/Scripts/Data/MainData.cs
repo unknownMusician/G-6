@@ -5,40 +5,19 @@ using G6.UI;
 using G6.Weapons;
 using G6.Characters.Player;
 using G6.RoomSpawning;
-using G6.Environment;
+using G6.EnvironmentBuilder;
 
 namespace G6.Data {
     public sealed class MainData : MonoBehaviour {
-        #region Main GameObjects
-
-        private static GameObject _playerObject;
-        public static GameObject PlayerObject {
-            get => _playerObject;
-            set => PlayerBehaviour = (_playerObject = value)?.GetComponent<PlayerBehaviour>();
-        }
-
-        private static GameObject _roomSpawnerObject;
-        public static GameObject RoomSpawnerObject {
-            get => _roomSpawnerObject;
-            set => RoomSpawner = (_roomSpawnerObject = value)?.GetComponent<RoomSpawner>();
-        }
-
-        private static GameObject _environmentBuilderObject;
-        public static GameObject EnvironmentBuilderObject {
-            get => _environmentBuilderObject;
-            set => EnvironmentBuilder = (_environmentBuilderObject = value)?.GetComponent<EnvironmentBuilder>();
-        }
-
-        #endregion
 
         #region Player
 
         private static PlayerBehaviour _playerBehaviour;
         public static PlayerBehaviour PlayerBehaviour {
             get => _playerBehaviour;
-            private set {
+            set {
                 _playerBehaviour = value;
-                if (_playerObject != null) { // todo: remove
+                if (_playerBehaviour != null) { // todo: remove
                     _playerBehaviour.OnHpChange += ActionHPChange;
                     _playerBehaviour.OnSpChange += ActionSPChange;
                     _playerBehaviour.OnOpChange += ActionOPChange;
@@ -93,26 +72,12 @@ namespace G6.Data {
         private static RoomSpawner _roomspawner;
         public static RoomSpawner RoomSpawner {
             get => _roomspawner;
-            private set {
+            set {
                 _roomspawner = value;
                 ActionRoomSpawnerChange?.Invoke();
             }
         }
         public static UnityAction ActionRoomSpawnerChange;
-
-        #endregion
-
-        #region EnvironmentBuilder
-
-        private static EnvironmentBuilder _environmentBuilder { get; set; }
-        public static EnvironmentBuilder EnvironmentBuilder {
-            get => _environmentBuilder;
-            set {
-                _environmentBuilder = value;
-                ActionEnvironmentBuilderChange?.Invoke();
-            }
-        }
-        public static UnityAction ActionEnvironmentBuilderChange;
 
         #endregion
 
@@ -200,13 +165,13 @@ namespace G6.Data {
 
             #region EnvironmentBuilder
 
-            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.PlaceStart(); };
+            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.PlaceStart(); };
 
-            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.PlaceStop(); };
+            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.PlaceStop(); };
 
-            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStart(); };
+            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.DeleteStart(); };
 
-            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (EnvironmentBuilder != null) EnvironmentBuilder.DeleteStop(); };
+            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.DeleteStop(); };
 
             #endregion
 

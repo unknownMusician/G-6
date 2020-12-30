@@ -17,8 +17,8 @@ namespace G6.RoomSpawning {
 
             #region Properties initialization
 
-            roomSpawner = MainData.RoomSpawnerObject.GetComponent<RoomSpawner>();
-            miniMapMatrix = roomSpawner.getMiniMapMatrix();
+            roomSpawner = MainData.RoomSpawner;
+            miniMapMatrix = roomSpawner.MiniMapMatrix;
 
             #endregion
 

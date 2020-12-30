@@ -74,9 +74,9 @@ namespace G6.RoomSpawning {
 
             LoadData();
 
-            MainData.RoomSpawnerObject = this.gameObject;
+            MainData.RoomSpawner = this;
         }
-        private void OnDestroy() => MainData.RoomSpawnerObject = null;
+        private void OnDestroy() => MainData.RoomSpawner = null;
 
         private void Start() {
 
@@ -90,7 +90,7 @@ namespace G6.RoomSpawning {
 
             #region Teleporting player to base room
 
-            MainData.PlayerObject.transform.position = RoomsMatrix[CurrentRow, CurrentColumn].transform.position;
+            MainData.PlayerBehaviour.transform.position = RoomsMatrix[CurrentRow, CurrentColumn].transform.position;
 
             #endregion
 

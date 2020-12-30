@@ -51,11 +51,11 @@ namespace G6.Characters.Player {
                 BetweenScenes.Player.PlayerData = null;
             }
             // Setting Player to MainData
-            MainData.PlayerObject = gameObject;
+            MainData.PlayerBehaviour = this;
         }
 
         private void OnDestroy() {
-            MainData.PlayerObject = null;
+            MainData.PlayerBehaviour = null;
         }
 
         //private new void Start()

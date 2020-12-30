@@ -2,36 +2,48 @@
 using G6.RoomSpawning;
 using UnityEngine;
 
-namespace G6.Environment {
+namespace G6.EnvironmentBuilder {
     public sealed class PlayTest : MonoBehaviour {
+
+        public int PlayTestStartDir { get; set; } = default;
+
+        public void Play() {
+            RoomCreator.instance.SaveRoomTmp();
+            BetweenScenes.EnvironmentBuilder.WhereToStart = BuilderUI.instance.PlayTestSide;
+            needToStartPlayTest = true;
+            LevelManager.LoadPlayTest();
+            // todo
+        }
+
+        private static bool needToStartPlayTest = false;
 
         private Room Room { get; set; }
 
         private void Awake() {
-            if (!System.IO.File.Exists("Assets/Resources/Prefabs/EnvironmentBuilder/Rooms/Room_tmp.prefab")) {
+            if (!needToStartPlayTest) { return; }
+            if (!System.IO.File.Exists("Assets/Resources/Prefabs/RoomSpawning/Rooms/Rooms/Room_tmp.prefab")) {
                 print("Error in file"); // todo
                 LevelManager.LoadEnvironmentBuilder();
                 return;
             }
-            var roomObj = Resources.Load<GameObject>("Prefabs/EnvironmentBuilder/Rooms/Room_tmp");
-            if (roomObj == null) {
+            var roomPrefab = Resources.Load<GameObject>("Prefabs/RoomSpawning/Rooms/Rooms/Room_tmp");
+            if (roomPrefab == null) {
                 print("Error in GameObject"); // todo
                 LevelManager.LoadEnvironmentBuilder();
                 return;
             }
-            Room = Instantiate(roomObj, Vector2.zero, Quaternion.identity).GetComponent<Room>();
+            var roomObj = UnityEditor.PrefabUtility.InstantiatePrefab(roomPrefab) as GameObject;
+            roomObj.transform.position = Vector2.zero;
+            Room = roomObj.GetComponent<Room>();
         }
 
         private void Start() {
+            if (!needToStartPlayTest) { return; }
+            needToStartPlayTest = false;
             var side = BetweenScenes.EnvironmentBuilder.WhereToStart;
-            print("2" + side); // todo
-            print(Room.BottomSpawnpoint); // todo
-            print(Room.LeftSpawnpoint); // todo
-            print(Room.RightSpawnpoint); // todo
-            print(Room.TopSpawnpoint); // todo
 
             var playerTransform = MainData.PlayerBehaviour.transform;
-            switch (side) { // todo: check spawnPoints
+            switch (side) {
                 case Enums.Side.Down:
                     playerTransform.position = Room.BottomSpawnpoint.position;
                     break;
@@ -41,8 +53,11 @@ namespace G6.Environment {
                 case Enums.Side.Right:
                     playerTransform.position = Room.RightSpawnpoint.position;
                     break;
-                default: // case Enums.Side.Up:
+                case Enums.Side.Up:
                     playerTransform.position = Room.TopSpawnpoint.position;
+                    break;
+                default:
+                    playerTransform.position = Vector2.one * 20; // todo
                     break;
             }
             UI.Pause.GameIsPaused = false;

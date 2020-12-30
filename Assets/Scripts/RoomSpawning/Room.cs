@@ -36,7 +36,6 @@ namespace G6.RoomSpawning {
         private void OnEnable() {
 
             RoomType = "regular";
-            print("1");
 
             #region Doors initialization
 

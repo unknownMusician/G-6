@@ -9,8 +9,8 @@ namespace G6.RoomSpawning {
 
         private RoomSpawner roomSpawner;
 
-        private GameObject[,] roomMatrix => MainData.RoomSpawner.getRoomsMatrix(); // todo: remove
-        private GameObject[,] miniMapMatrix => MainData.RoomSpawner.getMiniMapMatrix(); // todo: remove
+        private GameObject[,] roomMatrix => MainData.RoomSpawner.RoomsMatrix; // todo: remove
+        private GameObject[,] miniMapMatrix => MainData.RoomSpawner.MiniMapMatrix; // todo: remove
 
         public bool Visited { get; set; } = false;
 
