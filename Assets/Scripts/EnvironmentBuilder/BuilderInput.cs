@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace G6.EnvironmentBuilder {
@@ -12,6 +13,8 @@ namespace G6.EnvironmentBuilder {
         private void OnDestroy() => instance = null;
 
         #endregion
+
+        [SerializeField] private CinemachineVirtualCamera vcam = null;
 
         #region Public
 
@@ -44,6 +47,20 @@ namespace G6.EnvironmentBuilder {
                 StopCoroutine(coroutine);
                 coroutine = null;
             }
+        }
+
+        public void ZoomIn() {
+            print("huy");
+            vcam.m_Lens.OrthographicSize--;
+        }
+
+        public void ZoomOut() {
+            print("huy");
+            vcam.m_Lens.OrthographicSize++;
+        }
+
+        public void MoveCamera(Vector2 dir) {
+            Camera.main.transform.position += (Vector3)dir;
         }
 
         #endregion
