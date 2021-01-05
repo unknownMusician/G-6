@@ -4,6 +4,7 @@ using G6.Environment.Interactables.Base;
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace G6.EnvironmentBuilder {
     public sealed class RoomCreator : MonoBehaviour {
@@ -112,7 +113,7 @@ namespace G6.EnvironmentBuilder {
             // todo
         }
 
-        public void PlaceItem(Vector2 gridPosition) {
+        public void PlaceItem(Vector2 gridPosition, Dictionary<Vector2, GameObject> grid) {
 
             var selectedData = SelectedData.instance;
 
@@ -127,17 +128,26 @@ namespace G6.EnvironmentBuilder {
             // deleting previous
             DeleteItem(gridPosition);
 
-            selectedData.Grid.Add(gridPosition, clone);
+            grid.Add(gridPosition, clone);
             CheckNeighbours(gridPosition, selectedData.GridSize, selectedData.Grid);
         }
+        public void PlaceItem(Vector2 gridPosition) => PlaceItem(gridPosition, SelectedData.instance.Grid);
 
-        public void DeleteItem(Vector2 gridPosition) {
+        public void DeleteItem(Vector2 gridPosition, Dictionary<Vector2, GameObject> grid) {
+            if (grid.ContainsKey(gridPosition)) {
+                Destroy(grid[gridPosition]);
+                grid.Remove(gridPosition);
+            }
+        }
+        public void DeleteItem(Vector2 gridPosition) => DeleteItem(gridPosition, SelectedData.instance.Grid);
 
-            var selectedDict = SelectedData.instance.Grid;
-
-            if (selectedDict.ContainsKey(gridPosition)) {
-                Destroy(selectedDict[gridPosition]);
-                selectedDict.Remove(gridPosition);
+        public void ClearLevel() {
+            var common = CommonData.instance;
+            var grids = new[] { common.BackgroundGrid, common.ForegroundGrid, common.GroundGrid, common.ObjectsGrid, common.SpecialsGrid };
+            for(int i = 0; i < grids.Length; i++) {
+                while (grids[i].Keys.Count > 0) {
+                    DeleteItem(grids[i].Keys.First(), grids[i]);
+                }
             }
         }
 
