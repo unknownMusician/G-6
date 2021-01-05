@@ -969,7 +969,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ZoomIn",
+                    "name": "ZoomInStart",
                     "type": "Button",
                     "id": "f0e9dbab-a950-4fd4-b9e5-acc2c24958eb",
                     "expectedControlType": "Button",
@@ -977,7 +977,15 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ZoomOut",
+                    "name": "ZoomInEnd",
+                    "type": "Button",
+                    "id": "d4241e49-2850-4b72-a1da-d19ee949145a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ZoomOutStart",
                     "type": "Button",
                     "id": "6ba9fb4f-7f1e-4175-95d7-af7844d4f1b1",
                     "expectedControlType": "Button",
@@ -985,9 +993,25 @@
                     "interactions": ""
                 },
                 {
-                    "name": "CameraMove",
+                    "name": "ZoomOutEnd",
+                    "type": "Button",
+                    "id": "20e43127-7765-4ecb-98be-1901b4a9a6a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CameraMoveStart",
                     "type": "Value",
                     "id": "85f97cd7-d0e7-4312-a09b-820d993f5ae5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CameraMoveEnd",
+                    "type": "Value",
+                    "id": "5c005f5d-fe0d-4ae5-801d-0fd8c0079aac",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
@@ -1045,7 +1069,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "ZoomIn",
+                    "action": "ZoomInStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1056,7 +1080,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "ZoomOut",
+                    "action": "ZoomOutStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1067,7 +1091,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveStart",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1078,7 +1102,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveStart",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1089,7 +1113,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveStart",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1100,7 +1124,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveStart",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1111,7 +1135,84 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveStart",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e867559c-eedc-4a04-9fe4-3f7062b28cf6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomInEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e637cc4-8499-4cae-8b28-f5ac0f60fa46",
+                    "path": "<Keyboard>/q",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomOutEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "7b64907f-e548-4e42-992d-00b6b941a2e9",
+                    "path": "2DVector",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveEnd",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "932c701d-ca56-4114-a5e7-a10bfb774888",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "0f1c8656-c083-451c-8873-578575b62a2c",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "071a1ecd-5dea-4ed2-bdf8-feea4f6692ce",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "eb528ca3-0728-4f2a-a009-3d28cda67bca",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMoveEnd",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

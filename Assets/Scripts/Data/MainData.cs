@@ -175,11 +175,13 @@ namespace G6.Data {
 
             Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.DeleteStop(); };
 
-            Controls.EnvironmentBuilder.CameraMove.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.MoveCamera(ctx.ReadValue<Vector2>()); };
+            Controls.EnvironmentBuilder.CameraMoveStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.MoveCamera(ctx.ReadValue<Vector2>()); }; // todo
 
-            Controls.EnvironmentBuilder.ZoomIn.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomIn(); };
+            Controls.EnvironmentBuilder.ZoomInStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomInStart(); };
+            Controls.EnvironmentBuilder.ZoomInEnd.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomEnd(); };
 
-            Controls.EnvironmentBuilder.ZoomOut.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomOut(); };
+            Controls.EnvironmentBuilder.ZoomOutStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomOutStart(); };
+            Controls.EnvironmentBuilder.ZoomOutEnd.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomEnd(); };
 
             #endregion
 

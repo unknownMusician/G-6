@@ -59,15 +59,15 @@ namespace G6.EnvironmentBuilder {
             }
         }
 
-        private string GetRoomPath(Transform doors) {
+        private string GetRoomPath(Transform spawnPoints) {
             string path = "";
 
             System.Func<string, string> switchSmall = new System.Func<string, string>((doorName) => {
                 switch (doorName) {
-                    case "TopDoor": return "T";
-                    case "RightDoor": return "R";
-                    case "BottomDoor": return "B";
-                    case "LeftDoor": return "L";
+                    case "TopSpawnpoint": return "T";
+                    case "RightSpawnpoint": return "R";
+                    case "BottomSpawnpoint": return "B";
+                    case "LeftSpawnpoint": return "L";
                     default: return "";
                 }
             });
@@ -85,15 +85,15 @@ namespace G6.EnvironmentBuilder {
                 return "Not " + doorNames[0] + "/";
             });
 
-            switch (doors.childCount) {
+            switch (spawnPoints.childCount) {
                 case 1:
-                    path = "1 exit/" + switch1(doors.GetChild(0).name);
+                    path = "1 exit/" + switch1(spawnPoints.GetChild(0).name);
                     break;
                 case 2:
-                    path = "2 exit/" + switch2(doors.GetChild(0).name, doors.GetChild(1).name);
+                    path = "2 exit/" + switch2(spawnPoints.GetChild(0).name, spawnPoints.GetChild(1).name);
                     break;
                 case 3:
-                    path = "3 exit/" + switch3(doors.GetChild(0).name, doors.GetChild(1).name, doors.GetChild(2).name);
+                    path = "3 exit/" + switch3(spawnPoints.GetChild(0).name, spawnPoints.GetChild(1).name, spawnPoints.GetChild(2).name);
                     break;
                 case 4:
                     path = "Base/";

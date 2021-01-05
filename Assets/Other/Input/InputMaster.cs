@@ -982,7 +982,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ZoomIn"",
+                    ""name"": ""ZoomInStart"",
                     ""type"": ""Button"",
                     ""id"": ""f0e9dbab-a950-4fd4-b9e5-acc2c24958eb"",
                     ""expectedControlType"": ""Button"",
@@ -990,7 +990,15 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ZoomOut"",
+                    ""name"": ""ZoomInEnd"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4241e49-2850-4b72-a1da-d19ee949145a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ZoomOutStart"",
                     ""type"": ""Button"",
                     ""id"": ""6ba9fb4f-7f1e-4175-95d7-af7844d4f1b1"",
                     ""expectedControlType"": ""Button"",
@@ -998,9 +1006,25 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CameraMove"",
+                    ""name"": ""ZoomOutEnd"",
+                    ""type"": ""Button"",
+                    ""id"": ""20e43127-7765-4ecb-98be-1901b4a9a6a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraMoveStart"",
                     ""type"": ""Value"",
                     ""id"": ""85f97cd7-d0e7-4312-a09b-820d993f5ae5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraMoveEnd"",
+                    ""type"": ""Value"",
+                    ""id"": ""5c005f5d-fe0d-4ae5-801d-0fd8c0079aac"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1058,7 +1082,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ZoomIn"",
+                    ""action"": ""ZoomInStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1069,7 +1093,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ZoomOut"",
+                    ""action"": ""ZoomOutStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1080,7 +1104,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraMove"",
+                    ""action"": ""CameraMoveStart"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1091,7 +1115,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraMove"",
+                    ""action"": ""CameraMoveStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1102,7 +1126,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraMove"",
+                    ""action"": ""CameraMoveStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1113,7 +1137,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraMove"",
+                    ""action"": ""CameraMoveStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1124,7 +1148,84 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraMove"",
+                    ""action"": ""CameraMoveStart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e867559c-eedc-4a04-9fe4-3f7062b28cf6"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomInEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e637cc4-8499-4cae-8b28-f5ac0f60fa46"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomOutEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""7b64907f-e548-4e42-992d-00b6b941a2e9"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveEnd"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""932c701d-ca56-4114-a5e7-a10bfb774888"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""0f1c8656-c083-451c-8873-578575b62a2c"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""071a1ecd-5dea-4ed2-bdf8-feea4f6692ce"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveEnd"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""eb528ca3-0728-4f2a-a009-3d28cda67bca"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveEnd"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -1208,9 +1309,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_EnvironmentBuilder_NoPlaceObject = m_EnvironmentBuilder.FindAction("NoPlaceObject", throwIfNotFound: true);
         m_EnvironmentBuilder_DeleteObject = m_EnvironmentBuilder.FindAction("DeleteObject", throwIfNotFound: true);
         m_EnvironmentBuilder_NoDeleteObject = m_EnvironmentBuilder.FindAction("NoDeleteObject", throwIfNotFound: true);
-        m_EnvironmentBuilder_ZoomIn = m_EnvironmentBuilder.FindAction("ZoomIn", throwIfNotFound: true);
-        m_EnvironmentBuilder_ZoomOut = m_EnvironmentBuilder.FindAction("ZoomOut", throwIfNotFound: true);
-        m_EnvironmentBuilder_CameraMove = m_EnvironmentBuilder.FindAction("CameraMove", throwIfNotFound: true);
+        m_EnvironmentBuilder_ZoomInStart = m_EnvironmentBuilder.FindAction("ZoomInStart", throwIfNotFound: true);
+        m_EnvironmentBuilder_ZoomInEnd = m_EnvironmentBuilder.FindAction("ZoomInEnd", throwIfNotFound: true);
+        m_EnvironmentBuilder_ZoomOutStart = m_EnvironmentBuilder.FindAction("ZoomOutStart", throwIfNotFound: true);
+        m_EnvironmentBuilder_ZoomOutEnd = m_EnvironmentBuilder.FindAction("ZoomOutEnd", throwIfNotFound: true);
+        m_EnvironmentBuilder_CameraMoveStart = m_EnvironmentBuilder.FindAction("CameraMoveStart", throwIfNotFound: true);
+        m_EnvironmentBuilder_CameraMoveEnd = m_EnvironmentBuilder.FindAction("CameraMoveEnd", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1531,9 +1635,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_EnvironmentBuilder_NoPlaceObject;
     private readonly InputAction m_EnvironmentBuilder_DeleteObject;
     private readonly InputAction m_EnvironmentBuilder_NoDeleteObject;
-    private readonly InputAction m_EnvironmentBuilder_ZoomIn;
-    private readonly InputAction m_EnvironmentBuilder_ZoomOut;
-    private readonly InputAction m_EnvironmentBuilder_CameraMove;
+    private readonly InputAction m_EnvironmentBuilder_ZoomInStart;
+    private readonly InputAction m_EnvironmentBuilder_ZoomInEnd;
+    private readonly InputAction m_EnvironmentBuilder_ZoomOutStart;
+    private readonly InputAction m_EnvironmentBuilder_ZoomOutEnd;
+    private readonly InputAction m_EnvironmentBuilder_CameraMoveStart;
+    private readonly InputAction m_EnvironmentBuilder_CameraMoveEnd;
     public struct EnvironmentBuilderActions
     {
         private @InputMaster m_Wrapper;
@@ -1542,9 +1649,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @NoPlaceObject => m_Wrapper.m_EnvironmentBuilder_NoPlaceObject;
         public InputAction @DeleteObject => m_Wrapper.m_EnvironmentBuilder_DeleteObject;
         public InputAction @NoDeleteObject => m_Wrapper.m_EnvironmentBuilder_NoDeleteObject;
-        public InputAction @ZoomIn => m_Wrapper.m_EnvironmentBuilder_ZoomIn;
-        public InputAction @ZoomOut => m_Wrapper.m_EnvironmentBuilder_ZoomOut;
-        public InputAction @CameraMove => m_Wrapper.m_EnvironmentBuilder_CameraMove;
+        public InputAction @ZoomInStart => m_Wrapper.m_EnvironmentBuilder_ZoomInStart;
+        public InputAction @ZoomInEnd => m_Wrapper.m_EnvironmentBuilder_ZoomInEnd;
+        public InputAction @ZoomOutStart => m_Wrapper.m_EnvironmentBuilder_ZoomOutStart;
+        public InputAction @ZoomOutEnd => m_Wrapper.m_EnvironmentBuilder_ZoomOutEnd;
+        public InputAction @CameraMoveStart => m_Wrapper.m_EnvironmentBuilder_CameraMoveStart;
+        public InputAction @CameraMoveEnd => m_Wrapper.m_EnvironmentBuilder_CameraMoveEnd;
         public InputActionMap Get() { return m_Wrapper.m_EnvironmentBuilder; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1566,15 +1676,24 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @NoDeleteObject.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
                 @NoDeleteObject.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
                 @NoDeleteObject.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnNoDeleteObject;
-                @ZoomIn.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomIn;
-                @ZoomIn.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomIn;
-                @ZoomIn.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomIn;
-                @ZoomOut.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOut;
-                @ZoomOut.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOut;
-                @ZoomOut.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOut;
-                @CameraMove.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMove;
-                @CameraMove.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMove;
-                @CameraMove.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMove;
+                @ZoomInStart.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInStart;
+                @ZoomInStart.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInStart;
+                @ZoomInStart.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInStart;
+                @ZoomInEnd.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInEnd;
+                @ZoomInEnd.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInEnd;
+                @ZoomInEnd.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomInEnd;
+                @ZoomOutStart.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutStart;
+                @ZoomOutStart.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutStart;
+                @ZoomOutStart.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutStart;
+                @ZoomOutEnd.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutEnd;
+                @ZoomOutEnd.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutEnd;
+                @ZoomOutEnd.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnZoomOutEnd;
+                @CameraMoveStart.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveStart;
+                @CameraMoveStart.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveStart;
+                @CameraMoveStart.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveStart;
+                @CameraMoveEnd.started -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveEnd;
+                @CameraMoveEnd.performed -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveEnd;
+                @CameraMoveEnd.canceled -= m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface.OnCameraMoveEnd;
             }
             m_Wrapper.m_EnvironmentBuilderActionsCallbackInterface = instance;
             if (instance != null)
@@ -1591,15 +1710,24 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @NoDeleteObject.started += instance.OnNoDeleteObject;
                 @NoDeleteObject.performed += instance.OnNoDeleteObject;
                 @NoDeleteObject.canceled += instance.OnNoDeleteObject;
-                @ZoomIn.started += instance.OnZoomIn;
-                @ZoomIn.performed += instance.OnZoomIn;
-                @ZoomIn.canceled += instance.OnZoomIn;
-                @ZoomOut.started += instance.OnZoomOut;
-                @ZoomOut.performed += instance.OnZoomOut;
-                @ZoomOut.canceled += instance.OnZoomOut;
-                @CameraMove.started += instance.OnCameraMove;
-                @CameraMove.performed += instance.OnCameraMove;
-                @CameraMove.canceled += instance.OnCameraMove;
+                @ZoomInStart.started += instance.OnZoomInStart;
+                @ZoomInStart.performed += instance.OnZoomInStart;
+                @ZoomInStart.canceled += instance.OnZoomInStart;
+                @ZoomInEnd.started += instance.OnZoomInEnd;
+                @ZoomInEnd.performed += instance.OnZoomInEnd;
+                @ZoomInEnd.canceled += instance.OnZoomInEnd;
+                @ZoomOutStart.started += instance.OnZoomOutStart;
+                @ZoomOutStart.performed += instance.OnZoomOutStart;
+                @ZoomOutStart.canceled += instance.OnZoomOutStart;
+                @ZoomOutEnd.started += instance.OnZoomOutEnd;
+                @ZoomOutEnd.performed += instance.OnZoomOutEnd;
+                @ZoomOutEnd.canceled += instance.OnZoomOutEnd;
+                @CameraMoveStart.started += instance.OnCameraMoveStart;
+                @CameraMoveStart.performed += instance.OnCameraMoveStart;
+                @CameraMoveStart.canceled += instance.OnCameraMoveStart;
+                @CameraMoveEnd.started += instance.OnCameraMoveEnd;
+                @CameraMoveEnd.performed += instance.OnCameraMoveEnd;
+                @CameraMoveEnd.canceled += instance.OnCameraMoveEnd;
             }
         }
     }
@@ -1670,8 +1798,11 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnNoPlaceObject(InputAction.CallbackContext context);
         void OnDeleteObject(InputAction.CallbackContext context);
         void OnNoDeleteObject(InputAction.CallbackContext context);
-        void OnZoomIn(InputAction.CallbackContext context);
-        void OnZoomOut(InputAction.CallbackContext context);
-        void OnCameraMove(InputAction.CallbackContext context);
+        void OnZoomInStart(InputAction.CallbackContext context);
+        void OnZoomInEnd(InputAction.CallbackContext context);
+        void OnZoomOutStart(InputAction.CallbackContext context);
+        void OnZoomOutEnd(InputAction.CallbackContext context);
+        void OnCameraMoveStart(InputAction.CallbackContext context);
+        void OnCameraMoveEnd(InputAction.CallbackContext context);
     }
 }

@@ -14,9 +14,9 @@ namespace G6.EnvironmentBuilder {
 
         #endregion
 
-        [SerializeField] private CinemachineVirtualCamera vcam = null;
+        #region Place-Delete
 
-        #region Public
+        #region Public Access methods
 
         public void DeleteStart() {
             if (coroutine != null) {
@@ -49,42 +49,9 @@ namespace G6.EnvironmentBuilder {
             }
         }
 
-        public void ZoomIn() {
-            print("huy");
-            vcam.m_Lens.OrthographicSize--;
-        }
-
-        public void ZoomOut() {
-            print("huy");
-            vcam.m_Lens.OrthographicSize++;
-        }
-
-        public void MoveCamera(Vector2 dir) {
-            Camera.main.transform.position += (Vector3)dir;
-        }
-
         #endregion
 
-        #region Private
-
-        private Vector2 MouseGridPosition => Service.NormalizeByGrid(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()), SelectedData.instance.GridSize);
-
-        private GameObject cursor { get; set; }
-
-        private Coroutine coroutine;
-
-        private void Awake() {
-            instance = this;
-            // Creating cursor
-            cursor = new GameObject("alphaSprite");
-            cursor.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
-            // Subscribe cursor
-            SelectedData.instance.OnItemChange += () => cursor.GetComponent<SpriteRenderer>().sprite = SelectedData.instance.PrefabSprite;
-        }
-
-        private void Update() {
-            cursor.transform.position = MouseGridPosition;
-        }
+        #region Private Coroutines
 
         private IEnumerator Placing() { // todo: interpolate
             while (true) {
@@ -106,6 +73,92 @@ namespace G6.EnvironmentBuilder {
                 RoomCreator.instance.DeleteItem(MouseGridPosition);
                 yield return null;
             }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Camera movement
+
+        #region Public Access methods
+
+        public void ZoomInStart() {
+            ZoomEnd();
+            cameraZoomingCoroutine = StartCoroutine(Zooming(true));
+        }
+
+        public void ZoomOutStart() {
+            ZoomEnd();
+            cameraZoomingCoroutine = StartCoroutine(Zooming(false));
+        }
+
+        public void ZoomEnd() {
+            if (cameraZoomingCoroutine != null) {
+                StopCoroutine(cameraZoomingCoroutine);
+                cameraZoomingCoroutine = null;
+            }
+        }
+
+        public void MoveCamera(Vector2 dir) {
+            Camera.main.transform.position += (Vector3)dir;
+            print(Data.MainData.Controls.EnvironmentBuilder.CameraMoveStart.ReadValue<Vector2>());
+        }
+
+        #endregion
+
+        #region private Coroutines...
+
+        private Coroutine cameraZoomingCoroutine;
+        private Coroutine cameraMovingCoroutine;
+
+        private IEnumerator Zooming(bool zoomIn) {
+            float zoomFactor = 0.2f;
+            while (true) {
+                vcam.m_Lens.OrthographicSize += zoomFactor * (zoomIn ? -1 : 1);
+                zoomFactor *= 1.03f;
+                yield return null;
+            }
+        }
+
+        private IEnumerator CameraMoving() {
+            float moveFactor = 0.2f;
+            while (true) {
+                Camera.main.transform.position += (Vector3)Data.MainData.Controls.EnvironmentBuilder.CameraMoveStart.ReadValue<Vector2>() * moveFactor;
+                moveFactor *= 1.03f;
+                yield return null;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Private Variables
+
+        [SerializeField] private CinemachineVirtualCamera vcam = null;
+
+        private Vector2 MouseGridPosition => Service.NormalizeByGrid(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()), SelectedData.instance.GridSize);
+
+        private GameObject cursor { get; set; }
+
+        private Coroutine coroutine;
+
+        #endregion
+
+        #region Mono
+
+        private void Awake() {
+            instance = this;
+            // Creating cursor
+            cursor = new GameObject("alphaSprite");
+            cursor.AddComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            // Subscribe cursor
+            SelectedData.instance.OnItemChange += () => cursor.GetComponent<SpriteRenderer>().sprite = SelectedData.instance.PrefabSprite;
+        }
+
+        private void Update() {
+            cursor.transform.position = MouseGridPosition;
         }
 
         #endregion
