@@ -167,13 +167,19 @@ namespace G6.Data {
 
             #region EnvironmentBuilder
 
-            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.PlaceStart(); };
+            Controls.EnvironmentBuilder.PlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.PlaceStart(); };
 
-            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.PlaceStop(); };
+            Controls.EnvironmentBuilder.NoPlaceObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.PlaceStop(); };
 
-            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.DeleteStart(); };
+            Controls.EnvironmentBuilder.DeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.DeleteStart(); };
 
-            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance.DeleteStop(); };
+            Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.DeleteStop(); };
+
+            Controls.EnvironmentBuilder.CameraMove.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.MoveCamera(ctx.ReadValue<Vector2>()); };
+
+            Controls.EnvironmentBuilder.ZoomIn.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomIn(); };
+
+            Controls.EnvironmentBuilder.ZoomOut.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomOut(); };
 
             #endregion
 
@@ -194,6 +200,7 @@ namespace G6.Data {
                 Controls = new InputMaster();
                 SetControlsActions();
             }
+            Pause.GameIsPaused = false;
         }
         private void OnEnable() =>  Controls.Enable();
         private void OnDisable() => Controls.Disable();
