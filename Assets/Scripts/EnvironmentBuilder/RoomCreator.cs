@@ -39,7 +39,7 @@ namespace G6.EnvironmentBuilder {
         #region Public
 
         public void SaveRoom() { // add different folders for different types of rooms
-            string roomTypePath = GetRoomPath(Doors);
+            string roomTypePath = GetRoomPath(SpawnPoints);
             if (Room.gameObject.GetComponent<Room>() == null) {
                 Room.gameObject.AddComponent<Room>();
             }
