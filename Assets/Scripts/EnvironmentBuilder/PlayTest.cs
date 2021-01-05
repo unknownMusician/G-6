@@ -38,7 +38,10 @@ namespace G6.EnvironmentBuilder {
         }
 
         private void Start() {
-            if (!needToStartPlayTest) { return; }
+            if (!needToStartPlayTest) {
+                UI.Pause.GameIsPaused = true;
+                return;
+            }
             needToStartPlayTest = false;
             var side = BetweenScenes.EnvironmentBuilder.WhereToStart;
 
