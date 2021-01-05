@@ -152,11 +152,13 @@ namespace G6.Data {
             #region UI
 
             Controls.UI.Menu.performed += ctx => {
+                // todo: check if not null
                 Pause.GameIsPaused = !Pause.GameIsPaused;
                 Menu.instance.gameObject.SetActive(Pause.GameIsPaused);
             };
 
             Controls.UI.WeaponSettings.performed += ctx => {
+                // todo: check if not null
                 Pause.GameIsPaused = !Pause.GameIsPaused;
                 WeaponSettings.instance.gameObject.SetActive(Pause.GameIsPaused);
             };
