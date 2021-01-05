@@ -194,6 +194,7 @@ namespace G6.Data {
                 Controls = new InputMaster();
                 SetControlsActions();
             }
+            Pause.GameIsPaused = false;
         }
         private void OnEnable() =>  Controls.Enable();
         private void OnDisable() => Controls.Disable();

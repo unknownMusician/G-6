@@ -60,7 +60,6 @@ namespace G6.EnvironmentBuilder {
                     playerTransform.position = Vector2.one * 20; // todo
                     break;
             }
-            UI.Pause.GameIsPaused = false;
         }
 
         public void ReturnToBuilder() => LevelManager.LoadEnvironmentBuilder();
