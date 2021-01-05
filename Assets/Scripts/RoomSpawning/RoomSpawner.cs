@@ -254,7 +254,7 @@ namespace G6.RoomSpawning {
                         ) { place.topDoor = false; }
                     if (j + 1 < columns && ((rddm = roomDirectionsDataMatrix[i, j + 1]) == null || !rddm.AtLeastOneDoor || rddm.leftDoor == false)
                         ) { place.rightDoor = false; }
-                    if (j + 1 < rows && ((rddm = roomDirectionsDataMatrix[i + 1, j]) == null || !rddm.AtLeastOneDoor || rddm.topDoor == false)
+                    if (i + 1 < rows && ((rddm = roomDirectionsDataMatrix[i + 1, j]) == null || !rddm.AtLeastOneDoor || rddm.topDoor == false) // todo: Exception
                         ) { place.bottomDoor = false; }
                     if (j > 0 && ((rddm = roomDirectionsDataMatrix[i, j - 1]) == null || !rddm.AtLeastOneDoor || rddm.rightDoor == false)
                         ) { place.leftDoor = false; }
@@ -270,8 +270,6 @@ namespace G6.RoomSpawning {
                     if (roomDirectionsDataMatrix[i, j] == null) { continue; }
 
                     string key = roomDirectionsDataMatrix[i, j].ToString();
-
-                    print(key.ToString()); // todo
 
                     if (mapElementsPrefabsDictionary.ContainsKey(key)) {
                         MiniMapMatrix[i, j] = Instantiate(mapElementsPrefabsDictionary[key],
