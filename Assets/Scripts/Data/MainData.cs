@@ -135,8 +135,8 @@ namespace G6.Data {
 
             Controls.Player.Jump.performed += ctx => { if (!Pause.GameIsPaused) PlayerBehaviour?.Jump(); };
 
-            Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour.IsCrouching = true; };
-            Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour.IsCrouching = false; };
+            Controls.Player.Sneak.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour?.StartCrouching(); };
+            Controls.Player.NoSneak.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour?.StopCrouching(); };
 
             Controls.Player.Run.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour.IsRunning = true; };
             Controls.Player.NoRun.performed += ctx => { if (!Pause.GameIsPaused && PlayerBehaviour != null) PlayerBehaviour.IsRunning = false; };
