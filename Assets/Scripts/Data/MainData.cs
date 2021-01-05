@@ -175,7 +175,8 @@ namespace G6.Data {
 
             Controls.EnvironmentBuilder.NoDeleteObject.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.DeleteStop(); };
 
-            Controls.EnvironmentBuilder.CameraMoveStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.MoveCamera(ctx.ReadValue<Vector2>()); }; // todo
+            Controls.EnvironmentBuilder.CameraMoveStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.CameraMoveStart(); };
+            Controls.EnvironmentBuilder.CameraMoveEnd.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.CameraMoveEnd(); };
 
             Controls.EnvironmentBuilder.ZoomInStart.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomInStart(); };
             Controls.EnvironmentBuilder.ZoomInEnd.performed += ctx => { if (BuilderInput.instance != null) BuilderInput.instance?.ZoomEnd(); };

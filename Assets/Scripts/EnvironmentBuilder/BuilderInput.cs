@@ -100,9 +100,16 @@ namespace G6.EnvironmentBuilder {
             }
         }
 
-        public void MoveCamera(Vector2 dir) {
-            Camera.main.transform.position += (Vector3)dir;
-            print(Data.MainData.Controls.EnvironmentBuilder.CameraMoveStart.ReadValue<Vector2>());
+        public void CameraMoveStart() {
+            CameraMoveEnd();
+            cameraMovingCoroutine = StartCoroutine(CameraMoving());
+        }
+
+        public void CameraMoveEnd() {
+            if (cameraMovingCoroutine != null) {
+                StopCoroutine(cameraMovingCoroutine);
+                cameraMovingCoroutine = null;
+            }
         }
 
         #endregion
@@ -113,19 +120,19 @@ namespace G6.EnvironmentBuilder {
         private Coroutine cameraMovingCoroutine;
 
         private IEnumerator Zooming(bool zoomIn) {
-            float zoomFactor = 0.2f;
+            float zoomFactor = 0.15f;
             while (true) {
                 vcam.m_Lens.OrthographicSize += zoomFactor * (zoomIn ? -1 : 1);
-                zoomFactor *= 1.03f;
+                if (zoomFactor < 2) { zoomFactor *= 1.015f; }
                 yield return null;
             }
         }
 
         private IEnumerator CameraMoving() {
-            float moveFactor = 0.2f;
+            float moveFactor = 0.15f;
             while (true) {
                 Camera.main.transform.position += (Vector3)Data.MainData.Controls.EnvironmentBuilder.CameraMoveStart.ReadValue<Vector2>() * moveFactor;
-                moveFactor *= 1.03f;
+                if (moveFactor < 2) { moveFactor *= 1.015f; }
                 yield return null;
             }
         }
