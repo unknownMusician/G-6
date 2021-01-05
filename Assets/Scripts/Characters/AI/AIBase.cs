@@ -62,7 +62,6 @@ namespace G6.Characters.AI {
                 }
             }
         }
-        protected AIStateBase CurrentState { get; set; }
 
         protected GameObject Enemy { get; set; }
 
