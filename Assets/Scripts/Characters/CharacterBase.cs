@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.U2D;
 
 namespace G6.Characters {
     public abstract class CharacterBase : MonoBehaviour
@@ -154,6 +155,22 @@ namespace G6.Characters {
 
             rb.AddForce(new Vector2(0, JumpForce.y), ForceMode2D.Impulse);
         }
+        public void StartCrouching()
+        {
+            IsCrouching = true;
+            GetComponent<BoxCollider2D>().enabled = false;
+
+            Sprite crouchedSprite = Resources.LoadAll<Sprite>("Sprites/Characters/characters")[1];
+            GetComponent<SpriteRenderer>().sprite = crouchedSprite;
+        }
+        public void StopCrouching()
+        {
+            this.IsCrouching = false;
+            GetComponent<BoxCollider2D>().enabled = true;
+
+            Sprite uncrouchedSprite = Resources.LoadAll<Sprite>("Sprites/Characters/characters")[3];
+            GetComponent<SpriteRenderer>().sprite = uncrouchedSprite;
+        }
 
         protected bool IsOnLayer(string layer, Side side)
         {
@@ -216,7 +233,6 @@ namespace G6.Characters {
             return Side.Up;
         }
 
-
         public bool TryInteract()
         {
             List<InteractableBase> allEnvironment = GetPosibleInteractions();
@@ -274,17 +290,8 @@ namespace G6.Characters {
         protected void Die()
         {
             State = State.Dead;
-            Say("Hm, bye. I'm dead");
+            // Say("Hm, bye. I'm dead");
         }
-        #endregion
-
-        #region _
-
-        protected void Say(string message)
-        {
-            //Debug.Log($"{name} said: \"{message}\" ");
-        }
-
         #endregion
 
         #region MonoBehaviour Implemented
@@ -325,13 +332,12 @@ namespace G6.Characters {
         }
         #endregion
 
-
         #region Public Methods
 
         public void TakeDamage(float damage)
         {
             HP -= damage;
-            Say($"Ouch, I've taken {damage} damage. Now I have {HP} HP");
+            // Say($"Ouch, I've taken {damage} damage. Now I have {HP} HP");
             if (HP <= 0)
                 Die();
         }
