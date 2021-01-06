@@ -84,6 +84,9 @@ namespace G6.EnvironmentBuilder {
 
             var specialsPrefabsList = new List<GameObject> { blankBlock };
             specialsPrefabsList.AddRange(Resources.LoadAll<GameObject>($"{path}Specials"));
+
+            specialsPrefabsList.AddRange(Resources.LoadAll<GameObject>("Prefabs/Characters/Enemy"));
+
             SpecialsPrefabs = specialsPrefabsList.ToArray();
 
             path = "Prefabs/Weapons/";
@@ -92,6 +95,7 @@ namespace G6.EnvironmentBuilder {
             objectsPrefabsList.AddRange(Resources.LoadAll<GameObject>($"{path}Cards"));
             objectsPrefabsList.AddRange(Resources.LoadAll<GameObject>($"{path}Guns"));
             objectsPrefabsList.AddRange(Resources.LoadAll<GameObject>($"{path}Melees"));
+
             ObjectsPrefabs = objectsPrefabsList.ToArray();
         }
 
