@@ -90,7 +90,7 @@ namespace G6.RoomSpawning {
 
             #region Teleporting player to base room
 
-            MainData.PlayerBehaviour.transform.position = RoomsMatrix[CurrentRow, CurrentColumn].transform.position;
+            MainData.PlayerBehaviour.transform.localPosition = RoomsMatrix[CurrentRow, CurrentColumn].transform.GetChild(3).GetChild(0).position;
 
             #endregion
 
