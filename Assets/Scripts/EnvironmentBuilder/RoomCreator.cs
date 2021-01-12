@@ -64,11 +64,16 @@ namespace G6.EnvironmentBuilder {
 
             System.Func<string, string> switchSmall = new System.Func<string, string>((doorName) => {
                 switch (doorName) {
-                    case "TopSpawnpoint": return "T";
-                    case "RightSpawnpoint": return "R";
-                    case "BottomSpawnpoint": return "B";
-                    case "LeftSpawnpoint": return "L";
-                    default: return "";
+                    case "TopSpawnpoint":
+                        return "T";
+                    case "RightSpawnpoint":
+                        return "R";
+                    case "BottomSpawnpoint":
+                        return "B";
+                    case "LeftSpawnpoint":
+                        return "L";
+                    default:
+                        return "";
                 }
             });
             System.Func<string, string> switch1 = new System.Func<string, string>((doorName) => { return switchSmall(doorName) + "/"; });
@@ -79,7 +84,7 @@ namespace G6.EnvironmentBuilder {
             });
             System.Func<string, string, string, string> switch3 = new System.Func<string, string, string, string>((doorName1, doorName2, doorName3) => {
                 var doorNames = new List<string> { "T", "R", "B", "L" };
-                foreach(var l in new[] { switchSmall(doorName1), switchSmall(doorName2), switchSmall(doorName3) }) {
+                foreach (var l in new[] { switchSmall(doorName1), switchSmall(doorName2), switchSmall(doorName3) }) {
                     doorNames.Remove(l);
                 }
                 return "Not " + doorNames[0] + "/";
@@ -113,11 +118,9 @@ namespace G6.EnvironmentBuilder {
             // todo
         }
 
-        public void PlaceItem(Vector2 gridPosition, Dictionary<Vector2, GameObject> grid) {
+        public void PlaceItem(Vector2 gridPosition, GameObject prefab, Dictionary<Vector2, GameObject> grid, float gridSize) {
 
-            var selectedData = SelectedData.instance;
-
-            GameObject clone = PrefabUtility.InstantiatePrefab(selectedData.Prefab) as GameObject;
+            GameObject clone = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
 
             clone.transform.position = gridPosition;
             if (!CheckAndSetItemProperties(clone.transform)) {
@@ -129,24 +132,33 @@ namespace G6.EnvironmentBuilder {
             DeleteItem(gridPosition);
 
             grid.Add(gridPosition, clone);
-            CheckNeighbours(gridPosition, selectedData.GridSize, selectedData.Grid);
+            CheckGridSpritesAround(gridPosition, gridSize, grid);
         }
-        public void PlaceItem(Vector2 gridPosition) => PlaceItem(gridPosition, SelectedData.instance.Grid);
+        public void PlaceItem(Vector2 gridPosition) {
+            var selectedData = SelectedData.instance;
+            PlaceItem(gridPosition, selectedData.Prefab, selectedData.Grid, selectedData.GridSize);
+        }
 
-        public void DeleteItem(Vector2 gridPosition, Dictionary<Vector2, GameObject> grid) {
+        public void DeleteItem(Vector2 gridPosition, Dictionary<Vector2, GameObject> grid, float gridSize) {
             if (grid.ContainsKey(gridPosition)) {
                 Destroy(grid[gridPosition]);
                 grid.Remove(gridPosition);
+
+                CheckGridSpritesAround(gridPosition, gridSize, grid);
             }
         }
-        public void DeleteItem(Vector2 gridPosition) => DeleteItem(gridPosition, SelectedData.instance.Grid);
+        public void DeleteItem(Vector2 gridPosition) {
+            var selectedData = SelectedData.instance;
+            DeleteItem(gridPosition, selectedData.Grid, selectedData.GridSize);
+        }
 
         public void ClearLevel() {
             var common = CommonData.instance;
-            var grids = new[] { common.BackgroundGrid, common.ForegroundGrid, common.GroundGrid, common.ObjectsGrid, common.SpecialsGrid };
-            for(int i = 0; i < grids.Length; i++) {
+            var sizes = new[] { common.BlockSize, common.BlockSize, common.BlockSize, common.ObjectSize, common.BlockSize, }; // todo
+            var grids = new[] { common.BackgroundGrid, common.ForegroundGrid, common.GroundGrid, common.ObjectsGrid, common.SpecialsGrid }; // todo
+            for (int i = 0; i < grids.Length; i++) {
                 while (grids[i].Keys.Count > 0) {
-                    DeleteItem(grids[i].Keys.First(), grids[i]);
+                    DeleteItem(grids[i].Keys.First(), grids[i], sizes[i]);
                 }
             }
         }
@@ -198,22 +210,6 @@ namespace G6.EnvironmentBuilder {
             // todo
         }
 
-        public void Test() {
-            // Get the Prefab Asset root GameObject and its asset path.
-            GameObject assetRoot = Resources.Load<GameObject>($"{pathResources}Room_tmp");
-            string assetPath = AssetDatabase.GetAssetPath(assetRoot);
-
-            // Load the contents of the Prefab Asset.
-            GameObject contentsRoot = PrefabUtility.LoadPrefabContents(assetPath);
-
-            // Modify Prefab contents.
-            contentsRoot.AddComponent<BoxCollider>();
-
-            // Save contents back to Prefab Asset and unload contents.
-            PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetPath);
-            PrefabUtility.UnloadPrefabContents(contentsRoot);
-        }
-
         private void LoadRoomParts(Transform room) {
             // Load Room
             Room = room;
@@ -238,24 +234,31 @@ namespace G6.EnvironmentBuilder {
             }
         }
 
-        private void CheckNeighbours(Vector2 gridPosition, float gridSize, Dictionary<Vector2, GameObject> grid) {
-            var obj = grid[gridPosition];
-            // 3x3 matrix-donut
+        private void CheckGridSpritesAround(Vector2 gridPosition, float gridSize, Dictionary<Vector2, GameObject> grid) {
+            // 3x3 matrix
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
-                    if (i == 0 && j == 0) { continue; }
                     var localNormNeighbourPos = new Vector2(i, j);
                     var neighbourPos = Service.NormalizeByGrid(gridPosition + localNormNeighbourPos * gridSize, gridSize);
 
                     if (!grid.ContainsKey(neighbourPos)) { continue; }
-                    CheckNeighbour(grid[neighbourPos], obj, -localNormNeighbourPos);
+                    CheckGridSprite(neighbourPos, gridSize, grid);
                 }
             }
-
         }
 
-        private void CheckNeighbour(GameObject neighbourObj, GameObject changedBlock, Vector2 changedNormalizedDirection) {
-            // todo: change Sprite to look more natural;
+        private void CheckGridSprite(Vector2 gridPosition, float gridSize, Dictionary<Vector2, GameObject> grid) {
+            string localMatrix = "";
+            // 3x3 matrix
+            for (int i = 1; i > -2; i--) {
+                for (int j = -1; j < 2; j++) {
+                    var localNormNeighbourPos = new Vector2(j, i);
+                    var neighbourPos = Service.NormalizeByGrid(gridPosition + localNormNeighbourPos * gridSize, gridSize);
+
+                    localMatrix += grid.ContainsKey(neighbourPos) ? "1" : "0";
+                }
+            }
+            grid[gridPosition].GetComponent<Block>().CheckSelfSprite(localMatrix);
         }
 
         private bool CheckAndSetItemProperties(Transform item) {
