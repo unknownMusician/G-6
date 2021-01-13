@@ -1,3 +1,4 @@
+using Assets.Scripts.Enums;
 using UnityEngine;
 
 namespace G6.RoomSpawning {
@@ -5,7 +6,7 @@ namespace G6.RoomSpawning {
 
         #region Properties
 
-        public string RoomType { get; set; }
+        public RoomType RoomType { get; set; }
 
         public string RoomStuff { get; set; }
 
@@ -35,7 +36,7 @@ namespace G6.RoomSpawning {
 
         private void OnEnable() {
 
-            RoomType = "regular";
+            RoomType = RoomType.regular;
 
             #region Doors initialization
 
