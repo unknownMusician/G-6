@@ -1,9 +1,14 @@
 using G6.Data;
 using System.Collections.Generic;
+using Assets.Scripts.Enums;
+using Assets.Scripts.Other;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-namespace G6.RoomSpawning {
-    public class RoomSpawner : MonoBehaviour {
+namespace G6.RoomSpawning
+{
+    public class RoomSpawner : MonoBehaviour
+    {
 
         #region Properties
 
@@ -37,7 +42,9 @@ namespace G6.RoomSpawning {
 
         private Dictionary<string, GameObject> mapElementsPrefabsDictionary = new Dictionary<string, GameObject>();
         private Dictionary<string, GameObject[]> roomsPrefabsDictionary = new Dictionary<string, GameObject[]>();
-        private Dictionary<string, GameObject> mapIconsPrefabsDictionary = new Dictionary<string, GameObject>();
+
+        private Dictionary<string, GameObject> mapIconsPrefabsDictionary { get; set; } =
+            new Dictionary<string, GameObject>();
 
         #endregion
 
@@ -47,7 +54,8 @@ namespace G6.RoomSpawning {
 
         #region MonoBehaviour methods
 
-        private void Awake() {
+        private void Awake()
+        {
 
             #region Matrixes initialization
 
@@ -78,11 +86,15 @@ namespace G6.RoomSpawning {
         }
         private void OnDestroy() => MainData.RoomSpawner = null;
 
-        private void Start() {
+        private void Start()
+        {
 
             CreateDungeon();
 
             SpawnDungeon();
+
+            AddSecretRoom(3);
+            AddSecretRoom(4);
 
             SpawnDungeonMap();
 
@@ -100,7 +112,8 @@ namespace G6.RoomSpawning {
 
         #region Service methods
 
-        private void LoadData() {
+        private void LoadData()
+        {
             #region mapElementsPrefabsDictionary initialization and filling
 
             string path = "Prefabs/RoomSpawning/Rooms/Minimap/";
@@ -165,20 +178,25 @@ namespace G6.RoomSpawning {
 
         #region Generate and spawn methods
 
-        private void CreateDungeon() {
+        private void CreateDungeon()
+        {
             GenerateDungeon();
             AddRoomsToFitAmount();
             CloseDoorsToNowhere();
         }
 
-        private void GenerateDungeon() {
-            for (int i = 0; i < rows && amountOfRooms > 0; i++) {
-                for (int j = 0; j < columns && amountOfRooms > 0; j++) {
+        private void GenerateDungeon()
+        {
+            for (int i = 0; i < rows && amountOfRooms > 0; i++)
+            {
+                for (int j = 0; j < columns && amountOfRooms > 0; j++)
+                {
 
                     PlaceForRoom place = roomDirectionsDataMatrix[i, j];
 
                     // Creating PlaceForRoom objects for every place for room
-                    if (place == null) {
+                    if (place == null)
+                    {
                         roomDirectionsDataMatrix[i, j] = new PlaceForRoom();
                         place = roomDirectionsDataMatrix[i, j];
                     }
@@ -190,7 +208,8 @@ namespace G6.RoomSpawning {
                     place.leftDoor = (j - 1 >= 0) && ((rddm = roomDirectionsDataMatrix[i, j - 1]) != null) ? rddm.rightDoor : false;
 
                     // Random door filling
-                    if ((place != null) && (place.AtLeastOneDoor)) {
+                    if ((place != null) && (place.AtLeastOneDoor))
+                    {
                         if (place.topDoor == null) { place.topDoor = DoWeNeedAnotherDoor(place.DoorsAmount, Random.value); }
                         if (place.rightDoor == null) { place.rightDoor = DoWeNeedAnotherDoor(place.DoorsAmount, Random.value); }
                         if (place.bottomDoor == null) { place.bottomDoor = DoWeNeedAnotherDoor(place.DoorsAmount, Random.value); }
@@ -200,10 +219,14 @@ namespace G6.RoomSpawning {
                 }
             }
         }
-        private void AddRoomsToFitAmount() {
-            while (amountOfRooms >= 0) {
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < columns; j++) {
+        private void AddRoomsToFitAmount()
+        {
+            while (amountOfRooms >= 0)
+            {
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
 
                         PlaceForRoom place = roomDirectionsDataMatrix[i, j];
 
@@ -211,28 +234,32 @@ namespace G6.RoomSpawning {
 
                         PlaceForRoom currPlace;
 
-                        if ((i > 0) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i - 1, j]) != null && !currPlace.AtLeastOneDoor) {
+                        if ((i > 0) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i - 1, j]) != null && !currPlace.AtLeastOneDoor)
+                        {
                             place.topDoor = true;
                             currPlace.DoorParams = (false, false, true, false);
                             if (amountOfRooms == 0) { finishRoomCoord = (i - 1, j); }
                             amountOfRooms--;
                         }
 
-                        if ((j < columns - 1) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i, j + 1]) != null && !currPlace.AtLeastOneDoor) {
+                        if ((j < columns - 1) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i, j + 1]) != null && !currPlace.AtLeastOneDoor)
+                        {
                             place.rightDoor = true;
                             currPlace.DoorParams = (false, false, false, true);
                             if (amountOfRooms == 0) { finishRoomCoord = (i, j + 1); }
                             amountOfRooms--;
                         }
 
-                        if ((i < rows - 1) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i + 1, j]) != null && !currPlace.AtLeastOneDoor) {
+                        if ((i < rows - 1) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i + 1, j]) != null && !currPlace.AtLeastOneDoor)
+                        {
                             place.bottomDoor = true;
                             currPlace.DoorParams = (true, false, false, false);
                             if (amountOfRooms == 0) { finishRoomCoord = (i + 1, j); }
                             amountOfRooms--;
                         }
 
-                        if ((j > 0) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i, j - 1]) != null && !currPlace.AtLeastOneDoor) {
+                        if ((j > 0) && (amountOfRooms >= 0) && (currPlace = roomDirectionsDataMatrix[i, j - 1]) != null && !currPlace.AtLeastOneDoor)
+                        {
                             place.leftDoor = true;
                             currPlace.DoorParams = (false, true, false, false);
                             if (amountOfRooms == 0) { finishRoomCoord = (i, j - 1); }
@@ -242,9 +269,12 @@ namespace G6.RoomSpawning {
                 }
             }
         }
-        private void CloseDoorsToNowhere() {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
+        private void CloseDoorsToNowhere()
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
 
                     PlaceForRoom place = roomDirectionsDataMatrix[i, j];
                     if (amountOfRooms >= 0 || place == null || place.AtLeastOneDoor) { continue; }
@@ -262,16 +292,20 @@ namespace G6.RoomSpawning {
             }
         }
 
-        private void SpawnDungeonMap() {
+        private void SpawnDungeonMap()
+        {
 
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
 
                     if (roomDirectionsDataMatrix[i, j] == null) { continue; }
 
                     string key = roomDirectionsDataMatrix[i, j].ToString();
 
-                    if (mapElementsPrefabsDictionary.ContainsKey(key)) {
+                    if (mapElementsPrefabsDictionary.ContainsKey(key))
+                    {
                         MiniMapMatrix[i, j] = Instantiate(mapElementsPrefabsDictionary[key],
                             new Vector2(j * 10 - 300, -i * 10 + 300),
                             Quaternion.identity,
@@ -284,15 +318,19 @@ namespace G6.RoomSpawning {
             MiniMapMatrix[CurrentRow, CurrentColumn].GetComponent<SpriteRenderer>().color = Color.red;
         }
 
-        private void SpawnDungeon() {
+        private void SpawnDungeon()
+        {
 
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
 
                     string key = roomDirectionsDataMatrix[i, j]?.ToString();
 
                     if (key == null || !mapElementsPrefabsDictionary.ContainsKey(key)) { continue; }
-
+                    if (key == "0000")
+                        continue;
                     (RoomsMatrix[i, j] = Instantiate(
                         roomsPrefabsDictionary[key][Random.Range(0, roomsPrefabsDictionary[key].Length)],
                         new Vector2(j * 250, -i * 200),
@@ -303,11 +341,74 @@ namespace G6.RoomSpawning {
                 }
             }
             // Last added room = finish room, base room = start room
-            RoomsMatrix[finishRoomCoord.x, finishRoomCoord.y].GetComponent<Room>().RoomType = "finish";
+            RoomsMatrix[finishRoomCoord.x, finishRoomCoord.y].GetComponent<Room>().RoomType = RoomType.finish;
             RoomsMatrix[finishRoomCoord.x, finishRoomCoord.y].GetComponent<Room>().RoomStuff = "boss";
 
-            ActiveRoom.RoomType = "start";
+            ActiveRoom.RoomType = RoomType.start;
             ActiveRoom.RoomStuff = "market";
+        }
+
+        private void AddSecretRoom(int countOfNeighbors)
+        {
+            string etalonKey = "0000";
+
+            List<SecretPretendent> pretendentForSecretRoom = new List<SecretPretendent>();
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    if (roomDirectionsDataMatrix[i, j]?.ToString() == etalonKey)
+                    {
+                        List<Pair<int, int>> neighbors = GetNeighbors(i, j);
+                        if (neighbors.Count >= countOfNeighbors)
+                        {
+                            pretendentForSecretRoom.Add(new SecretPretendent() { Coordinate = new Pair<int, int>(i, j), Neighbors = neighbors });
+                        }
+                    }
+                }
+            }
+            if (pretendentForSecretRoom.Count > 0)
+            {
+                int indexForRoom = Random.Range(0, pretendentForSecretRoom.Count);
+                int i = pretendentForSecretRoom[indexForRoom].Coordinate.First;
+                int j = pretendentForSecretRoom[indexForRoom].Coordinate.Second;
+                (RoomsMatrix[i, j] = Instantiate(
+                            roomsPrefabsDictionary[etalonKey][Random.Range(0, roomsPrefabsDictionary[etalonKey].Length)],
+                            new Vector2(j * 250, -i * 200),
+                            Quaternion.identity,
+                            transform.GetChild(0)
+                        )
+                    ).SetActive((i == rows / 2) && (j == columns / 2));
+                if (countOfNeighbors == 3)
+                    RoomsMatrix[i, j].GetComponent<Room>().RoomType = RoomType.secret;
+                if (countOfNeighbors == 4)
+                    RoomsMatrix[i, j].GetComponent<Room>().RoomType = RoomType.TopSecret;
+
+                int indexForNeighbors = Random.Range(0, pretendentForSecretRoom[indexForRoom].Neighbors.Count);
+                int i1 = pretendentForSecretRoom[indexForRoom].Neighbors[indexForNeighbors].First;
+                int j1 = pretendentForSecretRoom[indexForRoom].Neighbors[indexForNeighbors].Second;
+                RoomsMatrix[i1, j1].GetComponent<Room>().RoomType = RoomType.EntranceToTheSecretRoom;
+            }
+        }
+
+        private class SecretPretendent
+        {
+            public Pair<int, int> Coordinate { get; set; }
+            public List<Pair<int, int>> Neighbors { get; set; }
+        }
+
+        private List<Pair<int, int>> GetNeighbors(int i, int j)
+        {
+            List<Pair<int, int>> coordinatesOfNeighbors = new List<Pair<int, int>>();
+            if (i + 1 < rows && RoomsMatrix[i + 1, j] != null)
+                coordinatesOfNeighbors.Add(new Pair<int, int>(i + 1, j));
+            if (i - 1 >= 0 && RoomsMatrix[i - 1, j] != null)
+                coordinatesOfNeighbors.Add(new Pair<int, int>(i - 1, j));
+            if (j + 1 < columns && RoomsMatrix[i, j + 1] != null)
+                coordinatesOfNeighbors.Add(new Pair<int, int>(i, j + 1));
+            if (j - 1 >= 0 && RoomsMatrix[i, j - 1] != null)
+                coordinatesOfNeighbors.Add(new Pair<int, int>(i, j - 1));
+            return coordinatesOfNeighbors;
         }
 
         #endregion
@@ -330,7 +431,8 @@ namespace G6.RoomSpawning {
 
         #region Methods of going to next room operations
 
-        public void GoToNextRoom(Transform playerTransform, int direction) {
+        public void GoToNextRoom(Transform playerTransform, int direction)
+        {
 
             GameObject currentRoomGameObject = RoomsMatrix[CurrentRow, CurrentColumn];
             GameObject currentRoomMiniMapElement = MiniMapMatrix[CurrentRow, CurrentColumn];
@@ -353,67 +455,101 @@ namespace G6.RoomSpawning {
 
         }
 
-        public GameObject GetNextRoomGameObject(int direction) {
-            if (direction == 0) {
+        public GameObject GetNextRoomGameObject(int direction)
+        {
+            if (direction == 0)
+            {
                 return RoomsMatrix[CurrentRow - 1, CurrentColumn];
-            } else if (direction == 1) {
+            }
+            else if (direction == 1)
+            {
                 return RoomsMatrix[CurrentRow, CurrentColumn + 1];
-            } else if (direction == 2) {
+            }
+            else if (direction == 2)
+            {
                 return RoomsMatrix[CurrentRow + 1, CurrentColumn];
-            } else if (direction == 3) {
+            }
+            else if (direction == 3)
+            {
                 return RoomsMatrix[CurrentRow, CurrentColumn - 1];
             }
             return null;
         }
 
-        public GameObject GetNextRoomMiniMapElement(int direction) {
-            if (direction == 0) {
+        public GameObject GetNextRoomMiniMapElement(int direction)
+        {
+            if (direction == 0)
+            {
                 return MiniMapMatrix[CurrentRow - 1, CurrentColumn];
-            } else if (direction == 1) {
+            }
+            else if (direction == 1)
+            {
                 return MiniMapMatrix[CurrentRow, CurrentColumn + 1];
-            } else if (direction == 2) {
+            }
+            else if (direction == 2)
+            {
                 return MiniMapMatrix[CurrentRow + 1, CurrentColumn];
-            } else if (direction == 3) {
+            }
+            else if (direction == 3)
+            {
                 return MiniMapMatrix[CurrentRow, CurrentColumn - 1];
             }
             return null;
         }
 
-        public Transform GetNextRoomSpawnpoint(int direction, Room nextRoom) {
-            if (direction == 0) {
+        public Transform GetNextRoomSpawnpoint(int direction, Room nextRoom)
+        {
+            if (direction == 0)
+            {
                 return nextRoom.BottomSpawnpoint;
-            } else if (direction == 1) {
+            }
+            else if (direction == 1)
+            {
                 return nextRoom.LeftSpawnpoint;
-            } else if (direction == 2) {
+            }
+            else if (direction == 2)
+            {
                 return nextRoom.TopSpawnpoint;
-            } else if (direction == 3) {
+            }
+            else if (direction == 3)
+            {
                 return nextRoom.RightSpawnpoint;
             }
             return null;
         }
 
-        public void FocusCameraOnANewRoom(Transform nextRoomMiniMapElement) {
+        public void FocusCameraOnANewRoom(Transform nextRoomMiniMapElement)
+        {
             float coordX = nextRoomMiniMapElement.position.x;
             float coordY = nextRoomMiniMapElement.position.y;
             float coordZ = transform.GetChild(2).position.z;
             this.transform.GetChild(2).position = new Vector3(coordX, coordY, coordZ);
         }
 
-        public void ChangeCurrentCoordAfterGoingToNextRoom(int direction) {
-            if (direction == 0) {
+        public void ChangeCurrentCoordAfterGoingToNextRoom(int direction)
+        {
+            if (direction == 0)
+            {
                 CurrentRow -= 1;
-            } else if (direction == 1) {
+            }
+            else if (direction == 1)
+            {
                 CurrentColumn += 1;
-            } else if (direction == 2) {
+            }
+            else if (direction == 2)
+            {
                 CurrentRow += 1;
-            } else if (direction == 3) {
+            }
+            else if (direction == 3)
+            {
                 CurrentColumn -= 1;
             }
         }
 
         #endregion
 
-        public bool DoWeNeedAnotherDoor(byte amountOfDoors, float randomNumber) {
+        public bool DoWeNeedAnotherDoor(byte amountOfDoors, float randomNumber)
+        {
             bool answer = false;
             answer |= (amountOfDoors == 0) && (randomNumber > 0.5f);
             answer |= (amountOfDoors == 1) && (randomNumber > 0.85f);
@@ -422,9 +558,12 @@ namespace G6.RoomSpawning {
             return answer;
         }
 
-        public void renderIconsOnMinimap() {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
+        public void renderIconsOnMinimap()
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
 
                     Room room = RoomsMatrix[i, j]?.GetComponent<Room>();
 
@@ -443,7 +582,7 @@ namespace G6.RoomSpawning {
 
                     List<string> roomIcons = new List<string>();
 
-                    if (room.RoomType != "regular") { roomIcons.Add(room.RoomType); }
+                    if (room.RoomType != RoomType.regular) { roomIcons.Add(room.RoomType.ToString()); }
                     if (room.RoomStuff != null) { roomIcons.Add(room.RoomStuff); }
                     if (!room.isThereAnyEnemy()) { roomIcons.Add("no enemy"); }
 
@@ -455,11 +594,13 @@ namespace G6.RoomSpawning {
                     if (roomIcons.Count == 0) { break; }
 
                     System.Func<int, int, float> calcX = (int k, int l)
-                        => { return l == 1 ? 0 : l % 2 == 0 ? k % 2 == 0 ? -1.75f : 1.75f : k == 0 ? -1.75f : k == 1 ? 1.75f : 0; };
+                        =>
+                    { return l == 1 ? 0 : l % 2 == 0 ? k % 2 == 0 ? -1.75f : 1.75f : k == 0 ? -1.75f : k == 1 ? 1.75f : 0; };
 
                     System.Func<int, int, float> calcY = (int k, int l) => { return l < 3 ? 0 : k < 2 ? 1.75f : -1.75f; };
 
-                    for (int k = 0; k < roomIcons.Count; k++) {
+                    for (int k = 0; k < roomIcons.Count; k++)
+                    {
                         Instantiate(mapIconsPrefabsDictionary[roomIcons[0]],
                             new Vector3(coordX + calcX(k, roomIcons.Count), coordY + calcY(k, roomIcons.Count), 0),
                             Quaternion.identity,
