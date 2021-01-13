@@ -44,36 +44,6 @@ namespace G6.EnvironmentBuilder {
         public Vector2 RoomBottomRightCorner { get; private set; } = default;
         public Vector2 RoomBottomLeftCorner { get; private set; } = default;
 
-        public void LoadRoomGrids(Transform groundChild, Transform backgroundChild, Transform foregroundChild, Transform objectsChild, Transform[] specialsChildren) {
-            GroundGrid.Clear();
-            for (int i = 0; i < groundChild.childCount; i++) {
-                var child = groundChild.GetChild(i);
-                GroundGrid.Add(Service.NormalizeByGrid(child.position, BlockSize), child.gameObject);
-            }
-            BackgroundGrid.Clear();
-            for (int i = 0; i < backgroundChild.childCount; i++) {
-                var child = backgroundChild.GetChild(i);
-                BackgroundGrid.Add(Service.NormalizeByGrid(child.position, BlockSize), child.gameObject);
-            }
-            ForegroundGrid.Clear();
-            for (int i = 0; i < foregroundChild.childCount; i++) {
-                var child = foregroundChild.GetChild(i);
-                ForegroundGrid.Add(Service.NormalizeByGrid(child.position, BlockSize), child.gameObject);
-            }
-            ObjectsGrid.Clear();
-            for (int i = 0; i < objectsChild.childCount; i++) {
-                var child = objectsChild.GetChild(i);
-                ObjectsGrid.Add(Service.NormalizeByGrid(child.position, ObjectSize), child.gameObject);
-            }
-            SpecialsGrid.Clear();
-            for (int j = 0; j < specialsChildren.Length; j++) {
-                var specialsChild = specialsChildren[j];
-                for (int i = 0; i < specialsChild.childCount; i++) {
-                    var child = specialsChild.GetChild(i);
-                    SpecialsGrid.Add(Service.NormalizeByGrid(child.position, BlockSize), child.gameObject);
-                }
-            }
-        }
         private void LoadAssets() {
             string path = "Prefabs/EnvironmentBuilder/Items/";
             var blankBlock = Resources.Load<GameObject>($"{path}BlockBases/000_BlockDefault");

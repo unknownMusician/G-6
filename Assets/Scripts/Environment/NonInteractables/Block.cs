@@ -19,22 +19,22 @@ public class Block : MonoBehaviour {
 
     private Sprite CheckSimple(string blocksAround) {
         switch (blocksAround) {
-            case "0" + "111" + "1": return palette[0];
-            case "1" + "110" + "1": return palette[1];
-            case "1" + "111" + "0": return palette[2];
-            case "1" + "011" + "1": return palette[3];
-            case "0" + "110" + "1": return palette[4];
-            case "0" + "111" + "0": return palette[5];
-            case "0" + "011" + "1": return palette[6];
-            case "1" + "110" + "0": return palette[7];
-            case "1" + "010" + "1": return palette[8];
-            case "1" + "011" + "0": return palette[9];
-            case "0" + "110" + "0": return palette[10];
-            case "0" + "010" + "1": return palette[11];
-            case "0" + "011" + "0": return palette[12];
-            case "1" + "010" + "0": return palette[13];
-            case "0" + "010" + "0": return palette[14];
-            case "1" + "111" + "1": return palette[15];
+            case "0" + "111" + "1": return palette.Length > 0 ? palette[0] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "110" + "1": return palette.Length > 1 ? palette[1] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "111" + "0": return palette.Length > 2 ? palette[2] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "011" + "1": return palette.Length > 3 ? palette[3] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "110" + "1": return palette.Length > 4 ? palette[4] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "111" + "0": return palette.Length > 5 ? palette[5] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "011" + "1": return palette.Length > 6 ? palette[6] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "110" + "0": return palette.Length > 7 ? palette[7] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "010" + "1": return palette.Length > 8 ? palette[8] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "011" + "0": return palette.Length > 9 ? palette[9] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "110" + "0": return palette.Length > 10 ? palette[10] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "010" + "1": return palette.Length > 11 ? palette[11] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "011" + "0": return palette.Length > 12 ? palette[12] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "010" + "0": return palette.Length > 13 ? palette[13] : GetComponent<SpriteRenderer>().sprite;
+            case "0" + "010" + "0": return palette.Length > 14 ? palette[14] : GetComponent<SpriteRenderer>().sprite;
+            case "1" + "111" + "1": return palette.Length > 15 ? palette[15] : GetComponent<SpriteRenderer>().sprite; // todo: remove
             default: return palette[14];
         }
     }

@@ -223,7 +223,7 @@ namespace G6.EnvironmentBuilder {
             Objects = Room.Find("Objects");
             Specials = Room.Find("Specials");
 
-            CommonData.instance.LoadRoomGrids(Walls, Background, Foreground, Objects, new[] { Doors, Enemies, SpawnPoints, Specials });
+            LoadRoomGrids(Walls, Background, Foreground, Objects, new[] { Doors, Enemies, SpawnPoints, Specials });
         }
 
         private void DeleteRoomTmp() {
@@ -231,6 +231,48 @@ namespace G6.EnvironmentBuilder {
             if (System.IO.File.Exists(path)) {
                 System.IO.File.Delete(path);
                 System.IO.File.Delete($"{path}.meta");
+            }
+        }
+        private void LoadRoomGrids(Transform groundChild, Transform backgroundChild, Transform foregroundChild, Transform objectsChild, Transform[] specialsChildren) {
+            var commonData = CommonData.instance;
+
+            commonData.GroundGrid.Clear();
+            for (int i = 0; i < groundChild.childCount; i++) {
+                var child = groundChild.GetChild(i);
+                Vector2 childNormPos = Service.NormalizeByGrid(child.position, commonData.BlockSize);
+                commonData.GroundGrid.Add(childNormPos, child.gameObject);
+                CheckGridSpritesAround(childNormPos, commonData.BlockSize, commonData.GroundGrid);
+            }
+            commonData.BackgroundGrid.Clear();
+            for (int i = 0; i < backgroundChild.childCount; i++) {
+                var child = backgroundChild.GetChild(i);
+                Vector2 childNormPos = Service.NormalizeByGrid(child.position, commonData.BlockSize);
+                commonData.BackgroundGrid.Add(childNormPos, child.gameObject);
+                CheckGridSpritesAround(childNormPos, commonData.BlockSize, commonData.BackgroundGrid);
+            }
+            commonData.ForegroundGrid.Clear();
+            for (int i = 0; i < foregroundChild.childCount; i++) {
+                var child = foregroundChild.GetChild(i);
+                Vector2 childNormPos = Service.NormalizeByGrid(child.position, commonData.BlockSize);
+                commonData.ForegroundGrid.Add(childNormPos, child.gameObject);
+                CheckGridSpritesAround(childNormPos, commonData.BlockSize, commonData.ForegroundGrid);
+            }
+            commonData.ObjectsGrid.Clear();
+            for (int i = 0; i < objectsChild.childCount; i++) {
+                var child = objectsChild.GetChild(i);
+                Vector2 childNormPos = Service.NormalizeByGrid(child.position, commonData.ObjectSize);
+                commonData.ObjectsGrid.Add(childNormPos, child.gameObject);
+                CheckGridSpritesAround(childNormPos, commonData.ObjectSize, commonData.ObjectsGrid);
+            }
+            commonData.SpecialsGrid.Clear();
+            for (int j = 0; j < specialsChildren.Length; j++) {
+                var specialsChild = specialsChildren[j];
+                for (int i = 0; i < specialsChild.childCount; i++) {
+                    var child = specialsChild.GetChild(i);
+                    Vector2 childNormPos = Service.NormalizeByGrid(child.position, commonData.BlockSize);
+                    commonData.SpecialsGrid.Add(childNormPos, child.gameObject);
+                    CheckGridSpritesAround(childNormPos, commonData.BlockSize, commonData.SpecialsGrid);
+                }
             }
         }
 
@@ -248,6 +290,7 @@ namespace G6.EnvironmentBuilder {
         }
 
         private void CheckGridSprite(Vector2 gridPosition, float gridSize, Dictionary<Vector2, GameObject> grid) {
+            if(grid[gridPosition].GetComponent<Block>() == null) { return; }
             string localMatrix = "";
             // 3x3 matrix
             for (int i = 1; i > -2; i--) {
